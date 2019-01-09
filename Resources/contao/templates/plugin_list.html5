@@ -1,0 +1,17 @@
+<div style="margin: 25px;">
+    <?php if (is_array($this->plugins) && count($this->plugins)): ?>
+        <?php foreach ($this->plugins as $plugin): ?>
+            <div class="plugin-container">
+                <span><b>Name:</b></span>
+                <span><?php echo $plugin->getName(); ?></span><br>
+                <span><b>Plugin-ID:</b></span>
+                <span><?php echo $plugin->getId(); ?></span><br>
+                <span><b>Projekt-Plugin:</b></span>
+                <span><?php echo $plugin->getProjectPlugin(); ?></span><br>
+                <span><b>Daten-Plugin:</b></span>
+                <span><?php echo $plugin->getDataPlugin(); ?></span><br>
+                <br>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>

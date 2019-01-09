@@ -1,0 +1,184 @@
+@import url("../../../bundles/con4giscore/vendor/fontawesome/css/all.css");
+@font-face {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-style: normal;
+}
+
+button.c4g-button-enable-edit:before {
+    content: "\f040";
+}
+button.c4g-button-disable-edit:before {
+    content: "\f00c";
+}
+button.c4g-editor-project-tab:before {
+    content: "\f1c0";
+}
+button.c4g-starboard-view-trigger-starboardplugin:before {
+    content: "\f0f9";
+}
+.c4g-button-enable-edit {
+    /*height: 2em;*/
+    /*width: 2em;*/
+    font-size: inherit;
+}
+.c4g-button-disable-edit {
+    /*height: 2em;*/
+    /*width: 2em;*/
+    font-size: inherit;
+}
+
+.c4g-project-headline-field {
+    display: flex;
+    background-color: rgba(251,252,253,1);
+    /*border-bottom: 1px solid;*/
+    border-color: rgba(0,60,136,.3);
+}
+
+.c4g-project-headline-field h4 {
+    display: inline-block;
+    width: 80%;
+    flex-grow: 4;
+    border: none;
+    box-shadow: none !important;
+    border-bottom: 0px !important;
+}
+
+.c4g-category-headline {
+    display: flex;
+    /*background-color: rgba(251,252,253,1);*/
+    /*border-bottom: 1px solid;*/
+    /*border-color: rgba(0,60,136,.3);*/
+}
+
+.c4g-category-headline h4 {
+    display: inline-block;
+    width: 80%;
+    flex-grow: 4;
+    border: none;
+    box-shadow: none !important;
+    border-bottom: 0px !important;
+}
+
+.c4g-toggle-category {
+    margin-right: 12px;
+    border: 0!important;
+    border-color: transparent!important;
+    background-color: transparent!important;
+    border-radius: 0!important;
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.c4g-toggle-category-open:before {
+    content: "\f077";
+}
+
+.c4g-toggle-category-closed:before {
+    content: "\f078";
+}
+
+button.c4g-btn-edit-data:before {
+    content: "\f1c0";
+}
+
+.c4g-draw-content-project {
+    width: 100%;
+}
+
+.c4g-draw-content-project button.c4g-draw-trigger {
+    width: auto;
+    height: auto;
+}
+
+.c4g-editor .c4g-portside-top-toolbar .c4g-projects-bar select,
+.c4g-editor .c4g-portside-top-toolbar .c4g-projects-bar button {
+    /*margin: 0;*/
+    /*padding: 0;*/
+    margin-bottom: 0;
+    padding-bottom: 0;
+    vertical-align: bottom;
+    bottom: 0;
+}
+
+.c4g-editor c4g-content-select {
+    color: var(--font-color);
+    border-color: var(--shadow-color);
+    background-color: var(--main-color);
+}
+
+/*.c4g-draw-content-project button:active {*/
+    /*border-style: outset;*/
+    /*color: var(--main-color);*/
+/*}*/
+
+/*.c4g-draw-content-project button:focus {*/
+    /*outline: 0;*/
+    /*color: var(--main-color);*/
+/*}*/
+
+/*.c4g-draw-content-project button:hover {*/
+    /*outline: 0;*/
+    /*color: var(--main-color);*/
+/*}*/
+
+.c4g-project-headline-field a {
+    text-decoration: none;
+}
+
+.c4g-draw-content-project select {
+    display: block;
+}
+
+.c4g-draw-content-point div, .c4g-draw-content-line div, .c4g-draw-content-polygon div, .c4g-draw-content-circle div, .c4g-draw-content-freehand div {
+    justify-content: space-between;
+    margin: 5px;
+}
+
+.c4g-portside-container .c4g_brick_dialog #send-dialog::before {
+    content: "\f0c7";
+}
+
+.c4g-portside-container .c4g_brick_dialog #cancel-dialog::before {
+    content: "\f060";
+}
+button.c4g-btn-duplicate-data:before {
+    content: "\f24d";
+}
+button.c4g-btn-displace-data:before {
+    content: "\f56e";
+}
+button.c4g-btn-duplicate-displace-data:before {
+    content: "\f0ea";
+}
+button.c4g-project-delete:before {
+    content: "\f2ed";
+}
+button.c4g-project-create:before {
+    content: "\f067";
+}
+button.c4g-project-edit:before {
+    content: "\f305";
+}
+
+
+button.c4g-editor-dialog-confirm:before {
+    content: "\f00c";
+}
+button.c4g-editor-dialog-cancel:before {
+    content: "\f05e";
+}
+.c4g-projects-bar > button.c4g-active {
+    color: var(--font-color);
+    background-color: var(--main-color);
+}
+.c4g-editor-draw-options {
+    display: none;
+}
+.c4g_brick_dialog input[type='checkbox'], .c4g-popup-content input[type='checkbox'] {
+    display: inline-block!important; //ToDo in maps oder projects lösen, Maps sorgt dafür, dass normale Checkbox im Formular nicht dargestellt werden können.
+}
+
+.c4g-edit-data-error-label {
+    --font-color: red;
+}

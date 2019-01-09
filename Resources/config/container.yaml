@@ -1,0 +1,9 @@
+services:
+    ## Real services
+    mapsproject_frontend:
+        class: con4gis\MapsProjectBundle\Classes\MapsProjectFrontend
+        public: true
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@event_dispatcher'
+
