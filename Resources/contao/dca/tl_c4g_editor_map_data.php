@@ -15,7 +15,7 @@
  * Table tl_module
  */
 
-$strName = 'tl_c4G_editormap_data';
+$strName = 'tl_c4g_editor_map_data';
 
 $GLOBALS['TL_DCA'][$strName] = array
 (

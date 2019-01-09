@@ -14,7 +14,7 @@
 /**
  * Table tl_module
  */
-$strName = 'tl_c4G_editormapelement';
+$strName = 'tl_c4g_editor_map_element';
 
 $GLOBALS['TL_DCA'][$strName] = array
 (
@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA'][$strName] = array
         'onload_callback'             => array(
             array($strName, 'updateDCA')),
         'onsubmit_callback'             => array(
-            array('\con4gis\MapsProjectBundle\Classes\Cache\C4GMapsProjectAutomator', 'purgeEditorConfigCache')
+            array('\con4gis\EditorBundle\Classes\Cache\C4GEditorAutomator', 'purgeEditorConfigCache')
         ),
     ),
 
@@ -240,7 +240,7 @@ class tl_c4g_editor_map_element extends Backend
     public function getCategoryList()
     {
         $categoryRepo = \Contao\System::getContainer()->get('doctrine.orm.entity_manager')
-            ->getRepository(\con4gis\MapsProjectBundle\Entity\EditorMapCategory::class);
+            ->getRepository(\con4gis\EditorBundle\Entity\EditorMapCategory::class);
         $categories = $categoryRepo->findAll();
         uasort($categories, function ($a, $b) {
             return strcmp($a->getCaption(), $b->getCaption());
@@ -279,7 +279,7 @@ class tl_c4g_editor_map_element extends Backend
 
     public function getPluginList()
     {
-        $event = new \con4gis\MapsProjectBundle\Classes\Events\LoadPluginsEvent();
+        $event = new \con4gis\EditorBundle\Classes\Events\LoadPluginsEvent();
         $dispatcher = \Contao\System::getContainer()->get('event_dispatcher');
         $dispatcher->dispatch($event::NAME, $event);
         $configs = $event->getConfigs();
@@ -301,7 +301,7 @@ class tl_c4g_editor_map_element extends Backend
             ->execute($dc->id);
         if ($objMap->numRows > 0) {
             if ($objMap->plugins) {
-                $event = new \con4gis\MapsProjectBundle\Classes\Events\LoadPluginsEvent();
+                $event = new \con4gis\EditorBundle\Classes\Events\LoadPluginsEvent();
                 $dispatcher = \Contao\System::getContainer()->get('event_dispatcher');
                 $dispatcher->dispatch($event::NAME, $event);
                 $configs = $event->getConfigs();
