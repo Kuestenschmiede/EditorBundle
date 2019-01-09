@@ -1,0 +1,61 @@
+services:
+    ## Load plugins
+    mapsproject.onLoadPluginsGetRegisteredBundles:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.load.plugins, method: onLoadPluginsGetRegisteredBundles, priority: 4096 }
+        arguments:
+            - '@service_container'
+            - '@file_locator'
+
+    mapsproject.onLoadPluginsReadConfigFiles:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.load.plugins, method: onLoadPluginsReadConfigFiles, priority: 3072 }
+        arguments:
+            - '@service_container'
+            - '@file_locator'
+
+    ## Instantiate data plugins
+    mapsproject.onInstantiatePluginsGetElement:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateDataPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.dataplugins.instantiate, method: onInstantiatePluginsGetElement, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onInstantiatePluginsFilterPlugins:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateDataPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.dataplugins.instantiate, method: onInstantiatePluginsFilterPlugins, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onInstantiatePluginsInstantiatePlugins:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateDataPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.dataplugins.instantiate, method: onInstantiatePluginsInstantiatePlugins, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Instantiate project plugins
+    mapsproject.onInstantiateProjectPluginsGetScenario:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateProjectPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.projectplugins.instantiate, method: onInstantiateProjectPluginsGetScenario, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onInstantiateProjectPluginsFilterPlugins:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateProjectPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.projectplugins.instantiate, method: onInstantiateProjectPluginsFilterPlugins, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onInstantiateProjectPluginsInstantiatePlugins:
+        class: con4gis\MapsProjectBundle\Classes\Listener\InstantiateProjectPluginsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.projectplugins.instantiate, method: onInstantiateProjectPluginsInstantiatePlugins, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

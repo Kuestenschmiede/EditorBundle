@@ -1,0 +1,111 @@
+services:
+    ## Load projects
+    mapsproject.onLoadProjectsGetGenericProjects:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadProjectsListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.load.projects, method: onLoadProjectsGetGenericProjects, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Create project
+    mapsproject.onCreateProjectGetFieldList:
+        class: con4gis\MapsProjectBundle\Classes\Listener\CreateProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.create, method: onCreateProjectGetFieldList, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onCreateProjectGetDialogParams:
+        class: con4gis\MapsProjectBundle\Classes\Listener\CreateProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.create, method: onCreateProjectGetDialogParams, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onCreateProjectGenerateHtml:
+        class: con4gis\MapsProjectBundle\Classes\Listener\CreateProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.create, method: onCreateProjectGenerateHtml, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Save Project
+    mapsproject.onSaveProjectGetFieldlist:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectGetFieldlist, priority: 4096 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onSaveProjectExecBeforeSave:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectExecBeforeSave, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onSaveProjectFillData:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectFillData, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+
+    mapsproject.onSaveProjectValidateFieldValues:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectValidateFieldValues, priority: 1900 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onSaveProjectCheckMandatory:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectCheckMandatory, priority: 1800 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onSaveProjectSaveEntities:
+        class: con4gis\MapsProjectBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.save, method: onSaveProjectSaveEntities, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Delete project
+    mapsproject.onDeleteProjectGetEntities:
+        class: con4gis\MapsProjectBundle\Classes\Listener\DeleteProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.delete, method: onDeleteProjectGetEntities, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onDeleteProjectDeleteEntities:
+        class: con4gis\MapsProjectBundle\Classes\Listener\DeleteProjectListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.delete, method: onDeleteProjectDeleteEntities, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Edit Project
+    mapsproject.onEditProjectGetFields:
+        class: con4gis\MapsProjectBundle\Classes\Listener\ShowEditProjectDialogListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.edit, method: onEditProjectGetFields, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditProjectGetData:
+        class: con4gis\MapsProjectBundle\Classes\Listener\ShowEditProjectDialogListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.edit, method: onEditProjectGetData, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditProjectGetDialog:
+        class: con4gis\MapsProjectBundle\Classes\Listener\ShowEditProjectDialogListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.project.edit, method: onEditProjectGetDialog, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

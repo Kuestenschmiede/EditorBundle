@@ -1,0 +1,90 @@
+services:
+    ## Configurate editor
+    mapsproject.onEditorConfigurationLoadScenarios:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationLoadScenarios, priority: 6144 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationLoadElements:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationLoadElements, priority: 5120 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationLoadCategories:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationLoadCategories, priority: 4096 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationSortData:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationSortData, priority: 4095 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationConvertElements:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationConvertElements, priority: 3072 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationGetDrawStyles:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationGetDrawStyles, priority: 2048 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    mapsproject.onEditorConfigurationGetApiConfig:
+        class: con4gis\MapsProjectBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: mapsproject.editor.config, method: onEditorConfigurationGetApiConfig, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    ## Load Layers (event from MapsBundle)
+    mapsproject.onLoadLayersGetProjectData:
+        class: con4gis\MapsProjectBundle\Classes\MapsProjectFrontend
+        tags:
+            - { name: kernel.event_listener, event: maps.layers.load, method: onLoadLayersGetProjectData, priority: 4096 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - "@event_dispatcher"
+
+    mapsproject.onLoadLayersGetScenarios:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadLayersListener
+        tags:
+            - { name: kernel.event_listener, event: maps.layers.load, method: onLoadLayersGetScenarios, priority: 6144 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - "@event_dispatcher"
+
+    mapsproject.onLoadLayersFilterLayers:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadLayersListener
+        tags:
+            - { name: kernel.event_listener, event: maps.layers.load, method: onLoadLayersFilterLayers, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - "@event_dispatcher"
+
+    ## Load resources
+    mapsproject.onLoadMapResourcesLoadEditorFiles:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadMapResourcesListener
+        tags:
+            - { name: kernel.event_listener, event: maps.resources.load, method: onLoadMapResourcesLoadEditorFiles, priority: 1024 }
+
+    ## Load profile
+    mapsproject.onLoadProfile:
+        class: con4gis\MapsProjectBundle\Classes\Listener\LoadProfileListener
+        tags:
+            - { name: kernel.event_listener, event: maps.profile.load, method: onLoadProfile, priority: 1024 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - "@event_dispatcher"
