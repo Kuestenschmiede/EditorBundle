@@ -1,8 +1,8 @@
 {
   "entrypoints": {
-    "c4g-project-editor": {
+    "c4g-editor": {
       "js": [
-        "/build/c4g-project-editor.js"
+        "/build/c4g-editor.js"
       ]
     }
   }

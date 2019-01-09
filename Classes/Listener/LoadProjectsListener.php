@@ -13,11 +13,16 @@
 namespace con4gis\EditorBundle\Classes\Listener;
 
 
+use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Entity\EditorMapProject;
+use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
+use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
+use con4gis\ProjectsBundle\Classes\Views\C4GBrickViewType;
+use Contao\Database;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

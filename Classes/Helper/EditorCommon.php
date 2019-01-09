@@ -11,9 +11,9 @@
  */
 
 namespace con4gis\EditorBundle\Classes\Helper;
-use con4gis\MapsProjectBundle\Entity\MapsProjectData;
-use con4gis\MapsProjectBundle\Entity\EditorMapElement;
-use con4gis\MapsProjectBundle\Entity\PluginTrackingDeviceData;
+use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\PluginTrackingDeviceData;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\TrackingBundle\Resources\contao\models\C4gTrackingDevicesModel;
 use Doctrine\ORM\EntityManager;
@@ -26,7 +26,7 @@ use Doctrine\ORM\EntityManager;
  */
 class EditorCommon
 {
-    public static function getLocstyleForData(MapsProjectData $data, EntityManager $em)
+    public static function getLocstyleForData(EditorMapData $data, EntityManager $em)
     {
         $type = $data->getDrawtype();
         $element = $em->getRepository(EditorMapElement::class)->findOneBy(['id' => $data->getTypeid()]);
@@ -53,7 +53,7 @@ class EditorCommon
      * @param MapsProjectData $data
      * @param EntityManager $em
      */
-    public static function getSettingsForData(MapsProjectData $data, EntityManager $em)
+    public static function getSettingsForData(EditorMapData $data, EntityManager $em)
     {
         $settings = [];
         if (class_exists(PluginTrackingDeviceData::class)) {

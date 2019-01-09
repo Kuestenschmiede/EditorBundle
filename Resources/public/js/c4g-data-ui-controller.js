@@ -2,6 +2,7 @@ import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-map
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
 import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
+import {projectEditorLang} from "./c4g-project-editor-i18n-de";
 let langConstants = {};
 
 if (typeof mapData !== "undefined") {
@@ -14,6 +15,7 @@ if (typeof mapData !== "undefined") {
     langConstants = langConstantsGerman;
   }
 }
+langConstants = $.extend(projectEditorLang, langConstants);
 /**
  * Class for creating all view elements that interact with feature data. Handles all events that are fired on these view
  * elements.

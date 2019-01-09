@@ -133,7 +133,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $project->getCaption(),
                 $project->getCaption(),
                 true,
-                $child['hide'] || $project->getStandingData()
+                // TODO das kann doch so nie funktioniert haben...
+                $child['hide'] //|| $project->getStandingData()
             );
             $arrProject['projectId'] = $project->getId();
             $categoryIds = [];
@@ -145,7 +146,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
             // get all used categories for project
             // get all used elements for project
             // sort in data
-            /** @var MapsProjectData $datum */
+            /** @var EditorMapData $datum */
             foreach ($arrData as $datum) {
                 if (!(in_array($datum->getCategoryid(), $categoryIds))) {
                     $categoryIds[] = $datum->getCategoryid();
