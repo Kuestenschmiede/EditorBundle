@@ -10,7 +10,7 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\MapsBundle\Classes\Events\LoadMapResourcesEvent;

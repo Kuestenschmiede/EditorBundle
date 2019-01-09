@@ -3,7 +3,7 @@ project_editor_service:
     path: /con4gis/projectEditorService
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectEditor:projectEditor"
+        _controller: "con4gisEditorBundle:ProjectEditor:projectEditor"
     methods: [GET]
 
 # Id service for generated Ids
@@ -11,7 +11,7 @@ project_id_service:
     path: /con4gis/projectIdService
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectEditor:getId"
+        _controller: "con4gisEditorBundle:ProjectEditor:getId"
     methods: [POST]
 
 # Save feature
@@ -19,7 +19,7 @@ project_data_create:
     path: /con4gis/projectData/{projectId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:createData"
+        _controller: "con4gisEditorBundle:ProjectData:createData"
     methods: [POST]
 
 # Delete feature
@@ -27,7 +27,7 @@ project_data_delete:
     path: /con4gis/projectData/{projectId}/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:deleteData"
+        _controller: "con4gisEditorBundle:ProjectData:deleteData"
     methods: [DELETE]
 
 # Update Feature
@@ -35,7 +35,7 @@ project_data_update:
     path: /con4gis/projectData/{projectId}/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:updateData"
+        _controller: "con4gisEditorBundle:ProjectData:updateData"
     methods: [PUT]
 
 # Duplicate feature
@@ -43,7 +43,7 @@ project_data_copy:
     path: /con4gis/projectDataCopy/{projectId}/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:duplicateData"
+        _controller: "con4gisEditorBundle:ProjectData:duplicateData"
     methods: [POST]
 
 # Move feature to another project
@@ -51,7 +51,7 @@ project_data_displace:
     path: /con4gis/projectDataDisplace/{dataId}/{newProjectId}/{copy}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:displaceData"
+        _controller: "con4gisEditorBundle:ProjectData:displaceData"
     methods: [POST]
 
 # get Form for metadata
@@ -59,7 +59,7 @@ project_data_getForm:
     path: /con4gis/projectDataForm/{projectId}/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:getForm"
+        _controller: "con4gisEditorBundle:ProjectData:getForm"
     methods: [GET]
 
 # process form for metadata
@@ -67,7 +67,7 @@ project_data_sendForm:
     path: /con4gis/projectDataForm/{projectId}/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:ProjectData:postForm"
+        _controller: "con4gisEditorBundle:ProjectData:postForm"
     methods: [POST]
 
 # get form for project
@@ -75,7 +75,7 @@ project_create_getList:
     path: /con4gis/project/
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Project:createProject"
+        _controller: "con4gisEditorBundle:Project:createProject"
     methods: [GET]
 
 # process form for project
@@ -83,47 +83,47 @@ project_create_save:
     path: /con4gis/project/
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Project:saveProject"
+        _controller: "con4gisEditorBundle:Project:saveProject"
     methods: [POST]
 
 project_delete:
     path: /con4gis/project
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Project:deleteProject"
+        _controller: "con4gisEditorBundle:Project:deleteProject"
     methods: [DELETE]
 
 project_edit:
     path: /con4gis/projectForm/{projectId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Project:editProject"
+        _controller: "con4gisEditorBundle:Project:editProject"
     methods: [GET]
 
 project_edit_save:
     path: /con4gis/projectForm/{projectId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Project:saveEditedProject"
+        _controller: "con4gisEditorBundle:Project:saveEditedProject"
     methods: [POST]
 
 project_data_popup:
     path: /con4gis/projectData/popup/{dataId}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:DataPopup:getPopup"
+        _controller: "con4gisEditorBundle:DataPopup:getPopup"
     methods: [GET]
 
 get_element_layer:
     path: /con4gis/elements/layer/{layerId}/{pid}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Element:getElementLayer"
+        _controller: "con4gisEditorBundle:Element:getElementLayer"
     methods: [GET]
 
 get_category_layer:
     path: /con4gis/categories/layer/{layerId}/{pid}/{mid}
     defaults:
         _scope: frontend
-        _controller: "con4gisMapsProjectBundle:Category:getCategoryLayer"
+        _controller: "con4gisEditorBundle:Category:getCategoryLayer"
     methods: [GET]

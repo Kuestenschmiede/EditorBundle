@@ -13,7 +13,7 @@
 namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickConst;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
@@ -60,7 +60,7 @@ class CreateProjectListener
         $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $dialogParams = new C4GBrickDialogParams(MapsProjectBrickTypes::BRICK_GENERIC_PROJECT,
+        $dialogParams = new C4GBrickDialogParams(EditorBrickTypes::BRICK_GENERIC_PROJECT,
             C4GBrickViewType::GROUPBASED);
         $dialogParams->addButton(C4GBrickConst::BUTTON_SAVE);
         $event->setDialogParams($dialogParams);

@@ -10,12 +10,12 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\GetPopupEvent;
-use con4gis\MapsProjectBundle\Entity\MapsProjectData;
-use con4gis\MapsProjectBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Classes\Events\GetPopupEvent;
+use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorMapElement;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GHeadlineField;
 use Contao\System;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -76,7 +76,7 @@ class GetPopupListener
         $data = $event->getData();
         $dataId = $event->getDataId();
         $elementData = $this->entityManager
-            ->getRepository(MapsProjectData::class)
+            ->getRepository(EditorMapData::class)
             ->findOneBy(['id' => $dataId]);
         $groupId = $elementData->getGroupid();
 

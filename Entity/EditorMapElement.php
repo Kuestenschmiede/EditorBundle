@@ -20,7 +20,7 @@ use con4gis\CoreBundle\Entity\BaseEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="tl_c4g_editor_map_element")
- * @package con4gis\MapsProjectBundle\Entity
+ * @package con4gis\EditorBundle\Entity
  */
 class EditorMapElement extends BaseEntity
 {
@@ -97,6 +97,14 @@ class EditorMapElement extends BaseEntity
      * @ORM\Column(type="array")
      */
     protected $plugins = [];
+
+    /**
+     * EditorMapElement constructor.
+     */
+    public function __construct()
+    {
+        $this->scenarios = [];
+    }
 
     /**
      * @return int

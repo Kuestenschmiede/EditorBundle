@@ -10,14 +10,14 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\SaveMetadataEvent;
-use con4gis\MapsProjectBundle\Classes\Plugins\AbstractDataPlugin;
-use con4gis\MapsProjectBundle\Classes\Plugins\DefaultDataPlugin;
-use con4gis\MapsProjectBundle\Classes\Plugins\PluginConfig;
-use con4gis\MapsProjectBundle\Entity\MapsProjectData;
+use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
+use con4gis\EditorBundle\Classes\Plugins\AbstractDataPlugin;
+use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
+use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
+use con4gis\EditorBundle\Entity\EditorMapData;
 use Contao\FrontendUser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;

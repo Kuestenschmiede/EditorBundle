@@ -15,16 +15,16 @@ array_insert($GLOBALS['BE_MOD'], array_search('content', array_keys($GLOBALS['BE
     (
         'EditorMapCategories' => array
         (
-            'tables'    => array('tl_c4G_editorcategory')
+            'tables'    => array('tl_c4g_editor_map_category')
         ),
 
         'EditorMapElements' => array
         (
-            'tables'    => array('tl_c4G_editormapelement')
+            'tables'    => array('tl_c4g_editor_map_element')
         ),
         'plugins' => array
         (
-            'callback' => '\con4gis\MapsProjectBundle\Classes\Contao\Callbacks\PluginList'
+            'callback' => '\con4gis\EditorBundle\Classes\Contao\Callbacks\PluginList'
         )
     )
 ));

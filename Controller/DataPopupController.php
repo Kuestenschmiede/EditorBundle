@@ -17,7 +17,7 @@ use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Events\GetPopupEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
-use con4gis\EditorBundle\Entity\MapsProjectData;
+use con4gis\EditorBundle\Entity\EditorMapData;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ class DataPopupController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
-        $data = $this->entityManager->getRepository(MapsProjectData::class)->findOneBy(['id' => $dataId]);
+        $data = $this->entityManager->getRepository(EditorMapData::class)->findOneBy(['id' => $dataId]);
 
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);

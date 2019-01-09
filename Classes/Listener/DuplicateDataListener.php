@@ -14,11 +14,11 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectFrontend;
-use con4gis\MapsProjectBundle\Classes\Plugins\DataPluginInterface;
-use con4gis\MapsProjectBundle\Classes\Plugins\DefaultDataPlugin;
-use con4gis\MapsProjectBundle\Entity\EditorMapCategory;
-use con4gis\MapsProjectBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Classes\EditorMapFrontend;
+use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
+use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
+use con4gis\EditorBundle\Entity\EditorMapCategory;
+use con4gis\EditorBundle\Entity\EditorMapElement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,16 +31,16 @@ class DuplicateDataListener
     private $entityManager = null;
 
     /**
-     * @var MapsProjectFrontend
+     * @var EditorMapFrontend
      */
     private $frontend = null;
 
     /**
      * DuplicateDataListener constructor.
      * @param EntityManager $entityManager
-     * @param MapsProjectFrontend $frontend
+     * @param EditorMapFrontend $frontend
      */
-    public function __construct(EntityManager $entityManager, MapsProjectFrontend $frontend)
+    public function __construct(EntityManager $entityManager, EditorMapFrontend $frontend)
     {
         $this->entityManager = $entityManager;
         $this->frontend = $frontend;

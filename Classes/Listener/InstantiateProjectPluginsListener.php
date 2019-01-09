@@ -10,12 +10,13 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\InstantiateProjectPluginsEvent;
-use con4gis\MapsProjectBundle\Classes\Plugins\ProjectPluginInterface;
-use con4gis\MapsProjectBundle\Entity\MapsProjectScenario;
+use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
+use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
+use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
+//use con4gis\EditorBundle\Entity\MapsProjectScenario;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
@@ -23,65 +24,16 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 
 class InstantiateProjectPluginsListener
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager = null;
-
-    /**
-     * InstantiatePluginsListener constructor.
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function onInstantiateProjectPluginsGetScenario(
+    public function onInstantiateProjectPluginsGetDefaultPlugin(
         InstantiateProjectPluginsEvent $event,
-        $eventname,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $dataId = $event->getScenarioId();
-        $scenario = $this->entityManager
-            ->getRepository(MapsProjectScenario::class)
-            ->findOneBy(['id' => $dataId]);
-        if ($scenario) {
-            $event->setScenario($scenario);
-        }
-    }
-
-    public function onInstantiateProjectPluginsFilterPlugins(
-        InstantiateProjectPluginsEvent $event,
-        $eventname,
+        $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
         $configs = $event->getPluginConfigs();
-        $scenario = $event->getScenario();
-        $pluginIds = $scenario->getPlugins();
-        $validConfigs = [];
-        if (\FrontendUser::getInstance()->id) {
-            foreach ($pluginIds as $pluginId) {
-                foreach ($configs as $config) {
-                    if (($pluginId == $config->getId()) && (
-
-                            //default plugin
-                            ($pluginId === '1') ||
-
-                            //function plugin
-                            ((($pluginId > 1) && ($pluginId < 100)) && MemberModel::hasRightInAnyGroup(
-                                    \FrontendUser::getInstance()->id,
-                                    \con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes::BRICK_FUNCTION_PLUGINS)) ||
-
-                            //data plugin
-                            (($pluginId >= 1000) && MemberModel::hasRightInAnyGroup(
-                                    \FrontendUser::getInstance()->id,
-                                    \con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes::BRICK_PROJECT_PLUGINS))
-                        )
-                    ) {
-                        $validConfigs[] = $config;
-                    }
-                }
+        $validConfigs = $event->getValidConfigs();
+        foreach ($configs as $config) {
+            if ($config->getProjectPlugin() === DefaultProjectPlugin::class) {
+                $validConfigs[] = $config;
             }
         }
         $event->setValidConfigs($validConfigs);
@@ -89,7 +41,7 @@ class InstantiateProjectPluginsListener
 
     public function onInstantiateProjectPluginsInstantiatePlugins(
         InstantiateProjectPluginsEvent $event,
-        $eventname,
+        $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
         $validConfigs = $event->getValidConfigs();

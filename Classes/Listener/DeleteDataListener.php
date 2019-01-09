@@ -14,7 +14,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
-use con4gis\MapsProjectBundle\Entity\MapsProjectData;
+use con4gis\EditorBundle\Entity\EditorMapData;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,7 +44,7 @@ class DeleteDataListener
         $entities = [];
         foreach ($plugins as $plugin) {
             $entityClass = $plugin->getEntityClass();
-            if ($entityClass == MapsProjectData::class) {
+            if ($entityClass == EditorMapData::class) {
                 $entity = $this->entityManager->getRepository($entityClass)->findOneBy(['id' => $event->getDataId()]);
             } else {
                 $entity = $this->entityManager->getRepository($entityClass)->findOneBy(['pid' => $event->getDataId()]);

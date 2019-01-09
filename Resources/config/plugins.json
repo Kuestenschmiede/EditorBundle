@@ -1,83 +1,11 @@
-
 {
   "plugins": [
-
     {
       "name": "Default Plugin",
       "id": 1,
-      "projectPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\DefaultProjectPlugin",
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\DefaultDataPlugin",
-      "language": ["tl_c4g_maps_project_data", "tl_c4g_maps_project"],
-      "backend": 0
-    },
-
-    {
-      "name": "Projektfunktionen",
-      "id": 10,
-      "projectPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\ProjectFunctionsPlugin",
-      "language": ["tl_c4g_plugin_project_functions"],
-      "backend": 0,
-      "function": ["standingdata"]
-    },
-
-    {
-      "name": "Funktion Tracking",
-      "id": 200,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\FunctionTrackingDevicePlugin",
-      "language": ["tl_c4g_plugin_function_tracking_device"],
-      "backend": 0,
-      "function": ["tracking"]
-    },
-
-    {
-      "name": "Funktion Veröffentlichen",
-      "id": 300,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\FunctionPublishingDataPlugin",
-      "language": ["tl_c4g_plugin_function_publishing_data"],
-      "backend": 0,
-      "function": ["publishingdata"]
-    },
-
-    {
-      "name": "Einsatzprojekt",
-      "id": 1000,
-      "projectPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapProjectPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_project"],
-      "backend": 0
-    },
-    {
-      "name": "Einsatzplanung Kontaktdaten",
-      "id": 1001,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapContactDataPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_contact_data"],
-      "backend": 0
-    },
-    {
-      "name": "Einsatzplanung Stützpunkt",
-      "id": 1002,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapBaseDataPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_base_data"],
-      "backend": 0
-    },
-    {
-      "name": "Einsatzplanung Fahrzeug",
-      "id": 1003,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapVehicleDataPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_vehicle_data"],
-      "backend": 1
-    },
-    {
-      "name": "Einsatzplanung Einheit",
-      "id": 1004,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapUnitDataPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_unit_data"],
-      "backend": 0
-    },
-    {
-      "name": "Einsatzplanung Spezialgerät",
-      "id": 1005,
-      "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\RescuemapEquipmentDataPlugin",
-      "language": ["tl_c4g_plugin_rescuemap_equipment_data"],
+      "projectPlugin": "con4gis\\EditorBundle\\Classes\\Plugins\\DefaultProjectPlugin",
+      "dataPlugin": "con4gis\\EditorBundle\\Classes\\Plugins\\DefaultDataPlugin",
+      "language": ["tl_c4g_editor_map_data", "tl_c4g_editor_map_project"],
       "backend": 0
     }
   ]

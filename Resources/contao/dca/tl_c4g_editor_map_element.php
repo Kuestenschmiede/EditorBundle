@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA'][$strName] = array
     //Palettes
     'palettes' => array
     (
-        'default'   =>  '{data_legend}, name, caption, categories, pointstyle, linestyle, polygonstyle, circlestyle, freehandstyle,scenarios, plugins',
+        'default'   =>  '{data_legend}, name, caption, categories, pointstyle, linestyle, polygonstyle, circlestyle, freehandstyle, plugins',
     ),
 
 
@@ -181,25 +181,17 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'               => true,
             'default'                 => '',
             'inputType'             => 'checkbox',
-            'options_callback'      => array('tl_c4G_editormapelement','getCategoryList'),
+            'options_callback'      => array('tl_c4g_editor_map_element','getCategoryList'),
             'eval'                  => array(
                 'multiple' => true,
                 'mandatory' => true,
                 'tl_class' => 'c4g_w50',
             ),
         ),
+        // must save an empty array into the entity to avoid serialization errors
         'scenarios' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG'][$strName]['scenarios'],
-            'exclude'               => true,
-            'default'                 => '',
-            'inputType'             => 'checkbox',
-            'options_callback'      => array('tl_c4G_editormapelement','getScenarioList'),
-            'eval'                  => array(
-                'multiple' => true,
-                'mandatory' => true,
-                'tl_class' => 'clr',
-            ),
+            'default'                 => []
         ),
         'plugins' => array
         (
@@ -207,11 +199,11 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'checkboxWizard',
-            'options_callback'        => array('tl_c4G_editormapelement','getPluginList'),
+            'options_callback'        => array('tl_c4g_editor_map_element','getPluginList'),
             'eval'                  => array(
                 'multiple' => true,
                 'mandatory' => true,
-                'tl_class' => 'long',
+                'tl_class' => 'clr',
                 'submitOnChange' => true
             )
         )
@@ -220,7 +212,7 @@ $GLOBALS['TL_DCA'][$strName] = array
 
 
 /**
- * Class tl_c4G_editormapelement
+ * Class tl_c4g_editor_map_element
  */
 class tl_c4g_editor_map_element extends Backend
 {
@@ -251,22 +243,22 @@ class tl_c4g_editor_map_element extends Backend
         return $return;
     }
 
-    /**
-     * Get a list of all available scenarios
-     * @return array()
-     */
-    public function getScenarioList()
-    {
-        $szenarios = \con4gis\MapsProjectBundle\Resources\contao\models\MapsProjectScenarioModel::findAll();
-        foreach ($szenarios as $szenario) {
-            $return[$szenario->id] = $szenario->caption;
-        }
-        return $return;
-    }
+//    /**
+//     * Get a list of all available scenarios
+//     * @return array()
+//     */
+//    public function getScenarioList()
+//    {
+//        $szenarios = \con4gis\MapsProjectBundle\Resources\contao\models\MapsProjectScenarioModel::findAll();
+//        foreach ($szenarios as $szenario) {
+//            $return[$szenario->id] = $szenario->caption;
+//        }
+//        return $return;
+//    }
 
     public function getDrawStyles()
     {
-        $strName = 'tl_c4G_editormapelement';
+        $strName = 'tl_c4g_editor_map_element';
 
         return array(
             'point' => $GLOBALS['TL_LANG'][$strName]['point'],
@@ -296,7 +288,7 @@ class tl_c4g_editor_map_element extends Backend
     {
         if (!$dc->id) return;
 
-        $objMap = $this->Database->prepare("SELECT plugins FROM tl_c4G_editormapelement WHERE id=?")
+        $objMap = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_map_element WHERE id=?")
             ->limit(1)
             ->execute($dc->id);
         if ($objMap->numRows > 0) {
@@ -320,8 +312,8 @@ class tl_c4g_editor_map_element extends Backend
                                             $fields[$field]['pluginId'] = $config->getId();
                                         }
 
-                                        $GLOBALS['TL_DCA']['tl_c4G_editormapelement']['palettes']['default'] .= $palette;
-                                        $GLOBALS['TL_DCA']['tl_c4G_editormapelement']['fields'] = array_merge($GLOBALS['TL_DCA']['tl_c4G_editormapelement']['fields'], $fields);
+                                        $GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['palettes']['default'] .= $palette;
+                                        $GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'] = array_merge($GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'], $fields);
                                     }
                                 }
                             }
@@ -355,7 +347,7 @@ class tl_c4g_editor_map_element extends Backend
             $this->Database->prepare("UPDATE tl_c4g_maps_project_element_defaults SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
                 ->execute(time(), $varValue, $dc->id, $dc->field);
         } else {
-            $pluginId = intval($GLOBALS['TL_DCA']['tl_c4G_editormapelement']['fields'][$dc->field]['pluginId']);
+            $pluginId = intval($GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'][$dc->field]['pluginId']);
             $this->Database->prepare("INSERT INTO tl_c4g_maps_project_element_defaults SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
                 ->execute(time(), $dc->id, $pluginId, $dc->field, $varValue);
         }

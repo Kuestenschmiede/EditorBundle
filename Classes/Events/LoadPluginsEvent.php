@@ -13,7 +13,7 @@
 namespace con4gis\EditorBundle\Classes\Events;
 
 
-use con4gis\MapsProjectBundle\Classes\Plugins\PluginConfig;
+use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
 use Symfony\Component\EventDispatcher\Event;
 
 class LoadPluginsEvent extends Event

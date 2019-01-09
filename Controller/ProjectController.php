@@ -12,7 +12,6 @@
 
 namespace con4gis\EditorBundle\Controller;
 
-
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
@@ -21,7 +20,6 @@ use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
 use con4gis\EditorBundle\Classes\Events\DeleteProjectEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
-use con4gis\EditorBundle\Classes\Events\SaveProjectDialogEvent;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
@@ -30,8 +28,7 @@ use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
 use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Entity\EditorMapProject;
-use con4gis\EditorBundle\Entity\MapsProjectData;
-use con4gis\EditorBundle\Entity\MapsProjectSubdomains;
+use con4gis\EditorBundle\Entity\EditorMapData;
 use Contao\Database;
 use Contao\FrontendUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -91,7 +88,7 @@ class ProjectController extends BaseController
         $this->eventDispatcher->dispatch($delEvent::NAME, $delEvent);
 
         // delete all data from the project
-        $data = $this->entityManager->getRepository(MapsProjectData::class)
+        $data = $this->entityManager->getRepository(EditorMapData::class)
             ->findBy(['projectid' => $projectId]);
         foreach ($data as $datum) {
             $typeId = $datum->getTypeid();
@@ -153,34 +150,37 @@ class ProjectController extends BaseController
     {
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-        $subDomain = $this->getActiveSubdomain();
+//        $subDomain = $this->getActiveSubdomain();
         $instEvent = new InstantiateProjectPluginsEvent();
         $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $scenarios = $subDomain->getScenarios();
-        $plugins = [];
-        foreach ($scenarios as $scenarioId) {
-            $instEvent->setScenarioId($scenarioId);
-            $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-            $currentPlugins = $instEvent->getInstances();
-            foreach ($currentPlugins as $currentPlugin) {
-                if (!in_array($currentPlugin, $plugins)) {
-                    $plugins[] = $currentPlugin;
-                }
-            }
-        }
+//        $scenarios = $subDomain->getScenarios();
+        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
+        $plugins = $instEvent->getInstances();
+//        foreach ($scenarios as $scenarioId) {
+//            $instEvent->setScenarioId($scenarioId);
+//
+//            $currentPlugins = $instEvent->getInstances();
+//            foreach ($currentPlugins as $currentPlugin) {
+//                if (!in_array($currentPlugin, $plugins)) {
+//                    $plugins[] = $currentPlugin;
+//                }
+//            }
+//        }
+        // TODO das hier im InstantiateProjectPluginsListener im ApplicationBundle erledigen, und hier nur die
+        // TODO plugins zurückgeben
         return $plugins;
     }
 
-    private function getActiveSubdomain() : MapsProjectSubdomains
-    {
-        $subd = \Contao\Environment::get('serverName');
-        if ($strpos = strpos($subd,'.')) {
-            $subd = strtolower(substr($subd, 0, $strpos));
-        }
-        $subDomain = $this->entityManager->getRepository(MapsProjectSubdomains::class)
-            ->findOneBy(['subdomain' => $subd, 'published' => 1]);
-        return $subDomain;
-    }
+//    private function getActiveSubdomain() : MapsProjectSubdomains
+//    {
+//        $subd = \Contao\Environment::get('serverName');
+//        if ($strpos = strpos($subd,'.')) {
+//            $subd = strtolower(substr($subd, 0, $strpos));
+//        }
+//        $subDomain = $this->entityManager->getRepository(MapsProjectSubdomains::class)
+//            ->findOneBy(['subdomain' => $subd, 'published' => 1]);
+//        return $subDomain;
+//    }
 
     private function getEntities($plugins)
     {
@@ -200,8 +200,8 @@ class ProjectController extends BaseController
         $returnData = $event->getReturnData();
         $data = $event->getData();
         $database = Database::getInstance();
-        $type = MapsProjectBrickTypes::BRICK_GENERIC_PROJECT;
-        $frontend = $this->get('mapsproject_frontend');
+        $type = EditorBrickTypes::BRICK_GENERIC_PROJECT;
+        $frontend = $this->get('editor_frontend');
         $projectElem = $database->prepare("SELECT * FROM tl_c4g_maps WHERE location_type = '$type'")->execute();
         $arrData = $frontend->addMapStructureElementWithIdCalc(
             $returnData['id'],

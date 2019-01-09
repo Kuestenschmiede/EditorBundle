@@ -23,7 +23,7 @@
         "contao/core-bundle": "^4.4",
         "con4gis/maps": "^5.1",
         "con4gis/projects": "^1.0",
-        "con4gis/groups": "^2.0"
+        "con4gis/groups": "^2.1"
     },
     "conflict": {
         "contao/core": "*",
@@ -47,9 +47,6 @@
         "preferred-install": "dist"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        },
         "contao-manager-plugin": "con4gis\\EditorBundle\\ContaoManager\\Plugin"
     }
 }

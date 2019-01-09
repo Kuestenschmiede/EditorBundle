@@ -14,7 +14,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\DeleteProjectEvent;
-use con4gis\MapsProjectBundle\Entity\MapsProject;
+use con4gis\EditorBundle\Entity\EditorMapProject;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +45,7 @@ class DeleteProjectListener
         $plugins = $event->getPlugins();
         foreach ($plugins as $plugin) {
             $entityClass = $plugin->getEntityClass();
-            if ($entityClass === MapsProject::class) {
+            if ($entityClass === EditorMapProject::class) {
                 $entity = $this->entityManager->getRepository($entityClass)->findOneBy(['id' => $projectId]);
             } else {
                 $entity = $this->entityManager->getRepository($entityClass)->findOneBy(['pid' => $projectId]);

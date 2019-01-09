@@ -15,8 +15,8 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
-use con4gis\EditorBundle\Entity\MapsProjectData;
-use con4gis\EditorBundle\Entity\MapsProjectElement;
+use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorMapElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,19 +35,19 @@ class ElementController extends BaseController
         $this->initialize();
         // get element id from layer id
         $realLayerId = C4GBrickCommon::getLayerIDParam($layerId, "id");
-        $data = $this->entityManager->getRepository(MapsProjectData::class)
+        $data = $this->entityManager->getRepository(EditorMapData::class)
             ->findOneBy(['id' => $realLayerId]);
         if (!$data) {
             return new Response(sprintf("Data with ID %s not found", $realLayerId), 404);
         }
         $cid = $data->getCategoryid();
         $eid = $data->getTypeid();
-        $element = $this->entityManager->getRepository(MapsProjectElement::class)
+        $element = $this->entityManager->getRepository(EditorMapElement::class)
             ->findOneBy(['id' => $eid]);
         if (!$element) {
             return new Response(sprintf("Element with ID %s not found", $eid), 404);
         }
-        $fmService = $this->get('mapsproject_frontend');
+        $fmService = $this->get('editor_frontend');
         $arrElement = $fmService->addMapStructureElementWithIdCalc(
             $eid,
             $cid,

@@ -13,6 +13,7 @@
 namespace con4gis\EditorBundle\Classes\Events;
 
 
+use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
 use con4gis\MapsProjectBundle\Entity\MapsProjectScenario;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -34,7 +35,7 @@ class InstantiateProjectPluginsEvent extends Event
     private $instances = [];
 
     /**
-     * @return array
+     * @return PluginConfig[]
      */
     public function getPluginConfigs(): array
     {

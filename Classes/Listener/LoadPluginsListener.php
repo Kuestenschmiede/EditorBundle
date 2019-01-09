@@ -9,12 +9,12 @@
  * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018.
  * @link      https://www.kuestenschmiede.de
  */
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Plugins\PluginConfig;
-use con4gis\MapsProjectBundle\Classes\Events\LoadPluginsEvent;
-use con4gis\MapsProjectBundle\Classes\Plugins\DefaultProjectPlugin;
+use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
+use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
+use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -10,7 +10,7 @@
  * und gehören zu einem PRojekt.
  */
 
-$strName = 'tl_c4G_editormap_data';
+$strName = 'tl_c4g_editor_map_data';
 
 /** FIELDS */
 $GLOBALS['TL_LANG'][$strName]['name'] = array("Bezeichnung","Bezeichnung");

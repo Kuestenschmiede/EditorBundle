@@ -10,13 +10,13 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
-use con4gis\MapsProjectBundle\Classes\Events\LoadProjectsEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes;
-use con4gis\MapsProjectBundle\Entity\MapsProject;
+use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
+use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -49,7 +49,7 @@ class LoadProjectsListener
         foreach ($groups as $group) {
             $groupIds[] = $group->id;
         }
-        $projects = $this->entityManager->getRepository(MapsProject::class)
+        $projects = $this->entityManager->getRepository(EditorMapProject::class)
             ->findBy(['groupid' => $groupIds]);
         $event->setProjects($projects);
     }
@@ -68,7 +68,7 @@ class LoadProjectsListener
         $fieldList = $event->getFieldList();
         $data = $event->getData();
         $dialogParams = new C4GBrickDialogParams(
-            MapsProjectBrickTypes::BRICK_GENERIC_PROJECT,
+            EditorBrickTypes::BRICK_GENERIC_PROJECT,
             C4GBrickViewType::GROUPPROJECT
         );
         $html = C4GBrickDialog::buildDialogView(

@@ -6,7 +6,7 @@
  * Time: 16:28
  */
 
-$strName = "tl_c4g_maps_project";
+$strName = "tl_c4g_editor_map_project";
 
 $GLOBALS['TL_LANG'][$strName]['headline'] = "Projektdaten";
 

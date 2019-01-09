@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class con4gisEditorExtension extends Extension
 {
+    public function getAlias()
+    {
+        return "con4gis_editor";
+    }
 
     private $files = [
         "container.yaml",
@@ -27,6 +31,7 @@ class con4gisEditorExtension extends Extension
         "data_listeners.yaml",
         "listeners.yml"
     ];
+
     /**
      * {@inheritdoc}
      */

@@ -10,12 +10,12 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\InstantiateDataPluginsEvent;
-use con4gis\MapsProjectBundle\Classes\Plugins\DataPluginInterface;
-use con4gis\MapsProjectBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
+use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
+use con4gis\EditorBundle\Entity\EditorMapElement;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
@@ -23,7 +23,7 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 /**
  * Class InstantiatePluginsListener
  * Instantiates the Data Plugins that are connected to the given element.
- * @package con4gis\MapsProjectBundle\Classes\Listener
+ * @package con4gis\EditorBundle\Classes\Listener
  */
 class InstantiateDataPluginsListener
 {
@@ -75,12 +75,12 @@ class InstantiateDataPluginsListener
                         //function plugin
                         ((($pluginId >= 100) && ($pluginId < 1000)) && MemberModel::hasRightInAnyGroup(
                                 \FrontendUser::getInstance()->id,
-                                \con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes::BRICK_FUNCTION_PLUGINS)) ||
+                                \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_FUNCTION_PLUGINS)) ||
 
                         //data plugin
                         (($pluginId >= 1000) && MemberModel::hasRightInAnyGroup(
                             \FrontendUser::getInstance()->id,
-                        \con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes::BRICK_DATA_PLUGINS))
+                        \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_DATA_PLUGINS))
                         )
                     ) {
                         $validConfigs[] = $config;

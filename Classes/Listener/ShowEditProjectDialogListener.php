@@ -10,12 +10,12 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\ShowEditProjectDialogEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes;
-use con4gis\MapsProjectBundle\Classes\Plugins\AbstractProjectPlugin;
+use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
+use con4gis\EditorBundle\Classes\Plugins\AbstractProjectPlugin;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
 use con4gis\ProjectsBundle\Classes\Views\C4GBrickViewType;
@@ -93,7 +93,7 @@ class ShowEditProjectDialogListener
         $fieldList = $event->getFieldList();
         $data = $event->getData();
         $dialogParams = new C4GBrickDialogParams(
-            MapsProjectBrickTypes::BRICK_GENERIC_PROJECT,
+            EditorBrickTypes::BRICK_GENERIC_PROJECT,
             C4GBrickViewType::GROUPPROJECT
         );
         $html = C4GBrickDialog::buildDialogView(

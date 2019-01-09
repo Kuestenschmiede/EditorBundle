@@ -1,7 +1,7 @@
 services:
     ## Real services
-    mapsproject_frontend:
-        class: con4gis\MapsProjectBundle\Classes\MapsProjectFrontend
+    editor_frontend:
+        class: con4gis\EditorBundle\Classes\EditorMapFrontend
         public: true
         arguments:
             - '@doctrine.orm.default_entity_manager'

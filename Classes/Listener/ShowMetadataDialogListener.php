@@ -10,14 +10,14 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\ShowMetadataDialogEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes;
-use con4gis\MapsProjectBundle\Classes\Plugins\DataPluginInterface;
-use con4gis\MapsProjectBundle\Entity\MapsProjectData;
-use con4gis\MapsProjectBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Classes\Events\ShowMetadataDialogEvent;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
+use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
+use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorMapElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickConst;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
@@ -62,9 +62,9 @@ class ShowMetadataDialogListener
         $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $dialogParams = new C4GBrickDialogParams(MapsProjectBrickTypes::BRICK_GENERIC_PROJECT,
+        $dialogParams = new C4GBrickDialogParams(EditorBrickTypes::BRICK_GENERIC_PROJECT,
             C4GBrickViewType::GROUPPROJECT);
-        $data = $this->entityManager->getRepository(MapsProjectData::class)
+        $data = $this->entityManager->getRepository(EditorMapData::class)
             ->findOneBy(['id' => $event->getDataId()]);
         $dialogParams->addButton(C4GBrickConst::BUTTON_SAVE);
         $dialogParams->setProjectId($event->getProjectId());
@@ -105,7 +105,7 @@ class ShowMetadataDialogListener
     ) {
         $dialogParams = $event->getDialogParams();
         $dataid = $event->getDataId();
-        $data = $this->entityManager->getRepository(MapsProjectData::class)
+        $data = $this->entityManager->getRepository(EditorMapData::class)
             ->findOneBy(['id' => $dataid]);
         $typeid = $data->getTypeid();
         $caption = $this->entityManager->getRepository(EditorMapElement::class)

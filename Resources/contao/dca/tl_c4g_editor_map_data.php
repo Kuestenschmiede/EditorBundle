@@ -134,20 +134,20 @@ $GLOBALS['TL_DCA'][$strName] = array
             'eval'              => array('mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 255),
         ),
 
-        'scenario_id' => array
-        (
-            'label'             => $GLOBALS['TL_LANG'][$strName]['scenario_id'],
-            'inputType'         => 'select',
-            'foreignKey'        => 'tl_c4g_maps_project_scenarios.caption',
-            'eval'              => array('mandatory' => true, 'tl_class' => 'w50'),
-            'relation'          => array('type' => 'hasOne', 'load' => 'lazy'),
-        ),
+//        'scenario_id' => array
+//        (
+//            'label'             => $GLOBALS['TL_LANG'][$strName]['scenario_id'],
+//            'inputType'         => 'select',
+//            'foreignKey'        => 'tl_c4g_maps_project_scenarios.caption',
+//            'eval'              => array('mandatory' => true, 'tl_class' => 'w50'),
+//            'relation'          => array('type' => 'hasOne', 'load' => 'lazy'),
+//        ),
 
         'category_id' => array
         (
             'label'             => $GLOBALS['TL_LANG'][$strName]['category_id'],
             'inputType'         => 'select',
-            'foreignKey'        => 'tl_c4G_editorcategory.caption',
+            'foreignKey'        => 'tl_c4g_editor_map_category.caption',
             'eval'              => array('mandatory' => true, 'tl_class' => 'w50'),
             'relation'          => array('type' => 'hasOne', 'load' => 'lazy'),
         ),
@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA'][$strName] = array
         (
             'label'             => $GLOBALS['TL_LANG'][$strName]['type_id'],
             'inputType'         => 'select',
-            'foreignKey'        => 'tl_c4G_editormapelement.caption',
+            'foreignKey'        => 'tl_c4g_editor_map_element.caption',
             'eval'              => array('mandatory' => true, 'tl_class' => 'w50'),
             'relation'          => array('type' => 'hasOne', 'load' => 'lazy'),
         ),

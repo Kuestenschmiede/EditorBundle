@@ -17,7 +17,7 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Classes\Plugins\AbstractProjectPlugin;
-use con4gis\MapsProjectBundle\Entity\MapsProject;
+use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GHeadlineField;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GNumberField;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GTextareaField;
@@ -29,7 +29,7 @@ use Contao\System;
  * Class DefaultProjectPlugin
  * Plugin class for the default fields in the project entity. This class handles the persisting of the entity via
  * implementation of the interface methods, which are called in the plugin-event process.
- * @package con4gis\MapsProjectBundle\Classes\Plugins
+ * @package con4gis\EditorBundle\Classes\Plugins
  */
 class DefaultProjectPlugin extends AbstractProjectPlugin
 {
@@ -41,7 +41,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
     {
         $fieldList = [];
 
-        $strName = "tl_c4g_maps_project";
+        $strName = "tl_c4g_editor_map_project";
 
         $headlineField = new C4GHeadlineField();
         $headlineField->setTitle($GLOBALS['TL_LANG'][$strName]['headline']);
@@ -77,7 +77,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
      */
     public function getEntityClass()
     {
-        return MapsProject::class;
+        return EditorMapProject::class;
     }
 
     /**
@@ -92,7 +92,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
         $userId = \FrontendUser::getInstance()->id;
         $data = $event->getData();
         foreach ($entities as $entity) {
-            if ($entity instanceof MapsProject) {
+            if ($entity instanceof EditorMapProject) {
                 $data['tstamp'] = time();
                 // if no ID set, the entity is new and no group exists yet
                 if ($data['createGroup']) {

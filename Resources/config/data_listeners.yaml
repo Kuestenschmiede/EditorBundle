@@ -1,159 +1,159 @@
 services:
     ## Create data
-    mapsproject.onDataCreateCreateEntity:
-        class: con4gis\MapsProjectBundle\Classes\Listener\CreateDataListener
+    editor.onDataCreateCreateEntity:
+        class: con4gis\EditorBundle\Classes\Listener\CreateDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.create, method: onDataCreateCreateEntity, priority: 2048 }
+            - { name: kernel.event_listener, event: editor.data.create, method: onDataCreateCreateEntity, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@mapsproject_frontend'
+            - '@editor_frontend'
 
-    mapsproject.onDataCreateCreateReturnData:
-        class: con4gis\MapsProjectBundle\Classes\Listener\CreateDataListener
+    editor.onDataCreateCreateReturnData:
+        class: con4gis\EditorBundle\Classes\Listener\CreateDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.create, method: onDataCreateCreateReturnData, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.data.create, method: onDataCreateCreateReturnData, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@mapsproject_frontend'
+            - '@editor_frontend'
 
     ## Delete data
-    mapsproject.onDataDeleteGetEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\DeleteDataListener
+    editor.onDataDeleteGetEntities:
+        class: con4gis\EditorBundle\Classes\Listener\DeleteDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.delete, method: onDataDeleteGetEntities, priority: 2048 }
+            - { name: kernel.event_listener, event: editor.data.delete, method: onDataDeleteGetEntities, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onDataDeleteDeleteEntity:
-        class: con4gis\MapsProjectBundle\Classes\Listener\DeleteDataListener
+    editor.onDataDeleteDeleteEntity:
+        class: con4gis\EditorBundle\Classes\Listener\DeleteDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.delete, method: onDataDeleteDeleteEntities, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.data.delete, method: onDataDeleteDeleteEntities, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     ## Change data
-    mapsproject.onDataChangeUpdateEntity:
-        class: con4gis\MapsProjectBundle\Classes\Listener\ChangeDataListener
+    editor.onDataChangeUpdateEntity:
+        class: con4gis\EditorBundle\Classes\Listener\ChangeDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.change, method: onDataChangeUpdateEntity, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.data.change, method: onDataChangeUpdateEntity, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     ## Load Metadata Dialog
-    mapsproject.onShowMetadataDialogGetFieldList:
-        class: con4gis\MapsProjectBundle\Classes\Listener\ShowMetadataDialogListener
+    editor.onShowMetadataDialogGetFieldList:
+        class: con4gis\EditorBundle\Classes\Listener\ShowMetadataDialogListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.show, method: onShowMetadataDialogGetFieldList, priority: 4096 }
+            - { name: kernel.event_listener, event: editor.metadata.show, method: onShowMetadataDialogGetFieldList, priority: 4096 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onShowMetadataDialogGetDialogParams:
-        class: con4gis\MapsProjectBundle\Classes\Listener\ShowMetadataDialogListener
+    editor.onShowMetadataDialogGetDialogParams:
+        class: con4gis\EditorBundle\Classes\Listener\ShowMetadataDialogListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.show, method: onShowMetadataDialogGetDialogParams, priority: 3072 }
+            - { name: kernel.event_listener, event: editor.metadata.show, method: onShowMetadataDialogGetDialogParams, priority: 3072 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onShowMetadataGetData:
-        class: con4gis\MapsProjectBundle\Classes\Listener\ShowMetadataDialogListener
+    editor.onShowMetadataGetData:
+        class: con4gis\EditorBundle\Classes\Listener\ShowMetadataDialogListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.show, method: onShowMetadataGetData, priority: 2048 }
+            - { name: kernel.event_listener, event: editor.metadata.show, method: onShowMetadataGetData, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onShowMetadataDialogGenerateHtml:
-        class: con4gis\MapsProjectBundle\Classes\Listener\ShowMetadataDialogListener
+    editor.onShowMetadataDialogGenerateHtml:
+        class: con4gis\EditorBundle\Classes\Listener\ShowMetadataDialogListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.show, method: onShowMetadataDialogGenerateHtml, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.metadata.show, method: onShowMetadataDialogGenerateHtml, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     ## Save metadata
-    mapsproject.onSaveMetadataGetEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataGetEntities:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataGetEntities, priority: 4096 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataGetEntities, priority: 4096 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onSaveMetadataFillEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataFillEntities:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataFillEntities, priority: 3072 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataFillEntities, priority: 3072 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onSaveMetadataExecBeforeSave:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataExecBeforeSave:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataExecBeforeSave, priority: 2048 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataExecBeforeSave, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onSaveMetadataValidateFieldValues:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataValidateFieldValues:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataValidateFieldValues, priority: 1900 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataValidateFieldValues, priority: 1900 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onSaveMetadataCheckMandatory:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataCheckMandatory:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataCheckMandatory, priority: 1800 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataCheckMandatory, priority: 1800 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onSaveMetadataPersistEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\SaveMetadataListener
+    editor.onSaveMetadataPersistEntities:
+        class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.metadata.save, method: onSaveMetadataPersistEntities, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataPersistEntities, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     ## Get popup
-    mapsproject.onGetPopupGetFields:
-        class: con4gis\MapsProjectBundle\Classes\Listener\GetPopupListener
+    editor.onGetPopupGetFields:
+        class: con4gis\EditorBundle\Classes\Listener\GetPopupListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.popup.get, method: onGetPopupGetFields, priority: 4096 }
+            - { name: kernel.event_listener, event: editor.popup.get, method: onGetPopupGetFields, priority: 4096 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onGetPopupGetData:
-        class: con4gis\MapsProjectBundle\Classes\Listener\GetPopupListener
+    editor.onGetPopupGetData:
+        class: con4gis\EditorBundle\Classes\Listener\GetPopupListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.popup.get, method: onGetPopupGetData, priority: 3072 }
+            - { name: kernel.event_listener, event: editor.popup.get, method: onGetPopupGetData, priority: 3072 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
-    mapsproject.onGetPopupCreateView:
-        class: con4gis\MapsProjectBundle\Classes\Listener\GetPopupListener
+    editor.onGetPopupCreateView:
+        class: con4gis\EditorBundle\Classes\Listener\GetPopupListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.popup.get, method: onGetPopupCreateView, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.popup.get, method: onGetPopupCreateView, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     ## duplicate data
-    mapsproject.onDuplicateDataGetEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\DuplicateDataListener
+    editor.onDuplicateDataGetEntities:
+        class: con4gis\EditorBundle\Classes\Listener\DuplicateDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.duplicate, method: onDuplicateDataGetEntities, priority: 3072 }
+            - { name: kernel.event_listener, event: editor.data.duplicate, method: onDuplicateDataGetEntities, priority: 3072 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@mapsproject_frontend'
+            - '@editor_frontend'
 
-    mapsproject.onDuplicateDataCreateNewEntities:
-        class: con4gis\MapsProjectBundle\Classes\Listener\DuplicateDataListener
+    editor.onDuplicateDataCreateNewEntities:
+        class: con4gis\EditorBundle\Classes\Listener\DuplicateDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.duplicate, method: onDuplicateDataCreateNewEntities, priority: 2048 }
+            - { name: kernel.event_listener, event: editor.data.duplicate, method: onDuplicateDataCreateNewEntities, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@mapsproject_frontend'
+            - '@editor_frontend'
 
-    mapsproject.onDuplicateDataCreateFrontendLayer:
-        class: con4gis\MapsProjectBundle\Classes\Listener\DuplicateDataListener
+    editor.onDuplicateDataCreateFrontendLayer:
+        class: con4gis\EditorBundle\Classes\Listener\DuplicateDataListener
         tags:
-            - { name: kernel.event_listener, event: mapsproject.data.duplicate, method: onDuplicateDataCreateFrontendLayer, priority: 1024 }
+            - { name: kernel.event_listener, event: editor.data.duplicate, method: onDuplicateDataCreateFrontendLayer, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@mapsproject_frontend'
+            - '@editor_frontend'

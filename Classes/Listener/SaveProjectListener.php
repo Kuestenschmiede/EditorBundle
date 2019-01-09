@@ -10,14 +10,14 @@
  * @link      https://www.kuestenschmiede.de
  */
 
-namespace con4gis\MapsProjectBundle\Classes\Listener;
+namespace con4gis\EditorBundle\Classes\Listener;
 
 
-use con4gis\MapsProjectBundle\Classes\Events\SaveProjectEvent;
-use con4gis\MapsProjectBundle\Classes\MapsProjectBrickTypes;
-use con4gis\MapsProjectBundle\Classes\MapsProjectFrontend;
-use con4gis\MapsProjectBundle\Classes\Plugins\ProjectPluginInterface;
-use con4gis\MapsProjectBundle\Entity\MapsProject;
+use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
+use con4gis\EditorBundle\Classes\EditorMapFrontend;
+use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
+use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 use Contao\Database;
 use Doctrine\ORM\EntityManager;
@@ -164,13 +164,13 @@ class SaveProjectListener
         $pid = 0;
         foreach ($entities as $entity) {
             try {
-                if ($pid && !($entity instanceof MapsProject)) {
+                if ($pid && !($entity instanceof EditorMapProject)) {
                     $entity->setPid($pid);
                 }
                 $this->entityManager->persist($entity);
                 $this->entityManager->flush();
                 // we need to return project data
-                if ($entity instanceof MapsProject) {
+                if ($entity instanceof EditorMapProject) {
                     $pid = $entity->getId();
                     $event->setReturnData([
                         'id' => $entity->getId(),

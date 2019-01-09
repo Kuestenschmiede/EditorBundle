@@ -18,7 +18,7 @@ use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 /**
  * Interface ProjectPluginInterface
  * Each class that wishes to interact with the project creation process has to implement this interface.
- * @package con4gis\MapsProjectBundle\Classes\Plugins
+ * @package con4gis\EditorBundle\Classes\Plugins
  */
 interface ProjectPluginInterface
 {

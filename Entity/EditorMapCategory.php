@@ -20,7 +20,7 @@ use con4gis\CoreBundle\Entity\BaseEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="tl_c4g_editor_map_category")
- * @package con4gis\MapsProjectBundle\Entity
+ * @package con4gis\EditorBundle\Entity
  */
 class EditorMapCategory extends BaseEntity
 {
