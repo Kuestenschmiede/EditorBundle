@@ -12,9 +12,7 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
 use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
-use con4gis\MapsProjectBundle\Entity\MapsProjectScenario;
 use Symfony\Component\EventDispatcher\Event;
 
 class InstantiateProjectPluginsEvent extends Event
@@ -23,16 +21,11 @@ class InstantiateProjectPluginsEvent extends Event
 
     private $pluginConfigs = [];
 
-    private $scenarioId = 0;
-
-    /**
-     * @var MapsProjectScenario
-     */
-    private $scenario = null;
-
     private $validConfigs = [];
 
     private $instances = [];
+
+    private $additionalData = [];
 
     /**
      * @return PluginConfig[]
@@ -48,38 +41,6 @@ class InstantiateProjectPluginsEvent extends Event
     public function setPluginConfigs(array $pluginConfigs): void
     {
         $this->pluginConfigs = $pluginConfigs;
-    }
-
-    /**
-     * @return int
-     */
-    public function getScenarioId(): int
-    {
-        return $this->scenarioId;
-    }
-
-    /**
-     * @param int $scenarioId
-     */
-    public function setScenarioId(int $scenarioId): void
-    {
-        $this->scenarioId = $scenarioId;
-    }
-
-    /**
-     * @return MapsProjectScenario
-     */
-    public function getScenario(): MapsProjectScenario
-    {
-        return $this->scenario;
-    }
-
-    /**
-     * @param MapsProjectScenario $scenario
-     */
-    public function setScenario(MapsProjectScenario $scenario): void
-    {
-        $this->scenario = $scenario;
     }
 
     /**
@@ -112,5 +73,21 @@ class InstantiateProjectPluginsEvent extends Event
     public function setInstances(array $instances): void
     {
         $this->instances = $instances;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalData(): array
+    {
+        return $this->additionalData;
+    }
+
+    /**
+     * @param array $additionalData
+     */
+    public function setAdditionalData(array $additionalData): void
+    {
+        $this->additionalData = $additionalData;
     }
 }

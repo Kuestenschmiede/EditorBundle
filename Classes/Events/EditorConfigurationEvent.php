@@ -12,20 +12,11 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
-use con4gis\MapsProjectBundle\Entity\MapsProjectSubdomains;
 use Symfony\Component\EventDispatcher\Event;
 
 class EditorConfigurationEvent extends Event
 {
     const NAME = "editor.editor.config";
-
-    /**
-     * @var MapsProjectSubdomains
-     */
-    private $subdomain = null;
-
-    private $scenarios = [];
 
     private $elements = [];
 
@@ -36,36 +27,10 @@ class EditorConfigurationEvent extends Event
     private $editorConfig = [];
 
     /**
-     * @return MapsProjectSubdomains
+     * The event can be extended with additional properties with this array.
+     * @var array
      */
-    public function getSubdomain(): MapsProjectSubdomains
-    {
-        return $this->subdomain;
-    }
-
-    /**
-     * @param MapsProjectSubdomains $subdomain
-     */
-    public function setSubdomain(MapsProjectSubdomains $subdomain): void
-    {
-        $this->subdomain = $subdomain;
-    }
-
-    /**
-     * @return array
-     */
-    public function getScenarios(): array
-    {
-        return $this->scenarios;
-    }
-
-    /**
-     * @param array $scenarios
-     */
-    public function setScenarios(array $scenarios): void
-    {
-        $this->scenarios = $scenarios;
-    }
+    private $additionalData = [];
 
     /**
      * @return array
@@ -129,5 +94,21 @@ class EditorConfigurationEvent extends Event
     public function setEditorConfig(array $editorConfig): void
     {
         $this->editorConfig = $editorConfig;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalData(): array
+    {
+        return $this->additionalData;
+    }
+
+    /**
+     * @param array $additionalData
+     */
+    public function setAdditionalData(array $additionalData): void
+    {
+        $this->additionalData = $additionalData;
     }
 }

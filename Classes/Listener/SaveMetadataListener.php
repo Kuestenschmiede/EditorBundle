@@ -178,7 +178,7 @@ class SaveMetadataListener
                 // if there is a return value != false, the check failed
                 $event->stopPropagation();
                 $returnData = $event->getData();
-                $returnData['errorString'] = "There went something wrong in the mandatoy check of field with fieldname " . $field->getFieldName();
+                $returnData['errorString'] = "There went something wrong in the mandatory check of field with fieldname " . $field->getFieldName();
                 $event->setData($returnData);
                 // exit loop
                 break;

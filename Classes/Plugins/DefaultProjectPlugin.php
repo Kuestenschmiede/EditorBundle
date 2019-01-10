@@ -87,7 +87,6 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
      */
     public function beforeSaveAction(SaveProjectEvent $event) : SaveProjectEvent
     {
-        // TODO get active scenario and save its ID
         $entities = $event->getEntities();
         $userId = \FrontendUser::getInstance()->id;
         $data = $event->getData();

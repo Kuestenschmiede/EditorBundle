@@ -12,14 +12,10 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
-
 use con4gis\EditorBundle\Classes\EditorDrawStyles;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
-use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Entity\EditorMapCategory;
 use con4gis\EditorBundle\Entity\EditorMapElement;
-use con4gis\EditorBundle\Entity\MapsProjectScenario;
-use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -39,24 +35,8 @@ class EditorConfigurationListener
         $this->entityManager = $entityManager;
     }
 
-//    /**
-//     * Loads the scenarios for the subdomain given in $event.
-//     * @param EditorConfigurationEvent $event
-//     * @param $eventname
-//     * @param EventDispatcherInterface $eventDispatcher
-//     */
-//    public function onEditorConfigurationLoadScenarios(
-//        EditorConfigurationEvent $event,
-//        $eventname,
-//        EventDispatcherInterface $eventDispatcher
-//    ) {
-//        $subdomain = $event->getSubdomain();
-//        $scenarioIds = $subdomain->getScenarios();
-//        $event->setScenarios($scenarioIds);
-//    }
-
     /**
-     * Loads the elements for the scenarios given in $event.
+     * Loads the elements.
      * @param EditorConfigurationEvent $event
      * @param $eventname
      * @param EventDispatcherInterface $eventDispatcher
@@ -66,15 +46,7 @@ class EditorConfigurationListener
         $eventname,
         EventDispatcherInterface $eventDispatcher
     ) {
-//        $scenarios = $event->getScenarios();
         $elements = $this->entityManager->getRepository(EditorMapElement::class)->findAll();
-//        $validElements = [];
-//        foreach ($elements as $element) {
-//            if (count(array_intersect($scenarios, $element->getScenarios())) > 0) {
-//                // element appears in the given list of scenarios
-//                $validElements[$element->getId()] = $element;
-//            }
-//        }
         $event->setElements($elements);
     }
 

@@ -16,7 +16,6 @@ namespace con4gis\EditorBundle\Classes\Listener;
 use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
 use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
-//use con4gis\EditorBundle\Entity\MapsProjectScenario;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;

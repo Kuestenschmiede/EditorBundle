@@ -15,7 +15,8 @@ if (typeof mapData !== "undefined") {
     langConstants = langConstantsGerman;
   }
 }
-langConstants = $.extend(projectEditorLang, langConstants);
+langConstants = $.extend(langConstants, projectEditorLang);
+
 /**
  * Class for creating all view elements that interact with feature data. Handles all events that are fired on these view
  * elements.

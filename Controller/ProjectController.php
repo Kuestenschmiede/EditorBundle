@@ -150,37 +150,14 @@ class ProjectController extends BaseController
     {
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-//        $subDomain = $this->getActiveSubdomain();
         $instEvent = new InstantiateProjectPluginsEvent();
         $instEvent->setPluginConfigs($loadEvent->getConfigs());
-//        $scenarios = $subDomain->getScenarios();
         $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
         $plugins = $instEvent->getInstances();
-//        foreach ($scenarios as $scenarioId) {
-//            $instEvent->setScenarioId($scenarioId);
-//
-//            $currentPlugins = $instEvent->getInstances();
-//            foreach ($currentPlugins as $currentPlugin) {
-//                if (!in_array($currentPlugin, $plugins)) {
-//                    $plugins[] = $currentPlugin;
-//                }
-//            }
-//        }
         // TODO das hier im InstantiateProjectPluginsListener im ApplicationBundle erledigen, und hier nur die
         // TODO plugins zurückgeben
         return $plugins;
     }
-
-//    private function getActiveSubdomain() : MapsProjectSubdomains
-//    {
-//        $subd = \Contao\Environment::get('serverName');
-//        if ($strpos = strpos($subd,'.')) {
-//            $subd = strtolower(substr($subd, 0, $strpos));
-//        }
-//        $subDomain = $this->entityManager->getRepository(MapsProjectSubdomains::class)
-//            ->findOneBy(['subdomain' => $subd, 'published' => 1]);
-//        return $subDomain;
-//    }
 
     private function getEntities($plugins)
     {

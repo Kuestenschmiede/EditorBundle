@@ -24,27 +24,11 @@ class LoadMapResourcesListener
         $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-featurehandler', "/bundles/con4gismapsproject/js/c4g-project-editor-featurehandler.js");
-
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-selectview', "/bundles/con4gismapsproject/js/c4g-project-editor-selectview.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-selectinteraction', "/bundles/con4gismapsproject/js/c4g-project-editor-selectinteraction.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-drawview', "/bundles/con4gismapsproject/js/c4g-project-editor-drawview.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-drawstyle', "/bundles/con4gismapsproject/js/c4g-project-editor-drawstyle.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-mapsinterface', "/bundles/con4gismapsproject/js/c4g-project-editor-mapsinterface.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-missing-layer-loader', "/bundles/con4gismapsproject/js/c4g-missing-layer-loader.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-cache-controller', "/bundles/con4gismapsproject/js/c4g-project-cache-controller.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-subdomain-cache-controller', "/bundles/con4gismapsproject/js/c4g-subdomain-cache-controller.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-ui-controller', "/bundles/con4gismapsproject/js/c4g-project-ui-controller.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-data-ui-controller', "/bundles/con4gismapsproject/js/c4g-data-ui-controller.js");
-//        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor-i18n', "/bundles/con4gismapsproject/js/c4g-project-editor-i18n-de.js");
-
-        ResourceLoader::loadJavaScriptDeferred('c4g-project-editor', "/bundles/con4gismapsproject/build/c4g-project-editor.js");
-
-        ResourceLoader::loadJavaScriptDeferred('c4g-dialog-js', "/bundles/con4gisprojects/js/C4GBrickDialog.js");
-        ResourceLoader::loadJavaScriptDeferred('c4g-dialog-datepicker', "/bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.js");
-
-        ResourceLoader::loadCssRessource("c4g-project-editor", "bundles/con4gismapsproject/css/c4g-project-editor.css");
-        ResourceLoader::loadCssRessource("c4g-brick", "bundles/con4gisprojects/css/c4g_brick.css");
-        ResourceLoader::loadCssRessource("dialog-datepicker", "bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.css");
+        ResourceLoader::loadJavaScriptResource("/bundles/con4giseditor/build/c4g-editor.js", ResourceLoader::BODY, 'c4g-editor');
+        ResourceLoader::loadJavaScriptResource("/bundles/con4gisprojects/js/C4GBrickDialog.js", ResourceLoader::BODY, 'c4g-dialog-js');
+        ResourceLoader::loadJavaScriptResource("/bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.js", ResourceLoader::BODY, 'c4g-dialog-datepicker');
+        ResourceLoader::loadCssResource("bundles/con4gismapsproject/css/c4g-project-editor.css", "c4g-project-editor");
+        ResourceLoader::loadCssResource("bundles/con4gisprojects/css/c4g_brick.css","c4g-brick");
+        ResourceLoader::loadCssResource("bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.css", "dialog-datepicker");
     }
 }

@@ -1,12 +1,5 @@
 services:
     ## Configurate editor
-#    editor.onEditorConfigurationLoadScenarios:
-#        class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
-#        tags:
-#            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadScenarios, priority: 6144 }
-#        arguments:
-#            - '@doctrine.orm.default_entity_manager'
-
     editor.onEditorConfigurationLoadElements:
         class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
         tags:
