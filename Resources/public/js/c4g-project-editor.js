@@ -7,7 +7,6 @@ import {ProjectUIController} from "./c4g-project-ui-controller";
 import {EditorDrawview} from "./c4g-project-editor-drawview";
 import {FeatureHandler} from "./c4g-project-editor-featurehandler";
 import {EditorSelectView} from "./c4g-project-editor-selectview";
-import {SubdomainCacheController} from "./c4g-subdomain-cache-controller";
 import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
 import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
 let langConstants = {};
@@ -59,9 +58,6 @@ export class Editor extends Sideboard {
     }, options);
     super(options);
     this.options = options;
-
-    const scope = this;
-
     // TODO tabs aufteilen in selectTabs und drawTabs, am besten für jeden Tab eigene Property, damit alle einzeln
     // TODO angesteuert werden können!
     this.tabs = [];
@@ -74,47 +70,12 @@ export class Editor extends Sideboard {
     this.projectUiController = new ProjectUIController(this);
     this.layerLoader = new LayerLoader(this);
     this.cacheController = null;
-    this.subdomainCache = new SubdomainCacheController(this);
-    this.subdomainCache.loadCache();
-
-    // load and apply data from subdomain
-    let subdomainData = this.subdomainCache.getValuesForSubdomain(utils.getCurrentSubdomain());
-    if (subdomainData) {
-      // update map
-      if (subdomainData.mapCenter) {
-        this.options.mapController.map.getView().setCenter(subdomainData.mapCenter);
-      }
-      if (subdomainData.baselayer) {
-        this.proxy.hook_baselayer_loaded.push(function () {
-          scope.proxy.baselayerController.showBaseLayer(subdomainData.baselayer);
-        });
-      }
+    if (window.c4gMapsHooks.extend_editor && window.c4gMapsHooks.extend_editor.length) {
+      utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
     }
-    // add hook for mapCenter caching
-    window.c4gMapsHooks.map_center_changed = window.c4gMapsHooks.map_center_changed || [];
-    window.c4gMapsHooks.map_center_changed.push(function (center) {
-      // only save subdomain stuff when no project is selected
-      if (!scope.currentProject) {
-        scope.subdomainCache.addValueForSubdomain(
-          utils.getCurrentSubdomain(), "mapCenter", scope.options.mapController.map.getView().getCenter()
-        );
-      }
-    });
-
-    // add hook for baselayer caching
-    window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
-    window.c4gMapsHooks.baselayer_changed.push(function (id) {
-      // only save subdomain stuff when no project is selected
-      if (!scope.currentProject) {
-        scope.subdomainCache.addValueForSubdomain(utils.getCurrentSubdomain(), "baselayer", id)
-      }
-    });
     if (this.options.dataField && typeof this.options.dataField === 'string') {
       this.options.dataField = $(this.options.dataField) || false;
     }
-
-    // call parent constructor
-    // Sideboard.call(this, this.options);
   };
 
   /**
@@ -210,11 +171,10 @@ export class Editor extends Sideboard {
         self.tabs.push(selectView.init());
         self.cacheController = new ProjectCacheController(self);
         self.loadFromCache();
-        // c4g.maps.hook = c4g.maps.hook || {};
-        // c4g.maps.hook.baselayer_changed = c4g.maps.hook.baselayer_changed || [];
-        // c4g.maps.hook.baselayer_changed.push(function(id) {
-        //   self.cacheController.saveSettingsForProject(self.currentProject.id, "baselayer", id)
-        // });
+        window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
+        window.c4gMapsHooks.baselayer_changed.push(function(id) {
+          self.cacheController.saveSettingsForProject(self.currentProject.id, "baselayer", id)
+        });
         return true;
       })
       .fail(function (data) {
