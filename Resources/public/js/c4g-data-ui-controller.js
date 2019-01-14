@@ -3,6 +3,7 @@ import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils
 import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
 import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
 import {projectEditorLang} from "./c4g-project-editor-i18n-de";
+import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 let langConstants = {};
 
 if (typeof mapData !== "undefined") {
@@ -358,16 +359,17 @@ export class DataUIController {
     });
     $(confirmButton).on('click', function(event) {
       let url = "";
-      if (opt_copy) {
+      let oldLayer = scope.editor.mapsInterface.getLayerFromArray(layerId);
+      let oldParent = scope.editor.mapsInterface.getLayerFromArray(oldLayer.pid);
+      if (withCopy) {
         url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + true;
       } else {
         url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + false;
-      }
-      let oldLayer = scope.editor.mapsInterface.getLayerFromArray(layerId);
-      let oldParent = scope.editor.mapsInterface.getLayerFromArray(oldLayer.pid);
-      for (let i = 0; i < oldParent.childs.length; i++) {
-        if (oldParent.childs[i] === oldLayer) {
-          oldParent.childs.splice(i, 1);
+        // move layer
+        for (let i = 0; i < oldParent.childs.length; i++) {
+          if (oldParent.childs[i] === oldLayer) {
+            oldParent.childs.splice(i, 1);
+          }
         }
       }
       let request = new C4GAjaxRequest(url, "POST");
@@ -376,7 +378,12 @@ export class DataUIController {
         feature.set('projectId', newProjectId);
         // and from the selection
         selectedFeatures.remove(feature);
-        let layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
+        let layer;
+        if (withCopy) {
+          layer = new C4gLayer(oldLayer);
+        } else {
+          layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
+        }
         let newLayerId = data.id;
         let newPid = data.pid;
         layer.projectId = newProjectId;
@@ -387,7 +394,7 @@ export class DataUIController {
           parent.childs = parent.childs || [];
           parent.childs.push(layer);
           parent.childsCount++;
-          if (!opt_copy) {
+          if (!withCopy) {
             scope.editor.mapsInterface.hideLayer(layerId);
           }
           scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
@@ -401,6 +408,7 @@ export class DataUIController {
           let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
           fnCallback(parent);
         }
+        console.log(scope.editor.mapsInterface.getLayerArray());
       });
       request.execute();
     });

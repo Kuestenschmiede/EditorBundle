@@ -177,7 +177,7 @@ class ProjectDataController extends BaseController
             } catch(ORMException $e) {
 
             }
-            $layerId = C4GBrickCommon::calcLayerID($newData->getId(), $newData->getTypeid(), 42);
+            $layerId = C4GBrickCommon::calcLayerID($newData->getId(), $newData->getTypeid(), 80);
             $pid = EditorCommon::calcLayerId($data->getTypeid(), $data->getCategoryid(), $newProjectId, 71);
         } else {
             $data->setProjectid($newProjectId);
@@ -188,7 +188,7 @@ class ProjectDataController extends BaseController
             } catch(ORMException $e) {
 
             }
-            $layerId = C4GBrickCommon::calcLayerID($data->getId(), $data->getTypeid(), 42);
+            $layerId = C4GBrickCommon::calcLayerID($data->getId(), $data->getTypeid(), 80);
             $pid = EditorCommon::calcLayerId($data->getTypeid(), $data->getCategoryid(), $newProjectId, 71);
         }
         $response = new JsonResponse([

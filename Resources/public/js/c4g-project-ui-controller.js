@@ -196,10 +196,10 @@ export class ProjectUIController {
     request.addRequestData(project);
     request.addDoneCallback(function(data) {
       if (data.success) {
-        for (let i = 0; i < scope.editor.length; i++) {
+        for (let i = 0; i < scope.editor.projects.length; i++) {
           // ToDo wie kann das hier richtig sein??
-          if (scope.editor[i] === project) {
-            scope.editor.splice(i, 1);
+          if (scope.editor.projects[i] === project) {
+            scope.editor.projects.splice(i, 1);
           }
         }
         editor.selectView.reloadHelpContent();
