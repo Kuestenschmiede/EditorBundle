@@ -31,6 +31,20 @@ export class MapsInterface {
     arrLayers[layer.id] = layer;
   }
 
+  /**
+   * Adds the given layer to the childs of the layer with the given pid.
+   * @param layer
+   * @param pid
+   */
+  addToLayerChilds(layer, pid) {
+    let arrLayers = this.proxy.layerController.arrLayers;
+    let pLayer = arrLayers[pid];
+    if (pLayer) {
+      pLayer.childs.push(layer);
+      pLayer.childsCount++;
+    }
+  }
+
   addToLayerIds(layerId) {
     this.proxy.layerIds.push(layerId);
   }

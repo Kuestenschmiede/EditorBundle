@@ -81,6 +81,7 @@ export class FeatureHandler {
     let currentLayer = layer;
     while (this.mapsInterface.getLayerArray()[currentLayer.pid]) {
       currentLayer = this.mapsInterface.getLayerArray()[currentLayer.pid];
+      currentLayer.display = true;
       if (currentLayer.projectId === this.editor.currentProject.id) {
         this.mapsInterface.showLayer(currentLayer.id);
       }
@@ -378,12 +379,12 @@ export class FeatureHandler {
     request.execute();
     if (!projectLayer.childs) {
       projectLayer.childs = [];
-      projectLayer.visibleChilds = true;
     }
     layer.content = [];
     projectLayer.childs.push(layer);
     projectLayer.hasChilds = true;
     projectLayer.childsCount++;
+    projectLayer.visibleChilds = true;
     return this.createElementLayer(element, layer, projectLayer, project);
   }
 

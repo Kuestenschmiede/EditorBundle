@@ -191,10 +191,15 @@ class ProjectController extends BaseController
             true,
             ""
         );
+        // set pid as it's no generated id
+        $arrData['pid'] = $projectElem->id;
         $arrData['content'] = [];
+        $arrData['renderSpecial'] = true;
         $arrData['display'] = true;
         $arrData['childs'] = [];
         $arrData['hasChilds'] = false;
+        // it is assumed here that the parent of the project element is the starboard tab
+        $arrData['tabId'] = $projectElem->pid;
         $arrData['childsCount'] = 0;
         $returnData['name'] = $data['caption'];
         $returnData['projectLayer'] = $arrData;

@@ -1,5 +1,6 @@
 import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
 import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
+import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 let langConstants = {};
 
 if (typeof mapData !== "undefined") {
@@ -30,6 +31,7 @@ export class ProjectUIController {
     const scope = this;
     let button = document.createElement("button");
     $(button).on('click', function (event) {
+      scope.clearFeatureSelection();
       $(this).addClass("c4g-active");
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
@@ -136,6 +138,7 @@ export class ProjectUIController {
     let button = document.createElement("button");
     button.className = "c4g-project-delete";
     $(button).on("click", function (event) {
+      scope.clearFeatureSelection();
       $(this).addClass("c4g-active");
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
@@ -330,6 +333,7 @@ export class ProjectUIController {
     createButton.className = "c4g-project-create";
     // ".done" listener
     $(createButton).on('click', function(event) {
+      scope.clearFeatureSelection();
       $(this).addClass("c4g-active");
       event.preventDefault();
       scope.projectButtons.forEach(function(element) {
@@ -399,9 +403,13 @@ export class ProjectUIController {
     let id = data.id;
     let newProject = {id: id, name: name};
     let option = document.createElement('option');
-    editor.mapsInterface.addToLayerArray(data.projectLayer);
-    editor.mapsInterface.addToLayerIds(data.projectLayer.id);
-    editor.projectLayer = data.projectLayer;
+    let projectLayer = new C4gLayer(data.projectLayer);
+    // add project layer to layer structure
+    editor.mapsInterface.addToLayerArray(projectLayer);
+    editor.mapsInterface.addToLayerIds(projectLayer.id);
+    editor.mapsInterface.addToLayerChilds(projectLayer, projectLayer.pid);
+    editor.mapsInterface.updateStarboard();
+    editor.projectLayer = projectLayer;
     option.text = name;
     option.value = id;
     option.selected = true;
@@ -433,5 +441,12 @@ export class ProjectUIController {
       projectDiv.appendChild(this.projectButtons[i]);
     }
     return projectDiv;
+  }
+
+  /**
+   * Unselects all currently selected features.
+   */
+  clearFeatureSelection() {
+    this.editor.clearFeatureSelection();
   }
 }

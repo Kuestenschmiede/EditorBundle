@@ -340,6 +340,13 @@ export class Editor extends Sideboard {
       });
     }
   }
+
+  /**
+   * Unselects all currently selected features.
+   */
+  clearFeatureSelection() {
+    this.selectView.selectInteraction.selectInteraction.getFeatures().clear();
+  }
 }
 
 // replace normal editor with this
@@ -347,7 +354,6 @@ window.c4gMapsHooks = window.c4gMapsHooks || {};
 window.c4gMapsHooks.mapController_addControls = window.c4gMapsHooks.mapController_addControls || [];
 window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
-  console.log(mapController);
   const mapData = mapController.data;
   mapController.map.removeControl(mapController.controls.editor);
   let editor = new Editor({

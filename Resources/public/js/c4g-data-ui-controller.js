@@ -156,19 +156,38 @@ export class DataUIController {
     deleteButtonElement.title = langConstants.EDITOR_FEATURE_DELETE;
     deleteButtonElement.setAttribute('feat_id', index);
     $(deleteButtonElement).click(function(event) {
-      scope.deleteFeature(event);
+      // scope.deleteFeature(event);
+      scope.showDeleteDialog(event.target.getAttribute('feat_id'));
     });
     return deleteButtonElement;
   }
 
-  deleteFeature(event) {
-    var featureIndex,
-      featureGeometry,
-      featureSource,
+  showDeleteDialog(featureId) {
+    const scope = this;
+    const container = document.createElement("div");
+    let deleteHintLabel = document.createElement("p");
+    deleteHintLabel.innerText = langConstants.EDITOR_FEATURE_DELETE_QUESTION;
+    container.appendChild(deleteHintLabel);
+    const confirmButton = document.createElement("button");
+    $(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
+    $(confirmButton).on('click', function(event) {
+      scope.deleteFeature(featureId);
+    });
+    container.appendChild(confirmButton);
+    const cancelButton = document.createElement("button");
+    $(cancelButton).addClass(cssConstants.ICON + " c4g-editor-dialog-cancel");
+    $(cancelButton).on('click', function(event) {
+      scope.reloadSelectedFeatureView();
+    });
+    container.appendChild(cancelButton);
+    this.addToEditor(container);
+  }
+
+  deleteFeature(featureIndex) {
+    let featureSource,
       deleteFeature;
 
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
-    featureIndex = event.target.getAttribute('feat_id');
     deleteFeature = selectedFeatures.item(featureIndex);
     let layerId = deleteFeature.get('layerId');
     featureSource = this.editor.featureHandler.getSourceForLayerId(layerId);
@@ -206,8 +225,7 @@ export class DataUIController {
     if (this.editor.selectView.selectContentHeadline) {
       this.editor.selectView.selectContentHeadline.innerHTML = headline;
     }
-    this.editor.selectView.selectContent.innerHTML = "";
-    this.editor.selectView.selectContent.appendChild(container);
+    this.addToEditor(container, true);
     // set click listener
     jQuery(document.getElementById("send-dialog")).on('click', function(event) {
       let request = new C4GAjaxRequest(url, "POST");
@@ -239,14 +257,14 @@ export class DataUIController {
           // get the layer that contains the feature
           let layer = scope.editor.mapsInterface.getLayerFromArray(feature.get('layerId'));
           scope.editor.featureHandler.updateLayer(data, layer, feature);
-          scope.selectInteraction.fnHandleSelection(new ol.Collection([feature]));
+          scope.reloadSelectedFeatureView();
           scope.editor.mapsInterface.updateStarboard();
         }
       });
       request.execute();
     });
     jQuery(document.getElementById("cancel-dialog")).on("click", function(event) {
-      scope.selectInteraction.fnHandleSelection(new ol.Collection([feature]));
+      scope.reloadSelectedFeatureView();
     });
   }
 
@@ -336,7 +354,7 @@ export class DataUIController {
     cancelButton.title = "Abbrechen";
     // clear selectContent
     $(cancelButton).on('click', function(event) {
-      scope.selectInteraction.selectView.reloadHelpContent();
+      scope.reloadSelectedFeatureView();
     });
     $(confirmButton).on('click', function(event) {
       let url = "";
@@ -368,7 +386,10 @@ export class DataUIController {
         layer.pid = newPid;
         if (!scope.editor.mapsInterface.getLayerFromArray(newPid)) {
           // element layer does not exist in the project yet
-          scope.editor.layerLoader.getElementLayer(feature, layer, newProjectId);
+          let parent = scope.editor.layerLoader.getElementLayer(feature, layer, newProjectId);
+          parent.childs = parent.childs || [];
+          parent.childs.push(layer);
+          parent.childsCount++;
         } else {
           let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
           parent.childs = parent.childs || [];
@@ -387,7 +408,7 @@ export class DataUIController {
     formContainer.appendChild(projectSelect);
     formContainer.appendChild(confirmButton);
     formContainer.appendChild(cancelButton);
-    scope.selectInteraction.selectView.selectContent.appendChild(formContainer);
+    scope.addToEditor(formContainer);
   }
 
   /**
@@ -403,5 +424,25 @@ export class DataUIController {
       scope.displaceFeature(event, true);
     });
     return copyDisplaceButton;
+  }
+
+  /**
+   * Reloads the overview of the selected features and the possible operations.
+   */
+  reloadSelectedFeatureView() {
+    const features = this.selectInteraction.selectInteraction.getFeatures();
+    this.selectInteraction.fnHandleSelection(features);
+  }
+
+  /**
+   * Appends a given container to the editor selectContent container.
+   * @param container
+   * @param clear
+   */
+  addToEditor(container, clear = false) {
+    if (clear) {
+      this.selectInteraction.selectView.selectContent.innerHTML = "";
+    }
+    this.selectInteraction.selectView.selectContent.appendChild(container);
   }
 }
