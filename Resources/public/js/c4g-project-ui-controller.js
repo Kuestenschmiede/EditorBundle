@@ -252,11 +252,6 @@ export class ProjectUIController {
         }
       }
     }
-    if (starboard.initialized) {
-      const tab = starboard.plugins["customTab2"];
-      console.log(tab.layers);
-      console.log(layers);
-    }
   }
 
   /**
