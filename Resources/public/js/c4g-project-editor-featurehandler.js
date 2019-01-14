@@ -484,6 +484,9 @@ export class FeatureHandler {
   getSourceForLayerId(layerId) {
     let layer = this.mapsInterface.getLayerFromArray(layerId);
     let olLayer = layer.vectorLayer.getLayersArray()[0];
+    if (!olLayer) {
+      return null;
+    }
     return olLayer.getSource();
   }
 }

@@ -197,6 +197,7 @@ export class ProjectUIController {
     request.addDoneCallback(function(data) {
       if (data.success) {
         for (let i = 0; i < scope.editor.length; i++) {
+          // ToDo wie kann das hier richtig sein??
           if (scope.editor[i] === project) {
             scope.editor.splice(i, 1);
           }
@@ -207,6 +208,7 @@ export class ProjectUIController {
             scope.projectSelector.remove(scope.projectSelector.options[i].index);
           }
         }
+        // TODO features des projekts von der karte entfernen
         // delete project layers and reload starboard
         scope.deleteLayersForProject(project.id);
         scope.editor.mapsInterface.updateStarboard();
@@ -235,6 +237,13 @@ export class ProjectUIController {
             const tabLayers = tab.layers;
             // delete layer from starboard, has the same key as in arrLayers
             delete tabLayers[key];
+          }
+          // delete features for layer
+          if (layer.vectorLayer) {
+            let source = this.editor.featureHandler.getSourceForLayerId(layer.id);
+            if (source) {
+              source.clear();
+            }
           }
           // delete layer from arrLayers
           this.editor.mapsInterface.removeLayerFromArray(key);
