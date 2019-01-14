@@ -198,6 +198,8 @@ class ProjectController extends BaseController
         $arrData['display'] = true;
         $arrData['childs'] = [];
         $arrData['hasChilds'] = false;
+        // set the projectId to the DB id of the project entity
+        $arrData['projectId'] = $returnData['id'];
         // it is assumed here that the parent of the project element is the starboard tab
         $arrData['tabId'] = $projectElem->pid;
         $arrData['childsCount'] = 0;

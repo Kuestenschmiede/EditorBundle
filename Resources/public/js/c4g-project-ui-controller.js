@@ -207,20 +207,56 @@ export class ProjectUIController {
             scope.projectSelector.remove(scope.projectSelector.options[i].index);
           }
         }
-        let layers = editor.mapsInterface.getLayerArray();
-        for (let key in layers) {
-          if (layers.hasOwnProperty(key)) {
-            let layer = layers[key];
-            if (layer.projectId === project.id) {
-              editor.mapsInterface.hideLayer(layer.id);
-            }
-          }
-        }
+        // delete project layers and reload starboard
+        scope.deleteLayersForProject(project.id);
+        scope.editor.mapsInterface.updateStarboard();
         editor.currentProject = null;
         $(scope.projectSelector).change();
       }
     });
     request.execute();
+  }
+
+  /**
+   * Deletes all layers for the given project id.
+   * @param projectId
+   */
+  deleteLayersForProject(projectId) {
+    const starboard = this.editor.mapsInterface.getStarboard();
+    let layers = this.editor.mapsInterface.getLayerArray();
+    for (let key in layers) {
+      if (layers.hasOwnProperty(key)) {
+        let layer = layers[key];
+        // delete all layers that belong to the project
+        if (layer.projectId === projectId) {
+          let tabId = layer.tabId;
+          if (starboard.initialized) {
+            const tab = starboard.plugins["customTab" + tabId];
+            const tabLayers = tab.layers;
+            // delete layer from starboard, has the same key as in arrLayers
+            delete tabLayers[key];
+          }
+          // delete layer from arrLayers
+          this.editor.mapsInterface.removeLayerFromArray(key);
+          // check if the layer is listed as child in other layers
+          if (layer.pid && layers[layer.pid]) {
+            let parentLayer = layers[layer.pid];
+            for (let i = 0; i < parentLayer.childs.length; i++) {
+              let currentChild = parentLayer.childs[i];
+              if (currentChild.id === layer.id) {
+                // remove layer from childs array
+                parentLayer.childs.splice(i, 1);
+              }
+            }
+          }
+        }
+      }
+    }
+    if (starboard.initialized) {
+      const tab = starboard.plugins["customTab2"];
+      console.log(tab.layers);
+      console.log(layers);
+    }
   }
 
   /**
