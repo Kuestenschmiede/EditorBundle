@@ -95,10 +95,40 @@ export class FeatureHandler {
   deleteFeature(feature) {
     let layerId = feature.get('layerId');
     let layer = this.mapsInterface.getLayerFromArray(layerId);
+    this.checkParentsForDeletion(layer);
     this.mapsInterface.removeLayerFromArray(layerId);
     let projectId = this.editor.currentProject.id;
     let request = new C4GAjaxRequest(this.editor.dataBaseUrl + projectId + "/" + layerId, "DELETE");
     request.execute();
+  }
+
+  /**
+   * Checks the parents of the given layer. If their childs array is empty after deletion,
+   * the parents will be deleted as well.
+   * @param layer
+   */
+  checkParentsForDeletion(layer) {
+    let pid = layer.pid;
+    const layers = this.mapsInterface.getLayerArray();
+    if (layers[pid]) {
+      // the layer has a parent
+      let parentLayer = layers[pid];
+      if (parentLayer.childsCount === 1) {
+        // parent layer would be empty after deletion
+        if (layers[parentLayer.pid]) {
+          this.checkParentsForDeletion(parentLayer);
+        }
+        this.mapsInterface.removeLayerFromArray(parentLayer.id);
+      }
+      else {
+        for (let i = 0; i < parentLayer.childs.length; i++) {
+          if (parentLayer.childs[i].id === layer.id) {
+            // remove layer from parentLayer childs
+            parentLayer.childs.splice(i, 1);
+          }
+        }
+      }
+    }
   }
 
   /**

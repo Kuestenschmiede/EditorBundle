@@ -15,7 +15,7 @@ export class LayerLoader {
    * @param layer     The copied layer
    * @param projectId The destination project id
    */
-  getElementLayer(feature, layer, projectId) {
+  getElementLayer(feature, layer, projectId, opt_callback) {
     let scope = this;
     let layerId = layer.id;
     let request = new C4GAjaxRequest("/con4gis/elements/layer/" + layerId + "/" + projectId);
@@ -44,6 +44,9 @@ export class LayerLoader {
         elemLayer.visibleChilds = true;
         elemLayer.tabId = layer.tabId;
         scope.editor.mapsInterface.updateStarboard();
+        if (opt_callback) {
+          opt_callback(elemLayer);
+        }
       }
     });
     request.execute();

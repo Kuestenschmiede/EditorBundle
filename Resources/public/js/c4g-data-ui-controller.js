@@ -372,8 +372,6 @@ export class DataUIController {
       }
       let request = new C4GAjaxRequest(url, "POST");
       request.addDoneCallback(function(data) {
-        // TODO sort into correct layer
-        // TODO verschobenes element wird erst nach neu laden angezeigt
         let newProjectId = parseInt(data.newProjectId, 10);
         feature.set('projectId', newProjectId);
         // and from the selection
@@ -383,25 +381,26 @@ export class DataUIController {
         let newPid = data.pid;
         layer.projectId = newProjectId;
         layer.id = newLayerId;
+        layer.content[0].id = parseInt(newLayerId, 10);
         layer.pid = newPid;
+        const fnCallback = function(parent) {
+          parent.childs = parent.childs || [];
+          parent.childs.push(layer);
+          parent.childsCount++;
+          if (!opt_copy) {
+            scope.editor.mapsInterface.hideLayer(layerId);
+          }
+          scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
+          scope.editor.mapsInterface.updateStarboard();
+          scope.selectInteraction.fnHandleSelection(selectedFeatures);
+        };
         if (!scope.editor.mapsInterface.getLayerFromArray(newPid)) {
           // element layer does not exist in the project yet
-          let parent = scope.editor.layerLoader.getElementLayer(feature, layer, newProjectId);
-          parent.childs = parent.childs || [];
-          parent.childs.push(layer);
-          parent.childsCount++;
+          scope.editor.layerLoader.getElementLayer(feature, layer, newProjectId, fnCallback);
         } else {
           let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
-          parent.childs = parent.childs || [];
-          parent.childs.push(layer);
-          parent.childsCount++;
+          fnCallback(parent);
         }
-        if (!opt_copy) {
-          scope.editor.mapsInterface.hideLayer(layerId);
-        }
-        scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
-        scope.editor.mapsInterface.updateStarboard();
-        scope.selectInteraction.fnHandleSelection(selectedFeatures);
       });
       request.execute();
     });

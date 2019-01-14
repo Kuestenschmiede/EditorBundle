@@ -439,8 +439,8 @@ export class ProjectUIController {
     editor.mapsInterface.addToLayerArray(projectLayer);
     editor.mapsInterface.addToLayerIds(projectLayer.id);
     editor.mapsInterface.addToLayerChilds(projectLayer, projectLayer.pid);
-    editor.mapsInterface.updateStarboard();
     editor.projectLayer = projectLayer;
+    editor.mapsInterface.updateStarboard();
     option.text = name;
     option.value = id;
     option.selected = true;

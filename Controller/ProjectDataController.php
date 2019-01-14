@@ -15,6 +15,7 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
+use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
@@ -177,7 +178,7 @@ class ProjectDataController extends BaseController
 
             }
             $layerId = C4GBrickCommon::calcLayerID($newData->getId(), $newData->getTypeid(), 42);
-            $pid = C4GBrickCommon::calcLayerID($newData->getTypeid(), $newData->getCategoryid(), 43);
+            $pid = EditorCommon::calcLayerId($data->getTypeid(), $data->getCategoryid(), $newProjectId, 71);
         } else {
             $data->setProjectid($newProjectId);
             $data->setGroupid($project->getGroupid());
@@ -188,7 +189,7 @@ class ProjectDataController extends BaseController
 
             }
             $layerId = C4GBrickCommon::calcLayerID($data->getId(), $data->getTypeid(), 42);
-            $pid = C4GBrickCommon::calcLayerID($data->getTypeid(), $data->getCategoryid(), 43);
+            $pid = EditorCommon::calcLayerId($data->getTypeid(), $data->getCategoryid(), $newProjectId, 71);
         }
         $response = new JsonResponse([
             "newProjectId" => $newProjectId,

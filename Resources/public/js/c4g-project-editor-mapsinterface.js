@@ -40,6 +40,10 @@ export class MapsInterface {
     let arrLayers = this.proxy.layerController.arrLayers;
     let pLayer = arrLayers[pid];
     if (pLayer) {
+      if (!pLayer.childs) {
+        pLayer.childs = [];
+        pLayer.childsCount = 0;
+      }
       pLayer.childs.push(layer);
       pLayer.childsCount++;
     }
