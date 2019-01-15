@@ -118,6 +118,10 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
             return [];
         }
         $memberId = $feUser->id;
+        if ($memberId === null) {
+            // no member logged in
+            return [];
+        }
         $event = new LoadProjectsEvent();
         $event->setMemberId($memberId);
         $this->eventDispatcher->dispatch($event::NAME, $event);

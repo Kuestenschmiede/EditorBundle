@@ -12108,7 +12108,7 @@ var projectEditorLang = {
 
 /***/ "./Resources/public/js/c4g-project-editor-mapsinterface.js":
 /*!*****************************************************************!*\
-  !*** ./Resources/public/js/c4g-project-editor-mapsinterface.js ***!
+  !*** ./Resources/public/js/c4g-editor-mapsinterface.js ***!
   \*****************************************************************/
 /*! exports provided: MapsInterface */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -12848,7 +12848,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Editor", function() { return Editor; });
 /* harmony import */ var _MapsBundle_Resources_public_js_c4g_maps_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 /* harmony import */ var _MapsBundle_Resources_public_js_c4g_maps_control_sideboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard */ "../MapsBundle/Resources/public/js/c4g-maps-control-sideboard.js");
-/* harmony import */ var _c4g_project_editor_mapsinterface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./c4g-project-editor-mapsinterface */ "./Resources/public/js/c4g-project-editor-mapsinterface.js");
+/* harmony import */ var _c4g_project_editor_mapsinterface__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./c4g-project-editor-mapsinterface */ "./Resources/public/js/c4g-editor-mapsinterface.js");
 /* harmony import */ var _c4g_missing_layer_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./c4g-missing-layer-loader */ "./Resources/public/js/c4g-missing-layer-loader.js");
 /* harmony import */ var _c4g_project_cache_controller__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./c4g-project-cache-controller */ "./Resources/public/js/c4g-project-cache-controller.js");
 /* harmony import */ var _c4g_project_ui_controller__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./c4g-project-ui-controller */ "./Resources/public/js/c4g-project-ui-controller.js");

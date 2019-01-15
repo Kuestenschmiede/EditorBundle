@@ -8,10 +8,10 @@ import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils
  */
 export class MapsInterface {
 
-  constructor(editor) {
+  constructor(editor, proxy, mapController) {
     this.editor = editor;
-    this.proxy = editor.proxy;
-    this.mapController = editor.proxy.options.mapController;
+    this.proxy = proxy;
+    this.mapController = mapController;
   }
 
   getLayerArray() {

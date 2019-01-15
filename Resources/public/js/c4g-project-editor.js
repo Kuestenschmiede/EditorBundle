@@ -1,6 +1,6 @@
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {Sideboard} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
-import {MapsInterface} from "./c4g-project-editor-mapsinterface";
+import {MapsInterface} from "./c4g-editor-mapsinterface";
 import {LayerLoader} from "./c4g-missing-layer-loader";
 import {ProjectCacheController} from "./c4g-project-cache-controller";
 import {ProjectUIController} from "./c4g-project-ui-controller";
@@ -63,7 +63,7 @@ export class Editor extends Sideboard {
     this.tabs = [];
     this.lastDrawInteraction = undefined;
     this.proxy = this.options.mapController.proxy;
-    this.mapsInterface = new MapsInterface(this);
+    this.mapsInterface = new MapsInterface(this, this.proxy, options.mapController);
     this.featureHandler = new FeatureHandler(this, this.mapsInterface);
     this.projects = [];
     this.currentProject = null;
