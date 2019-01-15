@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "encore": "encore",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache",
+    "babel": "./node_modules/.bin/babel -f .babelrc --ignore='node_modules'"
   },
   "jest": {
     "modulePaths": [
@@ -39,15 +40,18 @@
   },
   "homepage": "https://github.com/Kuestenschmiede/EditorBundle#readme",
   "devDependencies": {
+    "@babel/core": "^7.2.2",
     "@symfony/webpack-encore": "^0.22.2",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "canvas": "^2.3.1",
     "jest": "^23.6.0",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "regenerator-runtime": "^0.13.1"
   },
   "dependencies": {
-    "babel-jest": "^23.6.0",
+    "@babel/cli": "^7.2.3",
     "babel-preset-env": "^1.7.0",
-    "regenerator-runtime": "^0.13.1",
     "source-map-support": "^0.5.10"
   }
 }

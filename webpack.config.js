@@ -33,5 +33,19 @@ Encore
 // uncomment if you're having problems with a jQuery plugin
 //.autoProvidejQuery()
 ;
-
-module.exports = Encore.getWebpackConfig();
+  var config = Encore.getWebpackConfig();
+  config['module'] =  {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /(node_modules)/,
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env"]
+        }
+      }
+    }
+  ]
+};
+module.exports = config;
