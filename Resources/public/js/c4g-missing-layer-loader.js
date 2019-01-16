@@ -66,6 +66,9 @@ export class LayerLoader {
         let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
         scope.editor.mapsInterface.insertIntoLayerIds(catLayer.id, index - 2);
         scope.editor.mapsInterface.addToLayerIds(catLayer.id);
+        // concat empty string in case the id is an integer
+        scope.editor.mapsInterface.proxy.activeLayerIds[catLayer.id + ''] = catLayer.id + '';
+        console.log(catLayer.id);
         if (callable && param) {
           callable(param, layerId);
         }

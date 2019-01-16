@@ -404,6 +404,7 @@ export class FeatureHandler {
         }
       }
       scope.mapsInterface.updateLayerIndex(oldIndex, layer);
+      scope.mapsInterface.proxy.activeLayerIds[data.id] = data.id;
       scope.mapsInterface.updateStarboard();
     });
     request.execute();
@@ -466,6 +467,7 @@ export class FeatureHandler {
           childLayer.pid = data.id;
         }
       }
+      scope.mapsInterface.proxy.activeLayerIds[data.id] = data.id;
       scope.mapsInterface.updateLayerIndex(oldIndex, layer);
       scope.mapsInterface.updateStarboard();
     });

@@ -57,6 +57,7 @@ class CategoryController extends BaseController
         );
         $arrElement['id'] = C4GBrickCommon::calcLayerId($cid, $pid, 70);
         $arrElement['projectId'] = $pid;
+        $arrElement['hide'] = "";
         return new JsonResponse(['layer' => $arrElement]);
     }
 }
