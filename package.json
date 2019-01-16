@@ -5,13 +5,13 @@
   "main": "webpack.config.js",
   "scripts": {
     "encore": "encore",
-    "test": "jest --no-cache",
-    "babel": "./node_modules/.bin/babel -f .babelrc --ignore='node_modules'"
+    "test": "jest --no-cache"
   },
   "jest": {
     "modulePaths": [
       "/Resources/public/js",
-      "<rootDir>/../MapsBundle/Resources/public/vendor"
+      "<rootDir>/../MapsBundle/Resources/public/vendor",
+      "<rootDir>/../MapsBundle/Resources/public/js"
     ],
     "moduleFileExtensions": [
       "js",
@@ -40,12 +40,9 @@
   },
   "homepage": "https://github.com/Kuestenschmiede/EditorBundle#readme",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
     "@symfony/webpack-encore": "^0.22.2",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
     "canvas": "^2.3.1",
-    "jest": "^23.6.0",
     "jquery": "^3.3.1",
     "regenerator-runtime": "^0.13.1"
   },
