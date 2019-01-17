@@ -1,18 +1,6 @@
-import {DataUIController} from "./c4g-data-ui-controller";
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
-let langConstants = {};
+import {ElementUIController} from "./c4g-element-ui-controller";
+import {langConstants} from "./c4g-editor-i18n";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 export class EditorSelectInteraction {
   /**
    * EditorSelectInteraction constructor
@@ -22,7 +10,7 @@ export class EditorSelectInteraction {
   constructor(editor, selectView) {
     this.editor = editor;
     this.selectView = selectView;
-    this.dataUiController = new DataUIController(editor, this);
+    this.dataUiController = new ElementUIController(editor, this);
   }
 
   /**
@@ -143,6 +131,21 @@ export class EditorSelectInteraction {
   }
 
   /**
+   * Removes the given feature from the selected features.
+   * @param feature
+   */
+  removeSelectedFeature(feature) {
+    this.selectInteraction.getFeatures().remove(feature);
+  }
+
+  /**
+   * Refreshes the feature list.
+   */
+  updateFeatures() {
+    this.fnHandleSelection(this.selectInteraction.getFeatures());
+  }
+
+  /**
    * Draws the duplicate of a layer onto the map.
    * @param layer         C4gLayer
    * @param opt_offset    bool  Should the feature be drawn with an offset?
@@ -196,6 +199,7 @@ export class EditorSelectInteraction {
 
 
 
+  // TODO umbenennen in showSelection
   /**
    * Lists the currently selected features in the select view and creates the button elements for the different
    * editing functions.

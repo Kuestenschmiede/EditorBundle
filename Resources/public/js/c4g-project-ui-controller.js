@@ -1,18 +1,6 @@
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
-let langConstants = {};
+import {langConstants} from "./c4g-editor-i18n";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 /**
  * Class for creating all view elements that interact with a project. Handles all events that are fired on these view
  * elements.
@@ -208,7 +196,6 @@ export class ProjectUIController {
             scope.projectSelector.remove(scope.projectSelector.options[i].index);
           }
         }
-        // TODO features des projekts von der karte entfernen
         // delete project layers and reload starboard
         scope.deleteLayersForProject(project.id);
         scope.editor.mapsInterface.updateStarboard();

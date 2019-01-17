@@ -6,9 +6,11 @@ export class EditorDrawStyle {
   /**
    * Constructor for EditorDrawStyle.
    * @param editor
+   * @param type    {string} The drawType
    */
-  constructor (editor) {
+  constructor (editor, type) {
     this.editor = editor;
+    this.type = type;
   }
 
   /**
@@ -38,7 +40,6 @@ export class EditorDrawStyle {
     // Style "shortcut"
     let editor = this.editor;
     let drawContent = this.editor.drawContent;
-    let options = objDrawView.options;
     let scope = this;
     let drawView = objDrawView.drawView;
     let locstyleArray = editor.mapsInterface.getLocstyleArray();
@@ -167,7 +168,7 @@ export class EditorDrawStyle {
           activeTooltip;
 
         // Only show original icon, when the drawing POIs
-        if (options.type.toLowerCase() === 'point' && style.getImage()) {
+        if (scope.type.toLowerCase() === 'point' && style.getImage()) {
           interactionStyleImage = style.getImage();
         } else {
           interactionStyleImage = new ol.style.Circle({
@@ -178,7 +179,7 @@ export class EditorDrawStyle {
         }
         source = new ol.source.Vector();
 
-        olType = options.type;
+        olType = scope.type;
         if (olType === 'Freehand') {
           olType = 'LineString'
         }
@@ -188,7 +189,7 @@ export class EditorDrawStyle {
           features: features,
           source: source,
           type: olType,
-          freehand: options.type === 'Freehand',
+          freehand: scope.type === 'Freehand',
           style: [
             new ol.style.Style({
               stroke: new ol.style.Stroke({
@@ -256,7 +257,7 @@ export class EditorDrawStyle {
 
             // name the feature
             featureIdCount += 1;
-            let drawType = options.type.toLowerCase();
+            let drawType = scope.type.toLowerCase();
             name = scope.editor.mapsInterface.getLocstyleArray()[styleId].name.replace("&#40;", "(").replace("&#41;", ")");
             activeSketch.set('tooltip', (scope.editor.mapsInterface.getLocstyleArray()[styleId].tooltip || name) + ' (' + featureIdCount + ')');
             // add styleId
@@ -336,7 +337,7 @@ export class EditorDrawStyle {
           if (!paused) {
             editor.mapsInterface.mapController.mapHover.activate();
             // finish drawings, if not already done
-            if (options.type.toLowerCase() !== 'point') {
+            if (scope.type.toLowerCase() !== 'point') {
               try {
                 interaction.finishDrawing();
               } catch (ignore) {

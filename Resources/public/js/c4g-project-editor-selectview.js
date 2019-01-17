@@ -1,19 +1,7 @@
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
 import {EditorSelectInteraction} from "./c4g-project-editor-selectinteraction";
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
-let langConstants = {};
+import {langConstants} from "./c4g-editor-i18n";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 export class EditorSelectView {
   constructor(options) {
     if (!options.editor) {
@@ -34,6 +22,12 @@ export class EditorSelectView {
     scope = this;
     editor = this.options.editor;
     this.selectContentWrapper = this.createHelpContent();
+    let objSelect = new EditorSelectInteraction(editor, scope);
+    let interactions = objSelect.createSelectInteraction();
+    selectBoxInteraction = interactions.boxInteraction;
+    selectInteraction = interactions.selectInteraction;
+    scope.selectInteraction = objSelect;
+    scope.selectInteraction.interactions = interactions;
 
     selectView = editor.addView({
       name: 'select',
@@ -47,11 +41,7 @@ export class EditorSelectView {
         {section: editor.topToolbar, element: editor.viewTriggerBar}
       ],
       initFunction: function () {
-        let objSelect = new EditorSelectInteraction(editor, scope);
-        let interactions = objSelect.createSelectInteraction();
-        selectBoxInteraction = interactions.boxInteraction;
-        selectInteraction = interactions.selectInteraction;
-        scope.selectInteraction = interactions;
+
         editor.options.mapController.map.addInteraction(selectInteraction);
         editor.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;

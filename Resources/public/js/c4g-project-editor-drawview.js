@@ -1,26 +1,44 @@
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
 import {EditorDrawStyle} from "./c4g-project-editor-drawstyle";
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
-let langConstants = {};
+import {langConstants} from "./c4g-editor-i18n";
+import {ElementCategory} from "./c4g-editor-element-category";
+import {ElementType} from "./c4g-editor-element-type";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 export class EditorDrawview {
-  constructor(options) {
-    if (!options.editor) {
-      console.warn("Cannot initialize draw view without editor...");
+
+  constructor(type, categories, editor) {
+    this.type = type;
+    this.editor = editor;
+    this.categories = this.setupCategories(categories);
+  }
+
+  setupCategories(jsonCategories) {
+    let categories = [];
+    for (let i = 0; i < jsonCategories.length; i++) {
+      let categoryElementTypes = [];
+      for (let j = 0; j < jsonCategories[i].elements.length; j++) {
+        categoryElementTypes.push(this.createTypeObject(jsonCategories[i].elements[j]));
+      }
+      categories.push(this.createCategoryObject(jsonCategories[i], categoryElementTypes));
     }
-    this.options = options;
-    this.editor = options.editor;
+    return categories;
+  }
+
+  createTypeObject(jsonElement) {
+    return new ElementType(
+      jsonElement.id,
+      jsonElement.name,
+      jsonElement.categoryId,
+      jsonElement.styleId
+    );
+  }
+
+  createCategoryObject(jsonCategory, types) {
+    return new ElementCategory(
+      jsonCategory.id,
+      jsonCategory.name,
+      types
+    );
   }
 
   /**
@@ -34,29 +52,21 @@ export class EditorDrawview {
       enableInstantMeasureCheckbox,
       enableInstantMeasureCheckboxLabel,
       addDrawStyle,
-    options,
-    scope = this;
+      scope = this;
 
     let editor = this.editor;
     let locStyles = this.editor.mapsInterface.getLocstyleArray();
-    options = this.options;
-      options = jQuery.extend({
-          type: 'Point',
-          categories: [],
-          styleIds: []
-      }, options);
-      this.options = options;
 
-      TRIGGER_DRAW = 'EDITOR_VIEW_TRIGGER_DRAW_' + options.type.toUpperCase();
+    TRIGGER_DRAW = 'EDITOR_VIEW_TRIGGER_DRAW_' + this.type.toUpperCase();
 
     drawContent = document.createElement('div');
-    drawContent.className = cssConstants['EDITOR_DRAW_CONTENT_' + options.type.toUpperCase()];
+    drawContent.className = cssConstants['EDITOR_DRAW_CONTENT_' + this.type.toUpperCase()];
 
     let inputFilter = this.createProjectFilter();
     drawContent.appendChild(inputFilter);
     this.drawContent = drawContent;
 
-    if (options.type.toLowerCase() !== 'point') {
+    if (this.type.toLowerCase() !== 'point') {
       optionsDiv = document.createElement('div');
       optionsDiv.className = cssConstants.EDITOR_DRAW_OPTIONS;
       drawContent.appendChild(optionsDiv);
@@ -79,21 +89,20 @@ export class EditorDrawview {
     }
 
     // add the categories
-    for (let key in options.categories) {
-      if (options.categories.hasOwnProperty(key)) {
-        let category = options.categories[key];
+    for (let i = 0; i < this.categories.length; i++) {
+        let category = this.categories[i];
         let divObj = this.addCategory(category);
         this.drawContent.appendChild(divObj.categoryDiv);
-        let styleIds = this.addElementsForCategory(category.elements, category, divObj.elements);
-        this.options.styleIds.concat(styleIds);
+        let styleIds = this.addElementsForCategory(category.elementTypes, category, divObj.elements);
+        // TODO wo werden die styleIds gebraucht?
+        // this.options.styleIds.concat(styleIds);
         if (!this.editor.currentProject) {
           this.drawContent.style.display = "none";
         }
-      }
     }
 
     this.drawView = editor.addView({
-      name: 'draw:' + options.type.toLowerCase(),
+      name: 'draw:' + this.type.toLowerCase(),
       triggerConfig: {
         tipLabel: langConstants[TRIGGER_DRAW],
         className: cssConstants[TRIGGER_DRAW],
@@ -104,117 +113,103 @@ export class EditorDrawview {
         {section: editor.topToolbar, element: editor.viewTriggerBar}
       ],
       initFunction: function () {
-        var i,
-          styleId,
-          neededStyles,
-          sortAndAddStyles;
-
-        // Show loading animation
-        editor.spinner.show();
-
-        neededStyles = [];
-
-        /**
-         * @TODO
-         * [sortAndAddStyles description]
-         *
-         * @return  {[type]}  [description]
-         */
-        sortAndAddStyles = function (arrStyleIds) {
-          var j,
-            locationStyles,
-            drawInteraction,
-            styleIds;
-
-          // prepare
-          locationStyles = locStyles;
-          styleIds = arrStyleIds || options.styleIds;
-          if (!styleIds || !locationStyles) {
-            return false;
-          }
-
-          // sort
-          styleIds.sort(function (a, b) {
-
-            //ToDo check
-            if (locationStyles[a] && locationStyles[b] && locationStyles[a].editor) {
-              if ((!locationStyles[a].editor.sort && !locationStyles[b].editor.sort) || (locationStyles[a].editor.sort === locationStyles[b].editor.sort)) {
-                if (!locationStyles[a].name || !locationStyles[b].name) {
-                  return (!locationStyles[b].name) ? -1 : 1;
-                }
-                return (locationStyles[a].name.toLowerCase() > locationStyles[b].name.toLowerCase()) ? 1 : -1;
-              }
-              if (!locationStyles[a].editor.sort || !locationStyles[b].editor.sort) {
-                return (!locationStyles[b].editor.sort) ? -1 : 1;
-              }
-
-              return (locationStyles[a].editor.sort > locationStyles[b].editor.sort) ? 1 : -1;
-            } else {
-              return -1;
-            }
-
-          }); // end sort
-
-          // create
-          /*
-          for (j = 0; j < styleIds.length; j += 1) {
-            drawInteraction = addDrawStyle(styleIds[j]);
-            // activate the first drawStyle if a project is selected
-            if (j === 0 && editor.currentProject) {
-              drawInteraction.activate();
-            }
-          }*/
-
-          // success
-          editor.update();
-          return true;
-        }; // end of "sortAndAddStyles"
-
-        // Make sure that all needed styles are loaded
-        if (!locStyles) {
-          // no styles are loaded, so load all styles
-          locStyles = {};
-          neededStyles = options.styleIds;
-        } else {
-          // check wich styles are missing
-          for (i = 0; i < options.styleIds.length; i += 1) {
-            styleId = options.styleIds[i];
-            if (!locStyles[styleId] || !locStyles[styleId].style) {
-              neededStyles.push(styleId);
-            }
-          }
-        }
-
-        if (neededStyles.length > 0) {
-          if (!editor.proxy) {
-            console.warn('Could not load locStyles, as the map-proxy was not initiallized.');
-          }
-          editor.proxy.locationStyleController.loadLocationStyles(
-            neededStyles,
-            {
-              always: function () {
-                sortAndAddStyles();
-              },
-              done: function () {
-                // Hide loading-animation
-                editor.spinner.hide();
-                editor.update();
-              }
-            }
-          );
-        } else {
-          sortAndAddStyles();
-          editor.update();
-          editor.spinner.hide();
-        }
-
-        return true;
+        // var i,
+        //   styleId,
+        //   neededStyles,
+        //   sortAndAddStyles;
+        //
+        // // Show loading animation
+        // editor.spinner.show();
+        //
+        // neededStyles = [];
+        //
+        // /**
+        //  * @TODO
+        //  * [sortAndAddStyles description]
+        //  *
+        //  * @return  {[type]}  [description]
+        //  */
+        // sortAndAddStyles = function (arrStyleIds) {
+        //   var j,
+        //     locationStyles,
+        //     drawInteraction,
+        //     styleIds;
+        //
+        //   // prepare
+        //   locationStyles = locStyles;
+        //   styleIds = arrStyleIds;
+        //   if (!styleIds || !locationStyles) {
+        //     return false;
+        //   }
+        //
+        //   // sort
+        //   styleIds.sort(function (a, b) {
+        //
+        //     //ToDo check
+        //     if (locationStyles[a] && locationStyles[b] && locationStyles[a].editor) {
+        //       if ((!locationStyles[a].editor.sort && !locationStyles[b].editor.sort) || (locationStyles[a].editor.sort === locationStyles[b].editor.sort)) {
+        //         if (!locationStyles[a].name || !locationStyles[b].name) {
+        //           return (!locationStyles[b].name) ? -1 : 1;
+        //         }
+        //         return (locationStyles[a].name.toLowerCase() > locationStyles[b].name.toLowerCase()) ? 1 : -1;
+        //       }
+        //       if (!locationStyles[a].editor.sort || !locationStyles[b].editor.sort) {
+        //         return (!locationStyles[b].editor.sort) ? -1 : 1;
+        //       }
+        //
+        //       return (locationStyles[a].editor.sort > locationStyles[b].editor.sort) ? 1 : -1;
+        //     } else {
+        //       return -1;
+        //     }
+        //
+        //   }); // end sort
+        //   // success
+        //   editor.update();
+        //   return true;
+        // }; // end of "sortAndAddStyles"
+        //
+        // // Make sure that all needed styles are loaded
+        // if (!locStyles) {
+        //   // no styles are loaded, so load all styles
+        //   locStyles = {};
+        //   neededStyles = options.styleIds;
+        // } else {
+        //   // check wich styles are missing
+        //   for (i = 0; i < options.styleIds.length; i += 1) {
+        //     styleId = options.styleIds[i];
+        //     if (!locStyles[styleId] || !locStyles[styleId].style) {
+        //       neededStyles.push(styleId);
+        //     }
+        //   }
+        // }
+        //
+        // if (neededStyles.length > 0) {
+        //   if (!editor.proxy) {
+        //     console.warn('Could not load locStyles, as the map-proxy was not initiallized.');
+        //   }
+        //   editor.proxy.locationStyleController.loadLocationStyles(
+        //     neededStyles,
+        //     {
+        //       always: function () {
+        //         sortAndAddStyles();
+        //       },
+        //       done: function () {
+        //         // Hide loading-animation
+        //         editor.spinner.hide();
+        //         editor.update();
+        //       }
+        //     }
+        //   );
+        // } else {
+        //   sortAndAddStyles();
+        //   editor.update();
+        //   editor.spinner.hide();
+        // }
+        //
+        // return true;
       },
       activateFunction: function () {
         if (editor.currentProject) {
-          // if (scope.options.categories[0] && scope.options.categories[0].elements[0] && scope.options.categories[0].elements[0].drawInteraction) {
-          //     scope.options.categories[0].elements[0].drawInteraction.activate();
-          // }
           scope.drawContent.style.display = "block";
         }
         return true;
@@ -284,8 +279,8 @@ export class EditorDrawview {
     // categoryDiv.className = "project-" + project.projectId;
     catHeadline = document.createElement('div');
     elementCount = 0;
-    if (category.elements) {
-        elementCount = category.elements.length;
+    if (category.elementTypes) {
+        elementCount = category.elementTypes.length;
     }
     catHeadline.innerHTML = category.name + " (" + elementCount + ")";
     catHeadline.className = 'catHeadline';
@@ -314,6 +309,8 @@ export class EditorDrawview {
     var addElement = function(element) {
       element.drawInteraction = self.addDrawStyle(element.styleId, element, category, catContainer);
     };
+
+    console.log("add Elements");
 
     for (var key in elements) {
       if (elements.hasOwnProperty(key)) {
@@ -373,13 +370,13 @@ export class EditorDrawview {
               const category = drawstyle.categories[categoryId];
               if(category.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){ //Category checked. Show all elements
                 matchedCategoryIds.push(category.id);
-                for(let elementId in category.elements){
-                  matchedElementIds.push(category.elements[elementId].id);
+                for(let elementId in category.elementTypes){
+                  matchedElementIds.push(category.elementTypes[elementId].id);
                 }
               }
               else{
-                for(let elementId in category.elements){
-                  const element = category.elements[elementId];
+                for(let elementId in category.elementTypes){
+                  const element = category.elementTypes[elementId];
                   if(element.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){
                     matchedElementIds.push(element.id);
                     matchedCategoryIds.push(category.id);
@@ -414,7 +411,9 @@ export class EditorDrawview {
       }
       setTimeout( function(){
         // two or zero letters are required
-        if (filterInput.value.length != 1) filterProject()
+        if (filterInput.value.length !== 1) {
+          filterProject();
+        }
       }, 350);
     });
     return filterDiv;
@@ -429,7 +428,7 @@ export class EditorDrawview {
    * @returns {*}
    */
   addDrawStyle(styleId, element, category, catContainer) {
-    let interaction = new EditorDrawStyle(this.editor);
+    let interaction = new EditorDrawStyle(this.editor, this.type);
     return interaction.createInteractionView(styleId, element, category, catContainer, this);
   }
 }

@@ -16,6 +16,7 @@ namespace con4gis\EditorBundle\Controller;
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
@@ -150,7 +151,7 @@ class ProjectDataController extends BaseController
         $this->initialize();
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
-        $project = $this->entityManager->getRepository(EditorMapProject::class)
+        $project = $this->entityManager->getRepository(EditorProject::class)
             ->findOneBy(['id' => $newProjectId]);
         $copy = $copy === "true" ? true : false;
         if ($copy) {

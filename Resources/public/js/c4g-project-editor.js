@@ -7,20 +7,11 @@ import {ProjectUIController} from "./c4g-project-ui-controller";
 import {EditorDrawview} from "./c4g-project-editor-drawview";
 import {FeatureHandler} from "./c4g-project-editor-featurehandler";
 import {EditorSelectView} from "./c4g-project-editor-selectview";
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
-let langConstants = {};
+import {langConstants} from "./c4g-editor-i18n";
+import {ElementController} from "./c4g-element-controller";
+import {ElementUIController} from "./c4g-element-ui-controller";
+import {EditorProject} from "./c4g-editor-project";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 'use strict';
 export class Editor extends Sideboard {
 
@@ -70,6 +61,8 @@ export class Editor extends Sideboard {
     this.projectUiController = new ProjectUIController(this);
     this.layerLoader = new LayerLoader(this);
     this.cacheController = null;
+    this.elementController = null;
+    this.elementUiController = null;
     if (window.c4gMapsHooks.extend_editor && window.c4gMapsHooks.extend_editor.length) {
       utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
     }
@@ -89,91 +82,44 @@ export class Editor extends Sideboard {
    * @return  {boolean}  Returns |true| on success
    */
   init(opt_externalinit) {
-    var self,
-      layerStyleFunction,
-      viewSelect;
-
-    self = this;
+    const scope = this;
     this.spinner.show();
 
-
-    self.editLayerGroup = new ol.layer.Group({
+    this.editLayerGroup = new ol.layer.Group({
       layers: new ol.Collection([]),
       visible: false
     });
-    // self.options.mapController.map.addLayer(self.editLayerGroup);
-    //   AJAX: get editor config
+    // load editor configuration
     let url = "con4gis/projectEditorService";
     $.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
-        self.projects = data.projects;
-        self.dataBaseUrl = data.dataBaseUrl;
-        $(self.viewTriggerBar).hide();
-        $(self.contentHeadline).hide();
-        self.projectUiController.createProjectSelect();
-        self.projectUiController.createNewProjectButton();
-        self.projectUiController.createEditProjectButton();
-        self.projectUiController.createDeleteProjectButton();
-        self.topToolbar.appendChild(self.projectUiController.getButtonBar());
-
+        console.log('done callback');
+        scope.projects = scope.createProjects(data.projects);
+        scope.dataBaseUrl = data.dataBaseUrl;
+        $(scope.viewTriggerBar).hide();
+        $(scope.contentHeadline).hide();
+        scope.projectUiController.createProjectSelect();
+        scope.projectUiController.createNewProjectButton();
+        scope.projectUiController.createEditProjectButton();
+        scope.projectUiController.createDeleteProjectButton();
+        scope.topToolbar.appendChild(scope.projectUiController.getButtonBar());
         // Add and activate select view
-        let selectView = new EditorSelectView({editor: self});
-        self.selectView = selectView;
-        let drawStyles = data.drawStyles;
-        self.drawStyles = drawStyles;
-        self.loadLocationStyles(drawStyles, function () {
-          // Draw-point view
-          if (drawStyles.point.categories && drawStyles.point.categories.length > 0) {
-            let pointView = new EditorDrawview({type: 'Point', categories: drawStyles.point.categories, editor: self});
-            self.tabs.push(pointView.init());
-          }
-          // Draw-line view
-          if (drawStyles.linestring.categories && drawStyles.linestring.categories.length > 0) {
-            let lineView = new EditorDrawview({
-              type: 'LineString',
-              categories: drawStyles.linestring.categories,
-              editor: self
-            });
-            self.tabs.push(lineView.init());
-          }
-          // Draw-polygon view
-          if (drawStyles.polygon.categories && drawStyles.polygon.categories.length > 0) {
-            let polygonView = new EditorDrawview({
-              type: 'Polygon',
-              categories: drawStyles.polygon.categories,
-              editor: self
-            });
-            self.tabs.push(polygonView.init());
-          }
-          // Draw-circle view
-          if (drawStyles.circle.categories && drawStyles.circle.categories.length > 0) {
-            let circleView = new EditorDrawview({
-              type: 'Circle',
-              categories: drawStyles.circle.categories,
-              editor: self
-            });
-            self.tabs.push(circleView.init());
-          }
-          // Draw-freehand view
-          if (drawStyles.freehand.categories && drawStyles.freehand.categories.length > 0) {
-            let freehandView = new EditorDrawview({
-              type: 'Freehand',
-              categories: drawStyles.freehand.categories,
-              editor: self
-            });
-            self.tabs.push(freehandView.init());
-          }
-          self.tabs[0].activate();
-          // initially hide the elements, until a project is selected
-          self.toggleDrawContent();
+        scope.selectView = new EditorSelectView({editor: scope});
+        scope.drawStyles = data.drawStyles;
+        // fetch missing styles
+        scope.tabs.push(scope.selectView.init());
+        scope.loadLocationStyles(scope.drawStyles, function () {
+          // and create draw views
+          scope.createDrawViews(scope.drawStyles);
         });
-        self.tabs.push(selectView.init());
-        self.cacheController = new ProjectCacheController(self);
-        self.loadFromCache();
+        scope.elementController = new ElementController(scope.selectView.selectInteraction, scope, scope.mapsInterface);
+        scope.elementUiController = new ElementUIController(scope, scope.selectView.selectInteraction, scope.elementController);
+        scope.cacheController = new ProjectCacheController(scope);
+        scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
-          self.cacheController.saveSettingsForProject(self.currentProject.id, "baselayer", id)
+          scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id)
         });
         return true;
       })
@@ -184,17 +130,49 @@ export class Editor extends Sideboard {
         console.warn('An error occured while trying to load the editor configuration...');
         window.alert("Bitte melden Sie sich zur Nutzung des Editors an.");
         console.error(data.responseText);
-        self.close();
+        scope.close();
         return false;
       })
       .always(function () {
-        self.spinner.hide();
+        scope.spinner.hide();
       });
     if (opt_externalinit) {
       this.initialized = true;
     }
 
     return true;
+  }
+
+  createDrawViews(drawStyles) {
+    // Draw-point view
+    console.log(this);
+    if (drawStyles.point.categories && drawStyles.point.categories.length > 0) {
+      let pointView = new EditorDrawview('Point', drawStyles.point.categories, this);
+      this.tabs.push(pointView.init());
+    }
+    // Draw-line view
+    if (drawStyles.linestring.categories && drawStyles.linestring.categories.length > 0) {
+      let lineView = new EditorDrawview('LineString', drawStyles.linestring.categories, this);
+      this.tabs.push(lineView.init());
+    }
+    // Draw-polygon view
+    if (drawStyles.polygon.categories && drawStyles.polygon.categories.length > 0) {
+      let polygonView = new EditorDrawview('Polygon', drawStyles.polygon.categories, true);
+      this.tabs.push(polygonView.init());
+    }
+    // Draw-circle view
+    if (drawStyles.circle.categories && drawStyles.circle.categories.length > 0) {
+      let circleView = new EditorDrawview('Circle', drawStyles.circle.categories, true);
+      this.tabs.push(circleView.init());
+    }
+    // Draw-freehand view
+    if (drawStyles.freehand.categories && drawStyles.freehand.categories.length > 0) {
+      let freehandView = new EditorDrawview('Freehand', drawStyles.freehand.categories, true);
+      this.tabs.push(freehandView.init());
+    }
+    this.tabs[0].activate();
+    // initially hide the elements, until a project is selected
+    this.toggleDrawContent();
   }
 
   /**
@@ -216,6 +194,19 @@ export class Editor extends Sideboard {
       // show the project
       this.projectUiController.changeProjectSelection(selectedProject);
     }
+  }
+
+  /**
+   * Creates an array of EditorProject objects from the json project data.
+   * @param jsonProjects
+   * @returns {Array}
+   */
+  createProjects(jsonProjects) {
+    let projects = [];
+    for (let i = 0; i < jsonProjects.length; i++) {
+      projects.push(new EditorProject(jsonProjects[i].id, jsonProjects[i].name));
+    }
+    return projects;
   }
 
   /**
@@ -241,27 +232,35 @@ export class Editor extends Sideboard {
   }
 
   loadLocationStyles(drawStyles, callback) {
-    let locstyles = [];
-    for (let key in drawStyles) {
-      if (drawStyles.hasOwnProperty(key)) {
-        let drawStyle = drawStyles[key];
+    // TODO nur styles nachladen, die wirklich noch nicht da sind!
+    let styles = [];
+    const existingStyles = this.mapsInterface.proxy.locationStyleController.arrLocStyles;
+    for (let outerKey in drawStyles) {
+      if (drawStyles.hasOwnProperty(outerKey)) {
+        let drawStyle = drawStyles[outerKey];
         let categories = drawStyle.categories;
-        for (let key2 in categories) {
-          if (categories.hasOwnProperty(key2)) {
-            let category = categories[key2];
+        for (let catKey in categories) {
+          if (categories.hasOwnProperty(catKey)) {
+            let category = categories[catKey];
             let elements = category.elements;
-            for (let key3 in elements) {
-              if (elements.hasOwnProperty(key3)) {
-                let element = elements[key3];
-                locstyles.push(element.styleId);
+            for (let elemKey in elements) {
+              if (elements.hasOwnProperty(elemKey)) {
+                let element = elements[elemKey];
+                if (!existingStyles[element.styleId]) {
+                  // style is not yet loaded
+                  styles.push(element.styleId);
+                }
               }
             }
           }
         }
       }
     }
-    if (locstyles.length > 0) {
-      this.mapsInterface.proxy.locationStyleController.loadLocationStyles(locstyles, {done: callback});
+    if (styles.length > 0) {
+      this.mapsInterface.proxy.locationStyleController.loadLocationStyles(styles, {done: callback});
+    } else {
+      // no styles are to load, execute callback
+      callback();
     }
   }
 

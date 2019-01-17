@@ -93,43 +93,10 @@ export class FeatureHandler {
    * @param feature
    */
   deleteFeature(feature) {
-    let layerId = feature.get('layerId');
-    let layer = this.mapsInterface.getLayerFromArray(layerId);
-    this.checkParentsForDeletion(layer);
-    this.mapsInterface.removeLayerFromArray(layerId);
-    let projectId = this.editor.currentProject.id;
-    let request = new C4GAjaxRequest(this.editor.dataBaseUrl + projectId + "/" + layerId, "DELETE");
-    request.execute();
+    // TODO deprecated, remove
   }
 
-  /**
-   * Checks the parents of the given layer. If their childs array is empty after deletion,
-   * the parents will be deleted as well.
-   * @param layer
-   */
-  checkParentsForDeletion(layer) {
-    let pid = layer.pid;
-    const layers = this.mapsInterface.getLayerArray();
-    if (layers[pid]) {
-      // the layer has a parent
-      let parentLayer = layers[pid];
-      if (parentLayer.childsCount === 1) {
-        // parent layer would be empty after deletion
-        if (layers[parentLayer.pid]) {
-          this.checkParentsForDeletion(parentLayer);
-        }
-        this.mapsInterface.removeLayerFromArray(parentLayer.id);
-      }
-      else {
-        for (let i = 0; i < parentLayer.childs.length; i++) {
-          if (parentLayer.childs[i].id === layer.id) {
-            // remove layer from parentLayer childs
-            parentLayer.childs.splice(i, 1);
-          }
-        }
-      }
-    }
-  }
+
 
   /**
    * Applies the given changes to a given feature/layer and sends a PUT request to the server.
@@ -455,7 +422,7 @@ export class FeatureHandler {
     let request = new C4GAjaxRequest("/con4gis/projectIdService", "POST");
     request.addRequestData({
       id: element.id,
-      key: element.categoryid,
+      key: element.categoryId,
       ident: 99
     });
     request.addDoneCallback(function (data) {

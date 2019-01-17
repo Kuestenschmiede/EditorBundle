@@ -5,6 +5,9 @@
   "env": {
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "development": {
+      "plugins": ["transform-class-properties"]
     }
   },
   "ignore": [

@@ -1,32 +1,17 @@
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
-import {projectEditorLang} from "./c4g-project-editor-i18n-de";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
-let langConstants = {};
-
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
-langConstants = $.extend(langConstants, projectEditorLang);
+import {langConstants} from "./c4g-editor-i18n";
 
 /**
- * Class for creating all view elements that interact with feature data. Handles all events that are fired on these view
- * elements.
+ * Class for creating all view elements that interact with elements.
  */
-export class DataUIController {
+export class ElementUIController {
 
-  constructor(editor, selectInteraction) {
+  constructor(editor, selectInteraction, elementController) {
     this.editor = editor;
     this.selectInteraction = selectInteraction;
+    this.elementController = elementController;
   }
 
   /**
@@ -45,7 +30,7 @@ export class DataUIController {
   }
 
   modifyFeatureFunction(event) {
-    var modifyFeature,
+    let modifyFeature,
       featureGeometry,
       translateInteraction,
       modifyInteraction,
@@ -139,7 +124,7 @@ export class DataUIController {
     }
 
     this.selectInteraction.selectInteraction.setActive(true);
-    applyButton = applyButton.parentNode.replaceChild(modifyButton, applyButton);
+    applyButton.parentNode.replaceChild(modifyButton, applyButton);
     scope.editor.applyFeatureModification = false;
     // call featurehandler
     scope.editor.featureHandler.modifyFeature(modifyFeature, change);
@@ -172,7 +157,7 @@ export class DataUIController {
     const confirmButton = document.createElement("button");
     $(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
     $(confirmButton).on('click', function(event) {
-      scope.deleteFeature(featureId);
+      scope.handleDeleteFeatureEvent(featureId);
     });
     container.appendChild(confirmButton);
     const cancelButton = document.createElement("button");
@@ -184,23 +169,14 @@ export class DataUIController {
     this.addToEditor(container);
   }
 
-  deleteFeature(featureIndex) {
+  handleDeleteFeatureEvent(featureIndex) {
     let featureSource,
       deleteFeature;
 
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     deleteFeature = selectedFeatures.item(featureIndex);
-    let layerId = deleteFeature.get('layerId');
-    featureSource = this.editor.featureHandler.getSourceForLayerId(layerId);
-    // remove Feature from the source
-    featureSource.removeFeature(deleteFeature);
-    // and from the selection
-    selectedFeatures.remove(deleteFeature);
-    // call feature handler
-    this.editor.featureHandler.deleteFeature(deleteFeature);
-    // rerender the selectionList
-    this.selectInteraction.fnHandleSelection(selectedFeatures);
-    this.editor.mapsInterface.updateStarboard();
+    this.elementController.deleteFeature(deleteFeature);
+
   }
 
   /**
@@ -213,9 +189,22 @@ export class DataUIController {
     editButtonElement.title = langConstants.METADATA_EDIT;
     editButtonElement.setAttribute('feat_id', index);
     $(editButtonElement).click(function(event) {
-      scope.editFeature(event);
+      scope.handleEditFeatureEvent(event);
     });
     return editButtonElement;
+  }
+
+  handleEditFeatureEvent(event) {
+    let scope = this;
+    let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
+    let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
+    let layerId = feature.get('layerId');
+    let url = "/con4gis/projectDataForm/" + this.editor.currentProject.id + "/" + layerId;
+    let request = new C4GAjaxRequest(url);
+    request.addDoneCallback(function(data) {
+      scope.showEditDataDialog(data.headline, data.form, url, feature);
+    });
+    request.execute();
   }
 
   showEditDataDialog(headline, form, url, feature) {
@@ -256,10 +245,8 @@ export class DataUIController {
           scope.editor.selectView.selectContent.prepend(label);
         } else {
           // get the layer that contains the feature
-          let layer = scope.editor.mapsInterface.getLayerFromArray(feature.get('layerId'));
-          scope.editor.featureHandler.updateLayer(data, layer, feature);
-          scope.reloadSelectedFeatureView();
-          scope.editor.mapsInterface.updateStarboard();
+          scope.elementController.editFeature(data, feature);
+
         }
       });
       request.execute();
@@ -267,19 +254,6 @@ export class DataUIController {
     jQuery(document.getElementById("cancel-dialog")).on("click", function(event) {
       scope.reloadSelectedFeatureView();
     });
-  }
-
-  editFeature(event) {
-    let scope = this;
-    let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
-    let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
-    let layerId = feature.get('layerId');
-    let url = "/con4gis/projectDataForm/" + this.editor.currentProject.id + "/" + layerId;
-    let request = new C4GAjaxRequest(url);
-    request.addDoneCallback(function(data) {
-      scope.showEditDataDialog(data.headline, data.form, url, feature);
-    });
-    request.execute();
   }
 
   /**
@@ -292,22 +266,16 @@ export class DataUIController {
     copyButtonElement.title = langConstants.DUPLICATE_ELEMENT;
     copyButtonElement.setAttribute('feat_id', index);
     $(copyButtonElement).click(function(event) {
-      scope.copyFeature(event);
+      scope.handleCopyFeatureEvent(event);
     });
     return copyButtonElement;
   }
 
-  copyFeature(event) {
+  handleCopyFeatureEvent(event) {
     let scope = this;
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
-    let layerId = feature.get('layerId');
-    let url = "/con4gis/projectDataCopy/" + this.editor.currentProject.id + "/" + layerId;
-    let request = new C4GAjaxRequest(url, "POST");
-    request.addDoneCallback(function(data) {
-      scope.selectInteraction.showNewLayer(data.layer, true)
-    });
-    request.execute();
+    this.elementController.copyFeature(feature);
     scope.editor.spinner.show();
   }
 
@@ -321,12 +289,12 @@ export class DataUIController {
     displaceButtonElement.title = langConstants.DISPLACE_ELEMENT;
     displaceButtonElement.setAttribute('feat_id', index);
     $(displaceButtonElement).click(function(event) {
-      scope.displaceFeature(event, false);
+      scope.handleDisplaceFeatureEvent(event, false);
     });
     return displaceButtonElement;
   }
 
-  displaceFeature(event, opt_copy) {
+  handleDisplaceFeatureEvent(event, opt_copy) {
     let scope = this;
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
@@ -358,59 +326,7 @@ export class DataUIController {
       scope.reloadSelectedFeatureView();
     });
     $(confirmButton).on('click', function(event) {
-      let url = "";
-      let oldLayer = scope.editor.mapsInterface.getLayerFromArray(layerId);
-      let oldParent = scope.editor.mapsInterface.getLayerFromArray(oldLayer.pid);
-      if (withCopy) {
-        url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + true;
-      } else {
-        url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + false;
-        // move layer
-        for (let i = 0; i < oldParent.childs.length; i++) {
-          if (oldParent.childs[i] === oldLayer) {
-            oldParent.childs.splice(i, 1);
-          }
-        }
-      }
-      let request = new C4GAjaxRequest(url, "POST");
-      request.addDoneCallback(function(data) {
-        let newProjectId = parseInt(data.newProjectId, 10);
-        feature.set('projectId', newProjectId);
-        // and from the selection
-        selectedFeatures.remove(feature);
-        let layer;
-        if (withCopy) {
-          layer = new C4gLayer(oldLayer);
-        } else {
-          layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
-        }
-        let newLayerId = data.id;
-        let newPid = data.pid;
-        layer.projectId = newProjectId;
-        layer.id = newLayerId;
-        layer.content[0].id = parseInt(newLayerId, 10);
-        layer.pid = newPid;
-        const fnCallback = function(parent) {
-          parent.childs = parent.childs || [];
-          parent.childs.push(layer);
-          parent.childsCount++;
-          if (!withCopy) {
-            scope.editor.mapsInterface.hideLayer(layerId);
-          }
-          scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
-          scope.editor.mapsInterface.updateStarboard();
-          scope.selectInteraction.fnHandleSelection(selectedFeatures);
-        };
-        if (!scope.editor.mapsInterface.getLayerFromArray(newPid)) {
-          // element layer does not exist in the project yet
-          scope.editor.layerLoader.getElementLayer(feature, layer, newProjectId, fnCallback);
-        } else {
-          let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
-          fnCallback(parent);
-        }
-        console.log(scope.editor.mapsInterface.getLayerArray());
-      });
-      request.execute();
+      scope.elementController.displaceElement(layerId, withCopy);
     });
     formContainer.appendChild(projectSelect);
     formContainer.appendChild(confirmButton);
@@ -428,13 +344,14 @@ export class DataUIController {
     copyDisplaceButton.title = langConstants.DUPLICATE_AND_DELETE;
     copyDisplaceButton.setAttribute('feat_id', index);
     $(copyDisplaceButton).click(function(event) {
-      scope.displaceFeature(event, true);
+      scope.handleDisplaceFeatureEvent(event, true);
     });
     return copyDisplaceButton;
   }
 
   /**
    * Reloads the overview of the selected features and the possible operations.
+   * TODO should only call reload() of selectInteraction
    */
   reloadSelectedFeatureView() {
     const features = this.selectInteraction.selectInteraction.getFeatures();
