@@ -14,8 +14,8 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\EditorDrawStyles;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
-use con4gis\EditorBundle\Entity\EditorMapCategory;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElementCategory;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,7 +46,7 @@ class EditorConfigurationListener
         $eventname,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $elements = $this->entityManager->getRepository(EditorMapElement::class)->findAll();
+        $elements = $this->entityManager->getRepository(EditorElementType::class)->findAll();
         $event->setElements($elements);
     }
 
@@ -61,7 +61,7 @@ class EditorConfigurationListener
         $eventname,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $catRepo = $this->entityManager->getRepository(EditorMapCategory::class);
+        $catRepo = $this->entityManager->getRepository(EditorElementCategory::class);
         $elements = $event->getElements();
         $categorIds = [];
         $categories = [];
@@ -164,7 +164,7 @@ class EditorConfigurationListener
         foreach ($styleArray as $key => $drawStyle) {
             $arrCategories = [];
             $drawStyles[$key] = [];
-            /** @var EditorMapCategory $category */
+            /** @var EditorElementCategory $category */
             foreach ($categories as $cid  => $category) {
                 $arrCategory = [];
                 $arrCategory['id'] = $cid;

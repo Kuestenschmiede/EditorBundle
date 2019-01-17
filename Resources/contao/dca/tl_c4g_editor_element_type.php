@@ -12,9 +12,10 @@
 
 
 /**
- * Table tl_module
+ * Table tl_c4g_editor_element_type
  */
-$strName = 'tl_c4g_editor_map_element';
+$strName = 'tl_c4g_editor_element_type';
+$cbClass = \con4gis\EditorBundle\Classes\Contao\Callbacks\TlEditorElementType::class;
 
 $GLOBALS['TL_DCA'][$strName] = array
 (
@@ -23,8 +24,6 @@ $GLOBALS['TL_DCA'][$strName] = array
     (
         'dataContainer'     => 'Table',
         'enableVersioning'  => 'true',
-        'onload_callback'             => array(
-            array($strName, 'updateDCA')),
         'onsubmit_callback'             => array(
             array('\con4gis\EditorBundle\Classes\Cache\C4GEditorAutomator', 'purgeEditorConfigCache')
         ),
@@ -181,7 +180,7 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'               => true,
             'default'                 => '',
             'inputType'             => 'checkbox',
-            'options_callback'      => array('tl_c4g_editor_map_element','getCategoryList'),
+            'options_callback'      => array($cbClass,'getCategoryList'),
             'eval'                  => array(
                 'multiple' => true,
                 'mandatory' => true,
@@ -199,7 +198,7 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'checkboxWizard',
-            'options_callback'        => array('tl_c4g_editor_map_element','getPluginList'),
+            'options_callback'        => array($cbClass,'getPluginList'),
             'eval'                  => array(
                 'multiple' => true,
                 'mandatory' => true,
@@ -210,148 +209,3 @@ $GLOBALS['TL_DCA'][$strName] = array
     )
 );
 
-
-/**
- * Class tl_c4g_editor_map_element
- */
-class tl_c4g_editor_map_element extends Backend
-{
-    /**
-     * Import the back end user object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('BackendUser', 'User');
-    }
-
-    /**
-     * Get a list of all available scenarios
-     * @return array()
-     */
-    public function getCategoryList()
-    {
-        $categoryRepo = \Contao\System::getContainer()->get('doctrine.orm.entity_manager')
-            ->getRepository(\con4gis\EditorBundle\Entity\EditorMapCategory::class);
-        $categories = $categoryRepo->findAll();
-        uasort($categories, function ($a, $b) {
-            return strcmp($a->getCaption(), $b->getCaption());
-        });
-        foreach ($categories as $category) {
-            $return[$category->getId()] = $category->getCaption();
-        }
-        return $return;
-    }
-
-//    /**
-//     * Get a list of all available scenarios
-//     * @return array()
-//     */
-//    public function getScenarioList()
-//    {
-//        $szenarios = \con4gis\MapsProjectBundle\Resources\contao\models\MapsProjectScenarioModel::findAll();
-//        foreach ($szenarios as $szenario) {
-//            $return[$szenario->id] = $szenario->caption;
-//        }
-//        return $return;
-//    }
-
-    public function getDrawStyles()
-    {
-        $strName = 'tl_c4g_editor_map_element';
-
-        return array(
-            'point' => $GLOBALS['TL_LANG'][$strName]['point'],
-            'linestring' => $GLOBALS['TL_LANG'][$strName]['linestring'],
-            'polygon' => $GLOBALS['TL_LANG'][$strName]['polygon'],
-            'freehand' => $GLOBALS['TL_LANG'][$strName]['freehand'],
-            'circle' => $GLOBALS['TL_LANG'][$strName]['circle']
-        );
-    }
-
-    public function getPluginList()
-    {
-        $event = new \con4gis\EditorBundle\Classes\Events\LoadPluginsEvent();
-        $dispatcher = \Contao\System::getContainer()->get('event_dispatcher');
-        $dispatcher->dispatch($event::NAME, $event);
-        $configs = $event->getConfigs();
-        $return = [];
-        foreach ($configs as $config) {
-            if ($config->getDataPlugin()) {
-                $return[$config->getId()] = $config->getName() . " (" . $config->getId() . ")";
-            }
-        }
-        return $return;
-    }
-
-    public function updateDCA(DataContainer $dc)
-    {
-        if (!$dc->id) return;
-
-        $objMap = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_map_element WHERE id=?")
-            ->limit(1)
-            ->execute($dc->id);
-        if ($objMap->numRows > 0) {
-            if ($objMap->plugins) {
-                $event = new \con4gis\EditorBundle\Classes\Events\LoadPluginsEvent();
-                $dispatcher = \Contao\System::getContainer()->get('event_dispatcher');
-                $dispatcher->dispatch($event::NAME, $event);
-                $configs = $event->getConfigs();
-                foreach ($configs as $config) {
-                    if ($config->getBackend()) {
-                        foreach (unserialize($objMap->plugins) as $plugin) {
-                            if ($plugin == $config->getId()) {
-                                $pluginClass = $config->getDataPlugin();
-                                if ($pluginClass) {
-                                    $pluginObj = new $pluginClass($config);
-                                    $fields = $pluginObj->getBackendFields();
-                                    if ($fields) {
-                                        $palette = ';{'.$config->getId().'_legend'.'}';
-                                        foreach ($fields as $field => $valArr) {
-                                            $palette .= ','.$field;
-                                            $fields[$field]['pluginId'] = $config->getId();
-                                        }
-
-                                        $GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['palettes']['default'] .= $palette;
-                                        $GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'] = array_merge($GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'], $fields);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public function loadField($varValue, DataContainer $dc)
-    {
-        $result = $varValue;
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_maps_project_element_defaults WHERE pid=? AND pluginField=?")
-            ->limit(1)
-            ->execute($dc->id, $dc->field);
-        if ($objMap->numRows > 0) {
-            $result = $objMap->pluginValue;
-        }
-
-        return $result;
-    }
-
-    public function saveField($varValue, DataContainer $dc)
-    {
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_maps_project_element_defaults WHERE pid=? AND pluginField=?")
-            ->limit(1)
-            ->execute($dc->id, $dc->field);
-
-        if ($objMap->numRows > 0) {
-            $this->Database->prepare("UPDATE tl_c4g_maps_project_element_defaults SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
-                ->execute(time(), $varValue, $dc->id, $dc->field);
-        } else {
-            $pluginId = intval($GLOBALS['TL_DCA']['tl_c4g_editor_map_element']['fields'][$dc->field]['pluginId']);
-            $this->Database->prepare("INSERT INTO tl_c4g_maps_project_element_defaults SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
-                ->execute(time(), $dc->id, $pluginId, $dc->field, $varValue);
-        }
-
-        return null;
-    }
-}

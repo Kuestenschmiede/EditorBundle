@@ -7,10 +7,10 @@
  */
 /**
  * Project data sind die tatsächlich eingetragenen Elemente. Diese haben eine Kategorie (z.B. Fahrzeug, Einheit oder Schießbude)
- * und gehören zu einem PRojekt.
+ * und gehören zu einem Projekt.
  */
 
-$strName = 'tl_c4g_editor_map_data';
+$strName = 'tl_c4g_editor_element';
 
 /** FIELDS */
 $GLOBALS['TL_LANG'][$strName]['name'] = array("Bezeichnung","Bezeichnung");

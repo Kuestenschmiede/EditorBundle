@@ -14,7 +14,7 @@
 /**
  * Table tl_module
  */
-$strName = 'tl_c4g_editor_map_category';
+$strName = 'tl_c4g_editor_element_category';
 
 $GLOBALS['TL_DCA'][$strName] = array
 (
@@ -110,22 +110,3 @@ $GLOBALS['TL_DCA'][$strName] = array
     )
 );
 
-
-/* Class tl_mapcil_component_types
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * @package   con4gis_mapcil
- * @author    Matthias Eilers
- * @copyright Küstenschmiede GmbH Software & Design 2015
-*/
-class tl_c4g_editor_map_category extends Backend
-{
-    /**
-     * Import the back end user object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('BackendUser', 'User');
-    }
-}

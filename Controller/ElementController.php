@@ -15,8 +15,8 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
-use con4gis\EditorBundle\Entity\EditorMapData;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElement;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,14 +35,14 @@ class ElementController extends BaseController
         $this->initialize();
         // get element id from layer id
         $realLayerId = C4GBrickCommon::getLayerIDParam($layerId, "id");
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realLayerId]);
         if (!$data) {
             return new Response(sprintf("Data with ID %s not found", $realLayerId), 404);
         }
         $cid = $data->getCategoryid();
         $eid = $data->getTypeid();
-        $element = $this->entityManager->getRepository(EditorMapElement::class)
+        $element = $this->entityManager->getRepository(EditorElementType::class)
             ->findOneBy(['id' => $eid]);
         if (!$element) {
             return new Response(sprintf("Element with ID %s not found", $eid), 404);

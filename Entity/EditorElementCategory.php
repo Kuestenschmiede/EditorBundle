@@ -16,13 +16,13 @@ use \Doctrine\ORM\Mapping as ORM;
 use con4gis\CoreBundle\Entity\BaseEntity;
 
 /**
- * Class EditorMapCategory
+ * Class EditorElementCategory
  *
  * @ORM\Entity
- * @ORM\Table(name="tl_c4g_editor_map_category")
+ * @ORM\Table(name="tl_c4g_editor_element_category")
  * @package con4gis\EditorBundle\Entity
  */
-class EditorMapCategory extends BaseEntity
+class EditorElementCategory extends BaseEntity
 {
     /**
      * @var int
@@ -54,7 +54,7 @@ class EditorMapCategory extends BaseEntity
 
     /**
      * @param int $id
-     * @return EditorMapCategory
+     * @return EditorElementCategory
      */
     public function setId($id)
     {
@@ -72,7 +72,7 @@ class EditorMapCategory extends BaseEntity
 
     /**
      * @param int $tstamp
-     * @return EditorMapCategory
+     * @return EditorElementCategory
      */
     public function setTstamp($tstamp)
     {
@@ -90,7 +90,7 @@ class EditorMapCategory extends BaseEntity
 
     /**
      * @param string $caption
-     * @return EditorMapCategory
+     * @return EditorElementCategory
      */
     public function setCaption($caption)
     {

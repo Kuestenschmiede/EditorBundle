@@ -14,7 +14,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\ChangeDataEvent;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
@@ -45,7 +45,7 @@ class ChangeDataListener
         $dataId = $event->getDataId();
         $cleanId = C4GBrickCommon::getLayerIDParam($dataId, "id");
         $projectId = $event->getProjectId();
-        $dataRepo = $this->entityManager->getRepository(EditorMapData::class);
+        $dataRepo = $this->entityManager->getRepository(EditorElement::class);
         $entity = $dataRepo->findOneBy([
             'id' => $cleanId,
             'projectid' => $projectId

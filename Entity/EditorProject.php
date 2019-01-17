@@ -16,13 +16,13 @@ use \Doctrine\ORM\Mapping as ORM;
 use con4gis\CoreBundle\Entity\BaseEntity;
 
 /**
- * Class EditorMapProject
+ * Class EditorProject
  *
  * @ORM\Entity
- * @ORM\Table(name="tl_c4g_editor_map_project")
+ * @ORM\Table(name="tl_c4g_editor_project")
  * @package con4gis\EditorBundle\Entity
  */
-class EditorMapProject extends BaseEntity
+class EditorProject extends BaseEntity
 {
     /**
      * @var int

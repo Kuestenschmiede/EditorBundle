@@ -16,7 +16,7 @@ namespace con4gis\EditorBundle\Classes\Plugins;
 use con4gis\EditorBundle\Classes\Events\CreateDataEvent;
 use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
 use con4gis\EditorBundle\Classes\Plugins\AbstractDataPlugin;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GDateField;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GLastChangeField;
@@ -29,7 +29,7 @@ class DefaultDataPlugin extends AbstractDataPlugin
 {
     public function getData($dataId, $fieldList, $entityManager)
     {
-        $entity = $entityManager->getRepository(EditorMapData::class)->findOneBy([
+        $entity = $entityManager->getRepository(EditorElement::class)->findOneBy([
             'id' => $dataId
         ]);
         $data = [];
@@ -84,7 +84,7 @@ class DefaultDataPlugin extends AbstractDataPlugin
 
     public function getEntityClass()
     {
-        return EditorMapData::class;
+        return EditorElement::class;
     }
 
     public function getBackendFields()

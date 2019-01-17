@@ -10,7 +10,7 @@
  * Project Elements sind die einzelnen Arten von Kartenelementen, die über den Editor auf die Karte gezogen werden können.
  */
 
-$strName = 'tl_c4g_editor_map_element';
+$strName = 'tl_c4g_editor_element_type';
 
 /** FIELDS */
 $GLOBALS['TL_LANG'][$strName]['name'] = array("Name", "Geben Sie den Namen für das Element ein. Dieser wird nur Backend dargestellt.");

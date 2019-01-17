@@ -16,13 +16,13 @@ use \Doctrine\ORM\Mapping as ORM;
 use con4gis\CoreBundle\Entity\BaseEntity;
 
 /**
- * Class EditorMapElement
+ * Class EditorElementType
  *
  * @ORM\Entity
- * @ORM\Table(name="tl_c4g_editor_map_element")
+ * @ORM\Table(name="tl_c4g_editor_element_type")
  * @package con4gis\EditorBundle\Entity
  */
-class EditorMapElement extends BaseEntity
+class EditorElementType extends BaseEntity
 {
     /**
      * @var int
@@ -99,7 +99,7 @@ class EditorMapElement extends BaseEntity
     protected $plugins = [];
 
     /**
-     * EditorMapElement constructor.
+     * EditorElementType constructor.
      */
     public function __construct()
     {
@@ -116,7 +116,7 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param int $id
-     * @return EditorMapElement
+     * @return EditorElementType
      */
     public function setId($id)
     {
@@ -134,7 +134,7 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param int $tstamp
-     * @return EditorMapElement
+     * @return EditorElementType
      */
     public function setTstamp($tstamp)
     {
@@ -152,7 +152,7 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param string $name
-     * @return EditorMapElement
+     * @return EditorElementType
      */
     public function setName($name)
     {
@@ -171,7 +171,7 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param string $caption
-     * @return EditorMapElement
+     * @return EditorElementType
      */
     public function setCaption($caption)
     {
@@ -269,7 +269,7 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param array $categories
-     * @return EditorMapElement
+     * @return EditorElementType
      */
     public function setCategories($categories)
     {
@@ -287,9 +287,9 @@ class EditorMapElement extends BaseEntity
 
     /**
      * @param array $scenarios
-     * @return EditorMapElement
+     * @return EditorElementType
      */
-    public function setScenarios(array $scenarios): EditorMapElement
+    public function setScenarios(array $scenarios): EditorElementType
     {
         $this->scenarios = $scenarios;
         return $this;

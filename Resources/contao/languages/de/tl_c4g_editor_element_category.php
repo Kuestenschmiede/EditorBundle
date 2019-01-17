@@ -9,7 +9,7 @@
  * Project categories sind die einzelnen Kategorien, nach denen Elemente gruppiert sind. Dies sind etwa "Fahrzeuge",
  * "Schießbuden" o.Ä.
  */
-$strName = 'tl_c4g_editor_map_category';
+$strName = 'tl_c4g_editor_element_category';
 
 /** FIELDS */
 $GLOBALS['TL_LANG'][$strName]['caption'] = array("Kategoriename", "Geben Sie eine Bezeichnung für die Kategorie ein.");

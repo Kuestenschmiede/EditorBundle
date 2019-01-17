@@ -55,7 +55,7 @@ The structure of the plugins.json file is as follows:
       "id": 1,
       "projectPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\DefaultProjectPlugin",
       "dataPlugin": "con4gis\\MapsProjectBundle\\Classes\\Plugins\\DefaultDataPlugin",
-      "language": [tl_c4G_editormap_data, "fe_second_lang_file"]
+      "language": ["tl_c4g_editor_element", "fe_second_lang_file"]
     },
     {
       "name": "Second Plugin",

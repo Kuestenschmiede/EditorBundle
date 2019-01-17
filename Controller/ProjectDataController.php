@@ -28,7 +28,7 @@ use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
 use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
 use con4gis\EditorBundle\Entity\EditorMapProject;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Doctrine\ORM\ORMException;
@@ -73,7 +73,7 @@ class ProjectDataController extends BaseController
 
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
 
         $instEvent = new InstantiateDataPluginsEvent();
@@ -128,7 +128,7 @@ class ProjectDataController extends BaseController
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
         $instEvent = new InstantiateDataPluginsEvent();
         $instEvent->setPluginConfigs($loadEvent->getConfigs());
@@ -148,7 +148,7 @@ class ProjectDataController extends BaseController
     public function displaceDataAction(Request $request, $dataId, $newProjectId, $copy)
     {
         $this->initialize();
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
         $project = $this->entityManager->getRepository(EditorMapProject::class)
             ->findOneBy(['id' => $newProjectId]);
@@ -157,7 +157,7 @@ class ProjectDataController extends BaseController
             $loadEvent = new LoadPluginsEvent();
             $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
             $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
-            $data = $this->entityManager->getRepository(EditorMapData::class)
+            $data = $this->entityManager->getRepository(EditorElement::class)
                 ->findOneBy(['id' => $realId]);
             $instEvent = new InstantiateDataPluginsEvent();
             $instEvent->setPluginConfigs($loadEvent->getConfigs());
@@ -208,7 +208,7 @@ class ProjectDataController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
@@ -232,7 +232,7 @@ class ProjectDataController extends BaseController
             return new Response("No user logged in!", 403);
         }
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
         $loadEvent = new LoadPluginsEvent();
         $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);

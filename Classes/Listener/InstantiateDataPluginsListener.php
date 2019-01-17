@@ -15,7 +15,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
 use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
@@ -48,7 +48,7 @@ class InstantiateDataPluginsListener
     ) {
         $dataId = $event->getElementId();
         $element = $this->entityManager
-            ->getRepository(EditorMapElement::class)
+            ->getRepository(EditorElementType::class)
             ->findOneBy(['id' => $dataId]);
         if ($element) {
             $event->setElement($element);

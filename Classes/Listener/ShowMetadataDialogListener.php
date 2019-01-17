@@ -16,8 +16,8 @@ namespace con4gis\EditorBundle\Classes\Listener;
 use con4gis\EditorBundle\Classes\Events\ShowMetadataDialogEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
-use con4gis\EditorBundle\Entity\EditorMapData;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElement;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickConst;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
@@ -64,7 +64,7 @@ class ShowMetadataDialogListener
     ) {
         $dialogParams = new C4GBrickDialogParams(EditorBrickTypes::BRICK_GENERIC_PROJECT,
             C4GBrickViewType::GROUPPROJECT);
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $event->getDataId()]);
         $dialogParams->addButton(C4GBrickConst::BUTTON_SAVE);
         $dialogParams->setProjectId($event->getProjectId());
@@ -105,10 +105,10 @@ class ShowMetadataDialogListener
     ) {
         $dialogParams = $event->getDialogParams();
         $dataid = $event->getDataId();
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $dataid]);
         $typeid = $data->getTypeid();
-        $caption = $this->entityManager->getRepository(EditorMapElement::class)
+        $caption = $this->entityManager->getRepository(EditorElementType::class)
             ->findOneBy(['id' => $typeid])->getCaption();
 
         $fieldList = $event->getFieldList();

@@ -15,12 +15,12 @@ array_insert($GLOBALS['BE_MOD'], array_search('content', array_keys($GLOBALS['BE
     (
         'EditorMapCategories' => array
         (
-            'tables'    => array('tl_c4g_editor_map_category')
+            'tables'    => array('tl_c4g_editor_element_category')
         ),
 
         'EditorMapElements' => array
         (
-            'tables'    => array('tl_c4g_editor_map_element')
+            'tables'    => array('tl_c4g_editor_element_type')
         ),
         'plugins' => array
         (
@@ -33,4 +33,4 @@ $GLOBALS['c4g_locationtypes'][] = \con4gis\EditorBundle\Classes\EditorBrickTypes
 
 $GLOBALS['con4gis']['api-caching'][] = "projectEditorService";
 
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array(\con4gis\EditorBundle\Classes\ReplaceInsertTags::class, 'replaceTag');
+//$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array(\con4gis\EditorBundle\Classes\ReplaceInsertTags::class, 'replaceTag');
