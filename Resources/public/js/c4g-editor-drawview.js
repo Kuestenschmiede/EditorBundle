@@ -261,62 +261,119 @@ export class EditorDrawview {
     let filterInput = document.createElement("input");
 
     filterDiv.appendChild(filterInput);
-    $(filterInput).keyup(function(){
-      function filterProject(){
-        let matchedCategoryIds = [];
-        let matchedElementIds = [];
-        for(let drawstyleType in scope.editor.drawStyles){
-          if(scope.editor.drawStyles.hasOwnProperty(drawstyleType)){
-            const drawstyle = scope.editor.drawStyles[drawstyleType];
-            for(let categoryId in drawstyle.categories){
-              const category = drawstyle.categories[categoryId];
-              // category name contains input string
-              if(category.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){ //Category checked. Show all elements
-                matchedCategoryIds.push(category.id);
-                for(let elementId in category.elementTypes){
-                  matchedElementIds.push(category.elementTypes[elementId].id);
-                }
-              }
-              else{
-                for(let elementId in category.elementTypes){
-                  const element = category.elementTypes[elementId];
-                  if(element.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){
-                    matchedElementIds.push(element.id);
-                    matchedCategoryIds.push(category.id);
-                  }
-                }
-              }
+    $(filterInput).keyup(function() {
+      // function filterProject(){
+      //   let matchedCategoryIds = [];
+      //   let matchedElementIds = [];
+      //   for(let drawstyleType in scope.editor.drawStyles){
+      //     if(scope.editor.drawStyles.hasOwnProperty(drawstyleType)){
+      //       const drawstyle = scope.editor.drawStyles[drawstyleType];
+      //       for(let categoryId in drawstyle.categories){
+      //         const category = drawstyle.categories[categoryId];
+      //         // category name contains input string
+      //         if(category.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){ //Category checked. Show all elements
+      //           matchedCategoryIds.push(category.id);
+      //           for(let elementId in category.elementTypes){
+      //             matchedElementIds.push(category.elementTypes[elementId].id);
+      //           }
+      //         }
+      //         else{
+      //           for(let elementId in category.elementTypes){
+      //             const element = category.elementTypes[elementId];
+      //             if(element.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){
+      //               matchedElementIds.push(element.id);
+      //               matchedCategoryIds.push(category.id);
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      //   const allCategories = document.getElementsByClassName('c4g-category-headline');
+      //   for(let category in allCategories){
+      //     if(allCategories.hasOwnProperty(category)){
+      //       allCategories[category].style.display = 'none';
+      //     }
+      //   }
+      //   const allElements = document.getElementsByClassName('c4g-draw-trigger');
+      //   for(let element in allElements){
+      //     if(allElements.hasOwnProperty(element)){
+      //       allElements[element].style.display = 'none';
+      //     }
+      //   }
+      //   for(let category in matchedCategoryIds){
+      //     let div = document.getElementById('category-headline-' + matchedCategoryIds[category]);
+      //     div.style.display = ""
+      //   }
+      //   for(let element in matchedElementIds){
+      //     let div = document.getElementById('element-' + matchedElementIds[element]);
+      //     div.style.display = ""
+      //   }
+      //
+      // }
+      // setTimeout( function(){
+      //   // two or zero letters are required
+      //   if (filterInput.value.length !== 1) {
+      //     filterProject();
+      //   }
+      // }, 350);
+      // TODO funktioniert das auch, wenn ein Elementtyp in mehreren Kategorien ist?
+      let filterString = $(this).val();
+      if (filterString.length === 0) {
+        return;
+      }
+      let matchedCatIds = [];
+      let matchedElemIds = [];
+      for (let i = 0; i < scope.categories.length; i++) {
+        let currentCategory = scope.categories[i];
+        if (currentCategory.name.toUpperCase().indexOf(filterString.toUpperCase()) >= 0) {
+          // category matches the filter string
+          matchedCatIds.push(currentCategory.id);
+        }
+        for (let j = 0; j < currentCategory.elementTypes.length; j++) {
+          let currentType = currentCategory.elementTypes[j];
+          // if category matched, show Element
+          if (currentCategory.name.toUpperCase().indexOf(filterString.toUpperCase()) >= 0) {
+            matchedElemIds.push(currentType.id);
+          }
+          if (currentType.name.toUpperCase().indexOf(filterString.toUpperCase()) >= 0) {
+            // add category unless it's been added already
+            if (!matchedCatIds.includes(currentCategory.id)) {
+              matchedCatIds.push(currentCategory.id);
+            }
+            // add element
+            if (!matchedElemIds.includes(currentType.id)) {
+              matchedElemIds.push(currentType.id);
             }
           }
         }
         const allCategories = document.getElementsByClassName('c4g-category-headline');
-        for(let category in allCategories){
-          if(allCategories.hasOwnProperty(category)){
+        for (let category in allCategories) {
+          if (allCategories.hasOwnProperty(category)) {
             allCategories[category].style.display = 'none';
           }
         }
         const allElements = document.getElementsByClassName('c4g-draw-trigger');
-        for(let element in allElements){
-          if(allElements.hasOwnProperty(element)){
+        for (let element in allElements) {
+          if (allElements.hasOwnProperty(element)) {
             allElements[element].style.display = 'none';
           }
         }
-        for(let category in matchedCategoryIds){
-          let div = document.getElementById('category-headline-' + matchedCategoryIds[category]);
+        for (let category in matchedCatIds) {
+          let div = document.getElementById('category-headline-' + matchedCatIds[category]);
           div.style.display = ""
         }
-        for(let element in matchedElementIds){
-          let div = document.getElementById('element-' + matchedElementIds[element]);
+        for (let element in matchedElemIds) {
+          let div = document.getElementById('element-' + matchedElemIds[element]);
           div.style.display = ""
         }
 
+        // TODO check if current category name matches filterString
+        // TODO if yes, show category and all elements
+        // TODO if no, check the elements
+        // TODO each of them matching the string will be displayed, and if it's one or more the category gets displayed
+        // TODO if no element matches, hide the category
       }
-      setTimeout( function(){
-        // two or zero letters are required
-        if (filterInput.value.length !== 1) {
-          filterProject();
-        }
-      }, 350);
     });
     return filterDiv;
   }
