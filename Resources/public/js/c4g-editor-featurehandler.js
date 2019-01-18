@@ -99,9 +99,8 @@ export class FeatureHandler {
     layer = this.updateLayerProperties(changes, layer, feature);
     this.mapsInterface.updateLayerIndex(layerId, layer);
     this.mapsInterface.updateStarboard();
-    let request = new C4GAjaxRequest(this.editor.dataBaseUrl + this.editor.currentProject.id + "/" + layer.id, "PUT");
-    request.addRequestData(changes);
-    request.execute();
+    let url = this.editor.dataBaseUrl + this.editor.projectController.currentProject.id + "/" + layer.id;
+    $.ajax(url, {method: 'PUT', data: changes});
   }
 
   /**

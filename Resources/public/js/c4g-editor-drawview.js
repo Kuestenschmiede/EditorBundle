@@ -270,6 +270,7 @@ export class EditorDrawview {
             const drawstyle = scope.editor.drawStyles[drawstyleType];
             for(let categoryId in drawstyle.categories){
               const category = drawstyle.categories[categoryId];
+              // category name contains input string
               if(category.name.toUpperCase().indexOf(filterInput.value.toUpperCase()) >= 0){ //Category checked. Show all elements
                 matchedCategoryIds.push(category.id);
                 for(let elementId in category.elementTypes){
@@ -283,7 +284,6 @@ export class EditorDrawview {
                     matchedElementIds.push(element.id);
                     matchedCategoryIds.push(category.id);
                   }
-
                 }
               }
             }

@@ -24,8 +24,8 @@ export class EditorSelectInteraction {
     let selectInteraction = new ol.interaction.Select({
       filter: function(feature, layer) {
         // returns true when the projectId of the given feature equals the current project id
-        if (feature && typeof feature.get === "function" && editor.currentProject) {
-          return feature.get('projectId') === editor.currentProject.id;
+        if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+          return feature.get('projectId') === editor.projectController.currentProject.id;
         } else {
           return false;
         }
