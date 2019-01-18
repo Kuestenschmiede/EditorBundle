@@ -8,10 +8,14 @@ import {langConstants} from "./c4g-editor-i18n";
  */
 export class ElementUIController {
 
+  editor;
+  selectInteraction;
+  elementController;
+
   constructor(editor, selectInteraction, elementController) {
-    this.editor = editor;
-    this.selectInteraction = selectInteraction;
-    this.elementController = elementController;
+    this._editor = editor;
+    this._selectInteraction = selectInteraction;
+    this._elementController = editor.elementController;
   }
 
   /**
@@ -170,13 +174,9 @@ export class ElementUIController {
   }
 
   handleDeleteFeatureEvent(featureIndex) {
-    let featureSource,
-      deleteFeature;
-
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
-    deleteFeature = selectedFeatures.item(featureIndex);
-    this.elementController.deleteFeature(deleteFeature);
-
+    let deleteFeature = selectedFeatures.item(featureIndex);
+    this._elementController.deleteElement(deleteFeature);
   }
 
   /**
@@ -185,7 +185,7 @@ export class ElementUIController {
   createEditButton(index) {
     let scope = this;
     let editButtonElement = document.createElement('button');
-    editButtonElement.className = cssConstants.ICON + ' ' + ' c4g-btn-edit-data';
+    editButtonElement.className = cssConstants.ICON + ' c4g-btn-edit-data';
     editButtonElement.title = langConstants.METADATA_EDIT;
     editButtonElement.setAttribute('feat_id', index);
     $(editButtonElement).click(function(event) {
@@ -245,7 +245,7 @@ export class ElementUIController {
           scope.editor.selectView.selectContent.prepend(label);
         } else {
           // get the layer that contains the feature
-          scope.elementController.editFeature(data, feature);
+          scope.elementController.editElement(data, feature);
 
         }
       });
@@ -275,7 +275,7 @@ export class ElementUIController {
     let scope = this;
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
-    this.elementController.copyFeature(feature);
+    this.elementController.copyElement(feature);
     scope.editor.spinner.show();
   }
 
@@ -368,5 +368,18 @@ export class ElementUIController {
       this.selectInteraction.selectView.selectContent.innerHTML = "";
     }
     this.selectInteraction.selectView.selectContent.appendChild(container);
+  }
+
+
+  get editor() {
+    return this._editor;
+  }
+
+  get selectInteraction() {
+    return this._selectInteraction;
+  }
+
+  get elementController() {
+    return this._elementController;
   }
 }

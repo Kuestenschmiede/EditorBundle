@@ -8,9 +8,9 @@ export class EditorSelectInteraction {
    * @param selectView
    */
   constructor(editor, selectView) {
-    this.editor = editor;
-    this.selectView = selectView;
-    this.dataUiController = new ElementUIController(editor, this);
+    this._elementUiController = null;
+    this._editor = editor;
+    this._selectView = selectView;
   }
 
   /**
@@ -242,17 +242,17 @@ export class EditorSelectInteraction {
           inputNameElement.setAttribute('disabled', true);
           headlineElement.appendChild(inputNameElement);
           // add modify button
-          headlineElement.appendChild(scope.dataUiController.createMoveButton(i));
+          headlineElement.appendChild(scope._elementUiController.createMoveButton(i));
           // add delete button
-          headlineElement.appendChild(scope.dataUiController.createDeleteButton(i));
+          headlineElement.appendChild(scope._elementUiController.createDeleteButton(i));
           // add edit button
-          headlineElement.appendChild(scope.dataUiController.createEditButton(i));
+          headlineElement.appendChild(scope._elementUiController.createEditButton(i));
           // add copy button
-          headlineElement.appendChild(scope.dataUiController.createCopyButton(i));
+          headlineElement.appendChild(scope._elementUiController.createCopyButton(i));
           // add displace button
-          headlineElement.appendChild(scope.dataUiController.createDisplaceButton(i));
+          headlineElement.appendChild(scope._elementUiController.createDisplaceButton(i));
           // add copy&displace button
-          headlineElement.appendChild(scope.dataUiController.createCopyAndDisplaceButton(i));
+          headlineElement.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
           scope.selectView.selectContent.appendChild(headlineElement);
           if (selectedFeature.get('measuredLength')) {
             let label = "";
@@ -297,4 +297,21 @@ export class EditorSelectInteraction {
 
     renderSelectedFeaturesList();
   }; // end of "fnHandleSelection"
+
+
+  get elementUiController() {
+    return this._elementUiController;
+  }
+
+  set elementUiController(value) {
+    this._elementUiController = value;
+  }
+
+  get editor() {
+    return this._editor;
+  }
+
+  get selectView() {
+    return this._selectView;
+  }
 }

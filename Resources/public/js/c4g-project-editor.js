@@ -47,6 +47,7 @@ export class Editor extends Sideboard {
       headline: langConstants.EDITOR
       // initMode: 'select'
     }, options);
+
     super(options);
     this.options = options;
     // TODO tabs aufteilen in selectTabs und drawTabs, am besten für jeden Tab eigene Property, damit alle einzeln
@@ -61,7 +62,7 @@ export class Editor extends Sideboard {
     this.projectUiController = new ProjectUIController(this);
     this.layerLoader = new LayerLoader(this);
     this.cacheController = null;
-    this.elementController = null;
+    // this.elementController = null;
     this.elementUiController = null;
     if (window.c4gMapsHooks.extend_editor && window.c4gMapsHooks.extend_editor.length) {
       utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
@@ -115,13 +116,13 @@ export class Editor extends Sideboard {
         });
         scope.elementController = new ElementController(scope.selectView.selectInteraction, scope, scope.mapsInterface);
         scope.elementUiController = new ElementUIController(scope, scope.selectView.selectInteraction, scope.elementController);
+        scope.selectView.selectInteraction.elementUiController = scope.elementUiController;
         scope.cacheController = new ProjectCacheController(scope);
         scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
           scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id)
         });
-        return true;
       })
       .fail(function (data) {
         // @TODO error-messages
