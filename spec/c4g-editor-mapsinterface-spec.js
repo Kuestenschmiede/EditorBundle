@@ -1,5 +1,5 @@
 import {MapsInterface} from "../Resources/public/js/c4g-editor-mapsinterface";
-import {Editor} from "../Resources/public/js/c4g-project-editor";
+import {Editor} from "../Resources/public/js/c4g-editor";
 import {utils} from "../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {C4gLayer} from "../../MapsBundle/Resources/public/js/c4g-layer";
 

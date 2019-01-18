@@ -1,5 +1,5 @@
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
-import {EditorSelectInteraction} from "./c4g-project-editor-selectinteraction";
+import {EditorSelectInteraction} from "./c4g-editor-selectinteraction";
 import {langConstants} from "./c4g-editor-i18n";
 
 export class EditorSelectView {

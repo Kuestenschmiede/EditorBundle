@@ -4,9 +4,9 @@ import {MapsInterface} from "./c4g-editor-mapsinterface";
 import {LayerLoader} from "./c4g-missing-layer-loader";
 import {ProjectCacheController} from "./c4g-project-cache-controller";
 import {ProjectUIController} from "./c4g-project-ui-controller";
-import {EditorDrawview} from "./c4g-project-editor-drawview";
-import {FeatureHandler} from "./c4g-project-editor-featurehandler";
-import {EditorSelectView} from "./c4g-project-editor-selectview";
+import {EditorDrawview} from "./c4g-editor-drawview";
+import {FeatureHandler} from "./c4g-editor-featurehandler";
+import {EditorSelectView} from "./c4g-editor-selectview";
 import {langConstants} from "./c4g-editor-i18n";
 import {ElementController} from "./c4g-element-controller";
 import {ElementUIController} from "./c4g-element-ui-controller";
@@ -175,7 +175,9 @@ export class Editor extends Sideboard {
     }
     this.tabs[0].activate();
     // initially hide the elements, until a project is selected
-    this.toggleDrawContent();
+    if (!this.projectController.currentProject) {
+      this.toggleDrawContent();
+    }
   }
 
   /**
@@ -282,7 +284,6 @@ export class Editor extends Sideboard {
     let polygonDiv = document.getElementsByClassName("c4g-draw-content-polygon")[0];
     let circleDiv = document.getElementsByClassName("c4g-draw-content-circle")[0];
     let freehandDiv = document.getElementsByClassName("c4g-draw-content-freehand")[0];
-
     if (pointDiv) {
       pointDiv.style.display = opt_show ? "block" : "none";
     }

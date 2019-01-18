@@ -17,7 +17,7 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
    */
-  .addEntry('c4g-editor', './Resources/public/js/c4g-project-editor.js')
+  .addEntry('c4g-editor', './Resources/public/js/c4g-editor.js')
 
   .cleanupOutputBeforeBuild()
   .enableSourceMaps(!Encore.isProduction())

@@ -1,5 +1,5 @@
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
-import {EditorDrawStyle} from "./c4g-project-editor-drawstyle";
+import {EditorDrawStyle} from "./c4g-editor-drawstyle";
 import {langConstants} from "./c4g-editor-i18n";
 import {ElementCategory} from "./c4g-editor-element-category";
 import {ElementType} from "./c4g-editor-element-type";
@@ -110,10 +110,9 @@ export class EditorDrawview {
         {section: editor.topToolbar, element: editor.viewTriggerBar}
       ],
       initFunction: function () {
-
       },
       activateFunction: function () {
-        if (editor.currentProject) {
+        if (editor.projectController.currentProject) {
           scope.drawContent.style.display = "block";
         }
         return true;

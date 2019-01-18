@@ -302,8 +302,8 @@ export class ProjectUIController {
   createNewProjectForm() {
     let scope = this;
     let editor = this.editor;
-    let request = new C4GAjaxRequest(url);
-    request.addDoneCallback(function(data) {
+    let url = '/con4gis/project/';
+    $.ajax(url).done(function(data) {
       // activate tab with select view
       editor.tabs[0].activate();
       if (editor.selectView.selectContentHeadline) {
@@ -317,7 +317,6 @@ export class ProjectUIController {
         scope.cancelDialog();
       });
     });
-    request.execute();
   }
 
   /**
@@ -331,7 +330,10 @@ export class ProjectUIController {
       let field = fields[i];
       data[field.name] = field.value;
     }
-    this._projectController.createProject(data, this.loadNewProject);
+    const scope = this;
+    this._projectController.createProject(data, function(data) {
+      scope.loadNewProject(data);
+    });
   }
 
   /**
