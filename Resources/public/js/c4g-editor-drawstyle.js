@@ -80,8 +80,8 @@ export class EditorDrawStyle {
           styleIcon.height = styleData.editor_icon_size[0];
           styleIcon.width = styleData.editor_icon_size[1];
       } else {
-          styleIcon.height = '32';
-          styleIcon.width = '32';
+          styleIcon.height = '32px';
+          styleIcon.width = '32px';
       }
 
       if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') !== -1)) {
@@ -135,6 +135,8 @@ export class EditorDrawStyle {
       }
       styleTriggerLabel.appendChild(styleIcon);
     } else {
+      styleTriggerLabel.style.width = '32px';
+      styleTriggerLabel.style.height = '32px';
       styleTriggerLabel.style.background = style.getFill().getColor();
       styleTriggerLabel.style.border = '1px solid ' + style.getStroke().getColor();
     }
@@ -172,7 +174,6 @@ export class EditorDrawStyle {
           });
         }
         source = new ol.source.Vector();
-
         olType = scope.type;
         if (olType === 'Freehand') {
           olType = 'LineString'
@@ -274,14 +275,14 @@ export class EditorDrawStyle {
               editorVars[i].value = '';
             }
             activeSketch.set('editorVars', editorVars);
-            activeSketch.set('projectId', editor.currentProject.id);
+            activeSketch.set('projectId', editor.projectController.currentProject.id);
             // communicate new element with server
             editor.featureHandler.handleDrawnFeature(
               activeSketch,
               element,
               category,
-              editor.currentProject,
-              editor.projectLayer,
+              editor.projectController.currentProject,
+              editor.projectController.projectLayer,
               source,
               drawType
             );
@@ -297,7 +298,7 @@ export class EditorDrawStyle {
             }, 1000);
           }, editor);
 
-        if (editor.currentProject) {
+        if (editor.projectController.currentProject) {
           editor.mapsInterface.mapController.map.addInteraction(interaction);
         }
         return true;
@@ -309,7 +310,7 @@ export class EditorDrawStyle {
        * @returns {boolean}
        */
       activateFunction: function () {
-        if (editor.currentProject) {
+        if (editor.projectController.currentProject) {
           // deactivate mapHover
           editor.mapsInterface.mapController.mapHover.deactivate();
           // Reset feature-list
@@ -326,7 +327,7 @@ export class EditorDrawStyle {
        * @returns {boolean}
        */
       deactivateFunction: function (paused) {
-        if (editor.currentProject) {
+        if (editor.projectController.currentProject) {
           // only take away the interaction when the editor is closed and not paused
           if (!paused) {
             editor.mapsInterface.mapController.mapHover.activate();

@@ -82,21 +82,11 @@ export class FeatureHandler {
     while (this.mapsInterface.getLayerArray()[currentLayer.pid]) {
       currentLayer = this.mapsInterface.getLayerArray()[currentLayer.pid];
       currentLayer.display = true;
-      if (currentLayer.projectId === this.editor.currentProject.id) {
+      if (currentLayer.projectId === this.editor.projectController.currentProject.id) {
         this.mapsInterface.showLayer(currentLayer.id);
       }
     }
   }
-
-  /**
-   * Deletes a given feature from the layer array and sends a DELETE request to the server.
-   * @param feature
-   */
-  deleteFeature(feature) {
-    // TODO deprecated, remove
-  }
-
-
 
   /**
    * Applies the given changes to a given feature/layer and sends a PUT request to the server.
