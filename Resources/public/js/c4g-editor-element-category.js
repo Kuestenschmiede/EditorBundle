@@ -4,14 +4,16 @@ export class ElementCategory {
   /**
    * Class properties
    */
-  id;
-  name;
-  elementTypes;
+  _id;
+  _name;
+  _elementTypes;
+  _visible;
 
   constructor(id, name, elementTypes) {
     this._id = id;
     this._name = name;
     this._elementTypes = elementTypes;
+    this._visible = true;
   }
 
   get id() {
@@ -24,5 +26,13 @@ export class ElementCategory {
 
   get elementTypes() {
     return this._elementTypes;
+  }
+
+  get visible() {
+    return this._visible;
+  }
+
+  set visible(value) {
+    this._visible = value;
   }
 }

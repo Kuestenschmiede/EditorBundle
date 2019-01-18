@@ -115,20 +115,14 @@ export class EditorDrawStyle {
                     ctx.translate(0.5, 0.5);
                 }
 
-                // if (styleData.icon_opacity.value && (styleData.icon_opacity.value > 0)) {
-                //     ctx.globalAlpha = (styleData.icon_opacity.value / 100);
-                // }
-
                 let img = new Image();
                 img.src = styleData.svgSrc;
                 img.zIndex = 100;
-
                 img.onload = function () {
                     ctx.drawImage(img, strokewidth, strokewidth, width, height);
-                }
+                };
 
                 styleIcon = canvas;
-
                 styleTriggerLabel.style.width = (width * scale) + 'px';
                 styleTriggerLabel.style.height = (height * scale) + 'px';
             }

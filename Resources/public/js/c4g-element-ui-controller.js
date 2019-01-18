@@ -326,7 +326,7 @@ export class ElementUIController {
       scope.reloadSelectedFeatureView();
     });
     $(confirmButton).on('click', function(event) {
-      scope.elementController.displaceElement(layerId, withCopy);
+      scope.elementController.displaceElement(feature, layerId, withCopy, projectSelect.value);
     });
     formContainer.appendChild(projectSelect);
     formContainer.appendChild(confirmButton);

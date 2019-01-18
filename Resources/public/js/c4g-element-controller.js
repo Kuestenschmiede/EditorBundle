@@ -1,5 +1,7 @@
+import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+
 /**
- * Class for handling the data mani
+ * Class for handling the data manipulation.
  */
 export class ElementController {
 
@@ -81,6 +83,7 @@ export class ElementController {
   }
 
   copyElement(feature) {
+    const scope = this;
     let layerId = feature.get('layerId');
     let url = "/con4gis/projectDataCopy/" + this.editor.currentProject.id + "/" + layerId;
     let request = new C4GAjaxRequest(url, "POST");
@@ -90,14 +93,15 @@ export class ElementController {
     request.execute();
   }
 
-  displaceElement(layerId, withCopy) {
+  displaceElement(feature, layerId, withCopy, projectId) {
+    const scope = this;
     let url = "";
-    let oldLayer = scope.editor.mapsInterface.getLayerFromArray(layerId);
-    let oldParent = scope.editor.mapsInterface.getLayerFromArray(oldLayer.pid);
+    let oldLayer = this.mapsInterface.getLayerFromArray(layerId);
+    let oldParent = this.mapsInterface.getLayerFromArray(oldLayer.pid);
     if (withCopy) {
-      url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + true;
+      url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectId + "/" + true;
     } else {
-      url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectSelect.value + "/" + false;
+      url = "/con4gis/projectDataDisplace/" + layerId + "/" + projectId + "/" + false;
       // move layer
       for (let i = 0; i < oldParent.childs.length; i++) {
         if (oldParent.childs[i] === oldLayer) {
@@ -110,7 +114,7 @@ export class ElementController {
       let newProjectId = parseInt(data.newProjectId, 10);
       feature.set('projectId', newProjectId);
       // and from the selection
-      selectedFeatures.remove(feature);
+      scope.selectInteraction.removeSelectedFeature(feature);
       let layer;
       if (withCopy) {
         layer = new C4gLayer(oldLayer);
@@ -132,7 +136,7 @@ export class ElementController {
         }
         scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
         scope.editor.mapsInterface.updateStarboard();
-        scope.selectInteraction.fnHandleSelection(selectedFeatures);
+        scope.selectInteraction.updateFeatures();
       };
       if (!scope.editor.mapsInterface.getLayerFromArray(newPid)) {
         // element layer does not exist in the project yet
@@ -141,7 +145,6 @@ export class ElementController {
         let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
         fnCallback(parent);
       }
-      console.log(scope.editor.mapsInterface.getLayerArray());
     });
     request.execute();
   }

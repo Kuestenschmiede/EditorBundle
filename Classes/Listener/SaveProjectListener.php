@@ -18,6 +18,7 @@ use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\EditorMapFrontend;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
 use con4gis\EditorBundle\Entity\EditorMapProject;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 use Contao\Database;
 use Doctrine\ORM\EntityManager;
@@ -164,13 +165,13 @@ class SaveProjectListener
         $pid = 0;
         foreach ($entities as $entity) {
             try {
-                if ($pid && !($entity instanceof EditorMapProject)) {
+                if ($pid && !($entity instanceof EditorProject)) {
                     $entity->setPid($pid);
                 }
                 $this->entityManager->persist($entity);
                 $this->entityManager->flush();
                 // we need to return project data
-                if ($entity instanceof EditorMapProject) {
+                if ($entity instanceof EditorProject) {
                     $pid = $entity->getId();
                     $event->setReturnData([
                         'id' => $entity->getId(),

@@ -10,7 +10,7 @@ import {EditorSelectView} from "./c4g-project-editor-selectview";
 import {langConstants} from "./c4g-editor-i18n";
 import {ElementController} from "./c4g-element-controller";
 import {ElementUIController} from "./c4g-element-ui-controller";
-import {EditorProject} from "./c4g-editor-project";
+import {ProjectController} from "./c4g-project-controller";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -57,9 +57,10 @@ export class Editor extends Sideboard {
     this.proxy = this.options.mapController.proxy;
     this.mapsInterface = new MapsInterface(this, this.proxy, options.mapController);
     this.featureHandler = new FeatureHandler(this, this.mapsInterface);
-    this.projects = [];
-    this.currentProject = null;
-    this.projectUiController = new ProjectUIController(this);
+    // this.projects = [];
+    // this.currentProject = null;
+    this.projectController = new ProjectController(this);
+    this.projectUiController = new ProjectUIController(this, this.projectController);
     this.layerLoader = new LayerLoader(this);
     this.cacheController = null;
     // this.elementController = null;
@@ -95,8 +96,7 @@ export class Editor extends Sideboard {
     $.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
-        console.log('done callback');
-        scope.projects = scope.createProjects(data.projects);
+        scope.projectController.createProjects(data.projects);
         scope.dataBaseUrl = data.dataBaseUrl;
         $(scope.viewTriggerBar).hide();
         $(scope.contentHeadline).hide();
@@ -118,6 +118,8 @@ export class Editor extends Sideboard {
         scope.elementUiController = new ElementUIController(scope, scope.selectView.selectInteraction, scope.elementController);
         scope.selectView.selectInteraction.elementUiController = scope.elementUiController;
         scope.cacheController = new ProjectCacheController(scope);
+        // initially select first project
+        // scope.projectUiController.changeProjectSelection(scope.projectController.projects[0]);
         scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
@@ -184,10 +186,10 @@ export class Editor extends Sideboard {
     let selectedProject = null;
     // check if the project exists
     // TODO check if this if is necessary
-    if (this.projects) {
-      for (let i = 0; i < this.projects.length; i++) {
-        if (this.projects[i].id === cachedSelection) {
-          selectedProject = this.projects[i];
+    if (this.projectController.projects) {
+      for (let i = 0; i < this.projectController.projects.length; i++) {
+        if (this.projectController.projects[i].id === cachedSelection) {
+          selectedProject = this.projectController.projects[i];
         }
       }
     }
@@ -195,19 +197,6 @@ export class Editor extends Sideboard {
       // show the project
       this.projectUiController.changeProjectSelection(selectedProject);
     }
-  }
-
-  /**
-   * Creates an array of EditorProject objects from the json project data.
-   * @param jsonProjects
-   * @returns {Array}
-   */
-  createProjects(jsonProjects) {
-    let projects = [];
-    for (let i = 0; i < jsonProjects.length; i++) {
-      projects.push(new EditorProject(jsonProjects[i].id, jsonProjects[i].name));
-    }
-    return projects;
   }
 
   /**
@@ -233,7 +222,6 @@ export class Editor extends Sideboard {
   }
 
   loadLocationStyles(drawStyles, callback) {
-    // TODO nur styles nachladen, die wirklich noch nicht da sind!
     let styles = [];
     const existingStyles = this.mapsInterface.proxy.locationStyleController.arrLocStyles;
     for (let outerKey in drawStyles) {

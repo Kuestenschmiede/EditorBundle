@@ -85,20 +85,17 @@ export class EditorDrawview {
 
       this.enableInstantMeasureCheckboxLabel = enableInstantMeasureCheckboxLabel;
       optionsDiv.appendChild(document.createElement('br'));
-
     }
 
     // add the categories
     for (let i = 0; i < this.categories.length; i++) {
-        let category = this.categories[i];
-        let divObj = this.addCategory(category);
-        this.drawContent.appendChild(divObj.categoryDiv);
-        let styleIds = this.addElementsForCategory(category.elementTypes, category, divObj.elements);
-        // TODO wo werden die styleIds gebraucht?
-        // this.options.styleIds.concat(styleIds);
-        if (!this.editor.currentProject) {
-          this.drawContent.style.display = "none";
-        }
+      let category = this.categories[i];
+      let divObj = this.addCategory(category);
+      this.drawContent.appendChild(divObj.categoryDiv);
+      this.addElementsForCategory(category.elementTypes, category, divObj.elements);
+      if (!this.editor.projectController.currentProject) {
+        this.drawContent.style.display = "none";
+      }
     }
 
     this.drawView = editor.addView({
@@ -113,100 +110,7 @@ export class EditorDrawview {
         {section: editor.topToolbar, element: editor.viewTriggerBar}
       ],
       initFunction: function () {
-        // var i,
-        //   styleId,
-        //   neededStyles,
-        //   sortAndAddStyles;
-        //
-        // // Show loading animation
-        // editor.spinner.show();
-        //
-        // neededStyles = [];
-        //
-        // /**
-        //  * @TODO
-        //  * [sortAndAddStyles description]
-        //  *
-        //  * @return  {[type]}  [description]
-        //  */
-        // sortAndAddStyles = function (arrStyleIds) {
-        //   var j,
-        //     locationStyles,
-        //     drawInteraction,
-        //     styleIds;
-        //
-        //   // prepare
-        //   locationStyles = locStyles;
-        //   styleIds = arrStyleIds;
-        //   if (!styleIds || !locationStyles) {
-        //     return false;
-        //   }
-        //
-        //   // sort
-        //   styleIds.sort(function (a, b) {
-        //
-        //     //ToDo check
-        //     if (locationStyles[a] && locationStyles[b] && locationStyles[a].editor) {
-        //       if ((!locationStyles[a].editor.sort && !locationStyles[b].editor.sort) || (locationStyles[a].editor.sort === locationStyles[b].editor.sort)) {
-        //         if (!locationStyles[a].name || !locationStyles[b].name) {
-        //           return (!locationStyles[b].name) ? -1 : 1;
-        //         }
-        //         return (locationStyles[a].name.toLowerCase() > locationStyles[b].name.toLowerCase()) ? 1 : -1;
-        //       }
-        //       if (!locationStyles[a].editor.sort || !locationStyles[b].editor.sort) {
-        //         return (!locationStyles[b].editor.sort) ? -1 : 1;
-        //       }
-        //
-        //       return (locationStyles[a].editor.sort > locationStyles[b].editor.sort) ? 1 : -1;
-        //     } else {
-        //       return -1;
-        //     }
-        //
-        //   }); // end sort
-        //   // success
-        //   editor.update();
-        //   return true;
-        // }; // end of "sortAndAddStyles"
-        //
-        // // Make sure that all needed styles are loaded
-        // if (!locStyles) {
-        //   // no styles are loaded, so load all styles
-        //   locStyles = {};
-        //   neededStyles = options.styleIds;
-        // } else {
-        //   // check wich styles are missing
-        //   for (i = 0; i < options.styleIds.length; i += 1) {
-        //     styleId = options.styleIds[i];
-        //     if (!locStyles[styleId] || !locStyles[styleId].style) {
-        //       neededStyles.push(styleId);
-        //     }
-        //   }
-        // }
-        //
-        // if (neededStyles.length > 0) {
-        //   if (!editor.proxy) {
-        //     console.warn('Could not load locStyles, as the map-proxy was not initiallized.');
-        //   }
-        //   editor.proxy.locationStyleController.loadLocationStyles(
-        //     neededStyles,
-        //     {
-        //       always: function () {
-        //         sortAndAddStyles();
-        //       },
-        //       done: function () {
-        //         // Hide loading-animation
-        //         editor.spinner.hide();
-        //         editor.update();
-        //       }
-        //     }
-        //   );
-        // } else {
-        //   sortAndAddStyles();
-        //   editor.update();
-        //   editor.spinner.hide();
-        // }
-        //
-        // return true;
+
       },
       activateFunction: function () {
         if (editor.currentProject) {
@@ -326,23 +230,22 @@ export class EditorDrawview {
     }
 
     if (missingStyles.length > 0) {
+      self.editor.proxy.locationStyleController.loadLocationStyles(missingStyles, {
+        always: function() {
+          for (var i = 0; i < missingElements.length; i++) {
+              if (self.editor.proxy.locationStyleController.arrLocStyles[missingElements[i].styleId]) {
+                addElement(missingElements[i]);
+              }
+          }
 
-        self.editor.proxy.locationStyleController.loadLocationStyles(missingStyles, {
-          always: function() {
-                for (var i = 0; i < missingElements.length; i++) {
-                    if (self.editor.proxy.locationStyleController.arrLocStyles[missingElements[i].styleId]) {
-                      addElement(missingElements[i]);
-                    }
-                }
-
-                self.editor.update();
-                // self.plugin.elementsLoaded = true;
-            // TODO durch richtigen hook ersetzen, falls nötig
-            // if (c4g.maps.hook !== undefined && typeof c4g.maps.hook.elements_Loaded === 'object') {
-                //     c4g.maps.utils.callHookFunctions(c4g.maps.hook.elements_Loaded);
-                // }
-                return false;
-            }});
+          self.editor.update();
+          // self.plugin.elementsLoaded = true;
+          // TODO durch richtigen hook ersetzen, falls nötig
+          // if (c4g.maps.hook !== undefined && typeof c4g.maps.hook.elements_Loaded === 'object') {
+          //     c4g.maps.utils.callHookFunctions(c4g.maps.hook.elements_Loaded);
+          // }
+          return false;
+          }});
 
     } else {
       // TODO durch richtigen hook ersetzen, falls nötig

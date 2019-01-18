@@ -5,7 +5,7 @@
       "id": 1,
       "projectPlugin": "con4gis\\EditorBundle\\Classes\\Plugins\\DefaultProjectPlugin",
       "dataPlugin": "con4gis\\EditorBundle\\Classes\\Plugins\\DefaultDataPlugin",
-      "language": ["tl_c4g_editor_map_data", "tl_c4g_editor_map_project"],
+      "language": ["tl_c4g_editor_element", "tl_c4g_editor_project"],
       "backend": 0
     }
   ]

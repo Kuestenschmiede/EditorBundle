@@ -13,6 +13,7 @@
 namespace con4gis\EditorBundle\Classes\Plugins;
 
 use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
@@ -41,7 +42,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
     {
         $fieldList = [];
 
-        $strName = "tl_c4g_editor_map_project";
+        $strName = "tl_c4g_editor_project";
 
         $headlineField = new C4GHeadlineField();
         $headlineField->setTitle($GLOBALS['TL_LANG'][$strName]['headline']);
@@ -77,7 +78,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
      */
     public function getEntityClass()
     {
-        return EditorMapProject::class;
+        return EditorProject::class;
     }
 
     /**
@@ -91,7 +92,7 @@ class DefaultProjectPlugin extends AbstractProjectPlugin
         $userId = \FrontendUser::getInstance()->id;
         $data = $event->getData();
         foreach ($entities as $entity) {
-            if ($entity instanceof EditorMapProject) {
+            if ($entity instanceof EditorProject) {
                 $data['tstamp'] = time();
                 // if no ID set, the entity is new and no group exists yet
                 if ($data['createGroup']) {
