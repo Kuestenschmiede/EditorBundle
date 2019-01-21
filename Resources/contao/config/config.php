@@ -17,10 +17,13 @@ array_insert($GLOBALS['BE_MOD'], array_search('content', array_keys($GLOBALS['BE
         (
             'tables'    => array('tl_c4g_editor_element_category')
         ),
-
         'EditorMapElements' => array
         (
             'tables'    => array('tl_c4g_editor_element_type')
+        ),
+        'EditorConfiguration' => array
+        (
+            'tables'    => array('tl_c4g_editor_configuration')
         ),
         'plugins' => array
         (
