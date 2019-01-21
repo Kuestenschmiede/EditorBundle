@@ -320,6 +320,9 @@ export class EditorDrawview {
       // TODO funktioniert das auch, wenn ein Elementtyp in mehreren Kategorien ist?
       let filterString = $(this).val();
       if (filterString.length === 0) {
+        // show all entries when no filterString exists
+        $('.c4g-category-headline').css('display', '');
+        $('.c4g-draw-trigger').css('display', '');
         return;
       }
       let matchedCatIds = [];
@@ -334,7 +337,7 @@ export class EditorDrawview {
           let currentType = currentCategory.elementTypes[j];
           // if category matched, show Element
           if (currentCategory.name.toUpperCase().indexOf(filterString.toUpperCase()) >= 0) {
-            matchedElemIds.push(currentType.id);
+            matchedElemIds.push(currentCategory.id + '-' + currentType.id);
           }
           if (currentType.name.toUpperCase().indexOf(filterString.toUpperCase()) >= 0) {
             // add category unless it's been added already
@@ -343,7 +346,7 @@ export class EditorDrawview {
             }
             // add element
             if (!matchedElemIds.includes(currentType.id)) {
-              matchedElemIds.push(currentType.id);
+              matchedElemIds.push(currentCategory.id + '-' + currentType.id);
             }
           }
         }
@@ -359,12 +362,12 @@ export class EditorDrawview {
             allElements[element].style.display = 'none';
           }
         }
-        for (let category in matchedCatIds) {
-          let div = document.getElementById('category-headline-' + matchedCatIds[category]);
+        for (let i = 0; i < matchedCatIds.length; i++) {
+          let div = document.getElementById('category-headline-' + matchedCatIds[i]);
           div.style.display = ""
         }
-        for (let element in matchedElemIds) {
-          let div = document.getElementById('element-' + matchedElemIds[element]);
+        for (let i = 0; i < matchedElemIds.length; i++) {
+          let div = document.getElementById('element-' + matchedElemIds[i]);
           div.style.display = ""
         }
 

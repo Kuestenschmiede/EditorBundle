@@ -147,7 +147,7 @@ export class EditorDrawStyle {
     interactionView = editor.addView({
       name: 'draw:' + element.name,
       triggerConfig: {
-        id: "element-"+element.id,
+        id: "element-" + category.id + '-' + element.id,
         label: styleTriggerLabel,
         tipLabel: element.name,
         className: cssConstants.EDITOR_DRAW_TRIGGER,
