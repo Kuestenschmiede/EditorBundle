@@ -300,7 +300,7 @@ export class ElementUIController {
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
     let layerId = feature.get('layerId');
     let projectSelect = document.createElement("select");
-    let projects = scope.editor.projects;
+    let projects = scope.editor.projectController.projects;
     for (let i = 0; i < projects.length; i++) {
       if (projects[i] === scope.editor.currentProject) {
         // moving the feature in the same project does not make sense
@@ -386,7 +386,7 @@ export class ElementUIController {
    * Reloads the overview of the selected features and the possible operations.
    */
   reloadSelectedFeatureView() {
-    this.selectInteraction.reloadSelectedFeatureView();
+    this.selectInteraction.updateFeatures();
   }
 
   /**

@@ -106,6 +106,8 @@ export class ElementController {
         }
       }
     }
+    this.copyElement(feature);
+    // TODO irgendwie passiert es hier bei withCopy = true dass das feature in allen projekten liegt
     let request = new C4GAjaxRequest(url, "POST");
     request.addDoneCallback(function(data) {
       let newProjectId = parseInt(data.newProjectId, 10);
@@ -113,11 +115,12 @@ export class ElementController {
       // and from the selection
       scope.selectInteraction.removeSelectedFeature(feature);
       let layer;
-      if (withCopy) {
-        layer = new C4gLayer(oldLayer);
-      } else {
-        layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
-      }
+      // if (withCopy) {
+      //   layer = new C4gLayer(oldLayer);
+      // } else {
+      //
+      // }
+      layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
       let newLayerId = data.id;
       let newPid = data.pid;
       layer.projectId = newProjectId;
@@ -128,9 +131,9 @@ export class ElementController {
         parent.childs = parent.childs || [];
         parent.childs.push(layer);
         parent.childsCount++;
-        if (!withCopy) {
+        // if (!withCopy) {
           scope.editor.mapsInterface.hideLayer(layerId);
-        }
+        // }
         scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
         scope.editor.mapsInterface.updateStarboard();
         scope.selectInteraction.updateFeatures();

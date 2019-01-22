@@ -183,7 +183,7 @@ export class BackendEditor extends Sideboard {
   prepareEditorStyleData(data) {
     let returnData = {};
     returnData.styles_point = [];
-    returnData.styles_line = [];
+    returnData.styles_linestring = [];
     returnData.styles_polygon = [];
     returnData.styles_circle = [];
     returnData.styles_freehand = [];
