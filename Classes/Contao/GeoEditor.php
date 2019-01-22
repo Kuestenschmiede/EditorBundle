@@ -76,6 +76,7 @@ class GeoEditor extends \Contao\Backend
         // $this->Template->geoData = base64_decode(chunk_split($geoData));
         $this->Template->geoData = $geoData;
         $mapId = $this->findMapId($this->layerId);
+        // we have to set these here so the map data will be configured correctly
         $this->id = $mapId;
         $this->c4g_map_id = $mapId;
         $objMapData = MapDataConfigurator::prepareMapData($this, $this->Database, array('geoeditor' => true));

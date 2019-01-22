@@ -82,7 +82,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
 
             $arrChildData = [];
             switch ($child['type']) {
-                //ToDo wird das script hier überhaupt gebraucht?
                 case EditorBrickTypes::BRICK_GENERIC_PROJECT:
                     $GLOBALS['TL_BODY'][] = '<script src="bundles/con4gisprojects/js/C4GBrickLivePositions.js"></script>';
                     $arrChildData = $this->getProjectsPoiData($child);
@@ -137,7 +136,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $project->getCaption(),
                 $project->getCaption(),
                 true,
-                // TODO das kann doch so nie funktioniert haben...
                 $child['hide'] //|| $project->getStandingData()
             );
             $arrProject['projectId'] = $project->getId();

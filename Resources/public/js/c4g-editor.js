@@ -161,17 +161,17 @@ export class Editor extends Sideboard {
     }
     // Draw-polygon view
     if (drawStyles.polygon.categories && drawStyles.polygon.categories.length > 0) {
-      let polygonView = new EditorDrawview('Polygon', drawStyles.polygon.categories, true);
+      let polygonView = new EditorDrawview('Polygon', drawStyles.polygon.categories, this);
       this.tabs.push(polygonView.init());
     }
     // Draw-circle view
     if (drawStyles.circle.categories && drawStyles.circle.categories.length > 0) {
-      let circleView = new EditorDrawview('Circle', drawStyles.circle.categories, true);
+      let circleView = new EditorDrawview('Circle', drawStyles.circle.categories, this);
       this.tabs.push(circleView.init());
     }
     // Draw-freehand view
     if (drawStyles.freehand.categories && drawStyles.freehand.categories.length > 0) {
-      let freehandView = new EditorDrawview('Freehand', drawStyles.freehand.categories, true);
+      let freehandView = new EditorDrawview('Freehand', drawStyles.freehand.categories, this);
       this.tabs.push(freehandView.init());
     }
     this.tabs[0].activate();

@@ -146,6 +146,27 @@ export class ElementController {
     request.execute();
   }
 
+  rotateElement(feature, degrees) {
+    // formula for conversion
+    let radians = degrees * Math.PI / 180;
+    let anchor;
+    if (feature.getGeometry() instanceof ol.geom.Point) {
+      anchor = feature.getGeometry();
+    } else if (feature.getGeometry() instanceof ol.geom.Polygon) {
+      anchor = feature.getGeometry().getInteriorPoint();
+    }
+    if (anchor && radians) {
+      feature.getGeometry().rotate(radians, anchor.getCoordinates());
+      if (feature.getGeometry() instanceof ol.geom.Point) {
+        let styleId = feature.get('styleId');
+        let styles = this.mapsInterface.getLocstyleArray();
+        console.log(styles);
+        let imgRot = feature.getStyle().getImage().getRotation();
+        feature.getStyle().getImage().setRotation(imgRot + radians);
+      }
+    }
+  }
+
   addLayer() {
     // TODO creates layer and adds it to the layer structure
   }

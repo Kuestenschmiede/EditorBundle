@@ -253,6 +253,8 @@ export class EditorSelectInteraction {
           headlineElement.appendChild(scope._elementUiController.createDisplaceButton(i));
           // add copy&displace button
           headlineElement.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+          // add rotation button
+          headlineElement.appendChild(scope._elementUiController.createRotateButton(i));
           scope.selectView.selectContent.appendChild(headlineElement);
           if (selectedFeature.get('measuredLength')) {
             let label = "";

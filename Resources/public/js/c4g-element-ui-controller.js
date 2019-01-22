@@ -199,7 +199,7 @@ export class ElementUIController {
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
     let layerId = feature.get('layerId');
-    let url = "/con4gis/projectDataForm/" + this.editor.currentProject.id + "/" + layerId;
+    let url = "/con4gis/projectDataForm/" + this.editor.projectController.currentProject.id + "/" + layerId;
     let request = new C4GAjaxRequest(url);
     request.addDoneCallback(function(data) {
       scope.showEditDataDialog(data.headline, data.form, url, feature);
@@ -349,13 +349,44 @@ export class ElementUIController {
     return copyDisplaceButton;
   }
 
+  createRotateButton(index) {
+    let scope = this;
+    let displaceButtonElement = document.createElement('button');
+    displaceButtonElement.className = cssConstants.ICON + ' ' + ' c4g-btn-rotate-data';
+    displaceButtonElement.title = langConstants.ROTATE_ELEMENT;
+    displaceButtonElement.setAttribute('feat_id', index);
+    $(displaceButtonElement).click(function(event) {
+      scope.showRotationControls(event, false);
+    });
+    return displaceButtonElement;
+  }
+
+  showRotationControls(event) {
+    const scope = this;
+    let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
+    let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
+    let controlContainer = document.createElement('div');
+    let degreeSelect = document.createElement('select');
+    let applyButton = document.createElement('button');
+    for (let i = 30; i <= 360; i += 30) {
+      let option = document.createElement('option');
+      option.value = i;
+      option.text = i + '°';
+      degreeSelect.options.add(option);
+    }
+    $(applyButton).on('click', function(event) {
+      scope.elementController.rotateElement(feature, $(degreeSelect).val());
+    });
+    controlContainer.appendChild(degreeSelect);
+    controlContainer.appendChild(applyButton);
+    this.addToEditor(controlContainer);
+  }
+
   /**
    * Reloads the overview of the selected features and the possible operations.
-   * TODO should only call reload() of selectInteraction
    */
   reloadSelectedFeatureView() {
-    const features = this.selectInteraction.selectInteraction.getFeatures();
-    this.selectInteraction.fnHandleSelection(features);
+    this.selectInteraction.reloadSelectedFeatureView();
   }
 
   /**
