@@ -31,6 +31,9 @@ array_insert($GLOBALS['BE_MOD'], array_search('content', array_keys($GLOBALS['BE
         )
     )
 ));
+// add js file to c4g_maps be module
+$script = $GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'];
+$GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'] = [$script, '/bundles/con4giseditor/js/c4g-backend-helper.js'];
 
 $GLOBALS['c4g_locationtypes'][] = \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_GENERIC_PROJECT;
 

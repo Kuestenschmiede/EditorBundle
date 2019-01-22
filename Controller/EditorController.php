@@ -15,6 +15,7 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
+use con4gis\EditorBundle\Classes\Contao\GeoEditor;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
@@ -22,17 +23,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProjectEditorController extends BaseController
+class EditorController extends BaseController
 {
     /**
-     * ProjectEditorController constructor.
+     * EditorController constructor.
      */
     public function __construct()
     {
         $this->cacheInstance = C4GEditorConfigurationCache::getInstance();
     }
 
-    public function projectEditorAction(Request $request)
+    public function configEditorAction(Request $request, $configId)
     {
         $this->initialize();
         if (!$this->checkFeUser()) {
@@ -47,6 +48,7 @@ class ProjectEditorController extends BaseController
         // return if cached data exists
         if (!self::$outputFromCache) {
             $configurationEvent = new EditorConfigurationEvent();
+            $configurationEvent->setConfigId($configId);
             $this->eventDispatcher->dispatch($configurationEvent::NAME, $configurationEvent);
             if (\FrontendUser::getInstance()->id) {
                 $loadProjectsEvent = new LoadProjectsEvent();
@@ -93,5 +95,22 @@ class ProjectEditorController extends BaseController
             $id = C4GBrickCommon::calcLayerID($data['id'], $data['key'], $data['ident']);
             return new JsonResponse(['id' => $id]);
         }
+    }
+
+//    public function editorAction(Request $request, $profileId)
+//    {
+//        $response = new JsonResponse();
+//        $editorApi = new EditorApi();
+//        $returnData = $editorApi->generate($profileId);
+//        $response->setData($returnData);
+//        return $response;
+//
+//    }
+    public function beEditorAction(Request $request, $layerId)
+    {
+        $geoEditor = new GeoEditor($layerId);
+        $strResponse = $geoEditor->run();
+        $response = new Response($strResponse['data'], 200, array('Content-Type: Document'));
+        return $response;
     }
 }

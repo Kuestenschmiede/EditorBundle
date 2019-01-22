@@ -91,8 +91,9 @@ export class Editor extends Sideboard {
       layers: new ol.Collection([]),
       visible: false
     });
+    let configId = this.options.mapController.data.feEditorProfile;
     // load editor configuration
-    let url = "con4gis/projectEditorService";
+    let url = "con4gis/editorService/" + configId;
     $.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
@@ -344,7 +345,7 @@ window.c4gMapsHooks.mapController_addControls = window.c4gMapsHooks.mapControlle
 window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
   const mapData = mapController.data;
-  mapController.map.removeControl(mapController.controls.editor);
+  // mapController.map.removeControl(mapController.controls.editor);
   let editor = new Editor({
     tipLabel: langConstants.CTRL_EDITOR,
     type: mapData.editor.type || 'frontend',

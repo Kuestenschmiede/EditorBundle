@@ -35,15 +35,12 @@ export class ElementController {
     let layer = this.mapsInterface.getLayerFromArray(layerId);
     this.checkParentsForDeletion(layer);
     this.mapsInterface.removeLayerFromArray(layerId);
-    let projectId = this.editor.currentProject.id;
+    let projectId = this.editor.projectController.currentProject.id;
     // send delete request to server
     $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"});
     // rerender the selectionList
     this.selectInteraction.updateFeatures();
     this.editor.mapsInterface.updateStarboard();
-    // TODO delete feature from source
-    // TODO remove layer from map
-    // TODO remove feature and layer from data structures (which are in maps)
   }
 
   /**
@@ -85,7 +82,7 @@ export class ElementController {
   copyElement(feature) {
     const scope = this;
     let layerId = feature.get('layerId');
-    let url = "/con4gis/projectDataCopy/" + this.editor.currentProject.id + "/" + layerId;
+    let url = "/con4gis/projectDataCopy/" + this.editor.projectController.currentProject.id + "/" + layerId;
     let request = new C4GAjaxRequest(url, "POST");
     request.addDoneCallback(function(data) {
       scope.selectInteraction.showNewLayer(data.layer, true)

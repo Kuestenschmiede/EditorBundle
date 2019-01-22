@@ -1,16 +1,23 @@
 services:
     ## Configurate editor
-    editor.onEditorConfigurationLoadElements:
+    editor.onEditorConfigurationLoadConfiguration:
         class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
         tags:
-            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadElements, priority: 5120 }
+            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadConfiguration, priority: 6000 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     editor.onEditorConfigurationLoadCategories:
         class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
         tags:
-            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadCategories, priority: 4096 }
+            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadCategories, priority: 5120 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    editor.onEditorConfigurationLoadElements:
+        class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadElements, priority: 4100 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
@@ -56,3 +63,9 @@ services:
         class: con4gis\EditorBundle\Classes\Listener\LoadMapResourcesListener
         tags:
             - { name: kernel.event_listener, event: maps.resources.load, method: onLoadMapResourcesLoadEditorFiles, priority: 1024 }
+
+    ## Load mapdata
+    editor.onLoadMapDataLoadEditorConfig:
+        class: con4gis\EditorBundle\Classes\Listener\LoadMapDataListener
+        tags:
+            - { name: kernel.event_listener, event: maps.mapdata.load, method: onLoadMapDataLoadEditorConfig, priority: 1024 }

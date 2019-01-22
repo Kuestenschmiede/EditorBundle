@@ -14,6 +14,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\EditorDrawStyles;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
+use con4gis\EditorBundle\Entity\EditorConfiguration;
 use con4gis\EditorBundle\Entity\EditorElementCategory;
 use con4gis\EditorBundle\Entity\EditorElementType;
 use Doctrine\ORM\EntityManager;
@@ -36,18 +37,20 @@ class EditorConfigurationListener
     }
 
     /**
-     * Loads the elements.
+     * Loads the configuration.
      * @param EditorConfigurationEvent $event
      * @param $eventname
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function onEditorConfigurationLoadElements(
+    public function onEditorConfigurationLoadConfiguration(
         EditorConfigurationEvent $event,
         $eventname,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $elements = $this->entityManager->getRepository(EditorElementType::class)->findAll();
-        $event->setElements($elements);
+        $configId = $event->getConfigId();
+        $configRepo = $this->entityManager->getRepository(EditorConfiguration::class);
+        $config = $configRepo->findOneBy(['id' => $configId]);
+        $event->setConfiguration($config);
     }
 
     /**
@@ -62,22 +65,42 @@ class EditorConfigurationListener
         EventDispatcherInterface $eventDispatcher
     ) {
         $catRepo = $this->entityManager->getRepository(EditorElementCategory::class);
-        $elements = $event->getElements();
-        $categorIds = [];
+        $config = $event->getConfiguration();
+        $categoryIds = $config->getCategories();
         $categories = [];
-        foreach ($elements as $element) {
-            $elemCategories = $element->getCategories();
-            foreach ($elemCategories as $cid) {
-                if (!in_array($cid, $categorIds)) {
-                    $categorIds[] = $cid;
-                    $category = $catRepo->findOneBy(['id' => $cid]);
-                    if ($category) {
-                        $categories[$cid] = $category;
-                    }
-                }
+        foreach ($categoryIds as $categoryId) {
+            $category = $catRepo->findOneBy(['id' => $categoryId]);
+            if ($category) {
+                $categories[$categoryId] = $category;
             }
         }
         $event->setCategories($categories);
+    }
+
+    /**
+     * Loads the elements.
+     * @param EditorConfigurationEvent $event
+     * @param $eventname
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function onEditorConfigurationLoadElements(
+        EditorConfigurationEvent $event,
+        $eventname,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        // inefficient, better would be to search elements by category ids
+        $categories = $event->getCategories();
+        $typeRepo = $this->entityManager->getRepository(EditorElementType::class);
+        $types = $typeRepo->findAll();
+        $usedTypes = [];
+        foreach ($types as $type) {
+            foreach ($categories as $category) {
+                if (in_array($category->getId(), $type->getCategories())) {
+                    $usedTypes[] = $type;
+                }
+            }
+        }
+        $event->setElements($usedTypes);
     }
 
     /**

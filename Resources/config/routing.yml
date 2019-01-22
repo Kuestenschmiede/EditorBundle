@@ -1,9 +1,9 @@
 # Editor config
 project_editor_service:
-    path: /con4gis/projectEditorService
+    path: /con4gis/editorService/{configId}
     defaults:
         _scope: frontend
-        _controller: "con4gisEditorBundle:ProjectEditor:projectEditor"
+        _controller: "con4gisEditorBundle:Editor:configEditor"
     methods: [GET]
 
 # Id service for generated Ids
@@ -11,8 +11,26 @@ project_id_service:
     path: /con4gis/projectIdService
     defaults:
         _scope: frontend
-        _controller: "con4gisEditorBundle:ProjectEditor:getId"
+        _controller: "con4gisEditorBundle:Editor:getId"
     methods: [POST]
+
+editor_service:
+    path: /con4gis/editorService/{profileId}
+    defaults:
+        _scope: frontend
+        _controller: "con4gisEditorBundle:Editor:editor"
+    methods: [GET]
+    requirements:
+        mapId: \d+
+
+beEditor_service:
+    path: /con4gis/beEditorService/{layerId}
+    defaults:
+        _scope: frontend
+        _controller: "con4gisEditorBundle:Editor:beEditor"
+    methods: [GET]
+    requirements:
+        mapId: \d+
 
 # Save feature
 project_data_create:

@@ -43,3 +43,6 @@ $GLOBALS['TL_DCA']['tl_c4g_maps']['fields']['specialGroups'] = array
 			'sql'                     => "blob NULL"
 );
 
+$GLOBALS['TL_DCA']['tl_c4g_maps']['fields']['data_content']['wizard'] =
+                   array(array('con4gis\EditorBundle\Classes\Contao\GeoEditor', 'getEditorLink'));
+

@@ -12,11 +12,19 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
+use con4gis\EditorBundle\Entity\EditorConfiguration;
 use Symfony\Component\EventDispatcher\Event;
 
 class EditorConfigurationEvent extends Event
 {
     const NAME = "editor.editor.config";
+
+    private $configId = 0;
+
+    /**
+     * @var EditorConfiguration
+     */
+    private $configuration = null;
 
     private $elements = [];
 
@@ -28,9 +36,42 @@ class EditorConfigurationEvent extends Event
 
     /**
      * The event can be extended with additional properties with this array.
+     * Useful for using this event in another bundle.
      * @var array
      */
     private $additionalData = [];
+
+    /**
+     * @return int
+     */
+    public function getConfigId(): int
+    {
+        return $this->configId;
+    }
+
+    /**
+     * @param int $configId
+     */
+    public function setConfigId(int $configId): void
+    {
+        $this->configId = $configId;
+    }
+
+    /**
+     * @return EditorConfiguration
+     */
+    public function getConfiguration(): EditorConfiguration
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param EditorConfiguration $configuration
+     */
+    public function setConfiguration(EditorConfiguration $configuration): void
+    {
+        $this->configuration = $configuration;
+    }
 
     /**
      * @return array
