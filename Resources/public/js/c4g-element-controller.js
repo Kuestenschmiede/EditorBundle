@@ -107,20 +107,13 @@ export class ElementController {
       }
     }
     this.copyElement(feature);
-    // TODO irgendwie passiert es hier bei withCopy = true dass das feature in allen projekten liegt
     let request = new C4GAjaxRequest(url, "POST");
     request.addDoneCallback(function(data) {
       let newProjectId = parseInt(data.newProjectId, 10);
       feature.set('projectId', newProjectId);
       // and from the selection
       scope.selectInteraction.removeSelectedFeature(feature);
-      let layer;
-      // if (withCopy) {
-      //   layer = new C4gLayer(oldLayer);
-      // } else {
-      //
-      // }
-      layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
+      let layer = scope.editor.mapsInterface.getLayerFromArray(layerId);
       let newLayerId = data.id;
       let newPid = data.pid;
       layer.projectId = newProjectId;
@@ -131,9 +124,7 @@ export class ElementController {
         parent.childs = parent.childs || [];
         parent.childs.push(layer);
         parent.childsCount++;
-        // if (!withCopy) {
-          scope.editor.mapsInterface.hideLayer(layerId);
-        // }
+        scope.editor.mapsInterface.hideLayer(layerId);
         scope.editor.mapsInterface.updateLayerIndex(layerId, layer);
         scope.editor.mapsInterface.updateStarboard();
         scope.selectInteraction.updateFeatures();
@@ -151,23 +142,32 @@ export class ElementController {
 
   rotateElement(feature, degrees) {
     // formula for conversion
-    let radians = degrees * Math.PI / 180;
-    let anchor;
-    if (feature.getGeometry() instanceof ol.geom.Point) {
-      anchor = feature.getGeometry();
-    } else if (feature.getGeometry() instanceof ol.geom.Polygon) {
-      anchor = feature.getGeometry().getInteriorPoint();
-    }
-    if (anchor && radians) {
-      feature.getGeometry().rotate(radians, anchor.getCoordinates());
-      if (feature.getGeometry() instanceof ol.geom.Point) {
-        let styleId = feature.get('styleId');
-        let styles = this.mapsInterface.getLocstyleArray();
-        console.log(styles);
-        let imgRot = feature.getStyle().getImage().getRotation();
-        feature.getStyle().getImage().setRotation(imgRot + radians);
-      }
-    }
+    // let radians = degrees * Math.PI / 180;
+    // let anchor;
+    // if (feature.getGeometry() instanceof ol.geom.Point) {
+    //   anchor = feature.getGeometry();
+    // } else if (feature.getGeometry() instanceof ol.geom.Polygon) {
+    //   anchor = feature.getGeometry().getInteriorPoint();
+    // }
+    // if (anchor && radians) {
+    //   feature.getGeometry().rotate(radians, anchor.getCoordinates());
+    //   if (feature.getGeometry() instanceof ol.geom.Point) {
+    //     let styleId = feature.get('styleId');
+    //     let styles = this.mapsInterface.getLocstyleArray();
+    //     if (feature.getStyle()) {
+    //       // feature already has a style
+    //       let imgRot = feature.getStyle().getImage().getRotation();
+    //       feature.getStyle().getImage().setRotation(imgRot + radians);
+    //     } else {
+    //       let featureStyle = styles[styleId].style(feature)[0];
+    //       console.log(featureStyle);
+    //       let imgRot = featureStyle.getImage().getRotation();
+    //       featureStyle.getImage().setRotation(imgRot + radians);
+    //       feature.setStyle(featureStyle);
+    //     }
+    //   }
+    // }
+    console.log('currently work in progress, be patient and check for updates');
   }
 
   addLayer() {

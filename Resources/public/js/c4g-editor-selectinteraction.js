@@ -1,5 +1,6 @@
 import {ElementUIController} from "./c4g-element-ui-controller";
 import {langConstants} from "./c4g-editor-i18n";
+import {FeatureInteraction} from "./c4g-editor-feature-interaction";
 
 export class EditorSelectInteraction {
   /**
@@ -21,113 +22,205 @@ export class EditorSelectInteraction {
     let editor = this.editor;
     let scope = this;
     let selectCollection = new ol.Collection();
-    let selectInteraction = new ol.interaction.Select({
-      filter: function(feature, layer) {
-        // returns true when the projectId of the given feature equals the current project id
-        if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
-          return feature.get('projectId') === editor.projectController.currentProject.id;
-        } else {
-          return false;
-        }
-      },
-      toggleCondition: ol.events.condition.platformModifierKeyOnly,
-      collection: selectCollection,
-      style: function (feature, projection) {
-        var styleId,
-          styleArray = [],
-          styleRadius,
-          locStyles;
-
-        locStyles = scope.editor.mapsInterface.getLocstyleArray();
-        if (feature && typeof feature.get === 'function') {
-          // get the styleId of the current feature
-          styleId = feature.get('styleId');
-          // and execute the appropriate function
-          // use the feature style function if there is one
-          if (feature.getStyle() && typeof feature.getStyle() === 'function') {
-            styleArray = feature.getStyle()(feature, projection);
-            return styleArray;
-            // else use the locationstyle function
-          } else if (locStyles[styleId] && locStyles[styleId].style) {
-            styleArray = locStyles[styleId].style(feature, projection);
-            if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage() instanceof ol.style.Icon) {
-              styleRadius = 5;
-            } else {
-              styleRadius = parseInt(styleArray[0].getImage().getRadius(), 10) + 4;
-            }
-          }
-
-          // create border style
-          styleArray.push(
-            new ol.style.Style({
-              image: new ol.style.Circle({
-                stroke: new ol.style.Stroke({
-                  color: 'rgba(255,255,255,.7)',
-                  width: 5
-                }),
-                radius: styleRadius
-              }),
-              stroke: new ol.style.Stroke({
-                color: 'rgba(255,255,255,.7)',
-                width: 5
-              }),
-              fill: new ol.style.Fill({
-                color: 'rgba(255,255,255,.5)'
-              })
-            })
-          );
-          return styleArray;
-        }
-        return false;
-      }
-    }); // selectInteraction
-
-    let selectedFeatures = selectInteraction.getFeatures();
-
-    let selectBoxInteraction = new ol.interaction.DragBox({condition: ol.events.condition.shiftKeyOnly});
-
-    selectBoxInteraction.on('boxend', function (e) {
-      var extent = selectBoxInteraction.getGeometry().getExtent();
-
-      editor.editLayerGroup.getLayers().forEach(function (layerGroup) {
-        layerGroup.getLayers().forEach(function(layer) {
-          layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
-            if (layer.getStyleFunction()) {
-              feature.setStyle(layer.getStyleFunction());
-            }
-            // check if the feature belongs to the current project
-            if (feature.get('projectId') === scope.editor.currentProject.id) {
-              let found = false;
-              // check if collection already contains feature
-              for (let i = 0; i < selectedFeatures.getLength(); i++) {
-                if (feature === selectedFeatures.item(i)) {
-                  found = true;
-                  break;
-                }
-              }
-              if (!found) {
-                selectedFeatures.push(feature);
-              }
-            }
-          })
-        });
-      });
-
-      scope.fnHandleSelection(selectedFeatures);
+    // let selectInteraction = new ol.interaction.Select({
+    //   filter: function(feature, layer) {
+    //     // returns true when the projectId of the given feature equals the current project id
+    //     if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+    //       return feature.get('projectId') === editor.projectController.currentProject.id;
+    //     } else {
+    //       return false;
+    //     }
+    //   },
+    //   toggleCondition: ol.events.condition.platformModifierKeyOnly,
+    //   collection: selectCollection,
+    //   style: function (feature, projection) {
+    //     var styleId,
+    //       styleArray = [],
+    //       styleRadius,
+    //       locStyles;
+    //
+    //     locStyles = scope.editor.mapsInterface.getLocstyleArray();
+    //     if (feature && typeof feature.get === 'function') {
+    //       // get the styleId of the current feature
+    //       styleId = feature.get('styleId');
+    //       // and execute the appropriate function
+    //       // use the feature style function if there is one
+    //       if (feature.getStyle() && typeof feature.getStyle() === 'function') {
+    //         styleArray = feature.getStyle()(feature, projection);
+    //         return styleArray;
+    //         // else use the locationstyle function
+    //       } else if (locStyles[styleId] && locStyles[styleId].style) {
+    //         styleArray = locStyles[styleId].style(feature, projection);
+    //         if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage() instanceof ol.style.Icon) {
+    //           styleRadius = 5;
+    //         } else {
+    //           styleRadius = parseInt(styleArray[0].getImage().getRadius(), 10) + 4;
+    //         }
+    //       }
+    //
+    //       // create border style
+    //       styleArray.push(
+    //         new ol.style.Style({
+    //           image: new ol.style.Circle({
+    //             stroke: new ol.style.Stroke({
+    //               color: 'rgba(255,255,255,.7)',
+    //               width: 5
+    //             }),
+    //             radius: styleRadius
+    //           }),
+    //           stroke: new ol.style.Stroke({
+    //             color: 'rgba(255,255,255,.7)',
+    //             width: 5
+    //           }),
+    //           fill: new ol.style.Fill({
+    //             color: 'rgba(255,255,255,.5)'
+    //           })
+    //         })
+    //       );
+    //       return styleArray;
+    //     }
+    //     return false;
+    //   }
+    // }); // selectInteraction
+    //
+    // let selectedFeatures = selectInteraction.getFeatures();
+    //
+    // let selectBoxInteraction = new ol.interaction.DragBox({condition: ol.events.condition.shiftKeyOnly});
+    //
+    // selectBoxInteraction.on('boxend', function (e) {
+    //   var extent = selectBoxInteraction.getGeometry().getExtent();
+    //
+    //   editor.editLayerGroup.getLayers().forEach(function (layerGroup) {
+    //     layerGroup.getLayers().forEach(function(layer) {
+    //       layer.getSource().forEachFeatureIntersectingExtent(extent, function (feature) {
+    //         if (layer.getStyleFunction()) {
+    //           feature.setStyle(layer.getStyleFunction());
+    //         }
+    //         // check if the feature belongs to the current project
+    //         if (feature.get('projectId') === scope.editor.currentProject.id) {
+    //           let found = false;
+    //           // check if collection already contains feature
+    //           for (let i = 0; i < selectedFeatures.getLength(); i++) {
+    //             if (feature === selectedFeatures.item(i)) {
+    //               found = true;
+    //               break;
+    //             }
+    //           }
+    //           if (!found) {
+    //             selectedFeatures.push(feature);
+    //           }
+    //         }
+    //       })
+    //     });
+    //   });
+    //
+    //   scope.fnHandleSelection(selectedFeatures);
+    // });
+    //
+    // // clear selection when drawing a new box and when clicking on the map
+    // selectBoxInteraction.on('boxstart', function (e) {
+    //   selectedFeatures.clear();
+    //   scope.fnHandleSelection(new ol.Collection());
+    // });
+    //
+    // selectInteraction.on('select', function (event) {
+    //   scope.fnHandleSelection(event.target.getFeatures());
+    //   let arrFeatures = event.target.getFeatures().getArray();
+    //   for (let i = 0; i < arrFeatures.length; i++) {
+    //     scope.addModificationInteractions(arrFeatures[i]);
+    //   }
+    //   // scope.addModificationInteractions();
+    //   // TODO hier auf die selecteten features die modify und translate interaction packen.
+    // });
+    let selectInteraction = new FeatureInteraction(selectCollection);
+    selectInteraction.onSelect(function(feature, collection) {
+      scope.fnHandleSelection(collection);
     });
-
-    // clear selection when drawing a new box and when clicking on the map
-    selectBoxInteraction.on('boxstart', function (e) {
-      selectedFeatures.clear();
-      scope.fnHandleSelection(new ol.Collection());
-    });
-
-    selectInteraction.on('select', function (event) {
-      scope.fnHandleSelection(event.target.getFeatures());
-    });
+    let selectBoxInteraction = null;
     this.selectInteraction = selectInteraction;
     this.selectBoxInteraction = selectBoxInteraction;
     return {selectInteraction: selectInteraction, boxInteraction: selectBoxInteraction};
+  }
+
+  addModificationInteractions(modifyFeature) {
+    let featureGeometry = modifyFeature.getGeometry();
+    let translateInteraction = false;
+    let modifyInteraction = false;
+    // add interactions to map
+    // if (!(featureGeometry instanceof ol.geom.LineString)) {
+      translateInteraction = new ol.interaction.Translate({
+        features: new ol.Collection([modifyFeature])
+      });
+      this.editor.options.mapController.map.addInteraction(translateInteraction);
+    // }
+
+    if (!(featureGeometry instanceof ol.geom.Point)) {
+      modifyInteraction = new ol.interaction.Modify({
+        features: new ol.Collection([modifyFeature])
+      });
+      this.editor.options.mapController.map.addInteraction(modifyInteraction);
+    }
+    // this.selectInteraction.setActive(false);
+    // add apply button
+    // this.applyFeatureModification(translateInteraction, modifyInteraction, modifyFeature);
+
+  }
+
+  applyFeatureModification(translateInteraction, modifyInteraction, modifyFeature) {
+    let change = {};
+    let scope = this;
+    let editor = this.editor;
+    if (translateInteraction) {
+      // translate interaction for geometries != LineString
+      translateInteraction.setActive(false);
+      editor.options.mapController.map.removeInteraction(translateInteraction);
+      translateInteraction = false;
+      if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
+        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
+        change['locgeox'] = coordinates[0];
+        change['locgeoy'] = coordinates[1];
+      } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
+        change['radius'] = modifyFeature.getGeometry().getRadius();
+      } else {
+        let geoJson = new ol.format.GeoJSON();
+        change['geojson'] = geoJson.writeFeature(modifyFeature);
+      }
+    }
+    if (modifyInteraction) {
+      // modify interaction for point geometries
+      editor.options.mapController.map.removeInteraction(modifyInteraction);
+      modifyInteraction.setActive(false);
+      modifyInteraction = false;
+      if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
+        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
+        change['locgeox'] = coordinates[0];
+        change['locgeoy'] = coordinates[1];
+      } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
+        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
+        change['locgeox'] = coordinates[0];
+        change['locgeoy'] = coordinates[1];
+        change['radius'] = modifyFeature.getGeometry().getRadius();
+      } else {
+        let geoJson = new ol.format.GeoJSON();
+        change['geojson'] = geoJson.writeFeature(modifyFeature);
+      }
+    }
+    // update feature measurements
+    modifyFeature.set('measuredLength', utils.measureGeometry(modifyFeature.getGeometry(), true));
+    if (modifyFeature.getGeometry() instanceof ol.geom.Polygon) {
+      modifyFeature.set('measuredArea', utils.measureGeometry(modifyFeature.getGeometry()));
+    }
+    if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
+      modifyFeature.set('measuredRadius', utils.measureGeometry(modifyFeature.getGeometry()));
+    }
+
+    this.selectInteraction.selectInteraction.setActive(true);
+    // applyButton.parentNode.replaceChild(modifyButton, applyButton);
+    this.editor.applyFeatureModification = false;
+    // call featurehandler
+    this.editor.featureHandler.modifyFeature(modifyFeature, change);
+    // re-render list
+    scope.selectInteraction.fnHandleSelection(this.selectInteraction.selectInteraction.getFeatures());
   }
 
   /**
@@ -195,11 +288,6 @@ export class EditorSelectInteraction {
     this.editor.spinner.hide();
   }
 
-
-
-
-
-  // TODO umbenennen in showSelection
   /**
    * Lists the currently selected features in the select view and creates the button elements for the different
    * editing functions.
@@ -219,9 +307,9 @@ export class EditorSelectInteraction {
     let scope = this;
     let selectInteraction = this.selectInteraction;
 
-    if (typeof scope.editor.applyFeatureModification === 'function') {
-      scope.editor.applyFeatureModification();
-    }
+    // if (typeof scope.editor.applyFeatureModification === 'function') {
+    //   scope.editor.applyFeatureModification();
+    // }
 
     renderSelectedFeaturesList = function () {
       featureCount = selectedFeatures.getLength();

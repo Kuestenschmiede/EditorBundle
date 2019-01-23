@@ -43,7 +43,7 @@ export class EditorSelectView {
       initFunction: function () {
 
         editor.options.mapController.map.addInteraction(selectInteraction);
-        editor.options.mapController.map.addInteraction(selectBoxInteraction);
+        // editor.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;
       },
       activateFunction: function () {
@@ -61,8 +61,8 @@ export class EditorSelectView {
             editor.options.mapController.map.addInteraction(selectInteraction);
         }
 
-        selectBoxInteraction.setActive(true);
-        editor.options.mapController.map.addInteraction(selectBoxInteraction);
+        // selectBoxInteraction.setActive(true);
+        // editor.options.mapController.map.addInteraction(selectBoxInteraction);
 
         return true;
       },
