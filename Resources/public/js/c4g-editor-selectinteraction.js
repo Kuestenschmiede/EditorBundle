@@ -415,9 +415,13 @@ export class EditorSelectInteraction {
     let deleteButton = document.createElement('button');
     $(deleteButton).addClass('c4g-btn-delete-all-data');
     $(deleteButton).on('click', function(event) {
-      scope.selectInteraction.getFeatures().forEach(function(element, index, array) {
-        scope._elementUiController.elementController.deleteElement(element);
-      });
+      let arrFeatures = scope.selectInteraction.getFeatures().getArray();
+      // we have to use the same technique as above
+      while (arrFeatures.length !== 0) {
+        for (let i = 0; i < arrFeatures.length; i++) {
+          scope._elementUiController.elementController.deleteElement(arrFeatures[i]);
+        }
+      }
     });
     let translateButton = document.createElement('button');
     $(translateButton).addClass('c4g-btn-translate-all-data');
@@ -436,7 +440,7 @@ export class EditorSelectInteraction {
       // TODO das gleiche wie oben (fast)
     });
     // bar.appendChild(translateButton);
-    // bar.appendChild(deleteButton);
+    bar.appendChild(deleteButton);
     // bar.appendChild(displaceButton);
     // bar.appendChild(copyDisplaceButton);
     bar.appendChild(deselectButton);
