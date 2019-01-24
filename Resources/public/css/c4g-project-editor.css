@@ -82,6 +82,10 @@ button.c4g-btn-edit-data:before {
     content: "\f1c0";
 }
 
+button.c4g-btn-deselect-data:before {
+    content: "\f00d";
+}
+
 .c4g-draw-content-project {
     width: 100%;
 }

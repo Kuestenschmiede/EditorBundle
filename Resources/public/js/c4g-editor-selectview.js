@@ -43,41 +43,36 @@ export class EditorSelectView {
       initFunction: function () {
 
         editor.options.mapController.map.addInteraction(selectInteraction);
-        // editor.options.mapController.map.addInteraction(selectBoxInteraction);
+        editor.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;
       },
       activateFunction: function () {
         // Disable mapHover
-        //editor.options.mapController.mapHover.deactivate();
+        editor.options.mapController.mapHover.deactivate();
 
         // Reset display, if no features are selected
         if (selectInteraction.getFeatures().getLength() < 1) {
           scope.reloadHelpContent();
         }
-
         // Enable interaction
-        if (selectInteraction.getFeatures().getLength() > 0) {
-            selectInteraction.setActive(true);
-            editor.options.mapController.map.addInteraction(selectInteraction);
-        }
-
-        // selectBoxInteraction.setActive(true);
-        // editor.options.mapController.map.addInteraction(selectBoxInteraction);
-
+        selectInteraction.setActive(true);
+        editor.options.mapController.map.addInteraction(selectInteraction);
+        selectBoxInteraction.setActive(true);
+        editor.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;
       },
       deactivateFunction: function () {
-        if (typeof editor.applyFeatureModification === 'function') {
-          editor.applyFeatureModification();
-        }
+        // if (typeof editor.applyFeatureModification === 'function') {
+        //   editor.applyFeatureModification();
+        // }
         // Disable interaction
-        //selectInteraction.setActive(false);
-        //editor.options.mapController.map.removeInteraction(selectInteraction);
-        //selectBoxInteraction.setActive(false);
-        //editor.options.mapController.map.removeInteraction(selectBoxInteraction);
+        selectInteraction.setActive(false);
+        editor.options.mapController.map.removeInteraction(selectInteraction);
+        selectBoxInteraction.setActive(false);
+        editor.options.mapController.map.removeInteraction(selectBoxInteraction);
 
         // enable mapHover
-        //editor.options.mapController.mapHover.activate();
+        editor.options.mapController.mapHover.activate();
 
         return true;
       }

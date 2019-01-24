@@ -170,8 +170,8 @@ export class ElementController {
     console.log('currently work in progress, be patient and check for updates');
   }
 
-  addLayer() {
-    // TODO creates layer and adds it to the layer structure
+  deselectElement(featureId) {
+    this.selectInteraction.removeSelectedFeatureById(featureId);
+    this.selectInteraction.updateFeatures();
   }
-
 }

@@ -382,6 +382,18 @@ export class ElementUIController {
     this.addToEditor(controlContainer);
   }
 
+  createDeselectButton(index) {
+    let scope = this;
+    let deselectButton = document.createElement('button');
+    deselectButton.className = cssConstants.ICON + ' ' + ' c4g-btn-deselect-data';
+    deselectButton.title = langConstants.DESELECT_ELEMENT;
+    deselectButton.setAttribute('feat_id', index);
+    $(deselectButton).click(function(event) {
+      scope.elementController.deselectElement(event.target.getAttribute('feat_id'));
+    });
+    return deselectButton;
+  }
+
   /**
    * Reloads the overview of the selected features and the possible operations.
    */

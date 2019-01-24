@@ -1,14 +1,14 @@
 
 export class FeatureInteraction extends ol.interaction.Pointer {
-  // TODO aktuell bleiben features ausgewählt. Dies könnten wir beibehalten. Oder es wird nur das aktuell ausgewählte
-  // TODO feature im Editor dargestellt. Wenn wir es beibehalten, müssen wir einen Button "Auswahl aufheben" haben.
-  // TODO was ist das intuitivste?
+
   constructor(collection, fnFilter, style) {
     super();
     this.collection = collection;
     // feature interactions are mapped in these by id => interaction object
     this.translateInteractions = {};
     this.selectListener = [];
+    this.styleFunction = style;
+    this.styleMap = {};
   }
 
   handleDownEvent(event) {
@@ -20,6 +20,8 @@ export class FeatureInteraction extends ol.interaction.Pointer {
       if (!this.collectionContains(feature)) {
         this.collection.push(feature);
       }
+      this.styleMap[feature.getId()] = feature.getStyle();
+      feature.setStyle(this.styleFunction(feature));
       for (let i = 0; i < this.selectListener.length; i++) {
         // call every listener with the feature and the whole collection as parameters
         this.selectListener[i](feature, this.collection);
@@ -69,4 +71,8 @@ export class FeatureInteraction extends ol.interaction.Pointer {
     return false;
   }
 
+  removeFeature(feature) {
+    feature.setStyle(this.styleMap[feature.getId()]);
+    this.collection.remove(feature);
+  }
 }
