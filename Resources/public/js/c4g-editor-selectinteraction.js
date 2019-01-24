@@ -112,6 +112,10 @@ export class EditorSelectInteraction {
     return {selectInteraction: selectInteraction, boxInteraction: selectBoxInteraction};
   }
 
+  /**
+   * Applies a feature transformation.
+   * @param feature
+   */
   applyFeatureTranslation(feature) {
     let change = {};
     if (feature.getGeometry() instanceof ol.geom.Point) {
@@ -143,12 +147,12 @@ export class EditorSelectInteraction {
     let translateInteraction = false;
     let modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry instanceof ol.geom.LineString)) {
-      translateInteraction = new ol.interaction.Translate({
-        features: new ol.Collection([modifyFeature])
-      });
-      this.editor.options.mapController.map.addInteraction(translateInteraction);
-    }
+    // if (!(featureGeometry instanceof ol.geom.LineString)) {
+    //   translateInteraction = new ol.interaction.Translate({
+    //     features: new ol.Collection([modifyFeature])
+    //   });
+    //   this.editor.options.mapController.map.addInteraction(translateInteraction);
+    // }
 
     if (!(featureGeometry instanceof ol.geom.Point)) {
       modifyInteraction = new ol.interaction.Modify({
