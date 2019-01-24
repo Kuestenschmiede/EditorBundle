@@ -219,11 +219,6 @@ export class EditorSelectInteraction {
     this.selectInteraction.removeFeature(feature);
   }
 
-  removeSelectedFeatureById(featureId) {
-    let feature = this.selectInteraction.getFeatures().item(featureId);
-    this.selectInteraction.removeFeature(feature);
-  }
-
   /**
    * Refreshes the feature list.
    */
@@ -287,7 +282,7 @@ export class EditorSelectInteraction {
    * @param selectedFeatures
    */
   fnHandleSelection(selectedFeatures) {
-    var headlineElement,
+    var outerDiv,
       inputNameElement,
       modifyButtonElement,
       deleteButtonElement,
@@ -308,9 +303,12 @@ export class EditorSelectInteraction {
       featureCount = selectedFeatures.getLength();
       scope.selectView.selectContent.innerHTML = '';
       if (featureCount > 0) {
+        if (featureCount > 1) {
+          scope.selectView.selectContent.appendChild(scope.createMultiEditButtonBar());
+        }
         for (let i = 0; i < featureCount; i += 1) {
           selectedFeature = selectedFeatures.item(i);
-          headlineElement = document.createElement('h4');
+          outerDiv = document.createElement('div');
           // add name inputfield
           inputNameElement = document.createElement('input');
           inputNameElement.type = 'text';
@@ -321,24 +319,24 @@ export class EditorSelectInteraction {
           );
           inputNameElement.setAttribute('feat_id', i);
           inputNameElement.setAttribute('disabled', true);
-          headlineElement.appendChild(inputNameElement);
+          outerDiv.appendChild(inputNameElement);
           // add modify button
-          headlineElement.appendChild(scope._elementUiController.createMoveButton(i));
+          outerDiv.appendChild(scope._elementUiController.createMoveButton(i));
           // add delete button
-          headlineElement.appendChild(scope._elementUiController.createDeleteButton(i));
+          outerDiv.appendChild(scope._elementUiController.createDeleteButton(i));
           // add edit button
-          headlineElement.appendChild(scope._elementUiController.createEditButton(i));
+          outerDiv.appendChild(scope._elementUiController.createEditButton(i));
           // add copy button
-          headlineElement.appendChild(scope._elementUiController.createCopyButton(i));
+          outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
           // add displace button
-          headlineElement.appendChild(scope._elementUiController.createDisplaceButton(i));
+          outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
           // add copy&displace button
-          headlineElement.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+          outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
           // add rotation button
-          headlineElement.appendChild(scope._elementUiController.createRotateButton(i));
+          outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
           // add deselect button
-          headlineElement.appendChild(scope._elementUiController.createDeselectButton(i));
-          scope.selectView.selectContent.appendChild(headlineElement);
+          outerDiv.appendChild(scope._elementUiController.createDeselectButton(i));
+          scope.selectView.selectContent.appendChild(outerDiv);
           if (selectedFeature.get('measuredLength')) {
             let label = "";
             if (selectedFeature.getGeometry() instanceof ol.geom.LineString) {
@@ -364,18 +362,18 @@ export class EditorSelectInteraction {
           }
         }
         if (scope.selectView.selectContentHeadline) {
-            scope.selectView.selectContentHeadline.style.display = 'none';
+          scope.selectView.selectContentHeadline.style.display = 'none';
         }
         // activate selection tab
         scope.editor.tabs[0].activate();
         scope.editor.update();
       } else {
         if (scope.selectView.selectContentInfo) {
-            scope.selectView.selectContent.appendChild(scope.selectView.selectContentInfo);
-            if (scope.selectView.selectContentHeadline) {
-                scope.selectView.selectContentHeadline.style.display = '';
-            }
-            scope.editor.update();
+          scope.selectView.selectContent.appendChild(scope.selectView.selectContentInfo);
+          if (scope.selectView.selectContentHeadline) {
+            scope.selectView.selectContentHeadline.style.display = '';
+          }
+          scope.editor.update();
         }
       }
       // TODO prüfen ob solche Tooltips vielleicht cooler sind
@@ -396,6 +394,54 @@ export class EditorSelectInteraction {
 
     renderSelectedFeaturesList();
   }; // end of "fnHandleSelection"
+
+  createMultiEditButtonBar() {
+    const scope = this;
+    let bar = document.createElement('div');
+    let deselectButton = document.createElement('button');
+    $(deselectButton).addClass('c4g-btn-deselect-all-data');
+    $(deselectButton).on('click', function(event) {
+      let arrFeatures = scope.selectInteraction.getFeatures().getArray();
+      // this is needed because the array is modified in place by the deselection
+      // the for loop will half the length of the array by the time it completes
+      // so the whole runtime will be log(n) * n, so that's not too bad
+      while (arrFeatures.length !== 0) {
+        for (let i = 0; i < arrFeatures.length; i++) {
+          scope._elementUiController.elementController.deselectElement(arrFeatures[i], true);
+        }
+      }
+      scope.updateFeatures();
+    });
+    let deleteButton = document.createElement('button');
+    $(deleteButton).addClass('c4g-btn-delete-all-data');
+    $(deleteButton).on('click', function(event) {
+      scope.selectInteraction.getFeatures().forEach(function(element, index, array) {
+        scope._elementUiController.elementController.deleteElement(element);
+      });
+    });
+    let translateButton = document.createElement('button');
+    $(translateButton).addClass('c4g-btn-translate-all-data');
+    $(translateButton).on('click', function(event) {
+      // TODO translate interaction für alle features anlegen
+      // TODO währenddessen müssen vermutlich alle normalen translates deaktiviert werden
+    });
+    let displaceButton = document.createElement('button');
+    $(displaceButton).addClass('c4g-btn-displace-all-data');
+    $(displaceButton).on('click', function(event) {
+      // TODO projektauswahl anzeigen, dann alle darein verschieben
+    });
+    let copyDisplaceButton = document.createElement('button');
+    $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
+    $(copyDisplaceButton).on('click', function(event) {
+      // TODO das gleiche wie oben (fast)
+    });
+    // bar.appendChild(translateButton);
+    // bar.appendChild(deleteButton);
+    // bar.appendChild(displaceButton);
+    // bar.appendChild(copyDisplaceButton);
+    bar.appendChild(deselectButton);
+    return bar;
+  }
 
 
   get elementUiController() {

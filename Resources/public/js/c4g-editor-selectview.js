@@ -78,30 +78,6 @@ export class EditorSelectView {
       }
     });
 
-    // listener to sync the select interaction with the editor layers
-    let listener = function() {
-      if (selectInteraction && selectBoxInteraction) {
-        // deactivate old interactions
-        selectInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(selectInteraction);
-        selectBoxInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(selectBoxInteraction);
-        // reload select view
-        let objSelect = new EditorSelectInteraction(editor, scope);
-        let interactions = objSelect.createSelectInteraction();
-        selectBoxInteraction = interactions.boxInteraction;
-        selectInteraction = interactions.selectInteraction;
-        selectInteraction.setActive(true);
-        selectBoxInteraction.setActive(true);
-        scope.selectInteraction = interactions;
-        // activate new interactions
-        editor.options.mapController.map.addInteraction(selectInteraction);
-        editor.options.mapController.map.addInteraction(selectBoxInteraction);
-      }
-    };
-    // editor.editLayerGroup.getLayers().on('add', listener);
-    // editor.editLayerGroup.getLayers().on('remove', listener);
-
     return selectView;
   }
 

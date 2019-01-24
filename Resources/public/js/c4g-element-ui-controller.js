@@ -389,7 +389,7 @@ export class ElementUIController {
     deselectButton.title = langConstants.DESELECT_ELEMENT;
     deselectButton.setAttribute('feat_id', index);
     $(deselectButton).click(function(event) {
-      scope.elementController.deselectElement(event.target.getAttribute('feat_id'));
+      scope.elementController.deselectElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
     });
     return deselectButton;
   }

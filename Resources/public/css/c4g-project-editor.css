@@ -86,6 +86,14 @@ button.c4g-btn-deselect-data:before {
     content: "\f00d";
 }
 
+button.c4g-btn-rotate-data:before {
+    content: "\f021";
+}
+
+button.c4g-btn-deselect-all-data:before {
+    content: "\f00d";
+}
+
 .c4g-draw-content-project {
     width: 100%;
 }

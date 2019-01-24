@@ -85,7 +85,7 @@ export class ElementController {
     let url = "/con4gis/projectDataCopy/" + this.editor.projectController.currentProject.id + "/" + layerId;
     let request = new C4GAjaxRequest(url, "POST");
     request.addDoneCallback(function(data) {
-      scope.selectInteraction.showNewLayer(data.layer, true)
+      scope.selectInteraction.showNewLayer(data.layer, true);
     });
     request.execute();
   }
@@ -170,8 +170,10 @@ export class ElementController {
     console.log('currently work in progress, be patient and check for updates');
   }
 
-  deselectElement(featureId) {
-    this.selectInteraction.removeSelectedFeatureById(featureId);
-    this.selectInteraction.updateFeatures();
+  deselectElement(feature, noUpdate) {
+    this.selectInteraction.removeSelectedFeature(feature);
+    if (!noUpdate) {
+      this.selectInteraction.updateFeatures();
+    }
   }
 }
