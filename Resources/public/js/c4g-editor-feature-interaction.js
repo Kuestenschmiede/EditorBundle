@@ -7,6 +7,7 @@ export class FeatureInteraction extends ol.interaction.Pointer {
     // feature interactions are mapped in these by id => interaction object
     this.translateInteractions = {};
     this.selectListener = [];
+    this.translateListener = [];
     this.styleFunction = style;
     this.styleMap = {};
   }
@@ -17,21 +18,8 @@ export class FeatureInteraction extends ol.interaction.Pointer {
       return feature;
     });
     if (feature) {
-      if (!this.collectionContains(feature)) {
-        this.collection.push(feature);
-      }
-      this.styleMap[feature.getId()] = feature.getStyle();
-      feature.setStyle(this.styleFunction(feature));
-      for (let i = 0; i < this.selectListener.length; i++) {
-        // call every listener with the feature and the whole collection as parameters
-        this.selectListener[i](feature, this.collection);
-      }
-      let translateInteraction = new ol.interaction.Translate({
-        features: new ol.Collection([feature])
-      });
-      // TODO on translateend muss das feature/der layer aktualisiert werden
-      map.addInteraction(translateInteraction);
-      this.translateInteractions[feature.getId()] = translateInteraction;
+      feature = this.addFeature(feature);
+      let translateInteraction = this.addTranslateInteractionForFeature(feature, map);
       translateInteraction.handleEvent(event);
     }
     return !!feature;
@@ -53,12 +41,32 @@ export class FeatureInteraction extends ol.interaction.Pointer {
     }
   }
 
+  addTranslateInteractionForFeature(feature, map) {
+    const scope = this;
+    let translateInteraction = new ol.interaction.Translate({
+      features: new ol.Collection([feature])
+    });
+    // TODO on translateend muss das feature/der layer aktualisiert werden
+    map.addInteraction(translateInteraction);
+    this.translateInteractions[feature.getId()] = translateInteraction;
+    translateInteraction.on('translateend', function(event) {
+      for (let i = 0; i < scope.translateListener.length; i++) {
+        scope.translateListener[i](feature);
+      }
+    });
+    return translateInteraction;
+  }
+
   getFeatures() {
     return this.collection;
   }
 
   onSelect(fnCallback) {
     this.selectListener.push(fnCallback);
+  }
+
+  onTranslateend(fnCallback) {
+    this.translateListener.push(fnCallback);
   }
 
   collectionContains(feature) {
@@ -69,6 +77,19 @@ export class FeatureInteraction extends ol.interaction.Pointer {
       }
     }
     return false;
+  }
+
+  addFeature(feature) {
+    if (!this.collectionContains(feature)) {
+      this.collection.push(feature);
+    }
+    this.styleMap[feature.getId()] = feature.getStyle();
+    feature.setStyle(this.styleFunction(feature));
+    for (let i = 0; i < this.selectListener.length; i++) {
+      // call every listener with the feature and the whole collection as parameters
+      this.selectListener[i](feature, this.collection);
+    }
+    return feature;
   }
 
   removeFeature(feature) {
