@@ -16,13 +16,13 @@ use \Doctrine\ORM\Mapping as ORM;
 use con4gis\CoreBundle\Entity\BaseEntity;
 
 /**
- * Class EditorElement
+ * Class EditorElementHistory
  *
- * @ORM\Entity
- * @ORM\Table(name="tl_c4g_editor_element")
+ * @ORM\Entity(repositoryClass="con4gis\EditorBundle\Repository\EditorElementHistoryRepository")
+ * @ORM\Table(name="tl_c4g_editor_element_history")
  * @package con4gis\EditorBundle\Entity
  */
-class EditorElement extends BaseEntity
+class EditorElementHistory extends BaseEntity
 {
     /**
      * @var int
@@ -140,6 +140,18 @@ class EditorElement extends BaseEntity
      * @ORM\Column(type="string")
      */
     protected $drawtype = "";
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $versiontstamp = 0;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $elementid = 0;
 
     /**
      * @return int
@@ -443,5 +455,37 @@ class EditorElement extends BaseEntity
     public function setDrawtype(string $drawtype): void
     {
         $this->drawtype = $drawtype;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersiontstamp(): int
+    {
+        return $this->versiontstamp;
+    }
+
+    /**
+     * @param int $versiontstamp
+     */
+    public function setVersiontstamp(int $versiontstamp): void
+    {
+        $this->versiontstamp = $versiontstamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getElementid(): int
+    {
+        return $this->elementid;
+    }
+
+    /**
+     * @param int $elementid
+     */
+    public function setElementid(int $elementid): void
+    {
+        $this->elementid = $elementid;
     }
 }

@@ -7,3 +7,9 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@event_dispatcher'
 
+    editor_history:
+        class: con4gis\EditorBundle\Classes\Services\EditorHistoryService
+        public: true
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@logger'

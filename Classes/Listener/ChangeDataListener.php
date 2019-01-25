@@ -16,6 +16,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 use con4gis\EditorBundle\Classes\Events\ChangeDataEvent;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
+use Contao\System;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,6 +53,8 @@ class ChangeDataListener
         ]);
         $changeCount = 0;
         if ($entity) {
+            // TODO inject editor service and call directly
+            System::getContainer()->get('editor_history')->createHistoryEntry($entity);
             foreach ($changes as $key => $change) {
                 $setter = "set" . ucfirst($key);
                 if (method_exists($entity, $setter)) {

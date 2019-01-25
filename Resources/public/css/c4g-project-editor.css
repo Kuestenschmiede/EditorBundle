@@ -143,6 +143,9 @@ button.c4g-btn-duplicate-data:before {
 button.c4g-btn-displace-data:before {
     content: "\f56e";
 }
+button.c4g-btn-revert-data:before {
+    content: "\f0e2";
+}
 button.c4g-btn-duplicate-displace-data:before {
     content: "\f0ea";
 }

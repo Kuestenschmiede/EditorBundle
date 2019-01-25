@@ -394,6 +394,18 @@ export class ElementUIController {
     return deselectButton;
   }
 
+  createRevertButton(index) {
+    let scope = this;
+    let revertButton = document.createElement('button');
+    revertButton.className = cssConstants.ICON + ' ' + ' c4g-btn-revert-data';
+    revertButton.title = langConstants.REVERT_ELEMENT;
+    revertButton.setAttribute('feat_id', index);
+    $(revertButton).click(function(event) {
+      scope.elementController.revertElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
+    });
+    return revertButton;
+  }
+
   /**
    * Reloads the overview of the selected features and the possible operations.
    */

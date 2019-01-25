@@ -111,8 +111,11 @@ export class FeatureHandler {
    * @returns {*}
    */
   updateLayerProperties(changeData, layer, feature) {
+    console.log(layer);
+    console.log(changeData);
     for (let key in changeData) {
       if (changeData.hasOwnProperty(key) && layer.hasOwnProperty(key)) {
+        console.log(key);
         // current key is contained in both objects
         layer[key] = changeData[key];
         // this is needed to sync the feature and the layer

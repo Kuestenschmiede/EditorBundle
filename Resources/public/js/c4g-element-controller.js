@@ -176,4 +176,16 @@ export class ElementController {
       this.selectInteraction.updateFeatures();
     }
   }
+
+  revertElement(feature) {
+    const scope = this;
+    let layerId = feature.get('layerId');
+    let layer = this.mapsInterface.getLayerFromArray(layerId);
+    $.ajax('/con4gis/element/revert/' + layerId, {method: 'PUT'}).done(function(data) {
+      scope.editor.featureHandler.updateLayer(data, layer, feature);
+      // TODO die reverteten werte stehen im layer. das Feature hat sich aber noch nicht verändert
+      // TODO wir brauchen eine Funktion, die EINEN Layer neu Zeichnet (und seine Features). Ich will nicht
+      // TODO alles neu zeichnen müssen nur weil sich ein Feature verändert hat.
+    });
+  }
 }

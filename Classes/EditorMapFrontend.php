@@ -197,7 +197,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                         $elementData = [];
                         foreach ($arrData as $datum) {
                             if ($datum->getTypeid() === $element->getId()) {
-                                $arrDatum = $this->getSingleDataArray($datum, $element, $child, $category);
+                                $arrDatum = $this->getSingleDataArray($datum, $child);
                                 $arrDatum['projectId'] = $project->getId();
                                 $elementData[] = $arrDatum;
                             }
@@ -230,12 +230,10 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
     /**
      * Converts a MapsProjectData entity to a map structure element with content.
      * @param EditorElement $data
-     * @param EditorElementType $element
      * @param $child
-     * @param $category
      * @return array
      */
-    public function getSingleDataArray(EditorElement $data, EditorElementType $element, $child, $category)
+    public function getSingleDataArray(EditorElement $data, $child)
     {
         switch ($data->getDrawtype()) {
             case EditorDrawStyles::FREEHAND:
@@ -244,8 +242,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $content = $this->createGeoJsonContent($data);
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     72,
                     'GeoJSON',
                     $data->getName(),
@@ -271,8 +269,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 }
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     79,
                     'none',
                     $data->getName(),
@@ -286,8 +284,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $content = $this->createContentForCircleGeom($data);
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     81,
                     'none',
                     $data->getName(),

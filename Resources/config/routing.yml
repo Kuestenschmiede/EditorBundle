@@ -145,3 +145,10 @@ get_category_layer:
         _scope: frontend
         _controller: "con4gisEditorBundle:Category:getCategoryLayer"
     methods: [GET]
+
+revert_element:
+    path: /con4gis/element/revert/{layerId}
+    defaults:
+        _scope: frontend
+        _controller: "con4gisEditorBundle:ProjectData:revert"
+    methods: [PUT]

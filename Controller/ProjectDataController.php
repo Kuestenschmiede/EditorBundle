@@ -32,6 +32,7 @@ use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
+use Contao\System;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -252,5 +253,15 @@ class ProjectDataController extends BaseController
         C4GLayerApiCache::getInstance()->clearCache();
 //        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
+    }
+
+    public function revertAction(Request $request, $layerId)
+    {
+        $historyService = System::getContainer()->get('editor_history');
+        $realId = C4GBrickCommon::getLayerIDParam($layerId, 'id');
+        $returnElement = $historyService->revertElement($realId);
+        $frontendService = System::getContainer()->get('editor_frontend');
+        $returnElement = $frontendService->getSingleDataArray($returnElement, ['hide' => '']);
+        return new JsonResponse($returnElement);
     }
 }

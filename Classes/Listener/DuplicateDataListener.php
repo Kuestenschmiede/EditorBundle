@@ -141,15 +141,9 @@ class DuplicateDataListener
     ) {
         $entities = $event->getNewEntities();
         $dataEntity = $entities['main'];
-        $element = $this->entityManager->getRepository(EditorElementType::class)
-            ->findOneBy(['id' => $dataEntity->getTypeid()]);
-        $category = $this->entityManager->getRepository(EditorElementCategory::class)
-            ->findOneBy(['id' => $dataEntity->getCategoryid()]);
         $arrLayer = $this->frontend->getSingleDataArray(
             $dataEntity,
-            $element,
-            ['hide' => ""],
-            $category
+            ['hide' => ""]
         );
         $arrLayer['projectId'] = $dataEntity->getProjectid();
         $event->setReturnData(['layer' => $arrLayer]);

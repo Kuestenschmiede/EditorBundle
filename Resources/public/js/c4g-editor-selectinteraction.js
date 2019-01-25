@@ -336,6 +336,8 @@ export class EditorSelectInteraction {
           outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
           // add deselect button
           outerDiv.appendChild(scope._elementUiController.createDeselectButton(i));
+          // add revert button
+          outerDiv.appendChild(scope._elementUiController.createRevertButton(i));
           scope.selectView.selectContent.appendChild(outerDiv);
           if (selectedFeature.get('measuredLength')) {
             let label = "";
@@ -426,8 +428,8 @@ export class EditorSelectInteraction {
     let translateButton = document.createElement('button');
     $(translateButton).addClass('c4g-btn-translate-all-data');
     $(translateButton).on('click', function(event) {
-      // TODO translate interaction für alle features anlegen
-      // TODO währenddessen müssen vermutlich alle normalen translates deaktiviert werden
+      // TODO es gibt keine translate die mehrere features verschiebt
+      // TODO also müsste ich jedes event was auf ein ausgewähltes feature geht auch auf alle anderen schmeißen
     });
     let displaceButton = document.createElement('button');
     $(displaceButton).addClass('c4g-btn-displace-all-data');
