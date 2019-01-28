@@ -1,27 +1,25 @@
-import {langConstantsGerman} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de";
-import {langConstantsEnglish} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
-let langConstants = {};
+import {langConstants} from "./c4g-editor-i18n";
 
-if (typeof mapData !== "undefined") {
-  if (mapData.lang === "de") {
-    langConstants = langConstantsGerman;
-  } else if (mapData.lang === "en") {
-    langConstants = langConstantsEnglish;
-  } else {
-    // fallback
-    langConstants = langConstantsGerman;
-  }
-}
 /**
  * Class for creating all view elements that interact with a project. Handles all events that are fired on these view
  * elements.
  */
 export class ProjectUIController {
-  constructor(editor) {
-    this.editor = editor;
-    this.projectButtons = [];
-    this.projectSelector = null;
+
+  /**
+   * Class properties
+   */
+  editor;
+  projectButtons;
+  projectSelector;
+  projectController;
+
+  constructor(editor, projectController) {
+    this._projectButtons = [];
+    this._projectSelector = null;
+    this._editor = editor;
+    this._projectController = projectController;
   }
 
   /**
@@ -52,11 +50,11 @@ export class ProjectUIController {
   createEditProjectForm() {
     let editor = this.editor;
     // do nothing if no project is selected
-    if (!editor.currentProject) {
+    if (!this.projectController.currentProject) {
       return;
     }
     let scope = this;
-    let project = editor.currentProject;
+    let project = this.projectController.currentProject;
     let request = new C4GAjaxRequest("con4gis/projectForm/" + project.id, "GET");
     request.addDoneCallback(function (data) {
       // show dialog in first tab
@@ -118,7 +116,7 @@ export class ProjectUIController {
         scope.editor.selectView.selectContent.prepend(label);
       } else {
         scope.editor.selectView.reloadHelpContent();
-        project.name = data.caption;
+        scope.projectController.editProject(project.id, data);
         for (let i = 0; i < scope.projectSelector.options.length; i++) {
           if (parseInt(scope.projectSelector.options[i].value, 10) === project.id) {
             scope.projectSelector.options[i].innerHTML = data.caption;
@@ -155,11 +153,9 @@ export class ProjectUIController {
   createDeleteProjectForm() {
     let editor = this.editor;
     let scope = this;
-    if (!editor.currentProject) {
+    if (!this.projectController.currentProject) {
       return;
     }
-    let self = this;
-
     // show confirm dialog
     let confirmForm = document.createElement("div");
     confirmForm.innerHTML = "Wollen Sie dieses Projekt wirklich löschen?";
@@ -189,78 +185,14 @@ export class ProjectUIController {
    * Sends the project-delete request to the server and handles the response.
    */
   deleteProject() {
-    let project = this.editor.currentProject;
-    let scope = this;
-    let editor = this.editor;
-    let request = new C4GAjaxRequest("con4gis/project", "DELETE");
-    request.addRequestData(project);
-    request.addDoneCallback(function(data) {
-      if (data.success) {
-        for (let i = 0; i < scope.editor.projects.length; i++) {
-          // ToDo wie kann das hier richtig sein??
-          if (scope.editor.projects[i] === project) {
-            scope.editor.projects.splice(i, 1);
-          }
-        }
-        editor.selectView.reloadHelpContent();
-        for (let i = 0; i < scope.projectSelector.options.length; i++) {
-          if (parseInt(scope.projectSelector.options[i].value, 10) === project.id) {
-            scope.projectSelector.remove(scope.projectSelector.options[i].index);
-          }
-        }
-        // TODO features des projekts von der karte entfernen
-        // delete project layers and reload starboard
-        scope.deleteLayersForProject(project.id);
-        scope.editor.mapsInterface.updateStarboard();
-        editor.currentProject = null;
-        $(scope.projectSelector).change();
-      }
-    });
-    request.execute();
-  }
-
-  /**
-   * Deletes all layers for the given project id.
-   * @param projectId
-   */
-  deleteLayersForProject(projectId) {
-    const starboard = this.editor.mapsInterface.getStarboard();
-    let layers = this.editor.mapsInterface.getLayerArray();
-    for (let key in layers) {
-      if (layers.hasOwnProperty(key)) {
-        let layer = layers[key];
-        // delete all layers that belong to the project
-        if (layer.projectId === projectId) {
-          let tabId = layer.tabId;
-          if (starboard.initialized) {
-            const tab = starboard.plugins["customTab" + tabId];
-            const tabLayers = tab.layers;
-            // delete layer from starboard, has the same key as in arrLayers
-            delete tabLayers[key];
-          }
-          // delete features for layer
-          if (layer.vectorLayer) {
-            let source = this.editor.featureHandler.getSourceForLayerId(layer.id);
-            if (source) {
-              source.clear();
-            }
-          }
-          // delete layer from arrLayers
-          this.editor.mapsInterface.removeLayerFromArray(key);
-          // check if the layer is listed as child in other layers
-          if (layer.pid && layers[layer.pid]) {
-            let parentLayer = layers[layer.pid];
-            for (let i = 0; i < parentLayer.childs.length; i++) {
-              let currentChild = parentLayer.childs[i];
-              if (currentChild.id === layer.id) {
-                // remove layer from childs array
-                parentLayer.childs.splice(i, 1);
-              }
-            }
-          }
-        }
+    let project = this.projectController.currentProject;
+    this.editor.selectView.reloadHelpContent();
+    for (let i = 0; i < this.projectSelector.options.length; i++) {
+      if (parseInt(this.projectSelector.options[i].value, 10) === project.id) {
+        this.projectSelector.remove(this.projectSelector.options[i].index);
       }
     }
+    this.projectController.deleteProject(project);
   }
 
   /**
@@ -270,11 +202,10 @@ export class ProjectUIController {
     let selectBox,
       option,
       scope,
-      oldValue,
-      editor;
+      oldValue;
 
     scope = this;
-    editor = this.editor;
+    const projects = this.projectController.projects;
     selectBox = document.createElement('select');
     selectBox.id = 'c4g_projects_select';
     option = document.createElement('option');
@@ -283,29 +214,26 @@ export class ProjectUIController {
     option.disabled = true;
     option.selected = true;
     selectBox.options[0] = option;
-    if (editor.projects) {
-      for (let key = 0; key < editor.projects.length; key++) {
+    if (projects) {
+      for (let key = 0; key < projects.length; key++) {
         option = document.createElement('option');
-        option.text = editor.projects[key].name;
-        option.value = editor.projects[key].id;
+        option.text = projects[key].name;
+        option.value = projects[key].id;
         selectBox.options[key+1] = option;
       }
     }
-
     oldValue = selectBox.value;
     $(selectBox).on('change', function(event) {
       let currentVal = parseInt(this.value, 10);
-      for (let key in editor.projects) {
-        if (editor.projects.hasOwnProperty(key)) {
-          if (editor.projects[key].id === currentVal) {
-            scope.changeProjectSelection(editor.projects[key]);
-            oldValue = currentVal;
-            break;
-          }
+      for (let i = 0; i < projects.length; i++) {
+        if (projects[i].id === currentVal) {
+          scope.changeProjectSelection(projects[i]);
+          oldValue = currentVal;
+          break;
         }
       }
     });
-    this.projectSelector = selectBox;
+    this._projectSelector = selectBox;
     return selectBox;
   }
 
@@ -315,27 +243,7 @@ export class ProjectUIController {
    */
   changeProjectSelection(newProject) {
     let editor = this.editor;
-    editor.currentProject = newProject;
-    // load project layers into editLayerGroup
-    // remove old project layers from editLayerGroup
-    let layers = editor.mapsInterface.getLayerArray();
-    for (let key in layers) {
-      if (layers.hasOwnProperty(key)) {
-        let layer = layers[key];
-        if ((layer.projectId === newProject.id)) {
-          // add all vectorlayers from childs of layer to editLayerGroup
-          editor.addLayersToGroup(layer, true);
-          // show layer when it is in the project
-          editor.mapsInterface.showLayer(layer.id);
-          if (newProject.id === layer.projectId && layer.type === "projectLayer") {
-            editor.projectLayer = layer;
-          }
-        } else {
-          // hide non project layers
-          editor.mapsInterface.hideLayer(layer.id);
-        }
-      }
-    }
+    this._projectController.selectProject(newProject);
     $(editor.viewTriggerBar).show();
     $(editor.contentHeadline).show();
     // cancel any running form on project change
@@ -392,11 +300,10 @@ export class ProjectUIController {
    * Loads the project-create form from the server and displays it in the editor.
    */
   createNewProjectForm() {
-    let url = "con4gis/project/";
     let scope = this;
     let editor = this.editor;
-    let request = new C4GAjaxRequest(url);
-    request.addDoneCallback(function(data) {
+    let url = '/con4gis/project/';
+    $.ajax(url).done(function(data) {
       // activate tab with select view
       editor.tabs[0].activate();
       if (editor.selectView.selectContentHeadline) {
@@ -404,34 +311,29 @@ export class ProjectUIController {
       }
       editor.selectView.selectContent.innerHTML = data.form;
       $(document.getElementById("send-dialog")).on('click', function(event) {
-        scope.createNewProject(url);
+        scope.createNewProject();
       });
       $(document.getElementById("cancel-dialog")).on("click", function(event) {
         scope.cancelDialog();
       });
     });
-    request.execute();
   }
 
   /**
    * Sends the project-create request to the server and handles the response.
    */
-  createNewProject(url) {
+  createNewProject() {
     let editor = this.editor;
-    let scope = this;
-    let request = new C4GAjaxRequest(url, "POST");
     let fields = editor.selectView.selectContent.getElementsByClassName('formdata');
     let data = {};
     for (let i = 0; i < fields.length; i++) {
       let field = fields[i];
       data[field.name] = field.value;
     }
-
-    request.addRequestData(data);
-    request.addDoneCallback(function(data) {
+    const scope = this;
+    this._projectController.createProject(data, function(data) {
       scope.loadNewProject(data);
     });
-    request.execute();
   }
 
   /**
@@ -443,18 +345,11 @@ export class ProjectUIController {
     let id = data.id;
     let newProject = {id: id, name: name};
     let option = document.createElement('option');
-    let projectLayer = new C4gLayer(data.projectLayer);
-    // add project layer to layer structure
-    editor.mapsInterface.addToLayerArray(projectLayer);
-    editor.mapsInterface.addToLayerIds(projectLayer.id);
-    editor.mapsInterface.addToLayerChilds(projectLayer, projectLayer.pid);
-    editor.projectLayer = projectLayer;
-    editor.mapsInterface.updateStarboard();
+    this._projectController.addNewProject(data);
     option.text = name;
     option.value = id;
     option.selected = true;
     this.projectSelector.add(option);
-    editor.projects.push(newProject);
     this.changeProjectSelection(newProject);
     editor.selectView.reloadHelpContent();
     editor.toggleDrawContent();
@@ -464,10 +359,12 @@ export class ProjectUIController {
    * Cancels an input form and restores the default content in the editor select view.
    */
   cancelDialog() {
-    this.editor.selectView.reloadHelpContent();
-    this.projectButtons.forEach(function(element) {
-      $(element).removeClass("c4g-active");
-    });
+    if (this.editor.selectView) {
+      this.editor.selectView.reloadHelpContent();
+      this.projectButtons.forEach(function(element) {
+        $(element).removeClass("c4g-active");
+      });
+    }
   }
 
   /**
@@ -488,5 +385,21 @@ export class ProjectUIController {
    */
   clearFeatureSelection() {
     this.editor.clearFeatureSelection();
+  }
+
+  get editor() {
+    return this._editor;
+  }
+
+  get projectController() {
+    return this._projectController;
+  }
+
+  get projectButtons() {
+    return this._projectButtons;
+  }
+
+  get projectSelector() {
+    return this._projectSelector;
   }
 }

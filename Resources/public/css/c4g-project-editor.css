@@ -82,6 +82,18 @@ button.c4g-btn-edit-data:before {
     content: "\f1c0";
 }
 
+button.c4g-btn-deselect-data:before {
+    content: "\f00d";
+}
+
+button.c4g-btn-rotate-data:before {
+    content: "\f021";
+}
+
+button.c4g-btn-deselect-all-data:before {
+    content: "\f00d";
+}
+
 .c4g-draw-content-project {
     width: 100%;
 }
@@ -93,8 +105,6 @@ button.c4g-btn-edit-data:before {
 
 .c4g-editor .c4g-portside-top-toolbar .c4g-projects-bar select,
 .c4g-editor .c4g-portside-top-toolbar .c4g-projects-bar button {
-    /*margin: 0;*/
-    /*padding: 0;*/
     margin-bottom: 0;
     padding-bottom: 0;
     vertical-align: bottom;
@@ -106,21 +116,6 @@ button.c4g-btn-edit-data:before {
     border-color: var(--shadow-color);
     background-color: var(--main-color);
 }
-
-/*.c4g-draw-content-project button:active {*/
-    /*border-style: outset;*/
-    /*color: var(--main-color);*/
-/*}*/
-
-/*.c4g-draw-content-project button:focus {*/
-    /*outline: 0;*/
-    /*color: var(--main-color);*/
-/*}*/
-
-/*.c4g-draw-content-project button:hover {*/
-    /*outline: 0;*/
-    /*color: var(--main-color);*/
-/*}*/
 
 .c4g-project-headline-field a {
     text-decoration: none;
@@ -147,6 +142,9 @@ button.c4g-btn-duplicate-data:before {
 }
 button.c4g-btn-displace-data:before {
     content: "\f56e";
+}
+button.c4g-btn-revert-data:before {
+    content: "\f0e2";
 }
 button.c4g-btn-duplicate-displace-data:before {
     content: "\f0ea";
@@ -181,4 +179,29 @@ button.c4g-editor-dialog-cancel:before {
 
 .c4g-edit-data-error-label {
     --font-color: red;
+}
+
+button.c4g-editor-feature-modify:before {
+    content: "\f0a4";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+button.c4g-editor-feature-apply:before {
+    content: "\f00c";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+button.c4g-editor-feature-delete:before {
+    content: "\f1f8";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+button.c4g-btn-delete-all-data:before {
+    content: "\f1f8";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
 }

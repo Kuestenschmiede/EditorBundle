@@ -17,8 +17,8 @@ use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
 use con4gis\EditorBundle\Classes\EditorMapFrontend;
 use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
-use con4gis\EditorBundle\Entity\EditorMapCategory;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElementCategory;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -141,15 +141,9 @@ class DuplicateDataListener
     ) {
         $entities = $event->getNewEntities();
         $dataEntity = $entities['main'];
-        $element = $this->entityManager->getRepository(EditorMapElement::class)
-            ->findOneBy(['id' => $dataEntity->getTypeid()]);
-        $category = $this->entityManager->getRepository(EditorMapCategory::class)
-            ->findOneBy(['id' => $dataEntity->getCategoryid()]);
         $arrLayer = $this->frontend->getSingleDataArray(
             $dataEntity,
-            $element,
-            ['hide' => ""],
-            $category
+            ['hide' => ""]
         );
         $arrLayer['projectId'] = $dataEntity->getProjectid();
         $event->setReturnData(['layer' => $arrLayer]);

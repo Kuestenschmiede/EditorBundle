@@ -17,7 +17,7 @@ use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
 use con4gis\EditorBundle\Classes\Plugins\AbstractDataPlugin;
 use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
 use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\FrontendUser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;

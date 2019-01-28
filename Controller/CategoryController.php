@@ -15,8 +15,8 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
-use con4gis\EditorBundle\Entity\EditorMapCategory;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElementCategory;
+use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +35,13 @@ class CategoryController extends BaseController
     {
         $this->initialize();
         $realLayerId = C4GBrickCommon::getLayerIDParam($layerId, "id");
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realLayerId]);
         if (!$data) {
             return new Response(sprintf("Data with ID %s not found", $realLayerId), 404);
         }
         $cid = $data->getCategoryid();
-        $category = $this->entityManager->getRepository(EditorMapCategory::class)
+        $category = $this->entityManager->getRepository(EditorElementCategory::class)
             ->findOneBy(['id' => $cid]);
         $fmService = $this->get('editor_frontend');
         $arrElement = $fmService->addMapStructureElementWithIdCalc(
@@ -57,6 +57,7 @@ class CategoryController extends BaseController
         );
         $arrElement['id'] = C4GBrickCommon::calcLayerId($cid, $pid, 70);
         $arrElement['projectId'] = $pid;
+        $arrElement['hide'] = "";
         return new JsonResponse(['layer' => $arrElement]);
     }
 }

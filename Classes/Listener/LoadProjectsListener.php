@@ -14,6 +14,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
@@ -54,7 +55,7 @@ class LoadProjectsListener
         foreach ($groups as $group) {
             $groupIds[] = $group->id;
         }
-        $projects = $this->entityManager->getRepository(EditorMapProject::class)
+        $projects = $this->entityManager->getRepository(EditorProject::class)
             ->findBy(['groupid' => $groupIds]);
         $event->setProjects($projects);
     }

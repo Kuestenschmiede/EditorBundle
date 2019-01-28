@@ -17,7 +17,8 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
    */
-  .addEntry('c4g-editor', './Resources/public/js/c4g-project-editor.js')
+  .addEntry('c4g-editor', './Resources/public/js/c4g-editor.js')
+  .addEntry('c4g-backend-editor', './Resources/public/js/c4g-backend-editor.js')
 
   .cleanupOutputBeforeBuild()
   .enableSourceMaps(!Encore.isProduction())
@@ -34,18 +35,6 @@ Encore
 //.autoProvidejQuery()
 ;
   var config = Encore.getWebpackConfig();
-  config['module'] =  {
-  rules: [
-    {
-      test: /\.js$/,
-      exclude: /(node_modules)/,
-      use: {
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/preset-env"]
-        }
-      }
-    }
-  ]
-};
+
+
 module.exports = config;

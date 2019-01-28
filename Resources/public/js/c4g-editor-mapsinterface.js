@@ -114,7 +114,7 @@ export class MapsInterface {
    * state is also retained.
    */
   updateStarboard() {
-    let projectLayer = this.editor.projectLayer;
+    let projectLayer = this.editor.projectController.projectLayer;
     let starboard = this.getStarboard();
     let unfoldedLayers = {};
     let tabId = projectLayer.tabId;

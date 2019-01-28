@@ -14,8 +14,8 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 
 use con4gis\EditorBundle\Classes\Events\GetPopupEvent;
-use con4gis\EditorBundle\Entity\EditorMapData;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElement;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GHeadlineField;
 use Contao\System;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -76,7 +76,7 @@ class GetPopupListener
         $data = $event->getData();
         $dataId = $event->getDataId();
         $elementData = $this->entityManager
-            ->getRepository(EditorMapData::class)
+            ->getRepository(EditorElement::class)
             ->findOneBy(['id' => $dataId]);
         $groupId = $elementData->getGroupid();
 
@@ -85,7 +85,7 @@ class GetPopupListener
         $view = '<div class="c4g_popup_header">';
 
         $typeid = $elementData->getTypeid();
-        $caption = $this->entityManager->getRepository(EditorMapElement::class)
+        $caption = $this->entityManager->getRepository(EditorElementType::class)
             ->findOneBy(['id' => $typeid])->getCaption();
 
         $removeHeadline = true;

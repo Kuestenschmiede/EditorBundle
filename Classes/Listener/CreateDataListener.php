@@ -18,7 +18,8 @@ use con4gis\EditorBundle\Classes\Events\CreateDataEvent;
 use con4gis\EditorBundle\Classes\Helper\JsonLayer;
 use con4gis\EditorBundle\Classes\EditorMapFrontend;
 use con4gis\EditorBundle\Entity\EditorMapProject;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Doctrine\ORM\EntityManager;
@@ -56,13 +57,13 @@ class CreateDataListener
         $projectId = $event->getProjectId();
         $layerData = $event->getLayerData();
         $layer = new JsonLayer($layerData);
-        $project = $this->entityManager->getRepository(EditorMapProject::class)->findOneBy(['id' => $projectId]);
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $projectId]);
         if (!$project) {
             // TODO FEHLER !!! 400 Bad Request oder so senden
             return;
         }
         // create project data entity
-        $entity = new EditorMapData();
+        $entity = new EditorElement();
         $entity->setLastmemberid(\FrontendUser::getInstance()->id);
         $entity->setTypeid($layer->getElementid());
         $entity->setCategoryid($layer->getCategoryid());

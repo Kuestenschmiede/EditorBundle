@@ -28,7 +28,7 @@ use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
 use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Entity\EditorMapProject;
-use con4gis\EditorBundle\Entity\EditorMapData;
+use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\Database;
 use Contao\FrontendUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,7 +88,7 @@ class ProjectController extends BaseController
         $this->eventDispatcher->dispatch($delEvent::NAME, $delEvent);
 
         // delete all data from the project
-        $data = $this->entityManager->getRepository(EditorMapData::class)
+        $data = $this->entityManager->getRepository(EditorElement::class)
             ->findBy(['projectid' => $projectId]);
         foreach ($data as $datum) {
             $typeId = $datum->getTypeid();

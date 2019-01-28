@@ -5,13 +5,13 @@
   "main": "webpack.config.js",
   "scripts": {
     "encore": "encore",
-    "test": "jest --no-cache",
-    "babel": "./node_modules/.bin/babel -f .babelrc --ignore='node_modules'"
+    "test": "babel-node spec/run.js"
   },
   "jest": {
     "modulePaths": [
       "/Resources/public/js",
-      "<rootDir>/../MapsBundle/Resources/public/vendor"
+      "<rootDir>/../MapsBundle/Resources/public/vendor",
+      "<rootDir>/../MapsBundle/Resources/public/js"
     ],
     "moduleFileExtensions": [
       "js",
@@ -40,18 +40,18 @@
   },
   "homepage": "https://github.com/Kuestenschmiede/EditorBundle#readme",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@symfony/webpack-encore": "^0.22.2",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "@symfony/webpack-encore": "0.20.1",
+    "babel-core": "~6.26.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "canvas": "^2.3.1",
-    "jest": "^23.6.0",
+    "jasmine": "^3.3.1",
     "jquery": "^3.3.1",
+    "jsdom": "^13.1.0",
     "regenerator-runtime": "^0.13.1"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.3",
-    "babel-preset-env": "^1.7.0",
+    "babel-cli": "~6.26.0",
+    "babel-preset-env": "~1.6.0",
     "source-map-support": "^0.5.10"
   }
 }

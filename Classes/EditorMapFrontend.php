@@ -18,9 +18,9 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\MapsBundle\Classes\Events\LoadLayersEvent;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
-use con4gis\EditorBundle\Entity\EditorMapCategory;
-use con4gis\EditorBundle\Entity\EditorMapData;
-use con4gis\EditorBundle\Entity\EditorMapElement;
+use con4gis\EditorBundle\Entity\EditorElementCategory;
+use con4gis\EditorBundle\Entity\EditorElement;
+use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Maps\C4GBrickMapFrontendParent;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
@@ -82,7 +82,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
 
             $arrChildData = [];
             switch ($child['type']) {
-                //ToDo wird das script hier überhaupt gebraucht?
                 case EditorBrickTypes::BRICK_GENERIC_PROJECT:
                     $GLOBALS['TL_BODY'][] = '<script src="bundles/con4gisprojects/js/C4GBrickLivePositions.js"></script>';
                     $arrChildData = $this->getProjectsPoiData($child);
@@ -108,9 +107,9 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
     protected function getProjectsPoiData($child)
     {
         $arrProjects = array();
-        $dataRepo = $this->em->getRepository(EditorMapData::class);
-        $categoryRepo = $this->em->getRepository(EditorMapCategory::class);
-        $elementRepo = $this->em->getRepository(EditorMapElement::class);
+        $dataRepo = $this->em->getRepository(EditorElement::class);
+        $categoryRepo = $this->em->getRepository(EditorElementCategory::class);
+        $elementRepo = $this->em->getRepository(EditorElementType::class);
 
         $feUser = FrontendUser::getInstance();
         // return empty array if no FrontendUser is logged in
@@ -137,7 +136,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $project->getCaption(),
                 $project->getCaption(),
                 true,
-                // TODO das kann doch so nie funktioniert haben...
                 $child['hide'] //|| $project->getStandingData()
             );
             $arrProject['projectId'] = $project->getId();
@@ -150,7 +148,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
             // get all used categories for project
             // get all used elements for project
             // sort in data
-            /** @var EditorMapData $datum */
+            /** @var EditorElement $datum */
             foreach ($arrData as $datum) {
                 if (!(in_array($datum->getCategoryid(), $categoryIds))) {
                     $categoryIds[] = $datum->getCategoryid();
@@ -199,7 +197,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                         $elementData = [];
                         foreach ($arrData as $datum) {
                             if ($datum->getTypeid() === $element->getId()) {
-                                $arrDatum = $this->getSingleDataArray($datum, $element, $child, $category);
+                                $arrDatum = $this->getSingleDataArray($datum, $child);
                                 $arrDatum['projectId'] = $project->getId();
                                 $elementData[] = $arrDatum;
                             }
@@ -231,13 +229,11 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
 
     /**
      * Converts a MapsProjectData entity to a map structure element with content.
-     * @param EditorMapData $data
-     * @param EditorMapElement $element
+     * @param EditorElement $data
      * @param $child
-     * @param $category
      * @return array
      */
-    public function getSingleDataArray(EditorMapData $data, EditorMapElement $element, $child, $category)
+    public function getSingleDataArray(EditorElement $data, $child)
     {
         switch ($data->getDrawtype()) {
             case EditorDrawStyles::FREEHAND:
@@ -246,8 +242,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $content = $this->createGeoJsonContent($data);
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     72,
                     'GeoJSON',
                     $data->getName(),
@@ -273,8 +269,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 }
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     79,
                     'none',
                     $data->getName(),
@@ -288,8 +284,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $content = $this->createContentForCircleGeom($data);
                 $arrDatum = $this->addMapStructureElementWithIdCalc(
                     $data->getId(),
-                    $element->getId(),
-                    $category->getId(),
+                    $data->getTypeid(),
+                    $data->getCategoryid(),
                     81,
                     'none',
                     $data->getName(),
@@ -306,7 +302,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
         return $arrDatum;
     }
 
-    private function createGeoJsonContent(EditorMapData $data)
+    private function createGeoJsonContent(EditorElement $data)
     {
         $projection = 'EPSG:3857';
         $decodedData = json_decode($data->getGeojson());
@@ -334,7 +330,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
         return [$arrGeoJson];
     }
 
-    private function createContentForCircleGeom(EditorMapData $data)
+    private function createContentForCircleGeom(EditorElement $data)
     {
         $content = array(
             'id' => 0,
@@ -367,7 +363,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
         return [$content];
     }
 
-    public function createPopup(EditorMapData $data)
+    public function createPopup(EditorElement $data)
     {
         $popup = [];
         $popup['content'] = "<div id='async-popup-data'><script>jQuery.get('con4gis/projectData/popup/' + ". $data->getId() .").done(function(data) {
