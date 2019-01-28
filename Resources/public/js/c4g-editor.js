@@ -124,7 +124,7 @@ export class Editor extends Sideboard {
         scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
-          scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id)
+          scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id);
         });
       })
       .fail(function (data) {
@@ -149,7 +149,6 @@ export class Editor extends Sideboard {
 
   createDrawViews(drawStyles) {
     // Draw-point view
-    console.log(this);
     if (drawStyles.point.categories && drawStyles.point.categories.length > 0) {
       let pointView = new EditorDrawview('Point', drawStyles.point.categories, this);
       this.tabs.push(pointView.init());

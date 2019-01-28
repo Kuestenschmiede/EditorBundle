@@ -15,9 +15,9 @@ class EditorElementHistoryRepository extends EntityRepository
 {
     public function findLatestByElementId($elementId)
     {
-        $query = "SELECT h from con4gisEditorBundle:EditorElementHistory
-         h WHERE h.elementid = $elementId ORDER BY h.versiontstamp DESC";
-        $singeResult = $this->getEntityManager()->createQuery($query)->getFirstResult();
-        return $singeResult;
+        $query = "SELECT h from con4gisEditorBundle:EditorElementHistory".
+         " h WHERE h.elementid = $elementId ORDER BY h.versiontstamp DESC";
+        $singeResult = $this->getEntityManager()->createQuery($query)->getResult();
+        return $singeResult[0];
     }
 }

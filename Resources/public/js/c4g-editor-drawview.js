@@ -213,8 +213,6 @@ export class EditorDrawview {
       element.drawInteraction = self.addDrawStyle(element.styleId, element, category, catContainer);
     };
 
-    console.log("add Elements");
-
     for (var key in elements) {
       if (elements.hasOwnProperty(key)) {
         element = elements[key];

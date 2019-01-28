@@ -23,6 +23,8 @@ export class EditorSelectInteraction {
     let editor = this.editor;
     let scope = this;
     let selectCollection = new ol.Collection();
+
+    // TODO Filter funktion wieder einbauen, in FeatureInteraction!!
     // let selectInteraction = new ol.interaction.Select({
     //   filter: function(feature, layer) {
     //     // returns true when the projectId of the given feature equals the current project id
