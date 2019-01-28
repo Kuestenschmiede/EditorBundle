@@ -4,30 +4,7 @@
   "description": "con4gis-Editor ============ The interactive maps brick of the Contao GIS-kit **con4gis**.",
   "main": "webpack.config.js",
   "scripts": {
-    "encore": "encore",
-    "test": "babel-node spec/run.js"
-  },
-  "jest": {
-    "modulePaths": [
-      "/Resources/public/js",
-      "<rootDir>/../MapsBundle/Resources/public/vendor",
-      "<rootDir>/../MapsBundle/Resources/public/js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "moduleDirectories": [
-      "Resources",
-      "node_modules"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/Resources/public/js/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/Resources/public/js/__mocks__/styleMock.js"
-    },
-    "setupFiles": [
-      "<rootDir>/setup.js"
-    ]
+    "encore": "encore"
   },
   "repository": {
     "type": "git",
