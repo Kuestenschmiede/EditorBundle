@@ -2,15 +2,11 @@
   "presets": [["env", {
     "modules": "commonjs"
   }]],
-  "env": {
-    "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "development": {
-      "plugins": ["transform-class-properties"]
-    }
-  },
+  "plugins": [
+    "transform-class-properties",
+    "transform-es2015-modules-commonjs"
+  ],
   "ignore": [
-    "./node_modules/*"
+    "*/node_modules,*/"
   ]
 }
