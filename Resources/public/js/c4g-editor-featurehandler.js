@@ -124,14 +124,7 @@ export class FeatureHandler {
           // update tooltip of feature according to the name change
           feature.set('tooltip', changeData[key]);
         }
-        if (key === 'content') {
-          let geometry = changeData[key][0].data.geometry;
-          let objGeom = (new ol.format.GeoJSON()).readGeometry(geometry);
-          if (objGeom) {
-            // update geometry
-            feature.getGeometry().setCoordinates(objGeom.getCoordinates());
-          }
-        }
+        // TODO das muss woanders gemacht werden, das breakt das Zeichnen von features
       }
     }
     return layer;
@@ -148,15 +141,20 @@ export class FeatureHandler {
     let oldId = layer.id;
     layer = this.updateLayerProperties(changeData, layer, feature);
     this.mapsInterface.updateLayerIndex(oldId, layer);
+
     if (recreateVectorLayer) {
-      this.editor.options.mapController.map.removeLayer(layer.vectorLayer);
-      let source = new ol.source.Vector();
-      source.addFeature(feature);
-      let style = this.mapsInterface.getLocstyleArray()[feature.get('styleId')].style;
-      layer.vectorLayer = new ol.layer.Group({
-        layers: [utils.getVectorLayer(source, style)]
-      });
-      this.editor.options.mapController.map.addLayer(layer.vectorLayer);
+      if (changeData.content) {
+        let geometry = changeData.content[0].data.geometry;
+        if (feature.getGeometry() instanceof ol.geom.Point) {
+          feature.getGeometry().setCoordinates(ol.proj.fromLonLat(geometry.coordinates));
+        } else {
+          let objGeom = (new ol.format.GeoJSON()).readGeometry(geometry);
+          if (objGeom) {
+            // update geometry
+            feature.getGeometry().setCoordinates(objGeom.getCoordinates());
+          }
+        }
+      }
     }
     return layer;
   }
