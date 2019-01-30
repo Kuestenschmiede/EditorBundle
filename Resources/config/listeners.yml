@@ -17,7 +17,7 @@ services:
     editor.onEditorConfigurationLoadElements:
         class: con4gis\EditorBundle\Classes\Listener\EditorConfigurationListener
         tags:
-            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadElements, priority: 4100 }
+            - { name: kernel.event_listener, event: editor.editor.config, method: onEditorConfigurationLoadElements, priority: 4500 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
