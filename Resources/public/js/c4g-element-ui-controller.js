@@ -51,15 +51,8 @@ export class ElementUIController {
       return false;
     }
     featureGeometry = modifyFeature.getGeometry();
-    translateInteraction = false;
     modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry instanceof ol.geom.LineString)) {
-      translateInteraction = new ol.interaction.Translate({
-        features: new ol.Collection([modifyFeature])
-      });
-      scope.editor.options.mapController.map.addInteraction(translateInteraction);
-    }
     if (!(featureGeometry instanceof ol.geom.Point)) {
       modifyInteraction = new ol.interaction.Modify({
         features: new ol.Collection([modifyFeature])
@@ -83,22 +76,6 @@ export class ElementUIController {
     let change = {};
     let scope = this;
     let editor = this.editor;
-    if (translateInteraction) {
-      // translate interaction for geometries != LineString
-      translateInteraction.setActive(false);
-      editor.options.mapController.map.removeInteraction(translateInteraction);
-      translateInteraction = false;
-      if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
-        change['locgeox'] = coordinates[0];
-        change['locgeoy'] = coordinates[1];
-      } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-        change['radius'] = modifyFeature.getGeometry().getRadius();
-      } else {
-        let geoJson = new ol.format.GeoJSON();
-        change['geojson'] = geoJson.writeFeature(modifyFeature);
-      }
-    }
     if (modifyInteraction) {
       // modify interaction for point geometries
       editor.options.mapController.map.removeInteraction(modifyInteraction);
@@ -133,7 +110,7 @@ export class ElementUIController {
     // call featurehandler
     scope.editor.featureHandler.modifyFeature(modifyFeature, change);
     // re-render list
-    scope.selectInteraction.fnHandleSelection(this.selectInteraction.selectInteraction.getFeatures());
+    scope.selectInteraction.updateFeatures();
   }
 
   /**

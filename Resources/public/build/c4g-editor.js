@@ -6245,70 +6245,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       var translateInteraction = false;
       var modifyInteraction = false;
       // add interactions to map
-      // if (!(featureGeometry instanceof ol.geom.LineString)) {
-      //   translateInteraction = new ol.interaction.Translate({
-      //     features: new ol.Collection([modifyFeature])
-      //   });
-      //   this.editor.options.mapController.map.addInteraction(translateInteraction);
-      // }
-
       if (!(featureGeometry instanceof ol.geom.Point)) {
         modifyInteraction = new ol.interaction.Modify({
           features: new ol.Collection([modifyFeature])
         });
         this.editor.options.mapController.map.addInteraction(modifyInteraction);
       }
-    }
-
-    // TODO muss noch umgebaut werden, muss aus der feature interaction heraus on translateend aufgerufen werden
-
-  }, {
-    key: "applyFeatureModification",
-    value: function applyFeatureModification(translateInteraction, modifyInteraction, modifyFeature) {
-      var change = {};
-      var scope = this;
-      var editor = this.editor;
-      if (translateInteraction) {
-        // translate interaction for geometries != LineString
-        translateInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(translateInteraction);
-        translateInteraction = false;
-      }
-      if (modifyInteraction) {
-        // modify interaction for point geometries
-        editor.options.mapController.map.removeInteraction(modifyInteraction);
-        modifyInteraction.setActive(false);
-        modifyInteraction = false;
-        if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-          var coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
-          change['locgeox'] = coordinates[0];
-          change['locgeoy'] = coordinates[1];
-        } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-          var _coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
-          change['locgeox'] = _coordinates[0];
-          change['locgeoy'] = _coordinates[1];
-          change['radius'] = modifyFeature.getGeometry().getRadius();
-        } else {
-          var geoJson = new ol.format.GeoJSON();
-          change['geojson'] = geoJson.writeFeature(modifyFeature);
-        }
-      }
-      // update feature measurements
-      modifyFeature.set('measuredLength', _c4gMapsUtils.utils.measureGeometry(modifyFeature.getGeometry(), true));
-      if (modifyFeature.getGeometry() instanceof ol.geom.Polygon) {
-        modifyFeature.set('measuredArea', _c4gMapsUtils.utils.measureGeometry(modifyFeature.getGeometry()));
-      }
-      if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-        modifyFeature.set('measuredRadius', _c4gMapsUtils.utils.measureGeometry(modifyFeature.getGeometry()));
-      }
-
-      this.selectInteraction.selectInteraction.setActive(true);
-      // applyButton.parentNode.replaceChild(modifyButton, applyButton);
-      this.editor.applyFeatureModification = false;
-      // call featurehandler
-      this.editor.featureHandler.modifyFeature(modifyFeature, change);
-      // re-render list
-      scope.selectInteraction.fnHandleSelection(this.selectInteraction.selectInteraction.getFeatures());
     }
 
     /**
@@ -7461,15 +7403,8 @@ var ElementUIController = exports.ElementUIController = function () {
         return false;
       }
       featureGeometry = modifyFeature.getGeometry();
-      translateInteraction = false;
       modifyInteraction = false;
       // add interactions to map
-      if (!(featureGeometry instanceof ol.geom.LineString)) {
-        translateInteraction = new ol.interaction.Translate({
-          features: new ol.Collection([modifyFeature])
-        });
-        scope.editor.options.mapController.map.addInteraction(translateInteraction);
-      }
       if (!(featureGeometry instanceof ol.geom.Point)) {
         modifyInteraction = new ol.interaction.Modify({
           features: new ol.Collection([modifyFeature])
@@ -7495,39 +7430,23 @@ var ElementUIController = exports.ElementUIController = function () {
       var change = {};
       var scope = this;
       var editor = this.editor;
-      if (translateInteraction) {
-        // translate interaction for geometries != LineString
-        translateInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(translateInteraction);
-        translateInteraction = false;
-        if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-          var coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
-          change['locgeox'] = coordinates[0];
-          change['locgeoy'] = coordinates[1];
-        } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-          change['radius'] = modifyFeature.getGeometry().getRadius();
-        } else {
-          var geoJson = new ol.format.GeoJSON();
-          change['geojson'] = geoJson.writeFeature(modifyFeature);
-        }
-      }
       if (modifyInteraction) {
         // modify interaction for point geometries
         editor.options.mapController.map.removeInteraction(modifyInteraction);
         modifyInteraction.setActive(false);
         modifyInteraction = false;
         if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-          var _coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
+          var coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
+          change['locgeox'] = coordinates[0];
+          change['locgeoy'] = coordinates[1];
+        } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
+          var _coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
           change['locgeox'] = _coordinates[0];
           change['locgeoy'] = _coordinates[1];
-        } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-          var _coordinates2 = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
-          change['locgeox'] = _coordinates2[0];
-          change['locgeoy'] = _coordinates2[1];
           change['radius'] = modifyFeature.getGeometry().getRadius();
         } else {
-          var _geoJson = new ol.format.GeoJSON();
-          change['geojson'] = _geoJson.writeFeature(modifyFeature);
+          var geoJson = new ol.format.GeoJSON();
+          change['geojson'] = geoJson.writeFeature(modifyFeature);
         }
       }
       // update feature measurements
@@ -7545,7 +7464,7 @@ var ElementUIController = exports.ElementUIController = function () {
       // call featurehandler
       scope.editor.featureHandler.modifyFeature(modifyFeature, change);
       // re-render list
-      scope.selectInteraction.fnHandleSelection(this.selectInteraction.selectInteraction.getFeatures());
+      scope.selectInteraction.updateFeatures();
     }
 
     /**

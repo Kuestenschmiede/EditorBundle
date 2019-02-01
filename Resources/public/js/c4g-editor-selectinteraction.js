@@ -149,68 +149,12 @@ export class EditorSelectInteraction {
     let translateInteraction = false;
     let modifyInteraction = false;
     // add interactions to map
-    // if (!(featureGeometry instanceof ol.geom.LineString)) {
-    //   translateInteraction = new ol.interaction.Translate({
-    //     features: new ol.Collection([modifyFeature])
-    //   });
-    //   this.editor.options.mapController.map.addInteraction(translateInteraction);
-    // }
-
     if (!(featureGeometry instanceof ol.geom.Point)) {
       modifyInteraction = new ol.interaction.Modify({
         features: new ol.Collection([modifyFeature])
       });
       this.editor.options.mapController.map.addInteraction(modifyInteraction);
     }
-  }
-
-  // TODO muss noch umgebaut werden, muss aus der feature interaction heraus on translateend aufgerufen werden
-  applyFeatureModification(translateInteraction, modifyInteraction, modifyFeature) {
-    let change = {};
-    let scope = this;
-    let editor = this.editor;
-    if (translateInteraction) {
-      // translate interaction for geometries != LineString
-      translateInteraction.setActive(false);
-      editor.options.mapController.map.removeInteraction(translateInteraction);
-      translateInteraction = false;
-
-    }
-    if (modifyInteraction) {
-      // modify interaction for point geometries
-      editor.options.mapController.map.removeInteraction(modifyInteraction);
-      modifyInteraction.setActive(false);
-      modifyInteraction = false;
-      if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
-        change['locgeox'] = coordinates[0];
-        change['locgeoy'] = coordinates[1];
-      } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
-        change['locgeox'] = coordinates[0];
-        change['locgeoy'] = coordinates[1];
-        change['radius'] = modifyFeature.getGeometry().getRadius();
-      } else {
-        let geoJson = new ol.format.GeoJSON();
-        change['geojson'] = geoJson.writeFeature(modifyFeature);
-      }
-    }
-    // update feature measurements
-    modifyFeature.set('measuredLength', utils.measureGeometry(modifyFeature.getGeometry(), true));
-    if (modifyFeature.getGeometry() instanceof ol.geom.Polygon) {
-      modifyFeature.set('measuredArea', utils.measureGeometry(modifyFeature.getGeometry()));
-    }
-    if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-      modifyFeature.set('measuredRadius', utils.measureGeometry(modifyFeature.getGeometry()));
-    }
-
-    this.selectInteraction.selectInteraction.setActive(true);
-    // applyButton.parentNode.replaceChild(modifyButton, applyButton);
-    this.editor.applyFeatureModification = false;
-    // call featurehandler
-    this.editor.featureHandler.modifyFeature(modifyFeature, change);
-    // re-render list
-    scope.selectInteraction.fnHandleSelection(this.selectInteraction.selectInteraction.getFeatures());
   }
 
   /**
