@@ -1,5 +1,6 @@
 import {EditorProject} from "./c4g-editor-project";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 
 export class ProjectController {
 
@@ -53,6 +54,7 @@ export class ProjectController {
     // load project layers into editLayerGroup
     // remove old project layers from editLayerGroup
     let layers = this.editor.mapsInterface.getLayerArray();
+    let features = [];
     for (let key in layers) {
       if (layers.hasOwnProperty(key)) {
         let layer = layers[key];
@@ -61,6 +63,12 @@ export class ProjectController {
           this.editor.addLayersToGroup(layer, true);
           // show layer when it is in the project
           this.editor.mapsInterface.showLayer(layer.id);
+          let source = this.editor.featureHandler.getSourceForLayerId(layer.id);
+          if (source) {
+            source.forEachFeature(function(feature) {
+              features.push(feature);
+            });
+          }
           if (newProject.id === layer.projectId && layer.type === "projectLayer") {
             this.projectLayer = layer;
           }
@@ -70,6 +78,9 @@ export class ProjectController {
         }
       }
     }
+
+    utils.fitToExtent(utils.getExtentForGeometries(features), this.editor.options.mapController.map);
+    // TODO fit view to feature extent
   }
 
   /**

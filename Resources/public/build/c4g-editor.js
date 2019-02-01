@@ -4148,6 +4148,21 @@ var utils = exports.utils = {
   },
 
 
+  /**
+   * Returns the current domain (without the subdomain)
+   */
+  getCurrentDomain: function getCurrentDomain() {
+    var domain = window.location.hostname;
+    var arrDomain = domain.split('.');
+    if (arrDomain.length > 2) {
+      // there is a subdomain
+      return arrDomain[arrDomain.length - 2];
+    } else {
+      return arrDomain[0];
+    }
+  },
+
+
   getValue: function getValue(key) {
     return localStorage[key] || '';
   },
@@ -8033,7 +8048,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
 
 
   _createClass(ProjectCacheController, [{
-    key: 'setup',
+    key: "setup",
     value: function setup() {
       this.registerCenterListener();
       this.loadCache();
@@ -8045,7 +8060,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'setSelectedProject',
+    key: "setSelectedProject",
     value: function setSelectedProject(projectId) {
       this.objCache.selectedProject = projectId;
       this.saveCache();
@@ -8056,7 +8071,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'getSelectedProject',
+    key: "getSelectedProject",
     value: function getSelectedProject() {
       if (this.currentCache) {
         return this.currentCache.selectedProject;
@@ -8069,7 +8084,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'getSettingsForProject',
+    key: "getSettingsForProject",
     value: function getSettingsForProject(projectId) {
       if (this.currentCache) {
         return this.currentCache.projectStores[projectId];
@@ -8081,19 +8096,19 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'registerCenterListener',
-    value: function registerCenterListener() {}
-    // let scope = this;
-    // c4g.maps.hook = c4g.maps.hook || {};
-    // c4g.maps.hook.map_center_changed = c4g.maps.hook.map_center_changed || [];
-    // c4g.maps.hook.map_center_changed.push(function(center) {
-    //   if (scope.editor.currentProject) {
-    //     let id = scope.editor.currentProject.id;
-    //     let arrCenter = [center[0], center[1]];
-    //     scope.saveSettingsForProject(id, "mapCenter", arrCenter);
-    //   }
-    // });
-
+    key: "registerCenterListener",
+    value: function registerCenterListener() {
+      var scope = this;
+      window.c4gMapsHooks = window.c4gMapsHooks || {};
+      window.c4gMapsHooks.map_center_changed = window.c4gMapsHooks.map_center_changed || [];
+      window.c4gMapsHooks.map_center_changed.push(function (center) {
+        if (scope.editor.projectController.currentProject) {
+          var id = scope.editor.projectController.currentProject.id;
+          var arrCenter = [center[0], center[1]];
+          scope.saveSettingsForProject(id, "mapCenter", arrCenter);
+        }
+      });
+    }
 
     /**
      * Updates the cache object with the specified value at the specified key.
@@ -8103,7 +8118,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'saveSettingsForProject',
+    key: "saveSettingsForProject",
     value: function saveSettingsForProject(projectId, key, value) {
       if (!this.objCache.projectStores[projectId]) {
         this.objCache.projectStores[projectId] = {};
@@ -8117,7 +8132,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'saveCache',
+    key: "saveCache",
     value: function saveCache() {
       _c4gMapsUtils.utils.storeValue('projectCache', JSON.stringify(this.objCache));
     }
@@ -8127,7 +8142,7 @@ var ProjectCacheController = exports.ProjectCacheController = function () {
      */
 
   }, {
-    key: 'loadCache',
+    key: "loadCache",
     value: function loadCache() {
       var cachedItem = _c4gMapsUtils.utils.getValue('projectCache');
       if (cachedItem) {
@@ -8164,6 +8179,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _c4gEditorProject = __webpack_require__(/*! ./c4g-editor-project */ "./Resources/public/js/c4g-editor-project.js");
 
 var _c4gLayer = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-layer */ "../MapsBundle/Resources/public/js/c4g-layer.js");
+
+var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8226,6 +8243,7 @@ var ProjectController = exports.ProjectController = function () {
       // load project layers into editLayerGroup
       // remove old project layers from editLayerGroup
       var layers = this.editor.mapsInterface.getLayerArray();
+      var features = [];
       for (var key in layers) {
         if (layers.hasOwnProperty(key)) {
           var layer = layers[key];
@@ -8234,6 +8252,12 @@ var ProjectController = exports.ProjectController = function () {
             this.editor.addLayersToGroup(layer, true);
             // show layer when it is in the project
             this.editor.mapsInterface.showLayer(layer.id);
+            var source = this.editor.featureHandler.getSourceForLayerId(layer.id);
+            if (source) {
+              source.forEachFeature(function (feature) {
+                features.push(feature);
+              });
+            }
             if (newProject.id === layer.projectId && layer.type === "projectLayer") {
               this.projectLayer = layer;
             }
@@ -8243,6 +8267,9 @@ var ProjectController = exports.ProjectController = function () {
           }
         }
       }
+
+      _c4gMapsUtils.utils.fitToExtent(_c4gMapsUtils.utils.getExtentForGeometries(features), this.editor.options.mapController.map);
+      // TODO fit view to feature extent
     }
 
     /**

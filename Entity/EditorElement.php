@@ -31,7 +31,7 @@ class EditorElement extends BaseEntity
      * @ORM\Column(type="integer")
      */
     protected $id = 0;
-
+    
     /**
      * @var int
      * @ORM\Column(type="integer")

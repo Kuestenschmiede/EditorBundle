@@ -19,8 +19,7 @@ var config = {
         }],
         include: [
           path.resolve('.'),
-          path.resolve('./../MapsBundle'),
-          path.resolve('./../MapsBundle/Resources/public/js'),
+          path.resolve('./../MapsBundle')
         ],
       }
     ]

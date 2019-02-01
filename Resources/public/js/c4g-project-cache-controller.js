@@ -52,16 +52,16 @@ export class ProjectCacheController {
    * Registeres for the map_center-hook to store the current center of the map for the current project.
    */
   registerCenterListener() {
-    // let scope = this;
-    // c4g.maps.hook = c4g.maps.hook || {};
-    // c4g.maps.hook.map_center_changed = c4g.maps.hook.map_center_changed || [];
-    // c4g.maps.hook.map_center_changed.push(function(center) {
-    //   if (scope.editor.currentProject) {
-    //     let id = scope.editor.currentProject.id;
-    //     let arrCenter = [center[0], center[1]];
-    //     scope.saveSettingsForProject(id, "mapCenter", arrCenter);
-    //   }
-    // });
+    let scope = this;
+    window.c4gMapsHooks = window.c4gMapsHooks || {};
+    window.c4gMapsHooks.map_center_changed = window.c4gMapsHooks.map_center_changed || [];
+    window.c4gMapsHooks.map_center_changed.push(function(center) {
+      if (scope.editor.projectController.currentProject) {
+        let id = scope.editor.projectController.currentProject.id;
+        let arrCenter = [center[0], center[1]];
+        scope.saveSettingsForProject(id, "mapCenter", arrCenter);
+      }
+    });
   }
 
   /**

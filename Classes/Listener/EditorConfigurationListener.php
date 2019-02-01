@@ -96,7 +96,9 @@ class EditorConfigurationListener
         foreach ($types as $type) {
             foreach ($categories as $category) {
                 if (in_array($category->getId(), $type->getCategories())) {
-                    $usedTypes[] = $type;
+                    if (!in_array($type, $usedTypes)) {
+                        $usedTypes[] = $type;
+                    }
                 }
             }
         }
