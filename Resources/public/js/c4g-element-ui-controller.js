@@ -276,19 +276,7 @@ export class ElementUIController {
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
     let layerId = feature.get('layerId');
-    let projectSelect = document.createElement("select");
-    let projects = scope.editor.projectController.projects;
-    for (let i = 0; i < projects.length; i++) {
-      if (projects[i] === scope.editor.currentProject) {
-        // moving the feature in the same project does not make sense
-        continue;
-      }
-      let currentProject = projects[i];
-      let option = document.createElement('option');
-      option.value = currentProject.id;
-      option.text = currentProject.name;
-      projectSelect.options.add(option);
-    }
+    let projectSelect = this.createProjectSelectionForDisplace();
     let withCopy = opt_copy;
     let formContainer = document.createElement("div");
     // create buttons
@@ -381,6 +369,24 @@ export class ElementUIController {
       scope.elementController.revertElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
     });
     return revertButton;
+  }
+
+  createProjectSelectionForDisplace() {
+    const scope = this;
+    let projectSelect = document.createElement("select");
+    let projects = scope.editor.projectController.projects;
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i] === scope.editor.projectController.currentProject) {
+        // moving the feature in the same project does not make sense
+        continue;
+      }
+      let currentProject = projects[i];
+      let option = document.createElement('option');
+      option.value = currentProject.id;
+      option.text = currentProject.name;
+      projectSelect.options.add(option);
+    }
+    return projectSelect;
   }
 
   /**

@@ -311,8 +311,6 @@ export class EditorDrawStyle {
           editor.mapsInterface.mapController.mapHover.deactivate();
           // Reset feature-list
           features.clear();
-          // Enable interaction
-          interaction.setActive(true);
         }
         return true;
       },

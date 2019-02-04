@@ -106,7 +106,9 @@ export class ElementController {
         }
       }
     }
-    this.copyElement(feature);
+    if (withCopy) {
+      this.copyElement(feature);
+    }
     let request = new C4GAjaxRequest(url, "POST");
     request.addDoneCallback(function(data) {
       let newProjectId = parseInt(data.newProjectId, 10);

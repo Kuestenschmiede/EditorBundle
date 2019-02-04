@@ -1,7 +1,7 @@
-import {ElementUIController} from "./c4g-element-ui-controller";
 import {langConstants} from "./c4g-editor-i18n";
 import {FeatureInteraction} from "./c4g-editor-feature-interaction";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
+import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
 
 export class EditorSelectInteraction {
   /**
@@ -347,20 +347,16 @@ export class EditorSelectInteraction {
     const scope = this;
     let bar = document.createElement('div');
     let deselectButton = document.createElement('button');
+    deselectButton.title = langConstants.BUTTON_DESELECT_ALL;
     $(deselectButton).addClass('c4g-btn-deselect-all-data');
     $(deselectButton).on('click', function(event) {
       scope.deselectAllElements();
     });
     let deleteButton = document.createElement('button');
+    deleteButton.title = langConstants.BUTTON_DELETE_ALL;
     $(deleteButton).addClass('c4g-btn-delete-all-data');
     $(deleteButton).on('click', function(event) {
-      let arrFeatures = scope.selectInteraction.getFeatures().getArray();
-      // we have to use the same technique as above
-      while (arrFeatures.length !== 0) {
-        for (let i = 0; i < arrFeatures.length; i++) {
-          scope._elementUiController.elementController.deleteElement(arrFeatures[i]);
-        }
-      }
+      scope.showDeleteConfirmDialog(bar);
     });
     let translateButton = document.createElement('button');
     $(translateButton).addClass('c4g-btn-translate-all-data');
@@ -369,9 +365,11 @@ export class EditorSelectInteraction {
       // TODO also müsste ich jedes event was auf ein ausgewähltes feature geht auch auf alle anderen schmeißen
     });
     let displaceButton = document.createElement('button');
+    displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
     $(displaceButton).addClass('c4g-btn-displace-all-data');
     $(displaceButton).on('click', function(event) {
       // TODO projektauswahl anzeigen, dann alle darein verschieben
+      scope.showDisplaceDialog(bar);
     });
     let copyDisplaceButton = document.createElement('button');
     $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
@@ -380,10 +378,39 @@ export class EditorSelectInteraction {
     });
     // bar.appendChild(translateButton);
     bar.appendChild(deleteButton);
-    // bar.appendChild(displaceButton);
+    bar.appendChild(displaceButton);
     // bar.appendChild(copyDisplaceButton);
     bar.appendChild(deselectButton);
     return bar;
+  }
+
+  showDeleteConfirmDialog(buttonBar) {
+    const scope = this;
+    let confirmLabel = document.createElement("p");
+    confirmLabel.innerText = langConstants.CONFIRM_DELETE_ALL;
+    const confirmButton = document.createElement("button");
+    $(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
+    $(confirmButton).on('click', function(event) {
+      scope.deleteAllElements();
+    });
+    const cancelButton = document.createElement("button");
+    $(cancelButton).addClass(cssConstants.ICON + " c4g-editor-dialog-cancel");
+    $(cancelButton).on('click', function(event) {
+      scope.elementUiController.reloadSelectedFeatureView();
+    });
+    buttonBar.appendChild(confirmLabel);
+    buttonBar.appendChild(confirmButton);
+    buttonBar.appendChild(cancelButton);
+  }
+
+  deleteAllElements() {
+    let arrFeatures = this.selectInteraction.getFeatures().getArray();
+    // we have to use the same technique as in deselectAllElements
+    while (arrFeatures.length !== 0) {
+      for (let i = 0; i < arrFeatures.length; i++) {
+        this._elementUiController.elementController.deleteElement(arrFeatures[i]);
+      }
+    }
   }
 
   deselectAllElements() {
@@ -399,6 +426,36 @@ export class EditorSelectInteraction {
     this.updateFeatures();
   }
 
+  showDisplaceDialog(bar) {
+    const scope = this;
+    let formContainer = document.createElement('div');
+    let projectSelect = this._elementUiController.createProjectSelectionForDisplace();
+    let confirmButton = document.createElement("button");
+    confirmButton.className = "c4g-editor-dialog-confirm";
+    confirmButton.title = langConstants.BUTTON_CONFIRM;
+    let cancelButton = document.createElement("button");
+    cancelButton.className = "c4g-editor-dialog-cancel";
+    cancelButton.title = langConstants.BUTTON_CANCEL;
+    $(confirmButton).on('click', function(event) {
+      scope.displaceAllElements($(projectSelect).val());
+    });
+    $(cancelButton).on('click', function(event) {
+      scope._elementUiController.reloadSelectedFeatureView();
+    });
+    formContainer.appendChild(projectSelect);
+    formContainer.appendChild(confirmButton);
+    formContainer.appendChild(cancelButton);
+    bar.appendChild(formContainer);
+  }
+
+  displaceAllElements(projectId) {
+    let arrFeatures = this.selectInteraction.getFeatures().getArray();
+    // we have to use the same technique as in deselectAllElements
+    for (let i = 0; i < arrFeatures.length; i++) {
+      let feature = arrFeatures[i];
+      this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), false, projectId);
+    }
+  }
 
   get elementUiController() {
     return this._elementUiController;

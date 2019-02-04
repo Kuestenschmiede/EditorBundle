@@ -4478,8 +4478,6 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
             editor.mapsInterface.mapController.mapHover.deactivate();
             // Reset feature-list
             features.clear();
-            // Enable interaction
-            interaction.setActive(true);
           }
           return true;
         },
@@ -5755,6 +5753,12 @@ var projectEditorLang = exports.projectEditorLang = {
   ROTATE_ELEMENT: "Element rotieren",
   DESELECT_ELEMENT: "Element-Auswahl aufheben",
   REVERT_ELEMENT: "Letzte Version wiederherstellen",
+  CONFIRM_DELETE_ALL: "Wollen Sie die ausgewählten Elemente wirklich löschen?",
+  BUTTON_DESELECT_ALL: "Auswahl für alle aufheben",
+  BUTTON_DELETE_ALL: "Ausgewählte Elemente löschen",
+  BUTTON_DISPLACE_ALL: "Ausgewählte Elemente verschieben",
+  BUTTON_CONFIRM: "Bestätigen",
+  BUTTON_CANCEL: "Abbrechen",
 
   NONE: '' // last line
 };
@@ -6093,13 +6097,13 @@ exports.EditorSelectInteraction = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gElementUiController = __webpack_require__(/*! ./c4g-element-ui-controller */ "./Resources/public/js/c4g-element-ui-controller.js");
-
 var _c4gEditorI18n = __webpack_require__(/*! ./c4g-editor-i18n */ "./Resources/public/js/c4g-editor-i18n.js");
 
 var _c4gEditorFeatureInteraction = __webpack_require__(/*! ./c4g-editor-feature-interaction */ "./Resources/public/js/c4g-editor-feature-interaction.js");
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
+
+var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6459,20 +6463,16 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       var scope = this;
       var bar = document.createElement('div');
       var deselectButton = document.createElement('button');
+      deselectButton.title = _c4gEditorI18n.langConstants.BUTTON_DESELECT_ALL;
       $(deselectButton).addClass('c4g-btn-deselect-all-data');
       $(deselectButton).on('click', function (event) {
         scope.deselectAllElements();
       });
       var deleteButton = document.createElement('button');
+      deleteButton.title = _c4gEditorI18n.langConstants.BUTTON_DELETE_ALL;
       $(deleteButton).addClass('c4g-btn-delete-all-data');
       $(deleteButton).on('click', function (event) {
-        var arrFeatures = scope.selectInteraction.getFeatures().getArray();
-        // we have to use the same technique as above
-        while (arrFeatures.length !== 0) {
-          for (var i = 0; i < arrFeatures.length; i++) {
-            scope._elementUiController.elementController.deleteElement(arrFeatures[i]);
-          }
-        }
+        scope.showDeleteConfirmDialog(bar);
       });
       var translateButton = document.createElement('button');
       $(translateButton).addClass('c4g-btn-translate-all-data');
@@ -6481,9 +6481,11 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         // TODO also müsste ich jedes event was auf ein ausgewähltes feature geht auch auf alle anderen schmeißen
       });
       var displaceButton = document.createElement('button');
+      displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
       $(displaceButton).addClass('c4g-btn-displace-all-data');
       $(displaceButton).on('click', function (event) {
         // TODO projektauswahl anzeigen, dann alle darein verschieben
+        scope.showDisplaceDialog(bar);
       });
       var copyDisplaceButton = document.createElement('button');
       $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
@@ -6492,10 +6494,41 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       });
       // bar.appendChild(translateButton);
       bar.appendChild(deleteButton);
-      // bar.appendChild(displaceButton);
+      bar.appendChild(displaceButton);
       // bar.appendChild(copyDisplaceButton);
       bar.appendChild(deselectButton);
       return bar;
+    }
+  }, {
+    key: "showDeleteConfirmDialog",
+    value: function showDeleteConfirmDialog(buttonBar) {
+      var scope = this;
+      var confirmLabel = document.createElement("p");
+      confirmLabel.innerText = _c4gEditorI18n.langConstants.CONFIRM_DELETE_ALL;
+      var confirmButton = document.createElement("button");
+      $(confirmButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-confirm");
+      $(confirmButton).on('click', function (event) {
+        scope.deleteAllElements();
+      });
+      var cancelButton = document.createElement("button");
+      $(cancelButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-cancel");
+      $(cancelButton).on('click', function (event) {
+        scope.elementUiController.reloadSelectedFeatureView();
+      });
+      buttonBar.appendChild(confirmLabel);
+      buttonBar.appendChild(confirmButton);
+      buttonBar.appendChild(cancelButton);
+    }
+  }, {
+    key: "deleteAllElements",
+    value: function deleteAllElements() {
+      var arrFeatures = this.selectInteraction.getFeatures().getArray();
+      // we have to use the same technique as in deselectAllElements
+      while (arrFeatures.length !== 0) {
+        for (var i = 0; i < arrFeatures.length; i++) {
+          this._elementUiController.elementController.deleteElement(arrFeatures[i]);
+        }
+      }
     }
   }, {
     key: "deselectAllElements",
@@ -6510,6 +6543,39 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         }
       }
       this.updateFeatures();
+    }
+  }, {
+    key: "showDisplaceDialog",
+    value: function showDisplaceDialog(bar) {
+      var scope = this;
+      var formContainer = document.createElement('div');
+      var projectSelect = this._elementUiController.createProjectSelectionForDisplace();
+      var confirmButton = document.createElement("button");
+      confirmButton.className = "c4g-editor-dialog-confirm";
+      confirmButton.title = _c4gEditorI18n.langConstants.BUTTON_CONFIRM;
+      var cancelButton = document.createElement("button");
+      cancelButton.className = "c4g-editor-dialog-cancel";
+      cancelButton.title = _c4gEditorI18n.langConstants.BUTTON_CANCEL;
+      $(confirmButton).on('click', function (event) {
+        scope.displaceAllElements($(projectSelect).val());
+      });
+      $(cancelButton).on('click', function (event) {
+        scope._elementUiController.reloadSelectedFeatureView();
+      });
+      formContainer.appendChild(projectSelect);
+      formContainer.appendChild(confirmButton);
+      formContainer.appendChild(cancelButton);
+      bar.appendChild(formContainer);
+    }
+  }, {
+    key: "displaceAllElements",
+    value: function displaceAllElements(projectId) {
+      var arrFeatures = this.selectInteraction.getFeatures().getArray();
+      // we have to use the same technique as in deselectAllElements
+      for (var i = 0; i < arrFeatures.length; i++) {
+        var feature = arrFeatures[i];
+        this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), false, projectId);
+      }
     }
   }, {
     key: "elementUiController",
@@ -7250,7 +7316,9 @@ var ElementController = exports.ElementController = function () {
           }
         }
       }
-      this.copyElement(feature);
+      if (withCopy) {
+        this.copyElement(feature);
+      }
       var request = new C4GAjaxRequest(url, "POST");
       request.addDoneCallback(function (data) {
         var newProjectId = parseInt(data.newProjectId, 10);
@@ -7662,19 +7730,7 @@ var ElementUIController = exports.ElementUIController = function () {
       var selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
       var feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
       var layerId = feature.get('layerId');
-      var projectSelect = document.createElement("select");
-      var projects = scope.editor.projectController.projects;
-      for (var i = 0; i < projects.length; i++) {
-        if (projects[i] === scope.editor.currentProject) {
-          // moving the feature in the same project does not make sense
-          continue;
-        }
-        var currentProject = projects[i];
-        var option = document.createElement('option');
-        option.value = currentProject.id;
-        option.text = currentProject.name;
-        projectSelect.options.add(option);
-      }
+      var projectSelect = this.createProjectSelectionForDisplace();
       var withCopy = opt_copy;
       var formContainer = document.createElement("div");
       // create buttons
@@ -7774,6 +7830,25 @@ var ElementUIController = exports.ElementUIController = function () {
         scope.elementController.revertElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
       });
       return revertButton;
+    }
+  }, {
+    key: "createProjectSelectionForDisplace",
+    value: function createProjectSelectionForDisplace() {
+      var scope = this;
+      var projectSelect = document.createElement("select");
+      var projects = scope.editor.projectController.projects;
+      for (var i = 0; i < projects.length; i++) {
+        if (projects[i] === scope.editor.projectController.currentProject) {
+          // moving the feature in the same project does not make sense
+          continue;
+        }
+        var currentProject = projects[i];
+        var option = document.createElement('option');
+        option.value = currentProject.id;
+        option.text = currentProject.name;
+        projectSelect.options.add(option);
+      }
+      return projectSelect;
     }
 
     /**
