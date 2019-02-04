@@ -187,7 +187,6 @@ export class Editor extends Sideboard {
     let cachedSelection = this.cacheController.getSelectedProject();
     let selectedProject = null;
     // check if the project exists
-    // TODO check if this if is necessary
     if (this.projectController.projects) {
       for (let i = 0; i < this.projectController.projects.length; i++) {
         if (this.projectController.projects[i].id === cachedSelection) {
@@ -210,6 +209,7 @@ export class Editor extends Sideboard {
     if (this.editLayerGroup.getVisible()) {
       this.editLayerGroup.setVisible(false);
     }
+    this.mapsInterface.proxy.activateClickObserver();
   }
 
   /**
@@ -221,6 +221,7 @@ export class Editor extends Sideboard {
     if (!this.editLayerGroup.getVisible()) {
       this.editLayerGroup.setVisible(true);
     }
+    this.mapsInterface.proxy.deactivateClickObserver();
   }
 
   loadLocationStyles(drawStyles, callback) {

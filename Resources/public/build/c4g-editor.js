@@ -4397,7 +4397,6 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
                 horizontal: true
               });
             }
-            editor.selectView.selectInteraction.selectInteraction.setActive(false);
           }, objDrawView);
 
           // @TODO doku
@@ -4461,9 +4460,6 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
               activeTooltip.close();
               activeTooltip = null;
             }
-            window.setTimeout(function () {
-              editor.selectView.selectInteraction.selectInteraction.setActive(true);
-            }, 1000);
           }, editor);
 
           if (editor.projectController.currentProject) {
@@ -6919,7 +6915,6 @@ var Editor = exports.Editor = function (_Sideboard) {
       var cachedSelection = this.cacheController.getSelectedProject();
       var selectedProject = null;
       // check if the project exists
-      // TODO check if this if is necessary
       if (this.projectController.projects) {
         for (var i = 0; i < this.projectController.projects.length; i++) {
           if (this.projectController.projects[i].id === cachedSelection) {
@@ -6945,6 +6940,7 @@ var Editor = exports.Editor = function (_Sideboard) {
       if (this.editLayerGroup.getVisible()) {
         this.editLayerGroup.setVisible(false);
       }
+      this.mapsInterface.proxy.activateClickObserver();
     }
 
     /**
@@ -6959,6 +6955,7 @@ var Editor = exports.Editor = function (_Sideboard) {
       if (!this.editLayerGroup.getVisible()) {
         this.editLayerGroup.setVisible(true);
       }
+      this.mapsInterface.proxy.deactivateClickObserver();
     }
   }, {
     key: "loadLocationStyles",

@@ -215,7 +215,6 @@ export class EditorDrawStyle {
                 horizontal: true
               });
             }
-            editor.selectView.selectInteraction.selectInteraction.setActive(false);
           }, objDrawView);
 
         // @TODO doku
@@ -293,9 +292,6 @@ export class EditorDrawStyle {
               activeTooltip.close();
               activeTooltip = null;
             }
-            window.setTimeout(function() {
-              editor.selectView.selectInteraction.selectInteraction.setActive(true);
-            }, 1000);
           }, editor);
 
         if (editor.projectController.currentProject) {
@@ -317,7 +313,6 @@ export class EditorDrawStyle {
           features.clear();
           // Enable interaction
           interaction.setActive(true);
-
         }
         return true;
       },
