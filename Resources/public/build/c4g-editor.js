@@ -5759,6 +5759,7 @@ var projectEditorLang = exports.projectEditorLang = {
   BUTTON_DISPLACE_ALL: "Ausgewählte Elemente in anderes Projekt verschieben",
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
+  BUTTON_COPY_DISPLACE_ALL: "Ausgewählte Elemente kopieren und in anderes Projekt verschieben",
 
   NONE: '' // last line
 };
@@ -6484,18 +6485,18 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
       $(displaceButton).addClass('c4g-btn-displace-all-data');
       $(displaceButton).on('click', function (event) {
-        // TODO projektauswahl anzeigen, dann alle darein verschieben
-        scope.showDisplaceDialog(bar);
+        scope.showDisplaceDialog(bar, false);
       });
       var copyDisplaceButton = document.createElement('button');
+      copyDisplaceButton.title = _c4gEditorI18n.langConstants.BUTTON_COPY_DISPLACE_ALL;
       $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
       $(copyDisplaceButton).on('click', function (event) {
-        // TODO das gleiche wie oben (fast)
+        scope.showDisplaceDialog(bar, true);
       });
       // bar.appendChild(translateButton);
       bar.appendChild(deleteButton);
       bar.appendChild(displaceButton);
-      // bar.appendChild(copyDisplaceButton);
+      bar.appendChild(copyDisplaceButton);
       bar.appendChild(deselectButton);
       return bar;
     }
@@ -6546,7 +6547,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
     }
   }, {
     key: "showDisplaceDialog",
-    value: function showDisplaceDialog(bar) {
+    value: function showDisplaceDialog(bar, withCopy) {
       var scope = this;
       var formContainer = document.createElement('div');
       var projectSelect = this._elementUiController.createProjectSelectionForDisplace();
@@ -6557,7 +6558,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       cancelButton.className = "c4g-editor-dialog-cancel";
       cancelButton.title = _c4gEditorI18n.langConstants.BUTTON_CANCEL;
       $(confirmButton).on('click', function (event) {
-        scope.displaceAllElements($(projectSelect).val());
+        scope.displaceAllElements($(projectSelect).val(), withCopy);
       });
       $(cancelButton).on('click', function (event) {
         scope._elementUiController.reloadSelectedFeatureView();
@@ -6569,12 +6570,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
     }
   }, {
     key: "displaceAllElements",
-    value: function displaceAllElements(projectId) {
+    value: function displaceAllElements(projectId, withCopy) {
       var arrFeatures = this.selectInteraction.getFeatures().getArray();
       // we have to use the same technique as in deselectAllElements
       for (var i = 0; i < arrFeatures.length; i++) {
         var feature = arrFeatures[i];
-        this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), false, projectId);
+        this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), withCopy, projectId);
       }
     }
   }, {

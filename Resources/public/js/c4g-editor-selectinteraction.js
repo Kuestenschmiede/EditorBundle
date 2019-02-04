@@ -368,18 +368,18 @@ export class EditorSelectInteraction {
     displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
     $(displaceButton).addClass('c4g-btn-displace-all-data');
     $(displaceButton).on('click', function(event) {
-      // TODO projektauswahl anzeigen, dann alle darein verschieben
-      scope.showDisplaceDialog(bar);
+      scope.showDisplaceDialog(bar, false);
     });
     let copyDisplaceButton = document.createElement('button');
+    copyDisplaceButton.title = langConstants.BUTTON_COPY_DISPLACE_ALL;
     $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
     $(copyDisplaceButton).on('click', function(event) {
-      // TODO das gleiche wie oben (fast)
+      scope.showDisplaceDialog(bar, true);
     });
     // bar.appendChild(translateButton);
     bar.appendChild(deleteButton);
     bar.appendChild(displaceButton);
-    // bar.appendChild(copyDisplaceButton);
+    bar.appendChild(copyDisplaceButton);
     bar.appendChild(deselectButton);
     return bar;
   }
@@ -426,7 +426,7 @@ export class EditorSelectInteraction {
     this.updateFeatures();
   }
 
-  showDisplaceDialog(bar) {
+  showDisplaceDialog(bar, withCopy) {
     const scope = this;
     let formContainer = document.createElement('div');
     let projectSelect = this._elementUiController.createProjectSelectionForDisplace();
@@ -437,7 +437,7 @@ export class EditorSelectInteraction {
     cancelButton.className = "c4g-editor-dialog-cancel";
     cancelButton.title = langConstants.BUTTON_CANCEL;
     $(confirmButton).on('click', function(event) {
-      scope.displaceAllElements($(projectSelect).val());
+      scope.displaceAllElements($(projectSelect).val(), withCopy);
     });
     $(cancelButton).on('click', function(event) {
       scope._elementUiController.reloadSelectedFeatureView();
@@ -448,12 +448,12 @@ export class EditorSelectInteraction {
     bar.appendChild(formContainer);
   }
 
-  displaceAllElements(projectId) {
+  displaceAllElements(projectId, withCopy) {
     let arrFeatures = this.selectInteraction.getFeatures().getArray();
     // we have to use the same technique as in deselectAllElements
     for (let i = 0; i < arrFeatures.length; i++) {
       let feature = arrFeatures[i];
-      this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), false, projectId);
+      this._elementUiController.elementController.displaceElement(feature, feature.get('layerId'), withCopy, projectId);
     }
   }
 

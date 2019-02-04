@@ -267,3 +267,6 @@ button.c4g-btn-displace-all-data:before {
     font-weight: 900;
     font-size: inherit;
 }
+button.c4g-btn-copy-displace-all-data:before {
+    content: "\f0ea";
+}

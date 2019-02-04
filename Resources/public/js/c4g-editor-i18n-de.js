@@ -16,6 +16,7 @@ export var projectEditorLang = {
   BUTTON_DISPLACE_ALL: "Ausgewählte Elemente in anderes Projekt verschieben",
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
+  BUTTON_COPY_DISPLACE_ALL: "Ausgewählte Elemente kopieren und in anderes Projekt verschieben",
 
 
   NONE: '' // last line
