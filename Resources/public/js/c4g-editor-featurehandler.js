@@ -147,6 +147,9 @@ export class FeatureHandler {
         let geometry = changeData.content[0].data.geometry;
         if (feature.getGeometry() instanceof ol.geom.Point) {
           feature.getGeometry().setCoordinates(ol.proj.fromLonLat(geometry.coordinates));
+        } else if (feature.getGeometry() instanceof ol.geom.Circle) {
+          feature.getGeometry().setCenter(ol.proj.fromLonLat(geometry.center));
+          feature.getGeometry().setRadius(geometry.radius);
         } else {
           let objGeom = (new ol.format.GeoJSON()).readGeometry(geometry);
           if (objGeom) {

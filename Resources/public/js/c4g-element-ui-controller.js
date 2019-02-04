@@ -123,7 +123,6 @@ export class ElementUIController {
     deleteButtonElement.title = langConstants.EDITOR_FEATURE_DELETE;
     deleteButtonElement.setAttribute('feat_id', index);
     $(deleteButtonElement).click(function(event) {
-      // scope.deleteFeature(event);
       scope.showDeleteDialog(event.target.getAttribute('feat_id'));
     });
     return deleteButtonElement;

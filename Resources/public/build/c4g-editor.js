@@ -5392,6 +5392,9 @@ var FeatureHandler = exports.FeatureHandler = function () {
           var geometry = changeData.content[0].data.geometry;
           if (feature.getGeometry() instanceof ol.geom.Point) {
             feature.getGeometry().setCoordinates(ol.proj.fromLonLat(geometry.coordinates));
+          } else if (feature.getGeometry() instanceof ol.geom.Circle) {
+            feature.getGeometry().setCenter(ol.proj.fromLonLat(geometry.center));
+            feature.getGeometry().setRadius(geometry.radius);
           } else {
             var objGeom = new ol.format.GeoJSON().readGeometry(geometry);
             if (objGeom) {
@@ -7564,7 +7567,6 @@ var ElementUIController = exports.ElementUIController = function () {
       deleteButtonElement.title = _c4gEditorI18n.langConstants.EDITOR_FEATURE_DELETE;
       deleteButtonElement.setAttribute('feat_id', index);
       $(deleteButtonElement).click(function (event) {
-        // scope.deleteFeature(event);
         scope.showDeleteDialog(event.target.getAttribute('feat_id'));
       });
       return deleteButtonElement;
