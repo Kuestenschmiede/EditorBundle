@@ -5175,7 +5175,7 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
     value: function addFeature(feature) {
       if (!this.collectionContains(feature)) {
         this.collection.push(feature);
-        this.styleMap[feature.getId()] = feature.getStyle();
+        this.styleMap[feature.get('styleId')] = feature.getStyle();
         feature.setStyle(this.styleFunction(feature));
         for (var i = 0; i < this.selectListener.length; i++) {
           // call every listener with the feature and the whole collection as parameters
@@ -5193,7 +5193,7 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
   }, {
     key: 'removeFeature',
     value: function removeFeature(feature) {
-      feature.setStyle(this.styleMap[feature.getId()]);
+      feature.setStyle(this.styleMap[feature.get('styleId')]);
       this.collection.remove(feature);
     }
   }, {
@@ -5756,7 +5756,7 @@ var projectEditorLang = exports.projectEditorLang = {
   CONFIRM_DELETE_ALL: "Wollen Sie die ausgewählten Elemente wirklich löschen?",
   BUTTON_DESELECT_ALL: "Auswahl für alle aufheben",
   BUTTON_DELETE_ALL: "Ausgewählte Elemente löschen",
-  BUTTON_DISPLACE_ALL: "Ausgewählte Elemente verschieben",
+  BUTTON_DISPLACE_ALL: "Ausgewählte Elemente in anderes Projekt verschieben",
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
 

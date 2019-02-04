@@ -126,7 +126,7 @@ export class FeatureInteraction extends ol.interaction.Pointer {
   addFeature(feature) {
     if (!this.collectionContains(feature)) {
       this.collection.push(feature);
-      this.styleMap[feature.getId()] = feature.getStyle();
+      this.styleMap[feature.get('styleId')] = feature.getStyle();
       feature.setStyle(this.styleFunction(feature));
       for (let i = 0; i < this.selectListener.length; i++) {
         // call every listener with the feature and the whole collection as parameters
@@ -141,7 +141,7 @@ export class FeatureInteraction extends ol.interaction.Pointer {
    * @param feature
    */
   removeFeature(feature) {
-    feature.setStyle(this.styleMap[feature.getId()]);
+    feature.setStyle(this.styleMap[feature.get('styleId')]);
     this.collection.remove(feature);
   }
 

@@ -13,7 +13,7 @@ export var projectEditorLang = {
   CONFIRM_DELETE_ALL: "Wollen Sie die ausgewählten Elemente wirklich löschen?",
   BUTTON_DESELECT_ALL: "Auswahl für alle aufheben",
   BUTTON_DELETE_ALL: "Ausgewählte Elemente löschen",
-  BUTTON_DISPLACE_ALL: "Ausgewählte Elemente verschieben",
+  BUTTON_DISPLACE_ALL: "Ausgewählte Elemente in anderes Projekt verschieben",
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
 

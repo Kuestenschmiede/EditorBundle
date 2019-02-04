@@ -260,3 +260,10 @@ button.c4g-editor-view-trigger-draw-freehand:before {
     font-weight: 900;
     font-size: inherit;
 }
+
+button.c4g-btn-displace-all-data:before {
+    content: "\f56e";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
