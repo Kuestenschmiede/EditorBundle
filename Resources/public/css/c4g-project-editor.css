@@ -205,3 +205,58 @@ button.c4g-btn-delete-all-data:before {
     font-weight: 900;
     font-size: inherit;
 }
+
+.c4g-editor.c4g-open > button:before {
+    content: "\f044";
+    font-weight: 100;
+    font-family: 'Font Awesome 5 Free';
+    font-size: inherit;
+}
+.c4g-editor.c4g-close > button:before {
+    content: "\f044";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-select:before {
+    content: "\f245";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-draw-point:before {
+    content: "\f3c5";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-draw-line:before {
+    content: "\f1e0";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-draw-polygon:before {
+    content: "\f5ee";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-draw-circle:before {
+    content: "\f111";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
+
+button.c4g-editor-view-trigger-draw-freehand:before {
+    content: "\f303";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: inherit;
+}
