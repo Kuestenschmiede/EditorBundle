@@ -5039,6 +5039,7 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
     _this.translateListener = [];
     _this.styleFunction = style;
     _this.styleMap = {};
+    _this._active = true;
     return _this;
   }
 
@@ -5052,16 +5053,18 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
   _createClass(FeatureInteraction, [{
     key: 'handleDownEvent',
     value: function handleDownEvent(event) {
-      var map = event.map;
-      var feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
-        return feature;
-      });
-      if (feature) {
-        this.addFeature(feature);
-        var translateInteraction = this.addTranslateInteractionForFeature(feature, map);
-        translateInteraction.handleEvent(event);
+      if (this._active) {
+        var map = event.map;
+        var feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+          return feature;
+        });
+        if (feature) {
+          this.addFeature(feature);
+          var translateInteraction = this.addTranslateInteractionForFeature(feature, map);
+          translateInteraction.handleEvent(event);
+        }
+        return !!feature;
       }
-      return !!feature;
     }
   }, {
     key: 'handleDragEvent',
@@ -5198,6 +5201,16 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
     value: function removeFeature(feature) {
       feature.setStyle(this.styleMap[feature.getId()]);
       this.collection.remove(feature);
+    }
+  }, {
+    key: 'activate',
+    value: function activate() {
+      this._active = true;
+    }
+  }, {
+    key: 'deactivate',
+    value: function deactivate() {
+      this._active = false;
     }
   }]);
 
@@ -6449,16 +6462,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       var deselectButton = document.createElement('button');
       $(deselectButton).addClass('c4g-btn-deselect-all-data');
       $(deselectButton).on('click', function (event) {
-        var arrFeatures = scope.selectInteraction.getFeatures().getArray();
-        // this is needed because the array is modified in place by the deselection
-        // the for loop will half the length of the array by the time it completes
-        // so the whole runtime will be log(n) * n, so that's not too bad
-        while (arrFeatures.length !== 0) {
-          for (var i = 0; i < arrFeatures.length; i++) {
-            scope._elementUiController.elementController.deselectElement(arrFeatures[i], true);
-          }
-        }
-        scope.updateFeatures();
+        scope.deselectAllElements();
       });
       var deleteButton = document.createElement('button');
       $(deleteButton).addClass('c4g-btn-delete-all-data');
@@ -6493,6 +6497,20 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       // bar.appendChild(copyDisplaceButton);
       bar.appendChild(deselectButton);
       return bar;
+    }
+  }, {
+    key: "deselectAllElements",
+    value: function deselectAllElements() {
+      var arrFeatures = this.selectInteraction.getFeatures().getArray();
+      // this is needed because the array is modified in place by the deselection
+      // the for loop will half the length of the array by the time it completes
+      // so the whole runtime will be log(n) * n, so that's not too bad
+      while (arrFeatures.length !== 0) {
+        for (var i = 0; i < arrFeatures.length; i++) {
+          this._elementUiController.elementController.deselectElement(arrFeatures[i], true);
+        }
+      }
+      this.updateFeatures();
     }
   }, {
     key: "elementUiController",
@@ -6580,7 +6598,6 @@ var EditorSelectView = exports.EditorSelectView = function () {
         },
         sectionElements: [{ section: editor.contentContainer, element: this.selectContentWrapper }, { section: editor.topToolbar, element: editor.viewTriggerBar }],
         initFunction: function initFunction() {
-
           editor.options.mapController.map.addInteraction(selectInteraction);
           editor.options.mapController.map.addInteraction(selectBoxInteraction);
           return true;
@@ -6588,7 +6605,6 @@ var EditorSelectView = exports.EditorSelectView = function () {
         activateFunction: function activateFunction() {
           // Disable mapHover
           editor.options.mapController.mapHover.deactivate();
-
           // Reset display, if no features are selected
           if (selectInteraction.getFeatures().getLength() < 1) {
             scope.reloadHelpContent();
@@ -6598,18 +6614,17 @@ var EditorSelectView = exports.EditorSelectView = function () {
           editor.options.mapController.map.addInteraction(selectInteraction);
           selectBoxInteraction.setActive(true);
           editor.options.mapController.map.addInteraction(selectBoxInteraction);
+          selectInteraction.activate();
           return true;
         },
         deactivateFunction: function deactivateFunction() {
-          // if (typeof editor.applyFeatureModification === 'function') {
-          //   editor.applyFeatureModification();
-          // }
           // Disable interaction
           selectInteraction.setActive(false);
           editor.options.mapController.map.removeInteraction(selectInteraction);
           selectBoxInteraction.setActive(false);
           editor.options.mapController.map.removeInteraction(selectBoxInteraction);
-
+          objSelect.deselectAllElements();
+          selectInteraction.deactivate();
           // enable mapHover
           editor.options.mapController.mapHover.activate();
 

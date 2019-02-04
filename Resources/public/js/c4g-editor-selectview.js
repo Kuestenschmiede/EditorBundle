@@ -41,7 +41,6 @@ export class EditorSelectView {
         {section: editor.topToolbar, element: editor.viewTriggerBar}
       ],
       initFunction: function () {
-
         editor.options.mapController.map.addInteraction(selectInteraction);
         editor.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;
@@ -49,7 +48,6 @@ export class EditorSelectView {
       activateFunction: function () {
         // Disable mapHover
         editor.options.mapController.mapHover.deactivate();
-
         // Reset display, if no features are selected
         if (selectInteraction.getFeatures().getLength() < 1) {
           scope.reloadHelpContent();
@@ -59,18 +57,17 @@ export class EditorSelectView {
         editor.options.mapController.map.addInteraction(selectInteraction);
         selectBoxInteraction.setActive(true);
         editor.options.mapController.map.addInteraction(selectBoxInteraction);
+        selectInteraction.activate();
         return true;
       },
       deactivateFunction: function () {
-        // if (typeof editor.applyFeatureModification === 'function') {
-        //   editor.applyFeatureModification();
-        // }
         // Disable interaction
         selectInteraction.setActive(false);
         editor.options.mapController.map.removeInteraction(selectInteraction);
         selectBoxInteraction.setActive(false);
         editor.options.mapController.map.removeInteraction(selectBoxInteraction);
-
+        objSelect.deselectAllElements();
+        selectInteraction.deactivate();
         // enable mapHover
         editor.options.mapController.mapHover.activate();
 

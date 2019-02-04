@@ -104,7 +104,7 @@ export class EditorSelectInteraction {
               selectInteraction.addFeature(feature);
               selectInteraction.addTranslateInteractionForFeature(feature, scope.editor.options.mapController.map);
             }
-          })
+          });
         });
       });
     });
@@ -349,16 +349,7 @@ export class EditorSelectInteraction {
     let deselectButton = document.createElement('button');
     $(deselectButton).addClass('c4g-btn-deselect-all-data');
     $(deselectButton).on('click', function(event) {
-      let arrFeatures = scope.selectInteraction.getFeatures().getArray();
-      // this is needed because the array is modified in place by the deselection
-      // the for loop will half the length of the array by the time it completes
-      // so the whole runtime will be log(n) * n, so that's not too bad
-      while (arrFeatures.length !== 0) {
-        for (let i = 0; i < arrFeatures.length; i++) {
-          scope._elementUiController.elementController.deselectElement(arrFeatures[i], true);
-        }
-      }
-      scope.updateFeatures();
+      scope.deselectAllElements();
     });
     let deleteButton = document.createElement('button');
     $(deleteButton).addClass('c4g-btn-delete-all-data');
@@ -393,6 +384,19 @@ export class EditorSelectInteraction {
     // bar.appendChild(copyDisplaceButton);
     bar.appendChild(deselectButton);
     return bar;
+  }
+
+  deselectAllElements() {
+    let arrFeatures = this.selectInteraction.getFeatures().getArray();
+    // this is needed because the array is modified in place by the deselection
+    // the for loop will half the length of the array by the time it completes
+    // so the whole runtime will be log(n) * n, so that's not too bad
+    while (arrFeatures.length !== 0) {
+      for (let i = 0; i < arrFeatures.length; i++) {
+        this._elementUiController.elementController.deselectElement(arrFeatures[i], true);
+      }
+    }
+    this.updateFeatures();
   }
 
 

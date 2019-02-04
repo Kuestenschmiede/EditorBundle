@@ -10,6 +10,7 @@ export class FeatureInteraction extends ol.interaction.Pointer {
     this.translateListener = [];
     this.styleFunction = style;
     this.styleMap = {};
+    this._active = true;
   }
 
   /**
@@ -18,16 +19,18 @@ export class FeatureInteraction extends ol.interaction.Pointer {
    * @returns {boolean}
    */
   handleDownEvent(event) {
-    let map = event.map;
-    let feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
-      return feature;
-    });
-    if (feature) {
-      this.addFeature(feature);
-      let translateInteraction = this.addTranslateInteractionForFeature(feature, map);
-      translateInteraction.handleEvent(event);
+    if (this._active) {
+      let map = event.map;
+      let feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+        return feature;
+      });
+      if (feature) {
+        this.addFeature(feature);
+        let translateInteraction = this.addTranslateInteractionForFeature(feature, map);
+        translateInteraction.handleEvent(event);
+      }
+      return !!feature;
     }
-    return !!feature;
   }
 
   handleDragEvent(event) {
@@ -140,5 +143,13 @@ export class FeatureInteraction extends ol.interaction.Pointer {
   removeFeature(feature) {
     feature.setStyle(this.styleMap[feature.getId()]);
     this.collection.remove(feature);
+  }
+
+  activate() {
+    this._active = true;
+  }
+
+  deactivate() {
+    this._active = false;
   }
 }
