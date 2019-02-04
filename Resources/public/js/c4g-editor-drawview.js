@@ -253,7 +253,8 @@ export class EditorDrawview {
     }
     return true;
   }
-  createProjectFilter(){
+
+  createProjectFilter() {
     const scope = this;
     let filterDiv = document.createElement("div");
     let filterInput = document.createElement("input");

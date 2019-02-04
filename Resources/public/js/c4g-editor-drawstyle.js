@@ -334,10 +334,10 @@ export class EditorDrawStyle {
                 // 0_o
               }
             }
-            // Remove from map
-            interaction.setActive(false);
           }
         }
+        // Remove from map
+        interaction.setActive(false);
         return true;
       }
     }, drawView);
