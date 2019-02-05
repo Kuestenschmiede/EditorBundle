@@ -24,6 +24,7 @@ $GLOBALS['TL_DCA'][$strName] = array
     (
         'dataContainer'     => 'Table',
         'enableVersioning'  => 'true',
+        'onload_callback' => [[$cbClass, 'updateDCA']],
         'onsubmit_callback'             => array(
             array('\con4gis\EditorBundle\Classes\Cache\C4GEditorAutomator', 'purgeEditorConfigCache')
         ),

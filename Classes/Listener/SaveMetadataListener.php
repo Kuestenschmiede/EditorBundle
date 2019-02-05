@@ -200,12 +200,12 @@ class SaveMetadataListener
         EventDispatcherInterface $eventDispatcher
     ) {
         $entities = $event->getEntities();
-        $bladata = $event->getReturnData();
+        $returnData = $event->getReturnData();
         $event->setReturnData(array_merge([
             'entities' => $entities,
             'finalId' => $event->getDataId(),
             'projectId' => $event->getProjectId(),
-        ], $bladata));
+        ], $returnData));
         foreach ($entities as $entity) {
             try {
                 $this->entityManager->persist($entity);

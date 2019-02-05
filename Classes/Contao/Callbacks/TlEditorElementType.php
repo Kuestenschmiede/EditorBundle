@@ -75,18 +75,18 @@ class TlEditorElementType extends Backend
     {
         if (!$dc->id) return;
 
-        $objMap = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_element_type WHERE id=?")
+        $objType = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_element_type WHERE id=?")
             ->limit(1)
             ->execute($dc->id);
-        if ($objMap->numRows > 0) {
-            if ($objMap->plugins) {
+        if ($objType->numRows > 0) {
+            if ($objType->plugins) {
                 $event = new LoadPluginsEvent();
                 $dispatcher = System::getContainer()->get('event_dispatcher');
                 $dispatcher->dispatch($event::NAME, $event);
                 $configs = $event->getConfigs();
                 foreach ($configs as $config) {
                     if ($config->getBackend()) {
-                        foreach (unserialize($objMap->plugins) as $plugin) {
+                        foreach (unserialize($objType->plugins) as $plugin) {
                             if ($plugin == $config->getId()) {
                                 $pluginClass = $config->getDataPlugin();
                                 if ($pluginClass) {
@@ -114,7 +114,7 @@ class TlEditorElementType extends Backend
     public function loadField($varValue, DataContainer $dc)
     {
         $result = $varValue;
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_maps_project_element_defaults WHERE pid=? AND pluginField=?")
+        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?")
             ->limit(1)
             ->execute($dc->id, $dc->field);
         if ($objMap->numRows > 0) {
@@ -126,16 +126,16 @@ class TlEditorElementType extends Backend
 
     public function saveField($varValue, DataContainer $dc)
     {
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_maps_project_element_defaults WHERE pid=? AND pluginField=?")
+        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?")
             ->limit(1)
             ->execute($dc->id, $dc->field);
 
         if ($objMap->numRows > 0) {
-            $this->Database->prepare("UPDATE tl_c4g_maps_project_element_defaults SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
+            $this->Database->prepare("UPDATE tl_c4g_editor_element_preset SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
                 ->execute(time(), $varValue, $dc->id, $dc->field);
         } else {
             $pluginId = intval($GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'][$dc->field]['pluginId']);
-            $this->Database->prepare("INSERT INTO tl_c4g_maps_project_element_defaults SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
+            $this->Database->prepare("INSERT INTO tl_c4g_editor_element_preset SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
                 ->execute(time(), $dc->id, $pluginId, $dc->field, $varValue);
         }
 

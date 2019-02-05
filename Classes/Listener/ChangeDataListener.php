@@ -12,11 +12,10 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
-
 use con4gis\EditorBundle\Classes\Events\ChangeDataEvent;
+use con4gis\EditorBundle\Classes\Services\EditorHistoryService;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
-use Contao\System;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,14 +26,21 @@ class ChangeDataListener
      * @var EntityManager
      */
     private $entityManager = null;
+    
+    /**
+     * @var EditorHistoryService
+     */
+    private $historyService = null;
 
     /**
      * CreateElementListener constructor.
      * @param EntityManager $entityManager
+     * @param EditorHistoryService $historyService
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, EditorHistoryService $historyService)
     {
         $this->entityManager = $entityManager;
+        $this->historyService = $historyService;
     }
 
     public function onDataChangeUpdateEntity(
@@ -54,7 +60,7 @@ class ChangeDataListener
         $changeCount = 0;
         if ($entity) {
             // TODO inject editor service and call directly
-            System::getContainer()->get('editor_history')->createHistoryEntry($entity);
+            $this->historyService->createHistoryEntry($entity);
             foreach ($changes as $key => $change) {
                 $setter = "set" . ucfirst($key);
                 if (method_exists($entity, $setter)) {

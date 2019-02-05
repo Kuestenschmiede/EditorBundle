@@ -4570,7 +4570,7 @@ var EditorDrawview = exports.EditorDrawview = function () {
   }, {
     key: "createTypeObject",
     value: function createTypeObject(jsonElement) {
-      return new _c4gEditorElementType.ElementType(jsonElement.id, jsonElement.name, jsonElement.categoryId, jsonElement.styleId);
+      return new _c4gEditorElementType.ElementType(jsonElement.id, jsonElement.name, jsonElement.categoryid, jsonElement.styleId);
     }
   }, {
     key: "createCategoryObject",

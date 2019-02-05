@@ -60,7 +60,6 @@ class ElementController extends BaseController
         $response->setData($event->getReturnData());
         // data was updated, clear caches
         C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
 

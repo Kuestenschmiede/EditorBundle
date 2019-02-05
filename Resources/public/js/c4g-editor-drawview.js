@@ -28,7 +28,7 @@ export class EditorDrawview {
     return new ElementType(
       jsonElement.id,
       jsonElement.name,
-      jsonElement.categoryId,
+      jsonElement.categoryid,
       jsonElement.styleId
     );
   }

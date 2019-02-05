@@ -38,6 +38,7 @@ services:
             - { name: kernel.event_listener, event: editor.data.change, method: onDataChangeUpdateEntity, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@editor_history'
 
     ## Load Metadata Dialog
     editor.onShowMetadataDialogGetFieldList:
