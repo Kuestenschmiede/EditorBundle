@@ -13,7 +13,7 @@
 namespace con4gis\EditorBundle\Classes\Plugins;
 
 use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
-use con4gis\EditorBundle\Entity\MapsProjectElementDefaults;
+use con4gis\EditorBundle\Entity\EditorMapElementPreset;
 use con4gis\EditorBundle\Classes\Plugins\AbstractPlugin;
 use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 
@@ -36,7 +36,7 @@ abstract class AbstractDataPlugin extends AbstractPlugin implements DataPluginIn
 
     public function getDefaultValue($pluginId, $elementId, $pluginField, $entityManager) {
         if ($pluginId && $elementId && $pluginField && $entityManager) {
-            $entity = $entityManager->getRepository(MapsProjectElementDefaults::class)->findOneBy([
+            $entity = $entityManager->getRepository(EditorMapElementPreset::class)->findOneBy([
                 'pluginId'  => $pluginId,
                 'pid' => $elementId,
                 'pluginField' => $pluginField

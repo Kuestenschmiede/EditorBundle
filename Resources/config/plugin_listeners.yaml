@@ -39,13 +39,6 @@ services:
             - '@doctrine.orm.default_entity_manager'
 
     ## Instantiate project plugins
-    editor.onInstantiateProjectPluginsGetDefaultPlugin:
-        class: con4gis\EditorBundle\Classes\Listener\InstantiateProjectPluginsListener
-        tags:
-            - { name: kernel.event_listener, event: editor.projectplugins.instantiate, method: onInstantiateProjectPluginsGetDefaultPlugin, priority: 1025 }
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
     editor.onInstantiateProjectPluginsInstantiatePlugins:
         class: con4gis\EditorBundle\Classes\Listener\InstantiateProjectPluginsListener
         tags:

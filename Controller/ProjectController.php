@@ -154,8 +154,6 @@ class ProjectController extends BaseController
         $instEvent->setPluginConfigs($loadEvent->getConfigs());
         $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
         $plugins = $instEvent->getInstances();
-        // TODO das hier im InstantiateProjectPluginsListener im ApplicationBundle erledigen, und hier nur die
-        // TODO plugins zurückgeben
         return $plugins;
     }
 

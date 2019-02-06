@@ -76,6 +76,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataGetEntities, priority: 4096 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     editor.onSaveMetadataFillEntities:
         class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
@@ -83,6 +84,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataFillEntities, priority: 3072 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     editor.onSaveMetadataExecBeforeSave:
         class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
@@ -90,6 +92,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataExecBeforeSave, priority: 2048 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     editor.onSaveMetadataValidateFieldValues:
         class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
@@ -97,6 +100,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataValidateFieldValues, priority: 1900 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     editor.onSaveMetadataCheckMandatory:
         class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
@@ -104,6 +108,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataCheckMandatory, priority: 1800 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     editor.onSaveMetadataPersistEntities:
         class: con4gis\EditorBundle\Classes\Listener\SaveMetadataListener
@@ -111,6 +116,7 @@ services:
             - { name: kernel.event_listener, event: editor.metadata.save, method: onSaveMetadataPersistEntities, priority: 1024 }
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@logger'
 
     ## Get popup
     editor.onGetPopupGetFields:

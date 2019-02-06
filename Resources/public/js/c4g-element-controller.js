@@ -75,6 +75,9 @@ export class ElementController {
   editElement(data, feature) {
     let layer = this.editor.mapsInterface.getLayerFromArray(feature.get('layerId'));
     this.editor.featureHandler.updateLayer(data, layer, feature);
+    // deselect and select feature to update its style
+    this.selectInteraction.selectInteraction.removeFeature(feature);
+    this.selectInteraction.selectInteraction.addFeature(feature);
     this.selectInteraction.updateFeatures();
     this.editor.mapsInterface.updateStarboard();
   }

@@ -23,21 +23,6 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 
 class InstantiateProjectPluginsListener
 {
-    public function onInstantiateProjectPluginsGetDefaultPlugin(
-        InstantiateProjectPluginsEvent $event,
-        $eventName,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $configs = $event->getPluginConfigs();
-        $validConfigs = $event->getValidConfigs();
-        foreach ($configs as $config) {
-            if ($config->getProjectPlugin() === DefaultProjectPlugin::class) {
-                $validConfigs[] = $config;
-            }
-        }
-        $event->setValidConfigs($validConfigs);
-    }
-
     public function onInstantiateProjectPluginsInstantiatePlugins(
         InstantiateProjectPluginsEvent $event,
         $eventName,

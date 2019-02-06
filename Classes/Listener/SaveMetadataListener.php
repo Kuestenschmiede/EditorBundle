@@ -16,11 +16,10 @@ namespace con4gis\EditorBundle\Classes\Listener;
 use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
 use con4gis\EditorBundle\Classes\Plugins\AbstractDataPlugin;
 use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
-use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
-use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\FrontendUser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SaveMetadataListener
@@ -29,14 +28,21 @@ class SaveMetadataListener
      * @var EntityManager
      */
     private $entityManager = null;
-
+    
+    /**
+     * @var LoggerInterface
+     */
+    private $logger = null;
+    
     /**
      * SaveMetadataListener constructor.
      * @param EntityManager $entityManager
+     * @param LoggerInterface $logger
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -97,7 +103,12 @@ class SaveMetadataListener
             $setter = 'set' . ucfirst(str_replace("_", "", $key));
             foreach ($entities as $entity) {
                 if (method_exists($entity, $setter)) {
-                    $entity->$setter($datum);
+                    try {
+                        $entity->$setter($datum);
+                    } catch (\Throwable $error) {
+                        $this->logger->error("An error occured while setting " . $key . " with value " . $datum);
+                        continue;
+                    }
                 }
             }
         }
