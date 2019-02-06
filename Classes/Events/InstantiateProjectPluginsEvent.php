@@ -26,6 +26,9 @@ class InstantiateProjectPluginsEvent extends Event
     private $instances = [];
 
     private $additionalData = [];
+    
+    // 'fe' || 'be'
+    private $mode = 'fe';
 
     /**
      * @return PluginConfig[]
@@ -89,5 +92,21 @@ class InstantiateProjectPluginsEvent extends Event
     public function setAdditionalData(array $additionalData): void
     {
         $this->additionalData = $additionalData;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
+    
+    /**
+     * @param string $mode
+     */
+    public function setMode(string $mode): void
+    {
+        $this->mode = $mode;
     }
 }

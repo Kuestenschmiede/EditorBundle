@@ -52,4 +52,12 @@ interface ProjectPluginInterface
      * @return mixed
      */
     public function getProjectData($projectId, $fieldList): array;
+    
+    /**
+     * Returns an array of projectTypes that are defined by this plugin. The array should be structured like
+     * typeKey => Translation/language reference
+     * for each type the plugin defines.
+     * @return array
+     */
+    public function getProjectTypes() : array;
 }

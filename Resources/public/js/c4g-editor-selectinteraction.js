@@ -324,20 +324,6 @@ export class EditorSelectInteraction {
           scope.editor.update();
         }
       }
-      // TODO prüfen ob solche Tooltips vielleicht cooler sind
-      // console.log($('button.c4g-icon'));
-      // let title = "";
-      // $('button.c4g-icon').hover(function(e){
-      //     title = $(this).attr('title');
-      //     let span = document.createElement('span');
-      //     span.innerText = title;
-      //     $(this).append(span);
-      //     $(this).removeAttr('title');
-      //   },
-      //   function(e){
-      //     $('span', this).remove();
-      //     $(this).attr('title',title);
-      //   });
     }; // end of "renderSelectedFeaturesList"
 
     renderSelectedFeaturesList();

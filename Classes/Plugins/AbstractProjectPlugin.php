@@ -26,7 +26,6 @@ abstract class AbstractProjectPlugin extends AbstractPlugin implements ProjectPl
         return $event;
     }
 
-
     public function getProjectData($projectId, $fieldList): array
     {
         $data = [];
@@ -44,5 +43,10 @@ abstract class AbstractProjectPlugin extends AbstractPlugin implements ProjectPl
         } else {
             return [];
         }
+    }
+    
+    public function getProjectTypes(): array
+    {
+        return [];
     }
 }
