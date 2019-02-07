@@ -345,18 +345,19 @@ window.c4gMapsHooks.mapController_addControls = window.c4gMapsHooks.mapControlle
 window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
   const mapData = mapController.data;
-  // mapController.map.removeControl(mapController.controls.editor);
-  let editor = new Editor({
-    tipLabel: langConstants.CTRL_EDITOR,
-    type: mapData.editor.type || 'frontend',
-    target: mapData.editor.target || params.Container,
-    initOpen: mapData.editor.open || false,
-    dataField: mapData.editor.data_field || false,
-    caching: mapData.caching,
-    mapController: mapController
-  });
-  mapController.map.addControl(editor);
-  mapController.controls.editor = editor;
+  if (mapData.feEditorProfile) {
+    let editor = new Editor({
+      tipLabel: langConstants.CTRL_EDITOR,
+      type: mapData.editor.type || 'frontend',
+      target: mapData.editor.target || params.Container,
+      initOpen: mapData.editor.open || false,
+      dataField: mapData.editor.data_field || false,
+      caching: mapData.caching,
+      mapController: mapController
+    });
+    mapController.map.addControl(editor);
+    mapController.controls.editor = editor;
+  }
 });
 
 
