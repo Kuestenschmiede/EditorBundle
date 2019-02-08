@@ -6383,8 +6383,10 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             inputNameElement.setAttribute('feat_id', i);
             inputNameElement.setAttribute('disabled', true);
             outerDiv.appendChild(inputNameElement);
-            // add modify button
-            outerDiv.appendChild(scope._elementUiController.createMoveButton(i));
+            if (!(selectedFeature.getGeometry() instanceof ol.geom.Point)) {
+              // add modify button
+              outerDiv.appendChild(scope._elementUiController.createMoveButton(i));
+            }
             // add delete button
             outerDiv.appendChild(scope._elementUiController.createDeleteButton(i));
             // add edit button
