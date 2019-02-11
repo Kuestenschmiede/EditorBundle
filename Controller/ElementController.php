@@ -69,6 +69,9 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        
+        // TODO Check permissions. Check if the logged in user actually has the right to delete the data.
+        // TODO otherwise some malicious user could delete all our data.
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $response = new JsonResponse();
 

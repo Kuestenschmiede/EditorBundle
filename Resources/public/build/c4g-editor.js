@@ -6376,12 +6376,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             selectedFeature = selectedFeatures.item(i);
             outerDiv = document.createElement('div');
             // add name inputfield
-            inputNameElement = document.createElement('input');
+            inputNameElement = document.createElement('p');
             inputNameElement.type = 'text';
             inputNameElement.id = i;
             inputNameElement.setAttribute('value', selectedFeature.get('name'));
             inputNameElement.setAttribute('feat_id', i);
-            inputNameElement.setAttribute('disabled', true);
+            // inputNameElement.setAttribute('disabled', true);
             outerDiv.appendChild(inputNameElement);
             if (!(selectedFeature.getGeometry() instanceof ol.geom.Point)) {
               // add modify button
@@ -7472,6 +7472,10 @@ var ElementUIController = exports.ElementUIController = function () {
           modifyButton = void 0,
           applyButton = void 0;
 
+      console.log(event.target);
+      $(event.target.parentNode).children('button').each(function (idx, elem) {
+        elem.setAttribute('disabled', true);
+      });
       var editor = this.editor;
       var scope = this;
       var selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();

@@ -41,6 +41,10 @@ export class ElementUIController {
       modifyButton,
       applyButton;
 
+    console.log(event.target);
+    $(event.target.parentNode).children('button').each(function(idx, elem) {
+      elem.setAttribute('disabled', true);
+    });
     let editor = this.editor;
     let scope = this;
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
