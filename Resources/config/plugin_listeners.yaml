@@ -1,21 +1,4 @@
 services:
-    ## Load plugins
-    editor.onLoadPluginsGetRegisteredBundles:
-        class: con4gis\EditorBundle\Classes\Listener\LoadPluginsListener
-        tags:
-            - { name: kernel.event_listener, event: editor.load.plugins, method: onLoadPluginsGetRegisteredBundles, priority: 4096 }
-        arguments:
-            - '@service_container'
-            - '@file_locator'
-
-    editor.onLoadPluginsReadConfigFiles:
-        class: con4gis\EditorBundle\Classes\Listener\LoadPluginsListener
-        tags:
-            - { name: kernel.event_listener, event: editor.load.plugins, method: onLoadPluginsReadConfigFiles, priority: 3072 }
-        arguments:
-            - '@service_container'
-            - '@file_locator'
-
     ## Instantiate data plugins
     editor.onInstantiatePluginsGetElement:
         class: con4gis\EditorBundle\Classes\Listener\InstantiateDataPluginsListener

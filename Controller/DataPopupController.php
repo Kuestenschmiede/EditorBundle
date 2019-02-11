@@ -16,7 +16,7 @@ namespace con4gis\EditorBundle\Controller;
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Events\GetPopupEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
-use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
+use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorElement;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +24,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DataPopupController extends BaseController
 {
+    /**
+     * @var PluginService
+     */
+    private $pluginService = null;
+    
+    /**
+     * ElementController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pluginService = $this->get('editor_plugin_service');
+    }
+    
     public function getPopupAction(Request $request, $dataId)
     {
         $this->initialize();
@@ -31,19 +45,10 @@ class DataPopupController extends BaseController
             return new Response("No user logged in!", 403);
         }
         $data = $this->entityManager->getRepository(EditorElement::class)->findOneBy(['id' => $dataId]);
-
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-
-        $instEvent = new InstantiateDataPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $instEvent->setElementId($data->getTypeid());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-
+        $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
         $event = new GetPopupEvent();
         $event->setDataId($dataId);
-        $event->setPluginConfigs($loadEvent->getConfigs());
-        $event->setPlugins($instEvent->getInstances());
+        $event->setPlugins($plugins);
         $this->eventDispatcher->dispatch($event::NAME, $event);
         return new JsonResponse($event->getView());
     }

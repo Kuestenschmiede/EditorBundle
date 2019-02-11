@@ -12,8 +12,7 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
-use con4gis\MapsProjectBundle\Classes\Plugins\DataPluginInterface;
+use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class GetPopupEvent extends Event
@@ -21,8 +20,6 @@ class GetPopupEvent extends Event
     const NAME = "editor.popup.get";
 
     private $dataId = 0;
-
-    private $pluginConfigs = [];
 
     /**
      * @var DataPluginInterface[]
@@ -49,22 +46,6 @@ class GetPopupEvent extends Event
     public function setDataId(int $dataId): void
     {
         $this->dataId = $dataId;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPluginConfigs(): array
-    {
-        return $this->pluginConfigs;
-    }
-
-    /**
-     * @param array $pluginConfigs
-     */
-    public function setPluginConfigs(array $pluginConfigs): void
-    {
-        $this->pluginConfigs = $pluginConfigs;
     }
 
     /**

@@ -59,7 +59,6 @@ class ChangeDataListener
         ]);
         $changeCount = 0;
         if ($entity) {
-            // TODO inject editor service and call directly
             $this->historyService->createHistoryEntry($entity);
             foreach ($changes as $key => $change) {
                 $setter = "set" . ucfirst($key);

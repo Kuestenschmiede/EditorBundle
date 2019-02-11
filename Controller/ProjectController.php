@@ -14,6 +14,7 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
@@ -93,16 +94,10 @@ class ProjectController extends BaseController
         foreach ($data as $datum) {
             $typeId = $datum->getTypeid();
             $dataId = $datum->getId();
-            $loadEvent = new LoadPluginsEvent();
-            $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-
-            $instEvent = new InstantiateDataPluginsEvent();
-            $instEvent->setPluginConfigs($loadEvent->getConfigs());
-            $instEvent->setElementId($typeId);
-            $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
+            $plugins = $this->get('editor_plugin_service')->getDataPlugins($typeId);
 
             $event = new DeleteDataEvent();
-            $event->setPlugins($instEvent->getInstances());
+            $event->setPlugins($plugins);
             $event->setProjectId($projectId);
             $event->setDataId($dataId);
             $this->eventDispatcher->dispatch($event::NAME, $event);
@@ -148,12 +143,7 @@ class ProjectController extends BaseController
 
     private function getPlugins(): array
     {
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-        $instEvent = new InstantiateProjectPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-        $plugins = $instEvent->getInstances();
+        $plugins = $this->get('editor_plugin_service')->getProjectPlugins();
         return $plugins;
     }
 
@@ -213,7 +203,7 @@ class ProjectController extends BaseController
             if ($instance instanceof ProjectPluginInterface) {
                 // create entity
                 $entityName = $instance->getEntityClass();
-                if ($entityName === EditorMapProject::class) {
+                if ($entityName === EditorProject::class) {
                     $entity = $this->entityManager->getRepository($entityName)
                         ->findOneBy(['id' => $data['id']]);
                 } else {

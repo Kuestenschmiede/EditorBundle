@@ -58,10 +58,7 @@ class TlEditorElementType extends Backend
 
     public function getPluginList()
     {
-        $event = new LoadPluginsEvent();
-        $dispatcher = System::getContainer()->get('event_dispatcher');
-        $dispatcher->dispatch($event::NAME, $event);
-        $configs = $event->getConfigs();
+        $configs = System::getContainer()->get('editor_plugin_service')->getDataConfigs();
         $return = [];
         foreach ($configs as $config) {
             if ($config->getDataPlugin()) {

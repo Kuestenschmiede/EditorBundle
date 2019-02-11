@@ -96,16 +96,7 @@ class EditorController extends BaseController
             return new JsonResponse(['id' => $id]);
         }
     }
-
-//    public function editorAction(Request $request, $profileId)
-//    {
-//        $response = new JsonResponse();
-//        $editorApi = new EditorApi();
-//        $returnData = $editorApi->generate($profileId);
-//        $response->setData($returnData);
-//        return $response;
-//
-//    }
+    
     public function beEditorAction(Request $request, $layerId)
     {
         $geoEditor = new GeoEditor($layerId);

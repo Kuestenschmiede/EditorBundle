@@ -16,6 +16,7 @@ namespace con4gis\EditorBundle\Controller;
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
+use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
@@ -45,6 +46,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ElementController extends BaseController
 {
+    /**
+     * @var PluginService
+     */
+    private $pluginService = null;
+    
+    /**
+     * ElementController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pluginService = System::getContainer()->get('editor_plugin_service');
+    }
+    
     public function createDataAction(Request $request, $projectId)
     {
         $this->initialize();
@@ -75,18 +90,11 @@ class ElementController extends BaseController
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $response = new JsonResponse();
 
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
-
-        $instEvent = new InstantiateDataPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $instEvent->setElementId($data->getTypeid());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-
+        $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
         $event = new DeleteDataEvent();
-        $event->setPlugins($instEvent->getInstances());
+        $event->setPlugins($plugins);
         $event->setProjectId($projectId);
         $event->setDataId($realId);
         $this->eventDispatcher->dispatch($event::NAME, $event);
@@ -96,7 +104,6 @@ class ElementController extends BaseController
         }
         // data was updated, clear caches
         C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
 
@@ -129,19 +136,13 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
-        $instEvent = new InstantiateDataPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $instEvent->setElementId($data->getTypeid());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-
+        $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
         $copyEvent = new DuplicateDataEvent();
         $copyEvent->setDataId($realId);
-        $copyEvent->setPlugins($instEvent->getInstances());
+        $copyEvent->setPlugins($plugins);
         $this->eventDispatcher->dispatch($copyEvent::NAME, $copyEvent);
         // data was updated, clear caches
         C4GLayerApiCache::getInstance()->clearCache();
@@ -158,19 +159,13 @@ class ElementController extends BaseController
             ->findOneBy(['id' => $newProjectId]);
         $copy = $copy === "true" ? true : false;
         if ($copy) {
-            $loadEvent = new LoadPluginsEvent();
-            $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
             $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
             $data = $this->entityManager->getRepository(EditorElement::class)
                 ->findOneBy(['id' => $realId]);
-            $instEvent = new InstantiateDataPluginsEvent();
-            $instEvent->setPluginConfigs($loadEvent->getConfigs());
-            $instEvent->setElementId($data->getTypeid());
-            $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
-
+            $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
             $copyEvent = new DuplicateDataEvent();
             $copyEvent->setDataId($realId);
-            $copyEvent->setPlugins($instEvent->getInstances());
+            $copyEvent->setPlugins($plugins);
             $this->eventDispatcher->dispatch($copyEvent::NAME, $copyEvent);
             $newData = $copyEvent->getNewEntities()['main'];
             $newData->setProjectId($newProjectId);
@@ -214,14 +209,9 @@ class ElementController extends BaseController
         }
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-        $instEvent = new InstantiateDataPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $instEvent->setElementId($data->getTypeid());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
+        $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
         $event = new ShowMetadataDialogEvent();
-        $event->setPlugins($instEvent->getInstances());
+        $event->setPlugins($plugins);
         $event->setDataId(C4GBrickCommon::getLayerIDParam($dataId, 'id'));
         $event->setProjectId($projectId);
         $this->eventDispatcher->dispatch($event::NAME, $event);
@@ -238,17 +228,12 @@ class ElementController extends BaseController
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
-        $loadEvent = new LoadPluginsEvent();
-        $this->eventDispatcher->dispatch($loadEvent::NAME, $loadEvent);
-        $instEvent = new InstantiateDataPluginsEvent();
-        $instEvent->setPluginConfigs($loadEvent->getConfigs());
-        $instEvent->setElementId($data->getTypeid());
-        $this->eventDispatcher->dispatch($instEvent::NAME, $instEvent);
+        $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
         $event = new SaveMetadataEvent();
         $event->setDataId($realId);
         $event->setProjectId($projectId);
         $event->setData($request->request->all());
-        $event->setPluginClasses($instEvent->getInstances());
+        $event->setPluginClasses($plugins);
         $this->eventDispatcher->dispatch($event::NAME, $event);
         $response = new JsonResponse($event->getData());
         // data was updated, clear caches

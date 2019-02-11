@@ -13,3 +13,11 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@logger'
+
+    editor_plugin_service:
+        class: con4gis\EditorBundle\Classes\Services\PluginService
+        public: true
+        arguments:
+            - '@event_dispatcher'
+            - '@service_container'
+            - '@file_locator'
