@@ -94,6 +94,14 @@ button.c4g-btn-deselect-all-data:before {
     content: "\f00d";
 }
 
+button.toggle-group-collapsed:before {
+    content: "\f078";
+}
+
+button.toggle-group-uncollapsed:before {
+    content: "\f077";
+}
+
 .c4g-draw-content-project {
     width: 100%;
 }
@@ -269,4 +277,14 @@ button.c4g-btn-displace-all-data:before {
 }
 button.c4g-btn-copy-displace-all-data:before {
     content: "\f0ea";
+}
+
+#c4g_projects_select {
+    color: var(--font-color);
+    background-color: var(--main-color);
+}
+
+.editor-member-list {
+    list-style-type: none;
+    padding: 0;
 }

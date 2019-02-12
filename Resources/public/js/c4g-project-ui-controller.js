@@ -14,12 +14,14 @@ export class ProjectUIController {
   projectButtons;
   projectSelector;
   projectController;
+  projectBar;
 
   constructor(editor, projectController) {
     this._projectButtons = [];
     this._projectSelector = null;
     this._editor = editor;
     this._projectController = projectController;
+    this._projectBar = null;
   }
 
   /**
@@ -243,6 +245,7 @@ export class ProjectUIController {
    */
   changeProjectSelection(newProject) {
     let editor = this.editor;
+    this.editor.groupsView.handleProjectChange(newProject);
     this._projectController.selectProject(newProject);
     $(editor.viewTriggerBar).show();
     $(editor.contentHeadline).show();
@@ -377,6 +380,9 @@ export class ProjectUIController {
     for (let i = 0; i < this.projectButtons.length; i++) {
       projectDiv.appendChild(this.projectButtons[i]);
     }
+    if (!this._projectBar) {
+      this._projectBar = projectDiv;
+    }
     return projectDiv;
   }
 
@@ -401,5 +407,9 @@ export class ProjectUIController {
 
   get projectSelector() {
     return this._projectSelector;
+  }
+
+  get projectBar() {
+    return this._projectBar;
   }
 }

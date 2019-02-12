@@ -38,5 +38,8 @@ $GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'] = [$script, '/bundles/co
 $GLOBALS['c4g_locationtypes'][] = \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_GENERIC_PROJECT;
 
 $GLOBALS['con4gis']['api-caching'][] = "projectEditorService";
-
-//$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array(\con4gis\EditorBundle\Classes\ReplaceInsertTags::class, 'replaceTag');
+$GLOBALS['TL_PURGE']['folders']['con4gis_editor'] = array
+(
+    'callback' => array('\con4gis\EditorBundle\Classes\Caches\C4GEditorAutomator', 'purgeEditorConfigCache'),
+    'affected' => array('var/cache/prod/con4gis_projectEditorService')
+);

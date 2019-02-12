@@ -18,6 +18,8 @@ use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Contao\GeoEditor;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
+use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
+use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,11 +67,13 @@ class EditorController extends BaseController
             foreach ($projects as $project) {
                 $formattedProjects[] = [
                     'id' => $project->getId(),
-                    'name' => $project->getCaption()
+                    'name' => $project->getCaption(),
+                    'groupid' => $project->getGroupid()
                 ];
             }
             $editorConfig = $configurationEvent->getEditorConfig();
             $editorConfig['projects'] = $formattedProjects;
+            $editorConfig['groups'] = $this->getGroupsForProjects($formattedProjects);
             $this->responseData = $editorConfig;
             $this->storeDataInCache($request);
         } else {
@@ -103,5 +107,33 @@ class EditorController extends BaseController
         $strResponse = $geoEditor->run();
         $response = new Response($strResponse['data'], 200, array('Content-Type: Document'));
         return $response;
+    }
+    
+    private function getGroupsForProjects($arrProjects)
+    {
+        $arrGroups = [];
+        foreach ($arrProjects as $project) {
+            $group = MemberGroupModel::findByPk($project['groupid'])->row();
+            $arrGroup = [];
+            $arrGroup['owner'] = $group['cg_owner_id'];
+            $arrGroup['members'] = $this->getMembersForGroup($group);
+            $arrGroup['projectId'] = $project['id'];
+            $arrGroups[]  = $arrGroup;
+        }
+        return $arrGroups;
+    }
+    
+    private function getMembersForGroup($group)
+    {
+        $members = [];
+        $memberIds = deserialize($group['cg_member']);
+        foreach ($memberIds as $memberId) {
+            $member = MemberModel::findByPk($memberId);
+            $arrMember = [];
+            $arrMember['name'] = $member->firstname . ' ' . $member->lastname;
+            $arrMember['id'] = $member->id;
+            $members[] = $arrMember;
+        }
+        return $members;
     }
 }

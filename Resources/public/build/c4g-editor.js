@@ -5731,6 +5731,170 @@ var FeatureHandler = exports.FeatureHandler = function () {
 
 /***/ }),
 
+/***/ "./Resources/public/js/c4g-editor-groups.js":
+/*!**************************************************!*\
+  !*** ./Resources/public/js/c4g-editor-groups.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.EditorGroups = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _c4gMemberGroup = __webpack_require__(/*! ./c4g-member-group */ "./Resources/public/js/c4g-member-group.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Implements a member group view for the portside editor. The members of the current project will be
+ * displayed above the view selection.
+ */
+var EditorGroups = exports.EditorGroups = function () {
+  function EditorGroups(groupData) {
+    _classCallCheck(this, EditorGroups);
+
+    this._groupData = groupData;
+    this._groups = [];
+    this._currentGroup = null;
+    this._permissions = {};
+    this._container = null;
+    // initially hide
+    this._displayed = false;
+  } // TODO nötig? welcher aufbau?
+
+
+  _createClass(EditorGroups, [{
+    key: 'init',
+    value: function init() {
+      this._groups = this.createGroups(this._groupData);
+      // initially select first group
+      this._currentGroup = this._groups[0];
+      this.createUserInterface();
+    }
+  }, {
+    key: 'createToggleButton',
+    value: function createToggleButton(target) {
+      var scope = this;
+      var toggleButton = document.createElement('button');
+      $(toggleButton).on('click', function (event) {
+        if (scope._displayed) {
+          $(toggleButton).addClass('toggle-group-collapsed').removeClass('toggle-group-uncollapsed');
+          scope.hide();
+        } else {
+          $(toggleButton).addClass('toggle-group-uncollapsed').removeClass('toggle-group-collapsed');
+          scope.show();
+        }
+      });
+      $(toggleButton).addClass('toggle-group-collapsed');
+      target.appendChild(toggleButton);
+    }
+  }, {
+    key: 'createUserInterface',
+    value: function createUserInterface() {
+      this._container = document.createElement('div');
+      $(this._container).addClass('editor-member-group');
+      this._memberContainer = document.createElement('ul');
+      $(this._memberContainer).addClass('editor-member-list');
+      this.updateUserInterface();
+      this._container.appendChild(this._memberContainer);
+      // hide container initially
+      this._container.style.display = 'none';
+    }
+  }, {
+    key: 'updateUserInterface',
+    value: function updateUserInterface() {
+      $(this._memberContainer).empty();
+      var members = this._currentGroup.members;
+      if (members) {
+        for (var i = 0; i < members.length; i++) {
+          this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
+        }
+      }
+    }
+  }, {
+    key: 'createAvatarBubbleForMember',
+    value: function createAvatarBubbleForMember(member) {
+      // for initial testing
+      var elem = document.createElement('span');
+      elem.style.height = '40px';
+      elem.style.width = '40px';
+      elem.innerText = member.name;
+      return elem;
+      // TODO ImageData-API in Verbindung mit Canvas scheint hier die möglichkeit zu sein, um random pixel images zu bauen
+      // TODO standard-Fall sollte natürlich sein, dass der Member irgendeine art von avatar zur verfügung gestellt hat,
+      // TODO der dann hier angezeigt wird.
+    }
+  }, {
+    key: 'invitePerson',
+    value: function invitePerson() {
+      // TODO show input field for email, then send to server
+      // TODO "inviteMember"-Funktion in groups/Resources/contao/classes/CGController
+    }
+  }, {
+    key: 'selectGroup',
+    value: function selectGroup(group) {
+      this._currentGroup = group;
+      this.updateUserInterface();
+    }
+  }, {
+    key: 'createGroups',
+    value: function createGroups(groupData) {
+      var arrGroups = [];
+      for (var i = 0; i < groupData.length; i++) {
+        arrGroups.push(new _c4gMemberGroup.MemberGroup(groupData[i].members, groupData[i].owner, groupData[i].projectId));
+      }
+      return arrGroups;
+    }
+  }, {
+    key: 'show',
+    value: function show() {
+      $(this._container).css('display', '');
+      this._displayed = true;
+    }
+  }, {
+    key: 'hide',
+    value: function hide() {
+      $(this._container).css('display', 'none');
+      this._displayed = false;
+    }
+  }, {
+    key: 'getContainer',
+    value: function getContainer() {
+      return this._container;
+    }
+
+    /**
+     * Called from the ProjectUIController to trigger a group change when the project is changed.
+     * @param project
+     */
+
+  }, {
+    key: 'handleProjectChange',
+    value: function handleProjectChange(project) {
+      for (var i = 0; i < this._groups.length; i++) {
+        if (this._groups[i].projectId === project.id) {
+          this.selectGroup(this._groups[i]);
+          break;
+        }
+      }
+    }
+
+    // TODO bei Klick auf ne bubble müsste ein kontextmenü kommen. Da sollte man dann ein mitglied entfernen sollen
+
+  }]);
+
+  return EditorGroups;
+}();
+
+/***/ }),
+
 /***/ "./Resources/public/js/c4g-editor-i18n-de.js":
 /*!***************************************************!*\
   !*** ./Resources/public/js/c4g-editor-i18n-de.js ***!
@@ -6790,6 +6954,8 @@ var _c4gElementUiController = __webpack_require__(/*! ./c4g-element-ui-controlle
 
 var _c4gProjectController = __webpack_require__(/*! ./c4g-project-controller */ "./Resources/public/js/c4g-project-controller.js");
 
+var _c4gEditorGroups = __webpack_require__(/*! ./c4g-editor-groups */ "./Resources/public/js/c4g-editor-groups.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -6885,6 +7051,8 @@ var Editor = exports.Editor = function (_Sideboard) {
       // Create views for draw-features with at least one locationstyle
       .done(function (data) {
         scope.projectController.createProjects(data.projects);
+        scope.groupsView = new _c4gEditorGroups.EditorGroups(data.groups);
+        scope.groupsView.init();
         scope.dataBaseUrl = data.dataBaseUrl;
         $(scope.viewTriggerBar).hide();
         $(scope.contentHeadline).hide();
@@ -6893,6 +7061,8 @@ var Editor = exports.Editor = function (_Sideboard) {
         scope.projectUiController.createEditProjectButton();
         scope.projectUiController.createDeleteProjectButton();
         scope.topToolbar.appendChild(scope.projectUiController.getButtonBar());
+        scope.groupsView.createToggleButton(scope.projectUiController.projectBar);
+        scope.topToolbar.appendChild(scope.groupsView.getContainer());
         // Add and activate select view
         scope.selectView = new _c4gEditorSelectview.EditorSelectView({ editor: scope });
         scope.drawStyles = data.drawStyles;
@@ -7898,6 +8068,60 @@ var ElementUIController = exports.ElementUIController = function () {
 
 /***/ }),
 
+/***/ "./Resources/public/js/c4g-member-group.js":
+/*!*************************************************!*\
+  !*** ./Resources/public/js/c4g-member-group.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MemberGroup = exports.MemberGroup = function () {
+  function MemberGroup(members, owner, projectId) {
+    _classCallCheck(this, MemberGroup);
+
+    this._members = members;
+    this._owner = owner;
+    this._projectId = projectId;
+  }
+
+  _createClass(MemberGroup, [{
+    key: "removeMemberFromGroup",
+    value: function removeMemberFromGroup(memberId) {
+      // TODO remove from array and call server groups api
+    }
+  }, {
+    key: "members",
+    get: function get() {
+      return this._members;
+    }
+  }, {
+    key: "owner",
+    get: function get() {
+      return this._owner;
+    }
+  }, {
+    key: "projectId",
+    get: function get() {
+      return this._projectId;
+    }
+  }]);
+
+  return MemberGroup;
+}();
+
+/***/ }),
+
 /***/ "./Resources/public/js/c4g-missing-layer-loader.js":
 /*!*********************************************************!*\
   !*** ./Resources/public/js/c4g-missing-layer-loader.js ***!
@@ -8474,10 +8698,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * elements.
  */
 var ProjectUIController = exports.ProjectUIController = function () {
-
-  /**
-   * Class properties
-   */
   function ProjectUIController(editor, projectController) {
     _classCallCheck(this, ProjectUIController);
 
@@ -8485,10 +8705,16 @@ var ProjectUIController = exports.ProjectUIController = function () {
     this._projectSelector = null;
     this._editor = editor;
     this._projectController = projectController;
+    this._projectBar = null;
   }
 
   /**
    * Creates and returns a button for editing a project. Attaches the click listener to the button.
+   */
+
+
+  /**
+   * Class properties
    */
 
 
@@ -8730,6 +8956,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
     key: "changeProjectSelection",
     value: function changeProjectSelection(newProject) {
       var editor = this.editor;
+      this.editor.groupsView.handleProjectChange(newProject);
       this._projectController.selectProject(newProject);
       $(editor.viewTriggerBar).show();
       $(editor.contentHeadline).show();
@@ -8882,6 +9109,9 @@ var ProjectUIController = exports.ProjectUIController = function () {
       for (var i = 0; i < this.projectButtons.length; i++) {
         projectDiv.appendChild(this.projectButtons[i]);
       }
+      if (!this._projectBar) {
+        this._projectBar = projectDiv;
+      }
       return projectDiv;
     }
 
@@ -8913,6 +9143,11 @@ var ProjectUIController = exports.ProjectUIController = function () {
     key: "projectSelector",
     get: function get() {
       return this._projectSelector;
+    }
+  }, {
+    key: "projectBar",
+    get: function get() {
+      return this._projectBar;
     }
   }]);
 
