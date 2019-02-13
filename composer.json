@@ -29,6 +29,9 @@
         "contao/core": "*",
         "contao/manager-plugin": "<2.0 || >=3.0"
     },
+    "suggest": {
+        "symfony/serializer": "In contao version >= 4.6 you have to install the serializer component as it's not required by contao anymore"
+    },
     "autoload": {
         "psr-4": {
             "con4gis\\EditorBundle\\": ""
