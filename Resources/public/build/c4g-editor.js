@@ -5811,11 +5811,15 @@ var EditorGroups = exports.EditorGroups = function () {
     key: 'updateUserInterface',
     value: function updateUserInterface() {
       $(this._memberContainer).empty();
-      var members = this._currentGroup.members;
-      if (members) {
-        for (var i = 0; i < members.length; i++) {
-          this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
+      if (this._currentGroup) {
+        var members = this._currentGroup.members;
+        if (members) {
+          for (var i = 0; i < members.length; i++) {
+            this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
+          }
         }
+      } else {
+        console.warn('No current group selected...');
       }
     }
   }, {
@@ -6540,12 +6544,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             selectedFeature = selectedFeatures.item(i);
             outerDiv = document.createElement('div');
             // add name inputfield
-            inputNameElement = document.createElement('p');
+            inputNameElement = document.createElement('input');
             inputNameElement.type = 'text';
             inputNameElement.id = i;
             inputNameElement.setAttribute('value', selectedFeature.get('name'));
             inputNameElement.setAttribute('feat_id', i);
-            // inputNameElement.setAttribute('disabled', true);
+            inputNameElement.setAttribute('disabled', true);
             outerDiv.appendChild(inputNameElement);
             if (!(selectedFeature.getGeometry() instanceof ol.geom.Point)) {
               // add modify button

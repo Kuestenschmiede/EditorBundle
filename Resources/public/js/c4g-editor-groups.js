@@ -59,12 +59,17 @@ export class EditorGroups {
 
   updateUserInterface() {
     $(this._memberContainer).empty();
-    let members = this._currentGroup.members;
-    if (members) {
-      for (let i = 0; i < members.length; i++) {
-        this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
+    if (this._currentGroup) {
+      let members = this._currentGroup.members;
+      if (members) {
+        for (let i = 0; i < members.length; i++) {
+          this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
+        }
       }
+    } else {
+      console.warn('No current group selected...');
     }
+
   }
 
   createAvatarBubbleForMember(member) {

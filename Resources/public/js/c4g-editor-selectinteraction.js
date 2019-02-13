@@ -256,7 +256,7 @@ export class EditorSelectInteraction {
           selectedFeature = selectedFeatures.item(i);
           outerDiv = document.createElement('div');
           // add name inputfield
-          inputNameElement = document.createElement('p');
+          inputNameElement = document.createElement('input');
           inputNameElement.type = 'text';
           inputNameElement.id = i;
           inputNameElement.setAttribute(
@@ -264,7 +264,7 @@ export class EditorSelectInteraction {
             selectedFeature.get('name')
           );
           inputNameElement.setAttribute('feat_id', i);
-          // inputNameElement.setAttribute('disabled', true);
+          inputNameElement.setAttribute('disabled', true);
           outerDiv.appendChild(inputNameElement);
           if (!(selectedFeature.getGeometry() instanceof ol.geom.Point)) {
             // add modify button

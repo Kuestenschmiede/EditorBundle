@@ -8,7 +8,7 @@
 
 namespace con4gis\EditorBundle\Classes\Contao\Callbacks;
 
-use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
+use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorElementCategory;
 use Contao\Backend;
 use Contao\DataContainer;
@@ -17,14 +17,20 @@ use Contao\System;
 class TlEditorElementType extends Backend
 {
     /**
+     * @var PluginService
+     */
+    private $pluginService = null;
+    
+    /**
      * Import the back end user object
      */
     public function __construct()
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
+        $this->pluginService = System::getContainer()->get('editor_plugin_service');
     }
-
+    
     /**
      * Get a list of all available scenarios
      * @return array()
@@ -42,11 +48,11 @@ class TlEditorElementType extends Backend
         }
         return $return;
     }
-
+    
     public function getDrawStyles()
     {
         $strName = 'tl_c4g_editor_element_type';
-
+        
         return array(
             'point' => $GLOBALS['TL_LANG'][$strName]['point'],
             'linestring' => $GLOBALS['TL_LANG'][$strName]['linestring'],
@@ -55,7 +61,7 @@ class TlEditorElementType extends Backend
             'circle' => $GLOBALS['TL_LANG'][$strName]['circle']
         );
     }
-
+    
     public function getPluginList()
     {
         $configs = System::getContainer()->get('editor_plugin_service')->getDataConfigs();
@@ -67,20 +73,17 @@ class TlEditorElementType extends Backend
         }
         return $return;
     }
-
+    
     public function updateDCA(DataContainer $dc)
     {
         if (!$dc->id) return;
-
+        
         $objType = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_element_type WHERE id=?")
             ->limit(1)
             ->execute($dc->id);
         if ($objType->numRows > 0) {
             if ($objType->plugins) {
-                $event = new LoadPluginsEvent();
-                $dispatcher = System::getContainer()->get('event_dispatcher');
-                $dispatcher->dispatch($event::NAME, $event);
-                $configs = $event->getConfigs();
+                $configs = $this->pluginService->getDataPlugins($dc->id);
                 foreach ($configs as $config) {
                     if ($config->getBackend()) {
                         foreach (unserialize($objType->plugins) as $plugin) {
@@ -95,7 +98,7 @@ class TlEditorElementType extends Backend
                                             $palette .= ','.$field;
                                             $fields[$field]['pluginId'] = $config->getId();
                                         }
-
+                                        
                                         $GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['palettes']['default'] .= $palette;
                                         $GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'] = array_merge($GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'], $fields);
                                     }
@@ -107,7 +110,7 @@ class TlEditorElementType extends Backend
             }
         }
     }
-
+    
     public function loadField($varValue, DataContainer $dc)
     {
         $result = $varValue;
@@ -117,16 +120,16 @@ class TlEditorElementType extends Backend
         if ($objMap->numRows > 0) {
             $result = $objMap->pluginValue;
         }
-
+        
         return $result;
     }
-
+    
     public function saveField($varValue, DataContainer $dc)
     {
         $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?")
             ->limit(1)
             ->execute($dc->id, $dc->field);
-
+        
         if ($objMap->numRows > 0) {
             $this->Database->prepare("UPDATE tl_c4g_editor_element_preset SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
                 ->execute(time(), $varValue, $dc->id, $dc->field);
@@ -135,7 +138,7 @@ class TlEditorElementType extends Backend
             $this->Database->prepare("INSERT INTO tl_c4g_editor_element_preset SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
                 ->execute(time(), $dc->id, $pluginId, $dc->field, $varValue);
         }
-
+        
         return null;
     }
 }
