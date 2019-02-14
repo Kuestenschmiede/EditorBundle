@@ -129,7 +129,7 @@ export class Editor extends Sideboard {
         scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
-          scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id);
+          scope.cacheController.saveSettingsForProject(scope.projectController.currentProject.id, "baselayer", id);
         });
       })
       .fail(function (data) {

@@ -65,27 +65,91 @@ export class EditorGroups {
         for (let i = 0; i < members.length; i++) {
           this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
         }
+        this._memberContainer.appendChild(this.createInviteMemberButton());
       }
     } else {
       console.warn('No current group selected...');
     }
-
   }
 
   createAvatarBubbleForMember(member) {
     // for initial testing
     let elem = document.createElement('span');
-    elem.style.height = '40px';
-    elem.style.width = '40px';
-    elem.innerText = member.name;
-    return elem;
+    let memberImg = this.createRandomImage(member);
+    $(memberImg).addClass('c4g-editor-member-bubble');
+    return memberImg;
+    // elem.style.height = '40px';
+    // elem.style.width = '40px';
+    // elem.innerText = member.name;
+    // return elem;
     // TODO ImageData-API in Verbindung mit Canvas scheint hier die möglichkeit zu sein, um random pixel images zu bauen
     // TODO standard-Fall sollte natürlich sein, dass der Member irgendeine art von avatar zur verfügung gestellt hat,
     // TODO der dann hier angezeigt wird.
   }
 
+  createRandomImage(member) {
+    // size is 40 * 40 * 4
+    let height = 32;
+    let width = 32;
+    // TODO ist vielleicht leichter von dem Denken her, wenn ich hier erst ein zweidimensionales array
+    // TODO verwende und es dann linearisiere
+    let buffer = new Uint8ClampedArray(width * height * 4);
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        let pos = (i * width + j) * 4;
+        buffer[pos] = Math.floor((Math.random() * 255));
+        buffer[pos + 1] = Math.floor((Math.random() * 255));
+        buffer[pos + 2] = Math.floor((Math.random() * 255));
+        buffer[pos + 3] = 255;
+      }
+    }
+
+    // create off-screen canvas element
+    var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+    canvas.title = member.name;
+    canvas.width = width;
+    canvas.height = height;
+
+// create imageData object
+    var idata = ctx.createImageData(width, height);
+
+// set our buffer as source
+    idata.data.set(buffer);
+
+// update canvas with new data
+    ctx.putImageData(idata, 0, 0);
+    return canvas;
+  }
+
+  createInviteMemberButton() {
+    const scope = this;
+    let button = document.createElement('button');
+    $(button).addClass('editor-invite-member');
+    $(button).on('click', function (event) {
+      let emailContainer = document.createElement('div');
+      let emailField = document.createElement('input');
+      emailField.type = 'email';
+      $(emailField).addClass('editor-invite-member-email');
+      let submitButton = document.createElement('button');
+      $(submitButton).addClass('editor-invite-member-send');
+      $(submitButton).on('click', function (event) {
+        $.ajax('/con4gis/inviteMember/' + $(emailField).val() + '/' + scope._currentGroup.id)
+          .done(function(data) {
+            console.log(data);
+          });
+      });
+      emailContainer.appendChild(emailField);
+      emailContainer.appendChild(submitButton);
+      scope._memberContainer.appendChild(emailContainer);
+      // TODO create input field with submit button
+      // TODO on submit, call invitePerson
+    });
+    return button;
+  }
+
   invitePerson() {
-    // TODO show input field for email, then send to server
+    // TODO send invitation to server
     // TODO "inviteMember"-Funktion in groups/Resources/contao/classes/CGController
   }
 
@@ -97,7 +161,7 @@ export class EditorGroups {
   createGroups(groupData) {
     const arrGroups = [];
     for (let i = 0; i < groupData.length; i++) {
-      arrGroups.push(new MemberGroup(groupData[i].members, groupData[i].owner, groupData[i].projectId))
+      arrGroups.push(new MemberGroup(groupData[i].id, groupData[i].members, groupData[i].owner, groupData[i].projectId))
     }
     return arrGroups;
   }

@@ -83,7 +83,7 @@ class TlEditorElementType extends Backend
             ->execute($dc->id);
         if ($objType->numRows > 0) {
             if ($objType->plugins) {
-                $configs = $this->pluginService->getDataPlugins($dc->id);
+                $configs = $this->pluginService->getDataConfigs();
                 foreach ($configs as $config) {
                     if ($config->getBackend()) {
                         foreach (unserialize($objType->plugins) as $plugin) {

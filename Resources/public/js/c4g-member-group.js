@@ -3,8 +3,10 @@ export class MemberGroup {
   _members;
   _owner;
   _projectId;
+  _id;
 
-  constructor(members, owner, projectId) {
+  constructor(id, members, owner, projectId) {
+    this._id = id;
     this._members = members;
     this._owner = owner;
     this._projectId = projectId;
@@ -12,6 +14,10 @@ export class MemberGroup {
 
   removeMemberFromGroup(memberId) {
     // TODO remove from array and call server groups api
+  }
+
+  get id() {
+    return this._id;
   }
 
   get members() {

@@ -118,6 +118,7 @@ class EditorController extends BaseController
             $arrGroup['owner'] = $group['cg_owner_id'];
             $arrGroup['members'] = $this->getMembersForGroup($group);
             $arrGroup['projectId'] = $project['id'];
+            $arrGroup['id'] = $group['id'];
             $arrGroups[]  = $arrGroup;
         }
         return $arrGroups;

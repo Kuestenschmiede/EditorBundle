@@ -5817,6 +5817,7 @@ var EditorGroups = exports.EditorGroups = function () {
           for (var i = 0; i < members.length; i++) {
             this._memberContainer.appendChild(this.createAvatarBubbleForMember(members[i]));
           }
+          this._memberContainer.appendChild(this.createInviteMemberButton());
         }
       } else {
         console.warn('No current group selected...');
@@ -5827,18 +5828,83 @@ var EditorGroups = exports.EditorGroups = function () {
     value: function createAvatarBubbleForMember(member) {
       // for initial testing
       var elem = document.createElement('span');
-      elem.style.height = '40px';
-      elem.style.width = '40px';
-      elem.innerText = member.name;
-      return elem;
+      var memberImg = this.createRandomImage(member);
+      $(memberImg).addClass('c4g-editor-member-bubble');
+      return memberImg;
+      // elem.style.height = '40px';
+      // elem.style.width = '40px';
+      // elem.innerText = member.name;
+      // return elem;
       // TODO ImageData-API in Verbindung mit Canvas scheint hier die möglichkeit zu sein, um random pixel images zu bauen
       // TODO standard-Fall sollte natürlich sein, dass der Member irgendeine art von avatar zur verfügung gestellt hat,
       // TODO der dann hier angezeigt wird.
     }
   }, {
+    key: 'createRandomImage',
+    value: function createRandomImage(member) {
+      // size is 40 * 40 * 4
+      var height = 32;
+      var width = 32;
+      // TODO ist vielleicht leichter von dem Denken her, wenn ich hier erst ein zweidimensionales array
+      // TODO verwende und es dann linearisiere
+      var buffer = new Uint8ClampedArray(width * height * 4);
+      for (var i = 0; i < height; i++) {
+        for (var j = 0; j < width; j++) {
+          var pos = (i * width + j) * 4;
+          buffer[pos] = Math.floor(Math.random() * 255);
+          buffer[pos + 1] = Math.floor(Math.random() * 255);
+          buffer[pos + 2] = Math.floor(Math.random() * 255);
+          buffer[pos + 3] = 255;
+        }
+      }
+
+      // create off-screen canvas element
+      var canvas = document.createElement('canvas'),
+          ctx = canvas.getContext('2d');
+      canvas.title = member.name;
+      canvas.width = width;
+      canvas.height = height;
+
+      // create imageData object
+      var idata = ctx.createImageData(width, height);
+
+      // set our buffer as source
+      idata.data.set(buffer);
+
+      // update canvas with new data
+      ctx.putImageData(idata, 0, 0);
+      return canvas;
+    }
+  }, {
+    key: 'createInviteMemberButton',
+    value: function createInviteMemberButton() {
+      var scope = this;
+      var button = document.createElement('button');
+      $(button).addClass('editor-invite-member');
+      $(button).on('click', function (event) {
+        var emailContainer = document.createElement('div');
+        var emailField = document.createElement('input');
+        emailField.type = 'email';
+        $(emailField).addClass('editor-invite-member-email');
+        var submitButton = document.createElement('button');
+        $(submitButton).addClass('editor-invite-member-send');
+        $(submitButton).on('click', function (event) {
+          $.ajax('/con4gis/inviteMember/' + $(emailField).val() + '/' + scope._currentGroup.id).done(function (data) {
+            console.log(data);
+          });
+        });
+        emailContainer.appendChild(emailField);
+        emailContainer.appendChild(submitButton);
+        scope._memberContainer.appendChild(emailContainer);
+        // TODO create input field with submit button
+        // TODO on submit, call invitePerson
+      });
+      return button;
+    }
+  }, {
     key: 'invitePerson',
     value: function invitePerson() {
-      // TODO show input field for email, then send to server
+      // TODO send invitation to server
       // TODO "inviteMember"-Funktion in groups/Resources/contao/classes/CGController
     }
   }, {
@@ -5852,7 +5918,7 @@ var EditorGroups = exports.EditorGroups = function () {
     value: function createGroups(groupData) {
       var arrGroups = [];
       for (var i = 0; i < groupData.length; i++) {
-        arrGroups.push(new _c4gMemberGroup.MemberGroup(groupData[i].members, groupData[i].owner, groupData[i].projectId));
+        arrGroups.push(new _c4gMemberGroup.MemberGroup(groupData[i].id, groupData[i].members, groupData[i].owner, groupData[i].projectId));
       }
       return arrGroups;
     }
@@ -7085,7 +7151,7 @@ var Editor = exports.Editor = function (_Sideboard) {
         scope.loadFromCache();
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function (id) {
-          scope.cacheController.saveSettingsForProject(scope.currentProject.id, "baselayer", id);
+          scope.cacheController.saveSettingsForProject(scope.projectController.currentProject.id, "baselayer", id);
         });
       }).fail(function (data) {
         // @TODO error-messages
@@ -8091,9 +8157,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MemberGroup = exports.MemberGroup = function () {
-  function MemberGroup(members, owner, projectId) {
+  function MemberGroup(id, members, owner, projectId) {
     _classCallCheck(this, MemberGroup);
 
+    this._id = id;
     this._members = members;
     this._owner = owner;
     this._projectId = projectId;
@@ -8103,6 +8170,11 @@ var MemberGroup = exports.MemberGroup = function () {
     key: "removeMemberFromGroup",
     value: function removeMemberFromGroup(memberId) {
       // TODO remove from array and call server groups api
+    }
+  }, {
+    key: "id",
+    get: function get() {
+      return this._id;
     }
   }, {
     key: "members",
