@@ -1,5 +1,6 @@
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
+import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 
 /**
  * Class for creating all view elements that interact with a project. Handles all events that are fired on these view
@@ -195,6 +196,9 @@ export class ProjectUIController {
       }
     }
     this.projectController.deleteProject(project);
+    if (window.c4gMapsHooks.project_deleted && window.c4gMapsHooks.project_deleted.length) {
+      utils.callHookFunctions(window.c4gMapsHooks.project_deleted, {projectId: project.id})
+    }
   }
 
   /**
@@ -245,8 +249,10 @@ export class ProjectUIController {
    */
   changeProjectSelection(newProject) {
     let editor = this.editor;
-    this.editor.groupsView.handleProjectChange(newProject);
     this._projectController.selectProject(newProject);
+    if (window.c4gMapsHooks && window.c4gMapsHooks.project_changed && window.c4gMapsHooks.project_changed.length) {
+      utils.callHookFunctions(window.c4gMapsHooks.project_changed, {newProject: newProject});
+    }
     $(editor.viewTriggerBar).show();
     $(editor.contentHeadline).show();
     // cancel any running form on project change

@@ -11,7 +11,7 @@ import {langConstants} from "./c4g-editor-i18n";
 import {ElementController} from "./c4g-element-controller";
 import {ElementUIController} from "./c4g-element-ui-controller";
 import {ProjectController} from "./c4g-project-controller";
-import {EditorGroups} from "./c4g-editor-groups";
+// import {EditorGroups} from "./c4g-editor-groups";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -99,8 +99,7 @@ export class Editor extends Sideboard {
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
         scope.projectController.createProjects(data.projects);
-        scope.groupsView = new EditorGroups(data.groups);
-        scope.groupsView.init();
+
         scope.dataBaseUrl = data.dataBaseUrl;
         $(scope.viewTriggerBar).hide();
         $(scope.contentHeadline).hide();
@@ -109,8 +108,7 @@ export class Editor extends Sideboard {
         scope.projectUiController.createEditProjectButton();
         scope.projectUiController.createDeleteProjectButton();
         scope.topToolbar.appendChild(scope.projectUiController.getButtonBar());
-        scope.groupsView.createToggleButton(scope.projectUiController.projectBar);
-        scope.topToolbar.appendChild(scope.groupsView.getContainer());
+
         // Add and activate select view
         scope.selectView = new EditorSelectView({editor: scope});
         scope.drawStyles = data.drawStyles;
@@ -127,6 +125,9 @@ export class Editor extends Sideboard {
         // initially select first project
         // scope.projectUiController.changeProjectSelection(scope.projectController.projects[0]);
         scope.loadFromCache();
+        if (window.c4gMapsHooks.editor_configurated && window.c4gMapsHooks.editor_configurated.length) {
+          utils.callHookFunctions(window.c4gMapsHooks.editor_configurated, {editor: scope, utils: utils, data: data});
+        }
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
           scope.cacheController.saveSettingsForProject(scope.projectController.currentProject.id, "baselayer", id);
