@@ -132,6 +132,8 @@ class EditorController extends BaseController
             $member = MemberModel::findByPk($memberId);
             $arrMember = [];
             $arrMember['name'] = $member->firstname . ' ' . $member->lastname;
+            $arrMember['firstname'] = $member->firstname;
+            $arrMember['lastname'] = $member->lastname;
             $arrMember['id'] = $member->id;
             $members[] = $arrMember;
         }

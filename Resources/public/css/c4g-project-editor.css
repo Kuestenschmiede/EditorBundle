@@ -289,12 +289,6 @@ button.c4g-btn-copy-displace-all-data:before {
     padding: 0;
 }
 
-.c4g-editor-member-bubble {
-    margin-left: 5px!important;
-    margin-right: 5px!important;
-    border-radius: 15px;
-}
-
 button.editor-invite-member:before {
     content: "\f067";
 }
