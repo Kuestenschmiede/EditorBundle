@@ -300,4 +300,11 @@ button.editor-invite-member-send:before {
     background: var(--font-color) !important;
 }
 
+button.c4g-btn-translate-all-data:before {
+    content: "\f0a4";
+}
+
+button.c4g-btn-apply-translation:before {
+    content: "\f00c";
+}
 

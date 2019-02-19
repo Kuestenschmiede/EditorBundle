@@ -2,6 +2,7 @@ import {langConstants} from "./c4g-editor-i18n";
 import {FeatureInteraction} from "./c4g-editor-feature-interaction";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {TranslateAllInteraction} from "./c4g-translate-all-interaction";
 
 export class EditorSelectInteraction {
   /**
@@ -347,10 +348,37 @@ export class EditorSelectInteraction {
       scope.showDeleteConfirmDialog(bar);
     });
     let translateButton = document.createElement('button');
+    translateButton.title = langConstants.BUTTON_TRANSLATE_ALL;
     $(translateButton).addClass('c4g-btn-translate-all-data');
     $(translateButton).on('click', function(event) {
-      // TODO es gibt keine translate die mehrere features verschiebt
-      // TODO also müsste ich jedes event was auf ein ausgewähltes feature geht auch auf alle anderen schmeißen
+      // exchange interactions
+      scope.selectInteraction.deactivate();
+      scope._editor.options.mapController.map.removeInteraction(scope.selectInteraction);
+      let translateAll = new TranslateAllInteraction(
+        scope.selectInteraction.getFeatures().getArray(),
+        scope.editor.options.mapController.map
+      );
+      translateAll.activate();
+      scope._editor.options.mapController.map.addInteraction(translateAll);
+      // exchange button
+      let applyTranslationButton = document.createElement('button');
+      applyTranslationButton.title = langConstants.BUTTON_APPLY_TRANSLATE;
+      $(applyTranslationButton).addClass('c4g-btn-apply-translation');
+      $(applyTranslationButton).on('click', function (event) {
+        applyTranslationButton.replaceWith(translateButton);
+        let features = scope.selectInteraction.getFeatures().getArray();
+        for (let i = 0; i < features.length; i++) {
+          scope.applyFeatureTranslation(features[i]);
+        }
+        // exchange interactions back
+        translateAll.deactivate();
+        scope._editor.options.mapController.map.removeInteraction(translateAll);
+        scope.selectInteraction.activate();
+        scope._editor.options.mapController.map.addInteraction(scope.selectInteraction);
+      });
+      this.replaceWith(applyTranslationButton);
+      scope.toggleButtons(true);
+      applyTranslationButton.removeAttribute('disabled');
     });
     let displaceButton = document.createElement('button');
     displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
@@ -364,12 +392,23 @@ export class EditorSelectInteraction {
     $(copyDisplaceButton).on('click', function(event) {
       scope.showDisplaceDialog(bar, true);
     });
-    // bar.appendChild(translateButton);
+    bar.appendChild(translateButton);
     bar.appendChild(deleteButton);
     bar.appendChild(displaceButton);
     bar.appendChild(copyDisplaceButton);
     bar.appendChild(deselectButton);
     return bar;
+  }
+
+  /**
+   * Function for disabling/enabling all buttons in the editor.
+   * @param hide
+   */
+  toggleButtons(hide) {
+    let nodes = this._selectView.selectContent.querySelectorAll('button');
+    for (let i = 0; i < nodes.length; i++) {
+      nodes[i].setAttribute('disabled', !!hide);
+    }
   }
 
   showDeleteConfirmDialog(buttonBar) {

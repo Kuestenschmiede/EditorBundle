@@ -17,7 +17,8 @@ export var projectEditorLang = {
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
   BUTTON_COPY_DISPLACE_ALL: "Ausgewählte Elemente kopieren und in anderes Projekt verschieben",
-
+  BUTTON_TRANSLATE_ALL: "Ausgewählte Elemente auf der Karte verschieben",
+  BUTTON_APPLY_TRANSLATE: "Änderungen übernehmen",
 
   NONE: '' // last line
 };

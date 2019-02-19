@@ -578,6 +578,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
       name: 'sideboard',
       direction: 'right'
     }, options);
+    _this.langConstants = (0, _c4gMapsI18n.getLanguage)(_this.options.mapController.data);
 
     //active Identifier (which side is this element on?)
     //cssname needed to set the css class correctly
@@ -593,7 +594,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
     }
     //this.cssname = this.identifier.charAt(0).toLowerCase() + this.identifier.slice(1);
     _this.initialized = false;
-    _this.options.tipLabel = _this.options.tipLabel || _this.options.headline || _c4gMapsI18n.langConstants.CTRL_SIDEBOARD;
+    _this.options.tipLabel = _this.options.tipLabel || _this.options.headline || _this.langConstants.CTRL_SIDEBOARD;
     _this.container = document.createElement('div');
     _this.element = document.createElement('div');
     _this.button = undefined;
@@ -767,7 +768,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
         // Hidebutton
         hideButton = document.createElement('button');
         hideButton.className = _c4gMapsConstant.cssConstants.PORTSIDE_HIDE;
-        hideButton.title = _c4gMapsI18n.langConstants.HIDE;
+        hideButton.title = this.langConstants.HIDE;
         $(hideButton).click(function (event) {
           event.preventDefault();
           self.close(true);
@@ -779,7 +780,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
       // Closebutton
       closeButton = document.createElement('button');
       closeButton.className = 'c4g-' + this.cssname + '-close';
-      closeButton.title = _c4gMapsI18n.langConstants.CLOSE;
+      closeButton.title = this.langConstants.CLOSE;
       $(closeButton).click(function (event) {
         event.preventDefault();
         self.close();
@@ -1411,7 +1412,7 @@ var Zoomlevel = exports.Zoomlevel = function (_ol$control$Control) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.langConstants = undefined;
+exports.getLanguage = getLanguage;
 
 var _c4gMapsConstantI18nDe = __webpack_require__(/*! ./c4g-maps-constant-i18n-de */ "../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-de.js");
 
@@ -1420,22 +1421,16 @@ var _c4gMapsConstantI18nEn = __webpack_require__(/*! ./c4g-maps-constant-i18n-en
 /**
  *  This script imports all different languages and exports the one that is valid for the configured language.
  */
-var language = {};
-
-if (typeof mapData !== "undefined") {
+function getLanguage(mapData) {
   if (mapData.lang === "de") {
-    language = _c4gMapsConstantI18nDe.langConstantsGerman;
+    return _c4gMapsConstantI18nDe.langConstantsGerman;
   } else if (mapData.lang === "en") {
-    language = _c4gMapsConstantI18nEn.langConstantsEnglish;
+    return _c4gMapsConstantI18nEn.langConstantsEnglish;
   } else {
     // fallback
-    language = _c4gMapsConstantI18nEn.langConstantsEnglish;
+    return _c4gMapsConstantI18nEn.langConstantsEnglish;
   }
-} else {
-  language = _c4gMapsConstantI18nEn.langConstantsEnglish;
 }
-
-var langConstants = exports.langConstants = language;
 
 /***/ }),
 
@@ -3981,10 +3976,11 @@ var utils = exports.utils = {
    * @param   {string}                      strInput   [description]
    * @param   {ol.Feature}                  feature    [description]
    * @param   {ol.layer.Layer | undefined}  opt_layer  [description]
+   * @param   {string}                      language   [description]
    *
    * @return  {string}                                 [description]
    */
-  replaceAllPlaceholders: function replaceAllPlaceholders(strInput, feature, opt_layer) {
+  replaceAllPlaceholders: function replaceAllPlaceholders(strInput, feature, opt_layer, language) {
     var strOutput;
 
     // only check the first two parameters as they will be used by all placeholder-functions
@@ -3993,7 +3989,7 @@ var utils = exports.utils = {
       return strInput;
     }
 
-    strOutput = this.replaceFunctionPlaceholders(strInput, feature, opt_layer);
+    strOutput = this.replaceFunctionPlaceholders(strInput, feature, opt_layer, language);
     strOutput = this.replaceEditorVarsPlaceholders(strOutput, feature);
     strOutput = this.replaceAttributePlaceholders(strOutput, feature);
 
@@ -4009,15 +4005,17 @@ var utils = exports.utils = {
    * @param   {string}          strInput  [description]
    * @param   {ol.Feature}      feature   [description]
    * @param   {ol.layer.Layer}  layer     [description]
+   * @param   {string}          language  [description]
    *
    * @return  {string}                    [description]
    */
-  replaceFunctionPlaceholders: function replaceFunctionPlaceholders(strInput, feature, layer) {
+  replaceFunctionPlaceholders: function replaceFunctionPlaceholders(strInput, feature, layer, language) {
     var strOutput;
 
     if (!strInput || !feature || !layer) {
       return strInput;
     }
+    popupFunctions = language === 'de' || language === 'de-DE' ? popupFunctionsDE : popupFunctionsEN;
 
     strOutput = strInput.replace(/\$\{FN([^\}]*)\}/g, function (match, functionName, offset, originString) {
       var style;
@@ -5763,6 +5761,8 @@ var projectEditorLang = exports.projectEditorLang = {
   BUTTON_CONFIRM: "Bestätigen",
   BUTTON_CANCEL: "Abbrechen",
   BUTTON_COPY_DISPLACE_ALL: "Ausgewählte Elemente kopieren und in anderes Projekt verschieben",
+  BUTTON_TRANSLATE_ALL: "Ausgewählte Elemente auf der Karte verschieben",
+  BUTTON_APPLY_TRANSLATE: "Änderungen übernehmen",
 
   NONE: '' // last line
 };
@@ -6108,6 +6108,8 @@ var _c4gEditorFeatureInteraction = __webpack_require__(/*! ./c4g-editor-feature-
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
 var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+
+var _c4gTranslateAllInteraction = __webpack_require__(/*! ./c4g-translate-all-interaction */ "./Resources/public/js/c4g-translate-all-interaction.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6467,10 +6469,34 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         scope.showDeleteConfirmDialog(bar);
       });
       var translateButton = document.createElement('button');
+      translateButton.title = _c4gEditorI18n.langConstants.BUTTON_TRANSLATE_ALL;
       $(translateButton).addClass('c4g-btn-translate-all-data');
       $(translateButton).on('click', function (event) {
-        // TODO es gibt keine translate die mehrere features verschiebt
-        // TODO also müsste ich jedes event was auf ein ausgewähltes feature geht auch auf alle anderen schmeißen
+        // exchange interactions
+        scope.selectInteraction.deactivate();
+        scope._editor.options.mapController.map.removeInteraction(scope.selectInteraction);
+        var translateAll = new _c4gTranslateAllInteraction.TranslateAllInteraction(scope.selectInteraction.getFeatures().getArray(), scope.editor.options.mapController.map);
+        translateAll.activate();
+        scope._editor.options.mapController.map.addInteraction(translateAll);
+        // exchange button
+        var applyTranslationButton = document.createElement('button');
+        applyTranslationButton.title = _c4gEditorI18n.langConstants.BUTTON_APPLY_TRANSLATE;
+        $(applyTranslationButton).addClass('c4g-btn-apply-translation');
+        $(applyTranslationButton).on('click', function (event) {
+          applyTranslationButton.replaceWith(translateButton);
+          var features = scope.selectInteraction.getFeatures().getArray();
+          for (var i = 0; i < features.length; i++) {
+            scope.applyFeatureTranslation(features[i]);
+          }
+          // exchange interactions back
+          translateAll.deactivate();
+          scope._editor.options.mapController.map.removeInteraction(translateAll);
+          scope.selectInteraction.activate();
+          scope._editor.options.mapController.map.addInteraction(scope.selectInteraction);
+        });
+        this.replaceWith(applyTranslationButton);
+        scope.toggleButtons(true);
+        applyTranslationButton.removeAttribute('disabled');
       });
       var displaceButton = document.createElement('button');
       displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
@@ -6484,12 +6510,26 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       $(copyDisplaceButton).on('click', function (event) {
         scope.showDisplaceDialog(bar, true);
       });
-      // bar.appendChild(translateButton);
+      bar.appendChild(translateButton);
       bar.appendChild(deleteButton);
       bar.appendChild(displaceButton);
       bar.appendChild(copyDisplaceButton);
       bar.appendChild(deselectButton);
       return bar;
+    }
+
+    /**
+     * Function for disabling/enabling all buttons in the editor.
+     * @param hide
+     */
+
+  }, {
+    key: "toggleButtons",
+    value: function toggleButtons(hide) {
+      var nodes = this._selectView.selectContent.querySelectorAll('button');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].setAttribute('disabled', !!hide);
+      }
     }
   }, {
     key: "showDeleteConfirmDialog",
@@ -8943,6 +8983,103 @@ var ProjectUIController = exports.ProjectUIController = function () {
 
   return ProjectUIController;
 }();
+
+/***/ }),
+
+/***/ "./Resources/public/js/c4g-translate-all-interaction.js":
+/*!**************************************************************!*\
+  !*** ./Resources/public/js/c4g-translate-all-interaction.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Implements a translate interaction for multiple features at the same time.
+ */
+var TranslateAllInteraction = exports.TranslateAllInteraction = function (_ol$interaction$Point) {
+  _inherits(TranslateAllInteraction, _ol$interaction$Point);
+
+  // TODO alle anderen buttons sollen während des vorgangs deaktiviert sein
+
+  // the features that should be translated
+  function TranslateAllInteraction(features, map) {
+    _classCallCheck(this, TranslateAllInteraction);
+
+    var _this = _possibleConstructorReturn(this, (TranslateAllInteraction.__proto__ || Object.getPrototypeOf(TranslateAllInteraction)).call(this));
+
+    _this._features = features;
+    _this._active = false;
+    _this._mouseStart = [];
+    _this._map = map;
+    return _this;
+  }
+
+  _createClass(TranslateAllInteraction, [{
+    key: "handleDownEvent",
+    value: function handleDownEvent(event) {
+      if (this._active) {
+        this._mouseStart = event.pixel;
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "handleDragEvent",
+    value: function handleDragEvent(event) {
+      var currentPixel = event.pixel;
+      var currentCoordinate = this._map.getCoordinateFromPixel(currentPixel);
+      var mouseCoordinate = this._map.getCoordinateFromPixel(this._mouseStart);
+      var deltaX = currentCoordinate[0] - mouseCoordinate[0];
+      var deltaY = currentCoordinate[1] - mouseCoordinate[1];
+      this._mouseStart = currentPixel;
+      this.translateFeatures(deltaX, deltaY);
+    }
+  }, {
+    key: "handleMoveEvent",
+    value: function handleMoveEvent(event) {}
+  }, {
+    key: "handleUpEvent",
+    value: function handleUpEvent(event) {
+      this._mouseStart = false;
+    }
+  }, {
+    key: "translateFeatures",
+    value: function translateFeatures(deltaX, deltaY) {
+      this._features.forEach(function (element, index) {
+        // we need to pass the correct coordinate difference
+        element.getGeometry().translate(deltaX, deltaY);
+      });
+    }
+  }, {
+    key: "activate",
+    value: function activate() {
+      this._active = true;
+    }
+  }, {
+    key: "deactivate",
+    value: function deactivate() {
+      this._active = false;
+    }
+  }]);
+
+  return TranslateAllInteraction;
+}(ol.interaction.Pointer);
 
 /***/ })
 
