@@ -1,7 +1,7 @@
 import {langConstants} from "./c4g-editor-i18n";
 import {FeatureInteraction} from "./c4g-editor-feature-interaction";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
-import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from "./c4g-editor-constant-css";
 import {TranslateAllInteraction} from "./c4g-translate-all-interaction";
 
 export class EditorSelectInteraction {
@@ -126,6 +126,9 @@ export class EditorSelectInteraction {
       change['locgeox'] = coordinates[0];
       change['locgeoy'] = coordinates[1];
     } else if (feature.getGeometry() instanceof ol.geom.Circle) {
+      let coordinates = ol.proj.toLonLat(feature.getGeometry().getCenter());
+      change['locgeox'] = coordinates[0];
+      change['locgeoy'] = coordinates[1];
       change['radius'] = feature.getGeometry().getRadius();
     } else {
       let geoJson = new ol.format.GeoJSON();
@@ -282,7 +285,7 @@ export class EditorSelectInteraction {
           // add copy&displace button
           outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
           // add rotation button
-          outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
+          // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
           // add deselect button
           outerDiv.appendChild(scope._elementUiController.createDeselectButton(i));
           // add revert button
@@ -337,19 +340,19 @@ export class EditorSelectInteraction {
     let bar = document.createElement('div');
     let deselectButton = document.createElement('button');
     deselectButton.title = langConstants.BUTTON_DESELECT_ALL;
-    $(deselectButton).addClass('c4g-btn-deselect-all-data');
+    $(deselectButton).addClass(cssConstants.BUTTON_DESELECT_ALL);
     $(deselectButton).on('click', function(event) {
       scope.deselectAllElements();
     });
     let deleteButton = document.createElement('button');
     deleteButton.title = langConstants.BUTTON_DELETE_ALL;
-    $(deleteButton).addClass('c4g-btn-delete-all-data');
+    $(deleteButton).addClass(cssConstants.BUTTON_DELETE_ALL);
     $(deleteButton).on('click', function(event) {
       scope.showDeleteConfirmDialog(bar);
     });
     let translateButton = document.createElement('button');
     translateButton.title = langConstants.BUTTON_TRANSLATE_ALL;
-    $(translateButton).addClass('c4g-btn-translate-all-data');
+    $(translateButton).addClass(cssConstants.BUTTON_TRANSLATE_ALL);
     $(translateButton).on('click', function(event) {
       // exchange interactions
       scope.selectInteraction.deactivate();
@@ -363,7 +366,7 @@ export class EditorSelectInteraction {
       // exchange button
       let applyTranslationButton = document.createElement('button');
       applyTranslationButton.title = langConstants.BUTTON_APPLY_TRANSLATE;
-      $(applyTranslationButton).addClass('c4g-btn-apply-translation');
+      $(applyTranslationButton).addClass(cssConstants.BUTTON_APPLY);
       $(applyTranslationButton).on('click', function (event) {
         applyTranslationButton.replaceWith(translateButton);
         let features = scope.selectInteraction.getFeatures().getArray();
@@ -382,13 +385,13 @@ export class EditorSelectInteraction {
     });
     let displaceButton = document.createElement('button');
     displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
-    $(displaceButton).addClass('c4g-btn-displace-all-data');
+    $(displaceButton).addClass(cssConstants.BUTTON_DISPLACE_ALL);
     $(displaceButton).on('click', function(event) {
       scope.showDisplaceDialog(bar, false);
     });
     let copyDisplaceButton = document.createElement('button');
     copyDisplaceButton.title = langConstants.BUTTON_COPY_DISPLACE_ALL;
-    $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
+    $(copyDisplaceButton).addClass(cssConstants.BUTTON_COPY_DISPLACE_ALL);
     $(copyDisplaceButton).on('click', function(event) {
       scope.showDisplaceDialog(bar, true);
     });

@@ -1,4 +1,4 @@
-import {cssConstants} from "../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from "./c4g-editor-constant-css";
 import {utils} from "../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {Sideboard} from "../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
 import {TooltipPopUp} from "../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";

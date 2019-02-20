@@ -413,24 +413,7 @@ var cssConstants = exports.cssConstants = {
   CONTROL_CONTAINER_BL: 'c4g-control-container-bottom-left',
   CONTROL_CONTAINER_BL_SUB: 'c4g-control-container-bottom-left-sub',
   CONTROL_CONTAINER_BR: 'c4g-control-container-bottom-right',
-  EDITOR_DRAW_CONTENT_POINT: 'c4g-draw-content-point',
-  EDITOR_DRAW_CONTENT_FREEHAND: 'c4g-draw-content-freehand',
-  EDITOR_DRAW_CONTENT_LINESTRING: 'c4g-draw-content-line',
-  EDITOR_DRAW_CONTENT_POLYGON: 'c4g-draw-content-polygon',
-  EDITOR_DRAW_CONTENT_CIRCLE: 'c4g-draw-content-circle',
-  EDITOR_DRAW_CONTENT_PROJECT: 'c4g-draw-content-project',
-  EDITOR_DRAW_TRIGGER: 'c4g-draw-trigger',
-  EDITOR_CONTENT_SELECT: 'c4g-content-select',
-  EDITOR_DRAW_OPTIONS: 'c4g-editor-draw-options',
-  EDITOR_FEATURE_APPLY: 'c4g-editor-feature-apply',
-  EDITOR_FEATURE_DELETE: 'c4g-editor-feature-delete',
-  EDITOR_FEATURE_MODIFY: 'c4g-editor-feature-modify',
-  EDITOR_VIEW_TRIGGER_SELECT: 'c4g-editor-view-trigger-select',
-  EDITOR_VIEW_TRIGGER_DRAW_POINT: 'c4g-editor-view-trigger-draw-point',
-  EDITOR_VIEW_TRIGGER_DRAW_FREEHAND: 'c4g-editor-view-trigger-draw-freehand',
-  EDITOR_VIEW_TRIGGER_DRAW_LINESTRING: 'c4g-editor-view-trigger-draw-line',
-  EDITOR_VIEW_TRIGGER_DRAW_POLYGON: 'c4g-editor-view-trigger-draw-polygon',
-  EDITOR_VIEW_TRIGGER_DRAW_CIRCLE: 'c4g-editor-view-trigger-draw-circle',
+
   GEOSEARCH: 'c4g-geosearch',
   GEOSEARCH_WRAPPER: 'c4g-geosearch-wrapper',
   GEOSEARCH_TRIGGER: 'c4g-geosearch-trigger',
@@ -4171,6 +4154,80 @@ var utils = exports.utils = {
 
 /***/ }),
 
+/***/ "./Resources/public/js/c4g-editor-constant-css.js":
+/*!********************************************************!*\
+  !*** ./Resources/public/js/c4g-editor-constant-css.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.cssConstants = undefined;
+
+var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+
+var cssConstants = exports.cssConstants = $.extend({
+  BUTTON_APPLY: 'c4g-button-apply',
+  DRAW_CONTENT_POINT: "c4g-draw-content-point",
+  DRAW_CONTENT_LINESTRING: "c4g-draw-content-point",
+  DRAW_CONTENT_POLYGON: "c4g-draw-content-point",
+  DRAW_CONTENT_CIRCLE: "c4g-draw-content-point",
+  DRAW_CONTENT_FREEHAND: "c4g-draw-content-point",
+  TOGGLE_CATEGORY: "c4g-toggle-category",
+  TOGGLE_CATEGORY_OPEN: "c4g-toggle-category-open",
+  TOGGLE_CATEGORY_CLOSED: "c4g-toggle-category-closed",
+  CATEGORY_HEADLINE: 'catHeadline',
+  BUTTON_DESELECT_ALL: 'c4g-btn-deselect-all-data',
+  BUTTON_DELETE_ALL: 'c4g-btn-delete-all-data',
+  BUTTON_TRANSLATE_ALL: 'c4g-btn-translate-all-data',
+  BUTTON_DISPLACE_ALL: 'c4g-btn-displace-all-data',
+  BUTTON_COPY_DISPLACE_ALL: 'c4g-btn-copy-displace-all-data',
+  EDITOR_DIALOG_CONFIRM: "c4g-editor-dialog-confirm",
+  EDITOR_DIALOG_CANCEL: "c4g-editor-dialog-cancel",
+  BUTTON_EDIT_DATA: 'c4g-btn-edit-data',
+  DATA_ERROR_LABEL: 'c4g-edit-data-error-label',
+  PROJECT_ERROR_LABEL: 'c4g-edit-project-error-label',
+  BUTTON_DUPLICATE_DATA: 'c4g-btn-duplicate-data',
+  BUTTON_DISPLACE_DATA: 'c4g-btn-displace-data',
+  BUTTON_DUPLICATE_DISPLACE_DATA: 'c4g-btn-duplicate-displace-data',
+  BUTTON_ROTATE_DATA: 'c4g-btn-rotate-data',
+  BUTTON_DESELECT_DATA: 'c4g-btn-deselect-data',
+  BUTTON_REVERT_DATA: 'c4g-btn-revert-data',
+  ACTIVE: "c4g-active",
+  INACTIVE: "c4g-inactive",
+  BUTTON_PROJECT_EDIT: "c4g-project-edit",
+  BUTTON_PROJECT_DELETE: "c4g-project-delete",
+  BUTTON_PROJECT_CREATE: "c4g-project-create",
+  PROJECT_BUTTON_BAR: "c4g-projects-bar",
+
+  EDITOR_DRAW_CONTENT_POINT: 'c4g-draw-content-point',
+  EDITOR_DRAW_CONTENT_FREEHAND: 'c4g-draw-content-freehand',
+  EDITOR_DRAW_CONTENT_LINESTRING: 'c4g-draw-content-line',
+  EDITOR_DRAW_CONTENT_POLYGON: 'c4g-draw-content-polygon',
+  EDITOR_DRAW_CONTENT_CIRCLE: 'c4g-draw-content-circle',
+  EDITOR_DRAW_CONTENT_PROJECT: 'c4g-draw-content-project',
+  EDITOR_DRAW_TRIGGER: 'c4g-draw-trigger',
+  EDITOR_CONTENT_SELECT: 'c4g-content-select',
+  EDITOR_DRAW_OPTIONS: 'c4g-editor-draw-options',
+  EDITOR_FEATURE_APPLY: 'c4g-editor-feature-apply',
+  EDITOR_FEATURE_DELETE: 'c4g-editor-feature-delete',
+  EDITOR_FEATURE_MODIFY: 'c4g-editor-feature-modify',
+  EDITOR_VIEW_TRIGGER_SELECT: 'c4g-editor-view-trigger-select',
+  EDITOR_VIEW_TRIGGER_DRAW_POINT: 'c4g-editor-view-trigger-draw-point',
+  EDITOR_VIEW_TRIGGER_DRAW_FREEHAND: 'c4g-editor-view-trigger-draw-freehand',
+  EDITOR_VIEW_TRIGGER_DRAW_LINESTRING: 'c4g-editor-view-trigger-draw-line',
+  EDITOR_VIEW_TRIGGER_DRAW_POLYGON: 'c4g-editor-view-trigger-draw-polygon',
+  EDITOR_VIEW_TRIGGER_DRAW_CIRCLE: 'c4g-editor-view-trigger-draw-circle'
+
+}, _c4gMapsConstant.cssConstants);
+
+/***/ }),
+
 /***/ "./Resources/public/js/c4g-editor-drawstyle.js":
 /*!*****************************************************!*\
   !*** ./Resources/public/js/c4g-editor-drawstyle.js ***!
@@ -4188,7 +4245,7 @@ exports.EditorDrawStyle = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
@@ -4260,7 +4317,6 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
       // Create label for interaction-trigger
       styleTriggerLabel = document.createElement('span');
       // @TODO use css-class for dimensions
-      //styleTriggerLabel.style.display = 'block';
       styleTriggerLabel.style.margin = '2px';
 
       if (editorStyle.iconSrc || styleImage instanceof ol.style.Icon) {
@@ -4324,6 +4380,7 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
         }
         styleTriggerLabel.appendChild(styleIcon);
       } else {
+        styleTriggerLabel.style.display = 'block';
         styleTriggerLabel.style.width = '32px';
         styleTriggerLabel.style.height = '32px';
         styleTriggerLabel.style.background = style.getFill().getColor();
@@ -4339,7 +4396,7 @@ var EditorDrawStyle = exports.EditorDrawStyle = function () {
           id: "element-" + category.id + '-' + element.id,
           label: styleTriggerLabel,
           tipLabel: element.name,
-          className: _c4gMapsConstant.cssConstants.EDITOR_DRAW_TRIGGER,
+          className: _c4gEditorConstantCss.cssConstants.EDITOR_DRAW_TRIGGER,
           target: categoryContainer,
           withHeadline: false
         },
@@ -4531,7 +4588,7 @@ exports.EditorDrawview = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gEditorDrawstyle = __webpack_require__(/*! ./c4g-editor-drawstyle */ "./Resources/public/js/c4g-editor-drawstyle.js");
 
@@ -4598,7 +4655,7 @@ var EditorDrawview = exports.EditorDrawview = function () {
       TRIGGER_DRAW = 'EDITOR_VIEW_TRIGGER_DRAW_' + this.type.toUpperCase();
 
       drawContent = document.createElement('div');
-      drawContent.className = _c4gMapsConstant.cssConstants['EDITOR_DRAW_CONTENT_' + this.type.toUpperCase()];
+      drawContent.className = _c4gEditorConstantCss.cssConstants['EDITOR_DRAW_CONTENT_' + this.type.toUpperCase()];
 
       var inputFilter = this.createProjectFilter();
       drawContent.appendChild(inputFilter);
@@ -4606,7 +4663,7 @@ var EditorDrawview = exports.EditorDrawview = function () {
 
       if (this.type.toLowerCase() !== 'point') {
         optionsDiv = document.createElement('div');
-        optionsDiv.className = _c4gMapsConstant.cssConstants.EDITOR_DRAW_OPTIONS;
+        optionsDiv.className = _c4gEditorConstantCss.cssConstants.EDITOR_DRAW_OPTIONS;
         drawContent.appendChild(optionsDiv);
 
         enableInstantMeasureCheckbox = document.createElement('input');
@@ -4640,7 +4697,7 @@ var EditorDrawview = exports.EditorDrawview = function () {
         name: 'draw:' + this.type.toLowerCase(),
         triggerConfig: {
           tipLabel: _c4gEditorI18n.langConstants[TRIGGER_DRAW],
-          className: _c4gMapsConstant.cssConstants[TRIGGER_DRAW],
+          className: _c4gEditorConstantCss.cssConstants[TRIGGER_DRAW],
           withHeadline: true
         },
         sectionElements: [{ section: editor.contentContainer, element: drawContent }, { section: editor.topToolbar, element: editor.viewTriggerBar }],
@@ -4678,28 +4735,28 @@ var EditorDrawview = exports.EditorDrawview = function () {
       headlineDiv.id = "category-headline-" + category.id;
       elementDiv.id = "category-" + category.id;
       toggleView = document.createElement('button');
-      toggleView.className = "c4g-toggle-category";
+      toggleView.className = _c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY;
 
       if (category.visible === undefined) {
-        toggleView.className += " c4g-toggle-category-closed";
+        toggleView.className += " " + _c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_CLOSED;
         elementDiv.style.display = "none";
       } else {
         if (category.visible) {
-          toggleView.className += " c4g-toggle-category-open";
+          toggleView.className += " " + _c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_OPEN;
         } else {
-          toggleView.className += " c4g-toggle-category-closed";
+          toggleView.className += " " + _c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_CLOSED;
           elementDiv.style.display = "none";
         }
       }
 
       // click listener for toggling the categories
       $(toggleView).click(function (event) {
-        if ($(this).hasClass("c4g-toggle-category-open")) {
-          $(this).removeClass("c4g-toggle-category-open").addClass("c4g-toggle-category-closed");
+        if ($(this).hasClass(_c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_OPEN)) {
+          $(this).removeClass(_c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_OPEN).addClass(_c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_CLOSED);
           elementDiv.style.display = "none";
           category.visible = false;
         } else {
-          $(this).removeClass("c4g-toggle-category-closed").addClass("c4g-toggle-category-open");
+          $(this).removeClass(_c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_CLOSED).addClass(_c4gEditorConstantCss.cssConstants.TOGGLE_CATEGORY_OPEN);
           elementDiv.style.display = "block";
           category.visible = true;
         }
@@ -4718,7 +4775,7 @@ var EditorDrawview = exports.EditorDrawview = function () {
         elementCount = category.elementTypes.length;
       }
       catHeadline.innerHTML = category.name + " (" + elementCount + ")";
-      catHeadline.className = 'catHeadline';
+      catHeadline.className = _c4gEditorConstantCss.cssConstants.CATEGORY_HEADLINE;
       headlineDiv.appendChild(catHeadline);
       headlineDiv.appendChild(toggleView);
       categoryDiv.appendChild(headlineDiv);
@@ -5823,7 +5880,7 @@ exports.MapsInterface = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
@@ -5983,7 +6040,7 @@ var MapsInterface = exports.MapsInterface = function () {
               // entryWrapper is the element which has the acutal content, and a open/close arrow or nothing, if there
               // are no childs for the current element
               var entryWrapper = layer.entryWrappers[0];
-              if ($(entryWrapper).hasClass(_c4gMapsConstant.cssConstants.OPEN)) {
+              if ($(entryWrapper).hasClass(_c4gEditorConstantCss.cssConstants.OPEN)) {
                 unfoldedLayers[key] = key;
               }
             }
@@ -5995,7 +6052,7 @@ var MapsInterface = exports.MapsInterface = function () {
               var _layer = layers[_key];
               var _entryWrapper = _layer.entryWrappers[0];
               if (unfoldedLayers[_key]) {
-                $(_entryWrapper).removeClass(_c4gMapsConstant.cssConstants.CLOSE).addClass(_c4gMapsConstant.cssConstants.OPEN);
+                $(_entryWrapper).removeClass(_c4gEditorConstantCss.cssConstants.CLOSE).addClass(_c4gEditorConstantCss.cssConstants.OPEN);
               }
             }
           }
@@ -6107,7 +6164,7 @@ var _c4gEditorFeatureInteraction = __webpack_require__(/*! ./c4g-editor-feature-
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gTranslateAllInteraction = __webpack_require__(/*! ./c4g-translate-all-interaction */ "./Resources/public/js/c4g-translate-all-interaction.js");
 
@@ -6242,6 +6299,9 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
       } else if (feature.getGeometry() instanceof ol.geom.Circle) {
+        var _coordinates = ol.proj.toLonLat(feature.getGeometry().getCenter());
+        change['locgeox'] = _coordinates[0];
+        change['locgeoy'] = _coordinates[1];
         change['radius'] = feature.getGeometry().getRadius();
       } else {
         var geoJson = new ol.format.GeoJSON();
@@ -6400,7 +6460,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             // add copy&displace button
             outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
             // add rotation button
-            outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
+            // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
             // add deselect button
             outerDiv.appendChild(scope._elementUiController.createDeselectButton(i));
             // add revert button
@@ -6458,19 +6518,19 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       var bar = document.createElement('div');
       var deselectButton = document.createElement('button');
       deselectButton.title = _c4gEditorI18n.langConstants.BUTTON_DESELECT_ALL;
-      $(deselectButton).addClass('c4g-btn-deselect-all-data');
+      $(deselectButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_DESELECT_ALL);
       $(deselectButton).on('click', function (event) {
         scope.deselectAllElements();
       });
       var deleteButton = document.createElement('button');
       deleteButton.title = _c4gEditorI18n.langConstants.BUTTON_DELETE_ALL;
-      $(deleteButton).addClass('c4g-btn-delete-all-data');
+      $(deleteButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_DELETE_ALL);
       $(deleteButton).on('click', function (event) {
         scope.showDeleteConfirmDialog(bar);
       });
       var translateButton = document.createElement('button');
       translateButton.title = _c4gEditorI18n.langConstants.BUTTON_TRANSLATE_ALL;
-      $(translateButton).addClass('c4g-btn-translate-all-data');
+      $(translateButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_TRANSLATE_ALL);
       $(translateButton).on('click', function (event) {
         // exchange interactions
         scope.selectInteraction.deactivate();
@@ -6481,7 +6541,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         // exchange button
         var applyTranslationButton = document.createElement('button');
         applyTranslationButton.title = _c4gEditorI18n.langConstants.BUTTON_APPLY_TRANSLATE;
-        $(applyTranslationButton).addClass('c4g-btn-apply-translation');
+        $(applyTranslationButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_APPLY);
         $(applyTranslationButton).on('click', function (event) {
           applyTranslationButton.replaceWith(translateButton);
           var features = scope.selectInteraction.getFeatures().getArray();
@@ -6500,13 +6560,13 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       });
       var displaceButton = document.createElement('button');
       displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
-      $(displaceButton).addClass('c4g-btn-displace-all-data');
+      $(displaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_DISPLACE_ALL);
       $(displaceButton).on('click', function (event) {
         scope.showDisplaceDialog(bar, false);
       });
       var copyDisplaceButton = document.createElement('button');
       copyDisplaceButton.title = _c4gEditorI18n.langConstants.BUTTON_COPY_DISPLACE_ALL;
-      $(copyDisplaceButton).addClass('c4g-btn-copy-displace-all-data');
+      $(copyDisplaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_COPY_DISPLACE_ALL);
       $(copyDisplaceButton).on('click', function (event) {
         scope.showDisplaceDialog(bar, true);
       });
@@ -6538,12 +6598,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       var confirmLabel = document.createElement("p");
       confirmLabel.innerText = _c4gEditorI18n.langConstants.CONFIRM_DELETE_ALL;
       var confirmButton = document.createElement("button");
-      $(confirmButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-confirm");
+      $(confirmButton).addClass(_c4gEditorConstantCss.cssConstants.ICON + " c4g-editor-dialog-confirm");
       $(confirmButton).on('click', function (event) {
         scope.deleteAllElements();
       });
       var cancelButton = document.createElement("button");
-      $(cancelButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-cancel");
+      $(cancelButton).addClass(_c4gEditorConstantCss.cssConstants.ICON + " c4g-editor-dialog-cancel");
       $(cancelButton).on('click', function (event) {
         scope.elementUiController.reloadSelectedFeatureView();
       });
@@ -6651,7 +6711,7 @@ exports.EditorSelectView = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gEditorSelectinteraction = __webpack_require__(/*! ./c4g-editor-selectinteraction */ "./Resources/public/js/c4g-editor-selectinteraction.js");
 
@@ -6690,7 +6750,7 @@ var EditorSelectView = exports.EditorSelectView = function () {
         name: 'select',
         triggerConfig: {
           tipLabel: _c4gEditorI18n.langConstants.EDITOR_VIEW_TRIGGER_SELECT,
-          className: _c4gMapsConstant.cssConstants.EDITOR_VIEW_TRIGGER_SELECT,
+          className: _c4gEditorConstantCss.cssConstants.EDITOR_VIEW_TRIGGER_SELECT,
           withHeadline: true
         },
         sectionElements: [{ section: editor.contentContainer, element: this.selectContentWrapper }, { section: editor.topToolbar, element: editor.viewTriggerBar }],
@@ -6752,7 +6812,7 @@ var EditorSelectView = exports.EditorSelectView = function () {
       // selectContentWrapper.appendChild(selectContentHeadline);
 
       selectContent = document.createElement('div');
-      selectContent.className = _c4gMapsConstant.cssConstants.EDITOR_CONTENT_SELECT;
+      selectContent.className = _c4gEditorConstantCss.cssConstants.EDITOR_CONTENT_SELECT;
       selectContentInfo = document.createElement('p');
       selectContentInfo.innerHTML = _c4gEditorI18n.langConstants.EDITOR_SELECT_INFO;
       selectContentInfo.innerHTML += '<br><br><sub>' + _c4gEditorI18n.langConstants.EDITOR_SELECT_INFO_ADDITIONAL + '</sub>';
@@ -6829,6 +6889,8 @@ var _c4gElementController = __webpack_require__(/*! ./c4g-element-controller */ 
 var _c4gElementUiController = __webpack_require__(/*! ./c4g-element-ui-controller */ "./Resources/public/js/c4g-element-ui-controller.js");
 
 var _c4gProjectController = __webpack_require__(/*! ./c4g-project-controller */ "./Resources/public/js/c4g-project-controller.js");
+
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7129,11 +7191,11 @@ var Editor = exports.Editor = function (_Sideboard) {
   }, {
     key: "toggleDrawContent",
     value: function toggleDrawContent(opt_show) {
-      var pointDiv = document.getElementsByClassName("c4g-draw-content-point")[0];
-      var lineDiv = document.getElementsByClassName("c4g-draw-content-line")[0];
-      var polygonDiv = document.getElementsByClassName("c4g-draw-content-polygon")[0];
-      var circleDiv = document.getElementsByClassName("c4g-draw-content-circle")[0];
-      var freehandDiv = document.getElementsByClassName("c4g-draw-content-freehand")[0];
+      var pointDiv = document.getElementsByClassName(_c4gEditorConstantCss.cssConstants.DRAW_CONTENT_POINT)[0];
+      var lineDiv = document.getElementsByClassName(_c4gEditorConstantCss.cssConstants.DRAW_CONTENT_LINESTRING)[0];
+      var polygonDiv = document.getElementsByClassName(_c4gEditorConstantCss.cssConstants.DRAW_CONTENT_POLYGON)[0];
+      var circleDiv = document.getElementsByClassName(_c4gEditorConstantCss.cssConstants.DRAW_CONTENT_CIRCLE)[0];
+      var freehandDiv = document.getElementsByClassName(_c4gEditorConstantCss.cssConstants.DRAW_CONTENT_FREEHAND)[0];
       if (pointDiv) {
         pointDiv.style.display = opt_show ? "block" : "none";
       }
@@ -7469,13 +7531,15 @@ exports.ElementUIController = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _c4gMapsConstant = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
 var _c4gLayer = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-layer */ "../MapsBundle/Resources/public/js/c4g-layer.js");
 
 var _c4gEditorI18n = __webpack_require__(/*! ./c4g-editor-i18n */ "./Resources/public/js/c4g-editor-i18n.js");
+
+var _c4gRotationInteraction = __webpack_require__(/*! ./c4g-rotation-interaction */ "./Resources/public/js/c4g-rotation-interaction.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7501,7 +7565,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createMoveButton(index) {
       var scope = this;
       var modifyButtonElement = document.createElement('button');
-      modifyButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' ' + _c4gMapsConstant.cssConstants.EDITOR_FEATURE_MODIFY;
+      modifyButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.EDITOR_FEATURE_MODIFY;
       modifyButtonElement.title = _c4gEditorI18n.langConstants.EDITOR_FEATURE_MODIFY;
       modifyButtonElement.setAttribute('feat_id', index);
       $(modifyButtonElement).click(function (event) {
@@ -7519,7 +7583,6 @@ var ElementUIController = exports.ElementUIController = function () {
           modifyButton = void 0,
           applyButton = void 0;
 
-      console.log(event.target);
       $(event.target.parentNode).children('button').each(function (idx, elem) {
         elem.setAttribute('disabled', true);
       });
@@ -7544,7 +7607,7 @@ var ElementUIController = exports.ElementUIController = function () {
       this.selectInteraction.selectInteraction.setActive(false);
       // add apply button
       applyButton = document.createElement('button');
-      applyButton.className = _c4gMapsConstant.cssConstants.ICON + ' ' + _c4gMapsConstant.cssConstants.EDITOR_FEATURE_APPLY;
+      applyButton.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.EDITOR_FEATURE_APPLY;
       applyButton.title = _c4gEditorI18n.langConstants.EDITOR_FEATURE_APPLY;
       applyButton.setAttribute('feat_id', modifyButton.getAttribute('feat_id'));
       $(applyButton).click(function (event) {
@@ -7606,7 +7669,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createDeleteButton(index) {
       var scope = this;
       var deleteButtonElement = document.createElement('button');
-      deleteButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' ' + _c4gMapsConstant.cssConstants.EDITOR_FEATURE_DELETE;
+      deleteButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.EDITOR_FEATURE_DELETE;
       deleteButtonElement.title = _c4gEditorI18n.langConstants.EDITOR_FEATURE_DELETE;
       deleteButtonElement.setAttribute('feat_id', index);
       $(deleteButtonElement).click(function (event) {
@@ -7623,13 +7686,13 @@ var ElementUIController = exports.ElementUIController = function () {
       deleteHintLabel.innerText = _c4gEditorI18n.langConstants.EDITOR_FEATURE_DELETE_QUESTION;
       container.appendChild(deleteHintLabel);
       var confirmButton = document.createElement("button");
-      $(confirmButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-confirm");
+      $(confirmButton).addClass(_c4gEditorConstantCss.cssConstants.ICON + " " + _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CONFIRM);
       $(confirmButton).on('click', function (event) {
         scope.handleDeleteFeatureEvent(featureId);
       });
       container.appendChild(confirmButton);
       var cancelButton = document.createElement("button");
-      $(cancelButton).addClass(_c4gMapsConstant.cssConstants.ICON + " c4g-editor-dialog-cancel");
+      $(cancelButton).addClass(_c4gEditorConstantCss.cssConstants.ICON + " " + _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CANCEL);
       $(cancelButton).on('click', function (event) {
         scope.reloadSelectedFeatureView();
       });
@@ -7653,7 +7716,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createEditButton(index) {
       var scope = this;
       var editButtonElement = document.createElement('button');
-      editButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' c4g-btn-edit-data';
+      editButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_EDIT_DATA;
       editButtonElement.title = _c4gEditorI18n.langConstants.METADATA_EDIT;
       editButtonElement.setAttribute('feat_id', index);
       $(editButtonElement).click(function (event) {
@@ -7710,7 +7773,7 @@ var ElementUIController = exports.ElementUIController = function () {
           if (data.errorString) {
             // show the error above the form
             var label = document.createElement("span");
-            label.classList.add("c4g-edit-data-error-label");
+            label.classList.add(_c4gEditorConstantCss.cssConstants.DATA_ERROR_LABEL);
             label.innerHTML = data.errorString;
             scope.editor.selectView.selectContent.prepend(label);
           } else {
@@ -7734,7 +7797,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createCopyButton(index) {
       var scope = this;
       var copyButtonElement = document.createElement('button');
-      copyButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-duplicate-data';
+      copyButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_DUPLICATE_DATA;
       copyButtonElement.title = _c4gEditorI18n.langConstants.DUPLICATE_ELEMENT;
       copyButtonElement.setAttribute('feat_id', index);
       $(copyButtonElement).click(function (event) {
@@ -7761,7 +7824,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createDisplaceButton(index) {
       var scope = this;
       var displaceButtonElement = document.createElement('button');
-      displaceButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-displace-data';
+      displaceButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_DISPLACE_DATA;
       displaceButtonElement.title = _c4gEditorI18n.langConstants.DISPLACE_ELEMENT;
       displaceButtonElement.setAttribute('feat_id', index);
       $(displaceButtonElement).click(function (event) {
@@ -7781,10 +7844,10 @@ var ElementUIController = exports.ElementUIController = function () {
       var formContainer = document.createElement("div");
       // create buttons
       var confirmButton = document.createElement("button");
-      confirmButton.className = "c4g-editor-dialog-confirm";
+      confirmButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CONFIRM;
       confirmButton.title = "Bestätigen";
       var cancelButton = document.createElement("button");
-      cancelButton.className = "c4g-editor-dialog-cancel";
+      cancelButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CANCEL;
       cancelButton.title = "Abbrechen";
       // clear selectContent
       $(cancelButton).on('click', function (event) {
@@ -7808,7 +7871,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createCopyAndDisplaceButton(index) {
       var scope = this;
       var copyDisplaceButton = document.createElement('button');
-      copyDisplaceButton.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-duplicate-displace-data';
+      copyDisplaceButton.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_DUPLICATE_DISPLACE_DATA;
       copyDisplaceButton.title = _c4gEditorI18n.langConstants.DUPLICATE_AND_DELETE;
       copyDisplaceButton.setAttribute('feat_id', index);
       $(copyDisplaceButton).click(function (event) {
@@ -7820,43 +7883,37 @@ var ElementUIController = exports.ElementUIController = function () {
     key: "createRotateButton",
     value: function createRotateButton(index) {
       var scope = this;
-      var displaceButtonElement = document.createElement('button');
-      displaceButtonElement.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-rotate-data';
-      displaceButtonElement.title = _c4gEditorI18n.langConstants.ROTATE_ELEMENT;
-      displaceButtonElement.setAttribute('feat_id', index);
-      $(displaceButtonElement).click(function (event) {
-        scope.showRotationControls(event, false);
+      var rotateButtonElement = document.createElement('button');
+      rotateButtonElement.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_ROTATE_DATA;
+      rotateButtonElement.title = _c4gEditorI18n.langConstants.ROTATE_ELEMENT;
+      rotateButtonElement.setAttribute('feat_id', index);
+      $(rotateButtonElement).click(function (event) {
+        // exchange interactions
+        scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
+        var rotateInteraction = new _c4gRotationInteraction.RotationInteraction(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
+        scope.editor.options.mapController.map.addInteraction(rotateInteraction);
+        // swap buttons
+        var applyButton = document.createElement('button');
+        $(applyButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_APPLY);
+        $(applyButton).on('click', function (event) {
+          // exchange interactions back
+          scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
+          scope.editor.options.mapController.map.addInteraction(rotateInteraction);
+          applyButton.replaceWith(rotateButtonElement);
+        });
+        this.replaceWith(applyButton);
       });
-      return displaceButtonElement;
+      return rotateButtonElement;
     }
   }, {
     key: "showRotationControls",
-    value: function showRotationControls(event) {
-      var scope = this;
-      var selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
-      var feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
-      var controlContainer = document.createElement('div');
-      var degreeSelect = document.createElement('select');
-      var applyButton = document.createElement('button');
-      for (var i = 30; i <= 360; i += 30) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.text = i + '°';
-        degreeSelect.options.add(option);
-      }
-      $(applyButton).on('click', function (event) {
-        scope.elementController.rotateElement(feature, $(degreeSelect).val());
-      });
-      controlContainer.appendChild(degreeSelect);
-      controlContainer.appendChild(applyButton);
-      this.addToEditor(controlContainer);
-    }
+    value: function showRotationControls(event) {}
   }, {
     key: "createDeselectButton",
     value: function createDeselectButton(index) {
       var scope = this;
       var deselectButton = document.createElement('button');
-      deselectButton.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-deselect-data';
+      deselectButton.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_DESELECT_DATA;
       deselectButton.title = _c4gEditorI18n.langConstants.DESELECT_ELEMENT;
       deselectButton.setAttribute('feat_id', index);
       $(deselectButton).click(function (event) {
@@ -7869,7 +7926,7 @@ var ElementUIController = exports.ElementUIController = function () {
     value: function createRevertButton(index) {
       var scope = this;
       var revertButton = document.createElement('button');
-      revertButton.className = _c4gMapsConstant.cssConstants.ICON + ' ' + ' c4g-btn-revert-data';
+      revertButton.className = _c4gEditorConstantCss.cssConstants.ICON + ' ' + _c4gEditorConstantCss.cssConstants.BUTTON_REVERT_DATA;
       revertButton.title = _c4gEditorI18n.langConstants.REVERT_ELEMENT;
       revertButton.setAttribute('feat_id', index);
       $(revertButton).click(function (event) {
@@ -8324,7 +8381,6 @@ var ProjectController = exports.ProjectController = function () {
       }
 
       _c4gMapsUtils.utils.fitToExtent(_c4gMapsUtils.utils.getExtentForGeometries(features), this.editor.options.mapController.map);
-      // TODO fit view to feature extent
     }
 
     /**
@@ -8516,6 +8572,8 @@ var _c4gEditorI18n = __webpack_require__(/*! ./c4g-editor-i18n */ "./Resources/p
 
 var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-maps-utils */ "../MapsBundle/Resources/public/js/c4g-maps-utils.js");
 
+var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -8550,15 +8608,15 @@ var ProjectUIController = exports.ProjectUIController = function () {
       var button = document.createElement("button");
       $(button).on('click', function (event) {
         scope.clearFeatureSelection();
-        $(this).addClass("c4g-active");
+        $(this).addClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
         scope.projectButtons.forEach(function (element) {
           if (element !== this) {
-            $(element).removeClass("c4g-active");
+            $(element).removeClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
           }
         });
         scope.createEditProjectForm();
       });
-      button.className = "c4g-project-edit";
+      button.className = _c4gEditorConstantCss.cssConstants.BUTTON_PROJECT_EDIT;
       button.title = "Projekt bearbeiten";
       this.projectButtons.push(button);
       return button;
@@ -8586,10 +8644,10 @@ var ProjectUIController = exports.ProjectUIController = function () {
         formContainer.innerHTML = data.form;
         // create buttons
         var confirmButton = document.createElement("button");
-        confirmButton.className = "c4g-editor-dialog-confirm";
+        confirmButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CONFIRM;
         confirmButton.title = "Bestätigen";
         var cancelButton = document.createElement("button");
-        cancelButton.className = "c4g-editor-dialog-cancel";
+        cancelButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CANCEL;
         cancelButton.title = "Abbrechen";
         // clear selectContent
         $(cancelButton).on('click', function (event) {
@@ -8637,7 +8695,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
         if (data.errorString) {
           // show the error above the form
           var label = document.createElement("span");
-          label.classList.add("c4g-edit-project-error-label");
+          label.classList.add(_c4gEditorConstantCss.cssConstants.PROJECT_ERROR_LABEL);
           label.innerHTML = data.errorString;
           scope.editor.selectView.selectContent.prepend(label);
         } else {
@@ -8662,13 +8720,13 @@ var ProjectUIController = exports.ProjectUIController = function () {
     value: function createDeleteProjectButton() {
       var scope = this;
       var button = document.createElement("button");
-      button.className = "c4g-project-delete";
+      button.className = _c4gEditorConstantCss.cssConstants.BUTTON_PROJECT_DELETE;
       $(button).on("click", function (event) {
         scope.clearFeatureSelection();
-        $(this).addClass("c4g-active");
+        $(this).addClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
         scope.projectButtons.forEach(function (element) {
           if (element !== this) {
-            $(element).removeClass("c4g-active");
+            $(element).removeClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
           }
         });
         scope.createDeleteProjectForm();
@@ -8689,10 +8747,10 @@ var ProjectUIController = exports.ProjectUIController = function () {
       var confirmForm = document.createElement("div");
       confirmForm.innerHTML = "Wollen Sie dieses Projekt wirklich löschen?";
       var confirmButton = document.createElement("button");
-      confirmButton.className = "c4g-editor-dialog-confirm";
+      confirmButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CONFIRM;
       confirmButton.title = "Bestätigen";
       var cancelButton = document.createElement("button");
-      cancelButton.className = "c4g-editor-dialog-cancel";
+      cancelButton.className = _c4gEditorConstantCss.cssConstants.EDITOR_DIALOG_CANCEL;
       cancelButton.title = "Abbrechen";
       // clear selectContent
 
@@ -8794,7 +8852,6 @@ var ProjectUIController = exports.ProjectUIController = function () {
       this.cancelDialog();
       editor.toggleDrawContent(true);
       // update views etc. if there is data cached for the selected project
-      // TODO auslagern in setupEditorFromCache oder so ähnlich
       var cachedSettings = this.editor.cacheController.getSettingsForProject(newProject.id);
       if (cachedSettings) {
         // set map view when a cached center exists
@@ -8825,15 +8882,15 @@ var ProjectUIController = exports.ProjectUIController = function () {
     value: function createNewProjectButton() {
       var scope = this;
       var createButton = document.createElement('button');
-      createButton.className = "c4g-project-create";
+      createButton.className = _c4gEditorConstantCss.cssConstants.BUTTON_PROJECT_CREATE;
       // ".done" listener
       $(createButton).on('click', function (event) {
         scope.clearFeatureSelection();
-        $(this).addClass("c4g-active");
+        $(this).addClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
         event.preventDefault();
         scope.projectButtons.forEach(function (element) {
           if (element !== this) {
-            $(element).removeClass("c4g-active");
+            $(element).removeClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
           }
         });
         scope.createNewProjectForm();
@@ -8921,7 +8978,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
       if (this.editor.selectView) {
         this.editor.selectView.reloadHelpContent();
         this.projectButtons.forEach(function (element) {
-          $(element).removeClass("c4g-active");
+          $(element).removeClass(_c4gEditorConstantCss.cssConstants.ACTIVE);
         });
       }
     }
@@ -8934,7 +8991,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
     key: "getButtonBar",
     value: function getButtonBar() {
       var projectDiv = document.createElement('div');
-      projectDiv.className = 'c4g-projects-bar';
+      projectDiv.className = _c4gEditorConstantCss.cssConstants.PROJECT_BUTTON_BAR;
       projectDiv.appendChild(this.projectSelector);
       for (var i = 0; i < this.projectButtons.length; i++) {
         projectDiv.appendChild(this.projectButtons[i]);
@@ -8986,6 +9043,83 @@ var ProjectUIController = exports.ProjectUIController = function () {
 
 /***/ }),
 
+/***/ "./Resources/public/js/c4g-rotation-interaction.js":
+/*!*********************************************************!*\
+  !*** ./Resources/public/js/c4g-rotation-interaction.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RotationInteraction = exports.RotationInteraction = function (_ol$interaction$Point) {
+  _inherits(RotationInteraction, _ol$interaction$Point);
+
+  // _map;
+
+  function RotationInteraction(feature) {
+    _classCallCheck(this, RotationInteraction);
+
+    var _this = _possibleConstructorReturn(this, (RotationInteraction.__proto__ || Object.getPrototypeOf(RotationInteraction)).call(this));
+
+    _this._feature = feature;
+    _this._mouseStart = [];
+    // this._map = map;
+    return _this;
+  }
+
+  _createClass(RotationInteraction, [{
+    key: "handleDownEvent",
+    value: function handleDownEvent(event) {
+      var map = event.map;
+      var feature = map.forEachFeatureAtPixel(event.pixel, function (feature) {
+        return feature;
+      });
+      this._mouseStart = map.getCoordinateFromPixel(event.pixel);
+      // check if the feature is the correct feature
+      return feature === this._feature;
+    }
+  }, {
+    key: "handleDragEvent",
+    value: function handleDragEvent(event) {
+      // idx 0 = X, idx 1 = Y
+      var currentCoord = event.map.getCoordinateFromPixel(event.pixel);
+      if (this._feature.getGeometry() instanceof ol.geom.Point || this._feature.getGeometry() instanceof ol.geom.Circle) {} else if (this._feature.getGeometry() instanceof ol.geom.Polygon) {
+        var center = this._feature.getGeometry().getInteriorPoint();
+        var currentXDist = currentCoord[0] - center[0];
+        var currentYDist = currentCoord[1] - center[1];
+        var mouseXDist = this._mouseStart[0] - center[0];
+        var mouseYDist = this._mouseStart[1] - center[1];
+      }
+    }
+  }, {
+    key: "handleMoveEvent",
+    value: function handleMoveEvent(event) {}
+  }, {
+    key: "handleUpEvent",
+    value: function handleUpEvent(event) {
+      this._mouseStart = [];
+    }
+  }]);
+
+  return RotationInteraction;
+}(ol.interaction.Pointer);
+
+/***/ }),
+
 /***/ "./Resources/public/js/c4g-translate-all-interaction.js":
 /*!**************************************************************!*\
   !*** ./Resources/public/js/c4g-translate-all-interaction.js ***!
@@ -9013,8 +9147,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 var TranslateAllInteraction = exports.TranslateAllInteraction = function (_ol$interaction$Point) {
   _inherits(TranslateAllInteraction, _ol$interaction$Point);
-
-  // TODO alle anderen buttons sollen während des vorgangs deaktiviert sein
 
   // the features that should be translated
   function TranslateAllInteraction(features, map) {

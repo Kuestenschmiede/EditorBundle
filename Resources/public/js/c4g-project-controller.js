@@ -80,7 +80,6 @@ export class ProjectController {
     }
 
     utils.fitToExtent(utils.getExtentForGeometries(features), this.editor.options.mapController.map);
-    // TODO fit view to feature extent
   }
 
   /**

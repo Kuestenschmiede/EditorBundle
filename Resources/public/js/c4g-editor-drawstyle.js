@@ -1,4 +1,4 @@
-import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from './c4g-editor-constant-css';
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {TooltipPopUp} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";
 
@@ -71,7 +71,6 @@ export class EditorDrawStyle {
     // Create label for interaction-trigger
     styleTriggerLabel = document.createElement('span');
     // @TODO use css-class for dimensions
-    //styleTriggerLabel.style.display = 'block';
     styleTriggerLabel.style.margin = '2px';
 
     if (editorStyle.iconSrc || styleImage instanceof ol.style.Icon) {
@@ -135,6 +134,7 @@ export class EditorDrawStyle {
       }
       styleTriggerLabel.appendChild(styleIcon);
     } else {
+      styleTriggerLabel.style.display = 'block';
       styleTriggerLabel.style.width = '32px';
       styleTriggerLabel.style.height = '32px';
       styleTriggerLabel.style.background = style.getFill().getColor();

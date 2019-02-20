@@ -11,6 +11,7 @@ import {langConstants} from "./c4g-editor-i18n";
 import {ElementController} from "./c4g-element-controller";
 import {ElementUIController} from "./c4g-element-ui-controller";
 import {ProjectController} from "./c4g-project-controller";
+import {cssConstants} from './c4g-editor-constant-css';
 // import {EditorGroups} from "./c4g-editor-groups";
 
 'use strict';
@@ -286,11 +287,11 @@ export class Editor extends Sideboard {
    * Toggles the display of the draw elements and categories.
    */
   toggleDrawContent(opt_show) {
-    let pointDiv = document.getElementsByClassName("c4g-draw-content-point")[0];
-    let lineDiv = document.getElementsByClassName("c4g-draw-content-line")[0];
-    let polygonDiv = document.getElementsByClassName("c4g-draw-content-polygon")[0];
-    let circleDiv = document.getElementsByClassName("c4g-draw-content-circle")[0];
-    let freehandDiv = document.getElementsByClassName("c4g-draw-content-freehand")[0];
+    let pointDiv = document.getElementsByClassName(cssConstants.DRAW_CONTENT_POINT)[0];
+    let lineDiv = document.getElementsByClassName(cssConstants.DRAW_CONTENT_LINESTRING)[0];
+    let polygonDiv = document.getElementsByClassName(cssConstants.DRAW_CONTENT_POLYGON)[0];
+    let circleDiv = document.getElementsByClassName(cssConstants.DRAW_CONTENT_CIRCLE)[0];
+    let freehandDiv = document.getElementsByClassName(cssConstants.DRAW_CONTENT_FREEHAND)[0];
     if (pointDiv) {
       pointDiv.style.display = opt_show ? "block" : "none";
     }

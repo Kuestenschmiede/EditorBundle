@@ -1,5 +1,3 @@
-
-
 export class ElementType {
   /**
    * Class properties

@@ -1,4 +1,4 @@
-import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from "./c4g-editor-constant-css";
 import {EditorSelectInteraction} from "./c4g-editor-selectinteraction";
 import {langConstants} from "./c4g-editor-i18n";
 

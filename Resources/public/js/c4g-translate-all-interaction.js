@@ -8,8 +8,6 @@ export class TranslateAllInteraction extends ol.interaction.Pointer {
   _translateInteractions;
   _mouseStart;
 
-  // TODO alle anderen buttons sollen während des vorgangs deaktiviert sein
-
   constructor(features, map) {
     super();
     this._features = features;

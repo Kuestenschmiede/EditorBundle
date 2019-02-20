@@ -1,4 +1,3 @@
-
 export class FeatureInteraction extends ol.interaction.Pointer {
 
   constructor(collection, fnFilter, style) {

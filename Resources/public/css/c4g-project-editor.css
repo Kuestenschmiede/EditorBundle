@@ -95,11 +95,11 @@ button.c4g-btn-deselect-all-data:before {
 }
 
 button.toggle-group-collapsed:before {
-    content: "\f078";
+    content: "\f0c0";
 }
 
 button.toggle-group-uncollapsed:before {
-    content: "\f077";
+    content: "\f0c0";
 }
 
 .c4g-draw-content-project {
@@ -306,5 +306,9 @@ button.c4g-btn-translate-all-data:before {
 
 button.c4g-btn-apply-translation:before {
     content: "\f00c";
+}
+
+button.c4g-button-apply:before {
+    content: "\f00c"
 }
 

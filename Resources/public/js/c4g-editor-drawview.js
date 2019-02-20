@@ -1,4 +1,4 @@
-import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from "./c4g-editor-constant-css";
 import {EditorDrawStyle} from "./c4g-editor-drawstyle";
 import {langConstants} from "./c4g-editor-i18n";
 import {ElementCategory} from "./c4g-editor-element-category";
@@ -146,28 +146,28 @@ export class EditorDrawview {
     headlineDiv.id = "category-headline-" + category.id;
     elementDiv.id = "category-" + category.id;
     toggleView = document.createElement('button');
-    toggleView.className = "c4g-toggle-category";
+    toggleView.className = cssConstants.TOGGLE_CATEGORY;
 
     if (category.visible === undefined) {
-      toggleView.className += " c4g-toggle-category-closed";
+      toggleView.className += " "+cssConstants.TOGGLE_CATEGORY_CLOSED;
       elementDiv.style.display = "none";
     } else {
       if (category.visible) {
-        toggleView.className += " c4g-toggle-category-open";
+        toggleView.className += " " + cssConstants.TOGGLE_CATEGORY_OPEN;
       } else {
-        toggleView.className += " c4g-toggle-category-closed";
+        toggleView.className += " " + cssConstants.TOGGLE_CATEGORY_CLOSED;
         elementDiv.style.display = "none";
       }
     }
 
     // click listener for toggling the categories
     $(toggleView).click(function(event) {
-      if ($(this).hasClass("c4g-toggle-category-open")) {
-        $(this).removeClass("c4g-toggle-category-open").addClass("c4g-toggle-category-closed");
+      if ($(this).hasClass(cssConstants.TOGGLE_CATEGORY_OPEN)) {
+        $(this).removeClass(cssConstants.TOGGLE_CATEGORY_OPEN).addClass(cssConstants.TOGGLE_CATEGORY_CLOSED);
         elementDiv.style.display = "none";
         category.visible = false;
       } else {
-        $(this).removeClass("c4g-toggle-category-closed").addClass("c4g-toggle-category-open");
+        $(this).removeClass(cssConstants.TOGGLE_CATEGORY_CLOSED).addClass(cssConstants.TOGGLE_CATEGORY_OPEN);
         elementDiv.style.display = "block";
         category.visible = true;
       }
@@ -186,7 +186,7 @@ export class EditorDrawview {
         elementCount = category.elementTypes.length;
     }
     catHeadline.innerHTML = category.name + " (" + elementCount + ")";
-    catHeadline.className = 'catHeadline';
+    catHeadline.className = cssConstants.CATEGORY_HEADLINE;
     headlineDiv.appendChild(catHeadline);
     headlineDiv.appendChild(toggleView);
     categoryDiv.appendChild(headlineDiv);

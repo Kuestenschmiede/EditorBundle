@@ -1,6 +1,7 @@
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
+import {cssConstants} from './c4g-editor-constant-css';
 
 /**
  * Class for creating all view elements that interact with a project. Handles all events that are fired on these view
@@ -33,15 +34,15 @@ export class ProjectUIController {
     let button = document.createElement("button");
     $(button).on('click', function (event) {
       scope.clearFeatureSelection();
-      $(this).addClass("c4g-active");
+      $(this).addClass(cssConstants.ACTIVE);
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass("c4g-active");
+          $(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createEditProjectForm();
     });
-    button.className = "c4g-project-edit";
+    button.className = cssConstants.BUTTON_PROJECT_EDIT;
     button.title = "Projekt bearbeiten";
     this.projectButtons.push(button);
     return button;
@@ -66,10 +67,10 @@ export class ProjectUIController {
       formContainer.innerHTML = data.form;
       // create buttons
       let confirmButton = document.createElement("button");
-      confirmButton.className = "c4g-editor-dialog-confirm";
+      confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
       confirmButton.title = "Bestätigen";
       let cancelButton = document.createElement("button");
-      cancelButton.className = "c4g-editor-dialog-cancel";
+      cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
       cancelButton.title = "Abbrechen";
       // clear selectContent
       $(cancelButton).on('click', function(event) {
@@ -114,7 +115,7 @@ export class ProjectUIController {
       if (data.errorString) {
         // show the error above the form
         let label = document.createElement("span");
-        label.classList.add("c4g-edit-project-error-label");
+        label.classList.add(cssConstants.PROJECT_ERROR_LABEL);
         label.innerHTML = data.errorString;
         scope.editor.selectView.selectContent.prepend(label);
       } else {
@@ -137,13 +138,13 @@ export class ProjectUIController {
   createDeleteProjectButton() {
     let scope = this;
     let button = document.createElement("button");
-    button.className = "c4g-project-delete";
+    button.className = cssConstants.BUTTON_PROJECT_DELETE;
     $(button).on("click", function (event) {
       scope.clearFeatureSelection();
-      $(this).addClass("c4g-active");
+      $(this).addClass(cssConstants.ACTIVE);
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass("c4g-active");
+          $(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createDeleteProjectForm();
@@ -163,10 +164,10 @@ export class ProjectUIController {
     let confirmForm = document.createElement("div");
     confirmForm.innerHTML = "Wollen Sie dieses Projekt wirklich löschen?";
     let confirmButton = document.createElement("button");
-    confirmButton.className = "c4g-editor-dialog-confirm";
+    confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
     confirmButton.title = "Bestätigen";
     let cancelButton = document.createElement("button");
-    cancelButton.className = "c4g-editor-dialog-cancel";
+    cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
     cancelButton.title = "Abbrechen";
     // clear selectContent
 
@@ -259,7 +260,6 @@ export class ProjectUIController {
     this.cancelDialog();
     editor.toggleDrawContent(true);
     // update views etc. if there is data cached for the selected project
-    // TODO auslagern in setupEditorFromCache oder so ähnlich
     const cachedSettings = this.editor.cacheController.getSettingsForProject(newProject.id);
     if (cachedSettings) {
       // set map view when a cached center exists
@@ -287,15 +287,15 @@ export class ProjectUIController {
   createNewProjectButton() {
     let scope = this;
     let createButton = document.createElement('button');
-    createButton.className = "c4g-project-create";
+    createButton.className = cssConstants.BUTTON_PROJECT_CREATE;
     // ".done" listener
     $(createButton).on('click', function(event) {
       scope.clearFeatureSelection();
-      $(this).addClass("c4g-active");
+      $(this).addClass(cssConstants.ACTIVE);
       event.preventDefault();
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass("c4g-active");
+          $(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createNewProjectForm();
@@ -371,7 +371,7 @@ export class ProjectUIController {
     if (this.editor.selectView) {
       this.editor.selectView.reloadHelpContent();
       this.projectButtons.forEach(function(element) {
-        $(element).removeClass("c4g-active");
+        $(element).removeClass(cssConstants.ACTIVE);
       });
     }
   }
@@ -381,7 +381,7 @@ export class ProjectUIController {
    */
   getButtonBar() {
     let projectDiv = document.createElement('div');
-    projectDiv.className = 'c4g-projects-bar';
+    projectDiv.className = cssConstants.PROJECT_BUTTON_BAR;
     projectDiv.appendChild(this.projectSelector);
     for (let i = 0; i < this.projectButtons.length; i++) {
       projectDiv.appendChild(this.projectButtons[i]);

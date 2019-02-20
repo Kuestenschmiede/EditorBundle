@@ -1,7 +1,8 @@
-import {cssConstants} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
+import {cssConstants} from "./c4g-editor-constant-css";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
+import {RotationInteraction} from "./c4g-rotation-interaction";
 
 /**
  * Class for creating all view elements that interact with elements.
@@ -41,7 +42,6 @@ export class ElementUIController {
       modifyButton,
       applyButton;
 
-    console.log(event.target);
     $(event.target.parentNode).children('button').each(function(idx, elem) {
       elem.setAttribute('disabled', true);
     });
@@ -139,13 +139,13 @@ export class ElementUIController {
     deleteHintLabel.innerText = langConstants.EDITOR_FEATURE_DELETE_QUESTION;
     container.appendChild(deleteHintLabel);
     const confirmButton = document.createElement("button");
-    $(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
+    $(confirmButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CONFIRM);
     $(confirmButton).on('click', function(event) {
       scope.handleDeleteFeatureEvent(featureId);
     });
     container.appendChild(confirmButton);
     const cancelButton = document.createElement("button");
-    $(cancelButton).addClass(cssConstants.ICON + " c4g-editor-dialog-cancel");
+    $(cancelButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CANCEL);
     $(cancelButton).on('click', function(event) {
       scope.reloadSelectedFeatureView();
     });
@@ -165,7 +165,7 @@ export class ElementUIController {
   createEditButton(index) {
     let scope = this;
     let editButtonElement = document.createElement('button');
-    editButtonElement.className = cssConstants.ICON + ' c4g-btn-edit-data';
+    editButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_EDIT_DATA;
     editButtonElement.title = langConstants.METADATA_EDIT;
     editButtonElement.setAttribute('feat_id', index);
     $(editButtonElement).click(function(event) {
@@ -220,7 +220,7 @@ export class ElementUIController {
         if (data.errorString) {
           // show the error above the form
           let label = document.createElement("span");
-          label.classList.add("c4g-edit-data-error-label");
+          label.classList.add(cssConstants.DATA_ERROR_LABEL);
           label.innerHTML = data.errorString;
           scope.editor.selectView.selectContent.prepend(label);
         } else {
@@ -242,7 +242,7 @@ export class ElementUIController {
   createCopyButton(index) {
     let scope = this;
     let copyButtonElement = document.createElement('button');
-    copyButtonElement.className = cssConstants.ICON + ' ' + ' c4g-btn-duplicate-data';
+    copyButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DUPLICATE_DATA;
     copyButtonElement.title = langConstants.DUPLICATE_ELEMENT;
     copyButtonElement.setAttribute('feat_id', index);
     $(copyButtonElement).click(function(event) {
@@ -265,7 +265,7 @@ export class ElementUIController {
   createDisplaceButton(index) {
     let scope = this;
     let displaceButtonElement = document.createElement('button');
-    displaceButtonElement.className = cssConstants.ICON + ' ' + ' c4g-btn-displace-data';
+    displaceButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DISPLACE_DATA;
     displaceButtonElement.title = langConstants.DISPLACE_ELEMENT;
     displaceButtonElement.setAttribute('feat_id', index);
     $(displaceButtonElement).click(function(event) {
@@ -284,10 +284,10 @@ export class ElementUIController {
     let formContainer = document.createElement("div");
     // create buttons
     let confirmButton = document.createElement("button");
-    confirmButton.className = "c4g-editor-dialog-confirm";
+    confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
     confirmButton.title = "Bestätigen";
     let cancelButton = document.createElement("button");
-    cancelButton.className = "c4g-editor-dialog-cancel";
+    cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
     cancelButton.title = "Abbrechen";
     // clear selectContent
     $(cancelButton).on('click', function(event) {
@@ -308,7 +308,7 @@ export class ElementUIController {
   createCopyAndDisplaceButton(index) {
     let scope = this;
     let copyDisplaceButton = document.createElement('button');
-    copyDisplaceButton.className = cssConstants.ICON + ' ' + ' c4g-btn-duplicate-displace-data';
+    copyDisplaceButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DUPLICATE_DISPLACE_DATA;
     copyDisplaceButton.title = langConstants.DUPLICATE_AND_DELETE;
     copyDisplaceButton.setAttribute('feat_id', index);
     $(copyDisplaceButton).click(function(event) {
@@ -319,41 +319,36 @@ export class ElementUIController {
 
   createRotateButton(index) {
     let scope = this;
-    let displaceButtonElement = document.createElement('button');
-    displaceButtonElement.className = cssConstants.ICON + ' ' + ' c4g-btn-rotate-data';
-    displaceButtonElement.title = langConstants.ROTATE_ELEMENT;
-    displaceButtonElement.setAttribute('feat_id', index);
-    $(displaceButtonElement).click(function(event) {
-      scope.showRotationControls(event, false);
+    let rotateButtonElement = document.createElement('button');
+    rotateButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_ROTATE_DATA;
+    rotateButtonElement.title = langConstants.ROTATE_ELEMENT;
+    rotateButtonElement.setAttribute('feat_id', index);
+    $(rotateButtonElement).click(function(event) {
+      // exchange interactions
+      scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
+      let rotateInteraction = new RotationInteraction(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
+      scope.editor.options.mapController.map.addInteraction(rotateInteraction);
+      // swap buttons
+      let applyButton = document.createElement('button');
+      $(applyButton).addClass(cssConstants.BUTTON_APPLY);
+      $(applyButton).on('click', function (event) {
+        // exchange interactions back
+        scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
+        scope.editor.options.mapController.map.addInteraction(rotateInteraction);
+        applyButton.replaceWith(rotateButtonElement);
+      });
+      this.replaceWith(applyButton);
     });
-    return displaceButtonElement;
+    return rotateButtonElement;
   }
 
   showRotationControls(event) {
-    const scope = this;
-    let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
-    let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
-    let controlContainer = document.createElement('div');
-    let degreeSelect = document.createElement('select');
-    let applyButton = document.createElement('button');
-    for (let i = 30; i <= 360; i += 30) {
-      let option = document.createElement('option');
-      option.value = i;
-      option.text = i + '°';
-      degreeSelect.options.add(option);
-    }
-    $(applyButton).on('click', function(event) {
-      scope.elementController.rotateElement(feature, $(degreeSelect).val());
-    });
-    controlContainer.appendChild(degreeSelect);
-    controlContainer.appendChild(applyButton);
-    this.addToEditor(controlContainer);
   }
 
   createDeselectButton(index) {
     let scope = this;
     let deselectButton = document.createElement('button');
-    deselectButton.className = cssConstants.ICON + ' ' + ' c4g-btn-deselect-data';
+    deselectButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DESELECT_DATA;
     deselectButton.title = langConstants.DESELECT_ELEMENT;
     deselectButton.setAttribute('feat_id', index);
     $(deselectButton).click(function(event) {
@@ -365,7 +360,7 @@ export class ElementUIController {
   createRevertButton(index) {
     let scope = this;
     let revertButton = document.createElement('button');
-    revertButton.className = cssConstants.ICON + ' ' + ' c4g-btn-revert-data';
+    revertButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_REVERT_DATA;
     revertButton.title = langConstants.REVERT_ELEMENT;
     revertButton.setAttribute('feat_id', index);
     $(revertButton).click(function(event) {
