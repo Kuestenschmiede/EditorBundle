@@ -9,26 +9,23 @@
 /**
  * Backend Modules
  */
-array_insert($GLOBALS['BE_MOD'], array_search('content', array_keys($GLOBALS['BE_MOD'])) + 1, array
+$GLOBALS['BE_MOD']['con4gis'] = array_merge($GLOBALS['BE_MOD']['con4gis'], array
 (
-    'Editor' => array
+    'EditorMapCategories' => array
     (
-        'EditorMapCategories' => array
-        (
-            'tables'    => array('tl_c4g_editor_element_category')
-        ),
-        'EditorMapElements' => array
-        (
-            'tables'    => array('tl_c4g_editor_element_type')
-        ),
-        'EditorConfiguration' => array
-        (
-            'tables'    => array('tl_c4g_editor_configuration')
-        ),
-        'plugins' => array
-        (
-            'callback' => '\con4gis\EditorBundle\Classes\Contao\Callbacks\PluginList'
-        )
+        'tables'    => array('tl_c4g_editor_element_category')
+    ),
+    'EditorMapElements' => array
+    (
+        'tables'    => array('tl_c4g_editor_element_type')
+    ),
+    'EditorConfiguration' => array
+    (
+        'tables'    => array('tl_c4g_editor_configuration')
+    ),
+    'plugins' => array
+    (
+        'callback' => '\con4gis\EditorBundle\Classes\Contao\Callbacks\PluginList'
     )
 ));
 // add js file to c4g_maps be module
