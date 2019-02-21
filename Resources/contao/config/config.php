@@ -22,10 +22,6 @@ $GLOBALS['BE_MOD']['con4gis'] = array_merge($GLOBALS['BE_MOD']['con4gis'], array
     'EditorConfiguration' => array
     (
         'tables'    => array('tl_c4g_editor_configuration')
-    ),
-    'plugins' => array
-    (
-        'callback' => '\con4gis\EditorBundle\Classes\Contao\Callbacks\PluginList'
     )
 ));
 // add js file to c4g_maps be module

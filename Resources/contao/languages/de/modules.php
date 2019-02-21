@@ -7,7 +7,6 @@
  */
 
 
-$GLOBALS['TL_LANG']['MOD']['EditorMapCategories'] = array('Elementkategorien', 'Kategorien für Kartenprojekte');
-$GLOBALS['TL_LANG']['MOD']['EditorMapElements']   = array('Elementtypen', 'Kartenelemente für Kartenprojekte');
-$GLOBALS['TL_LANG']['MOD']['EditorConfiguration']   = array('Editorkonfiguration', 'Verschiedene Editorkonfigurationen');
-$GLOBALS['TL_LANG']['MOD']['plugins'] = array('Plugins', 'Hier können Sie Informationen zu den vorhandenen Plugins einholen.');
+$GLOBALS['TL_LANG']['MOD']['EditorMapCategories'] = array('Editor: Kategorien', 'Kategorien für Kartenprojekte');
+$GLOBALS['TL_LANG']['MOD']['EditorMapElements']   = array('Editor: Elementtypen', 'Kartenelemente für Kartenprojekte');
+$GLOBALS['TL_LANG']['MOD']['EditorConfiguration']   = array('Editor: Konfiguration', 'Verschiedene Editorkonfigurationen');

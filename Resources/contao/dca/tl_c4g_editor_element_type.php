@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA'][$strName] = array
     //Palettes
     'palettes' => array
     (
-        'default'   =>  '{data_legend}, name, caption, categories, pointstyle, linestyle, polygonstyle, circlestyle, freehandstyle, plugins',
+        'default'   =>  '{data_legend}, name, caption, categories, pointstyle, linestyle, polygonstyle, circlestyle, freehandstyle',
     ),
 
 
@@ -205,7 +205,8 @@ $GLOBALS['TL_DCA'][$strName] = array
                 'mandatory' => true,
                 'tl_class' => 'clr',
                 'submitOnChange' => true
-            )
+            ),
+            'default'                 => ['1']
         )
     )
 );
