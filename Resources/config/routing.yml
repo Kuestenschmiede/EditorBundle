@@ -105,7 +105,7 @@ project_create_save:
     methods: [POST]
 
 project_delete:
-    path: /con4gis/project
+    path: /con4gis/project/{projectId}
     defaults:
         _scope: frontend
         _controller: "con4gisEditorBundle:Project:deleteProject"

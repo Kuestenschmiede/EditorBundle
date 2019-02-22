@@ -21,4 +21,9 @@ class EditorBrickTypes
     const BRICK_DATA_PLUGINS     = "data_plugins";
     const BRICK_PROJECT_PLUGINS  = "project_plugins";
     const BRICK_FUNCTION_PLUGINS = "function_plugins";
+    
+    const RIGHT_WRITE_DATA = 'writeData';
+    const RIGHT_READ_DATA = 'readData';
+    const RIGHT_WRITE_PROJECT = 'writeProject';
+    const RIGHT_READ_PROJECT = 'readProject';
 }

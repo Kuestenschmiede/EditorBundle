@@ -110,11 +110,8 @@ export class ProjectController {
    */
   deleteProject(project) {
     let scope = this;
-    $.ajax('con4gis/project', {
-      method: 'DELETE',
-      data: {
-        id: project.id
-      }
+    $.ajax('con4gis/project/' + project.id, {
+      method: 'DELETE'
     }).done(function(data) {
       if (data.success) {
         // delete project layers and reload starboard

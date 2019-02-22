@@ -10,3 +10,9 @@ $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classe
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_DATA_PLUGINS]  = 'Datenplugins';
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_PROJECT_PLUGINS]  = 'Projektplugins';
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_FUNCTION_PLUGINS]  = 'Funktionplugins';
+
+
+$GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::RIGHT_READ_DATA]  = 'Daten lesen';
+$GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::RIGHT_WRITE_DATA]  = 'Daten schreiben';
+$GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::RIGHT_READ_PROJECT]  = 'Projekt lesen';
+$GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::RIGHT_WRITE_PROJECT]  = 'Projekt schreiben';

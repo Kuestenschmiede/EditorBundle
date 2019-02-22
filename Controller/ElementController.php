@@ -15,9 +15,12 @@ namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorProject;
+use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
+use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
@@ -33,6 +36,7 @@ use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
+use Contao\FrontendUser;
 use Contao\System;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,6 +70,9 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $layerData = $request->request->all();
         $event = new CreateDataEvent();
         $event->setLayerData($layerData);
@@ -84,9 +91,12 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        // check permissions
+        if (!$this->hasWriteAccess($projectId)) {
+            // access not permitted
+            return new Response("Access not permitted!", 403);
+        }
         
-        // TODO Check permissions. Check if the logged in user actually has the right to delete the data.
-        // TODO otherwise some malicious user could delete all our data.
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $response = new JsonResponse();
 
@@ -113,6 +123,9 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $response = new JsonResponse();
         $changes = $request->request->all();
         $event = new ChangeDataEvent();
@@ -136,6 +149,9 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => $realId]);
@@ -153,6 +169,9 @@ class ElementController extends BaseController
     public function displaceDataAction(Request $request, $dataId, $newProjectId, $copy)
     {
         $this->initialize();
+        if (!$this->hasWriteAccess($newProjectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
         $project = $this->entityManager->getRepository(EditorProject::class)
@@ -207,6 +226,9 @@ class ElementController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        if (!$this->hasReadAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
         $plugins = $this->pluginService->getDataPlugins($data->getTypeid());
@@ -224,6 +246,9 @@ class ElementController extends BaseController
         $this->initialize();
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
+        }
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
         }
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
@@ -244,11 +269,28 @@ class ElementController extends BaseController
 
     public function revertAction(Request $request, $layerId)
     {
+        // TODO project id mit reinreichen
         $historyService = System::getContainer()->get('editor_history');
         $realId = C4GBrickCommon::getLayerIDParam($layerId, 'id');
         $returnElement = $historyService->revertElement($realId);
         $frontendService = System::getContainer()->get('editor_frontend');
         $returnElement = $frontendService->getSingleDataArray($returnElement, ['hide' => '']);
         return new JsonResponse($returnElement);
+    }
+    
+    private function hasReadAccess($projectId)
+    {
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $projectId]);
+        $memberId = FrontendUser::getInstance()->id;
+        // check permissions
+        return MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_READ_DATA);
+    }
+    
+    private function hasWriteAccess($projectId)
+    {
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $projectId]);
+        $memberId = FrontendUser::getInstance()->id;
+        // check permissions
+        return MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_WRITE_DATA);
     }
 }

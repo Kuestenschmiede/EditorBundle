@@ -5074,6 +5074,7 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
     _this.styleFunction = style;
     _this.styleMap = {};
     _this._active = true;
+    _this.fnFilter = fnFilter;
     return _this;
   }
 
@@ -5093,9 +5094,14 @@ var FeatureInteraction = exports.FeatureInteraction = function (_ol$interaction$
           return feature;
         });
         if (feature) {
-          this.addFeature(feature);
-          var translateInteraction = this.addTranslateInteractionForFeature(feature, map);
-          translateInteraction.handleEvent(event);
+          if (this.fnFilter(feature)) {
+            this.addFeature(feature);
+            var translateInteraction = this.addTranslateInteractionForFeature(feature, map);
+            translateInteraction.handleEvent(event);
+          } else {
+            // feature from other project
+            return false;
+          }
         }
         return !!feature;
       }
@@ -6199,14 +6205,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
 
       // TODO Filter funktion wieder einbauen, in FeatureInteraction!!
       // let selectInteraction = new ol.interaction.Select({
-      //   filter: function(feature, layer) {
-      //     // returns true when the projectId of the given feature equals the current project id
-      //     if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
-      //       return feature.get('projectId') === editor.projectController.currentProject.id;
-      //     } else {
-      //       return false;
-      //     }
-      //   },
+      //   filter: ,
       //   toggleCondition: ol.events.condition.platformModifierKeyOnly,
       //   collection: selectCollection,
       var styleFn = function styleFn(feature, projection) {
@@ -6254,7 +6253,15 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
           return styleArray;
         }
       };
-      var selectInteraction = new _c4gEditorFeatureInteraction.FeatureInteraction(selectCollection, null, styleFn);
+      var filter = function filter(feature, layer) {
+        // returns true when the projectId of the given feature equals the current project id
+        if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+          return feature.get('projectId') === editor.projectController.currentProject.id;
+        } else {
+          return false;
+        }
+      };
+      var selectInteraction = new _c4gEditorFeatureInteraction.FeatureInteraction(selectCollection, filter, styleFn);
       selectInteraction.onSelect(function (feature, collection) {
         scope.fnHandleSelection(collection);
       });
@@ -7344,7 +7351,9 @@ var ElementController = exports.ElementController = function () {
       this.mapsInterface.removeLayerFromArray(layerId);
       var projectId = this.editor.projectController.currentProject.id;
       // send delete request to server
-      $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, { method: "DELETE" });
+      $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, { method: "DELETE" }).fail(function (data) {
+        console.error(data.responseText);
+      });
       // rerender the selectionList
       this.selectInteraction.updateFeatures();
       this.editor.mapsInterface.updateStarboard();
@@ -7397,11 +7406,9 @@ var ElementController = exports.ElementController = function () {
       var scope = this;
       var layerId = feature.get('layerId');
       var url = "/con4gis/projectDataCopy/" + this.editor.projectController.currentProject.id + "/" + layerId;
-      var request = new C4GAjaxRequest(url, "POST");
-      request.addDoneCallback(function (data) {
+      $.ajax(url, { method: "POST" }).done(function (data) {
         scope.selectInteraction.showNewLayer(data.layer, true);
       });
-      request.execute();
     }
   }, {
     key: "displaceElement",
@@ -7424,8 +7431,7 @@ var ElementController = exports.ElementController = function () {
       if (withCopy) {
         this.copyElement(feature);
       }
-      var request = new C4GAjaxRequest(url, "POST");
-      request.addDoneCallback(function (data) {
+      $.ajax(url, { method: 'POST' }).done(function (data) {
         var newProjectId = parseInt(data.newProjectId, 10);
         feature.set('projectId', newProjectId);
         // and from the selection
@@ -7453,8 +7459,9 @@ var ElementController = exports.ElementController = function () {
           var parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
           fnCallback(parent);
         }
+      }).fail(function (data) {
+        console.error(data.responseText);
       });
-      request.execute();
     }
   }, {
     key: "rotateElement",
@@ -7505,6 +7512,8 @@ var ElementController = exports.ElementController = function () {
         scope.editor.mapsInterface.removeLayerFromArray(layer.id);
         scope.editor.featureHandler.updateLayer(data, layer, feature, true);
         scope.editor.mapsInterface.proxy.layerController.showLayer(layer.id);
+      }).fail(function (data) {
+        console.error(data.responseText);
       });
     }
   }]);
@@ -8417,11 +8426,8 @@ var ProjectController = exports.ProjectController = function () {
     key: "deleteProject",
     value: function deleteProject(project) {
       var scope = this;
-      $.ajax('con4gis/project', {
-        method: 'DELETE',
-        data: {
-          id: project.id
-        }
+      $.ajax('con4gis/project/' + project.id, {
+        method: 'DELETE'
       }).done(function (data) {
         if (data.success) {
           // delete project layers and reload starboard

@@ -10,6 +10,7 @@ export class FeatureInteraction extends ol.interaction.Pointer {
     this.styleFunction = style;
     this.styleMap = {};
     this._active = true;
+    this.fnFilter = fnFilter;
   }
 
   /**
@@ -24,9 +25,15 @@ export class FeatureInteraction extends ol.interaction.Pointer {
         return feature;
       });
       if (feature) {
-        this.addFeature(feature);
-        let translateInteraction = this.addTranslateInteractionForFeature(feature, map);
-        translateInteraction.handleEvent(event);
+        if (this.fnFilter(feature)) {
+          this.addFeature(feature);
+          let translateInteraction = this.addTranslateInteractionForFeature(feature, map);
+          translateInteraction.handleEvent(event);
+        } else {
+          // feature from other project
+          return false;
+        }
+
       }
       return !!feature;
     }

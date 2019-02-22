@@ -27,14 +27,7 @@ export class EditorSelectInteraction {
 
     // TODO Filter funktion wieder einbauen, in FeatureInteraction!!
     // let selectInteraction = new ol.interaction.Select({
-    //   filter: function(feature, layer) {
-    //     // returns true when the projectId of the given feature equals the current project id
-    //     if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
-    //       return feature.get('projectId') === editor.projectController.currentProject.id;
-    //     } else {
-    //       return false;
-    //     }
-    //   },
+    //   filter: ,
     //   toggleCondition: ol.events.condition.platformModifierKeyOnly,
     //   collection: selectCollection,
     let styleFn = function (feature, projection) {
@@ -84,7 +77,15 @@ export class EditorSelectInteraction {
         return styleArray;
       }
     };
-    let selectInteraction = new FeatureInteraction(selectCollection, null, styleFn);
+    let filter = function(feature, layer) {
+      // returns true when the projectId of the given feature equals the current project id
+      if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+        return feature.get('projectId') === editor.projectController.currentProject.id;
+      } else {
+        return false;
+      }
+    };
+    let selectInteraction = new FeatureInteraction(selectCollection, filter, styleFn);
     selectInteraction.onSelect(function(feature, collection) {
       scope.fnHandleSelection(collection);
     });

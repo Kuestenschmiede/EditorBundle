@@ -37,7 +37,9 @@ export class ElementController {
     this.mapsInterface.removeLayerFromArray(layerId);
     let projectId = this.editor.projectController.currentProject.id;
     // send delete request to server
-    $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"});
+    $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"}).fail(function(data) {
+      console.error(data.responseText);
+    });
     // rerender the selectionList
     this.selectInteraction.updateFeatures();
     this.editor.mapsInterface.updateStarboard();
@@ -86,11 +88,9 @@ export class ElementController {
     const scope = this;
     let layerId = feature.get('layerId');
     let url = "/con4gis/projectDataCopy/" + this.editor.projectController.currentProject.id + "/" + layerId;
-    let request = new C4GAjaxRequest(url, "POST");
-    request.addDoneCallback(function(data) {
+    $.ajax(url, {method: "POST"}).done(function (data) {
       scope.selectInteraction.showNewLayer(data.layer, true);
     });
-    request.execute();
   }
 
   displaceElement(feature, layerId, withCopy, projectId) {
@@ -112,8 +112,7 @@ export class ElementController {
     if (withCopy) {
       this.copyElement(feature);
     }
-    let request = new C4GAjaxRequest(url, "POST");
-    request.addDoneCallback(function(data) {
+    $.ajax(url, {method: 'POST'}).done(function (data) {
       let newProjectId = parseInt(data.newProjectId, 10);
       feature.set('projectId', newProjectId);
       // and from the selection
@@ -141,8 +140,9 @@ export class ElementController {
         let parent = scope.editor.mapsInterface.getLayerFromArray(newPid);
         fnCallback(parent);
       }
+    }).fail(function (data) {
+      console.error(data.responseText);
     });
-    request.execute();
   }
 
   rotateElement(feature, degrees) {
@@ -190,6 +190,8 @@ export class ElementController {
       scope.editor.mapsInterface.removeLayerFromArray(layer.id);
       scope.editor.featureHandler.updateLayer(data, layer, feature, true);
       scope.editor.mapsInterface.proxy.layerController.showLayer(layer.id);
+    }).fail(function (data) {
+      console.error(data.responseText);
     });
   }
 }

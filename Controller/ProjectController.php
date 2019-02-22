@@ -15,6 +15,7 @@ namespace con4gis\EditorBundle\Controller;
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
 use con4gis\EditorBundle\Entity\EditorProject;
+use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
@@ -55,6 +56,7 @@ class ProjectController extends BaseController
     public function saveProjectAction(Request $request)
     {
         $this->initialize();
+        // every logged in user is authorized to create new projects
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
@@ -75,14 +77,17 @@ class ProjectController extends BaseController
         return $response;
     }
 
-    public function deleteProjectAction(Request $request)
+    public function deleteProjectAction(Request $request, $projectId)
     {
         $this->initialize();
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
+        // TODO write projectId into request url to have it as parameter
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $plugins = $this->getPlugins();
-        $projectId = $request->request->all()['id'];
         $delEvent = new DeleteProjectEvent();
         $delEvent->setPlugins($plugins);
         $delEvent->setProjectId($projectId);
@@ -111,6 +116,9 @@ class ProjectController extends BaseController
     public function editProjectAction(Request $request, $projectId)
     {
         $this->initialize();
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $plugins = $this->getPlugins();
         $event = new ShowEditProjectDialogEvent();
         $event->setProjectId($projectId);
@@ -122,6 +130,9 @@ class ProjectController extends BaseController
     public function saveEditedProjectAction(Request $request, $projectId)
     {
         $this->initialize();
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response("Access not permitted!", 403);
+        }
         $plugins = $this->getPlugins();
         $event = new SaveProjectEvent();
         $event->setPluginInstances($plugins);
@@ -216,5 +227,21 @@ class ProjectController extends BaseController
             }
         }
         return $entities;
+    }
+    
+    private function hasReadAccess($projectId)
+    {
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $projectId]);
+        $memberId = FrontendUser::getInstance()->id;
+        // check permissions
+        return MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_READ_PROJECT);
+    }
+    
+    private function hasWriteAccess($projectId)
+    {
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $projectId]);
+        $memberId = FrontendUser::getInstance()->id;
+        // check permissions
+        return MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_WRITE_PROJECT);
     }
 }
