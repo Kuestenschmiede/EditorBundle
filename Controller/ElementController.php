@@ -29,10 +29,7 @@ use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
 use con4gis\EditorBundle\Classes\Events\ShowMetadataDialogEvent;
 use con4gis\EditorBundle\Classes\Events\ChangeDataEvent;
 use con4gis\EditorBundle\Classes\Events\CreateDataEvent;
-use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
-use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
-use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
@@ -62,6 +59,7 @@ class ElementController extends BaseController
     {
         parent::__construct();
         $this->pluginService = System::getContainer()->get('editor_plugin_service');
+        System::loadLanguageFile('default');
     }
     
     public function createDataAction(Request $request, $projectId)
@@ -71,7 +69,7 @@ class ElementController extends BaseController
             return new Response("No user logged in!", 403);
         }
         if (!$this->hasWriteAccess($projectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $layerData = $request->request->all();
         $event = new CreateDataEvent();
@@ -94,7 +92,7 @@ class ElementController extends BaseController
         // check permissions
         if (!$this->hasWriteAccess($projectId)) {
             // access not permitted
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
@@ -124,7 +122,7 @@ class ElementController extends BaseController
             return new Response("No user logged in!", 403);
         }
         if (!$this->hasWriteAccess($projectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $response = new JsonResponse();
         $changes = $request->request->all();
@@ -150,7 +148,7 @@ class ElementController extends BaseController
             return new Response("No user logged in!", 403);
         }
         if (!$this->hasWriteAccess($projectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
@@ -170,7 +168,7 @@ class ElementController extends BaseController
     {
         $this->initialize();
         if (!$this->hasWriteAccess($newProjectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
@@ -227,7 +225,7 @@ class ElementController extends BaseController
             return new Response("No user logged in!", 403);
         }
         if (!$this->hasReadAccess($projectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $data = $this->entityManager->getRepository(EditorElement::class)
             ->findOneBy(['id' => C4GBrickCommon::getLayerIDParam($dataId, 'id')]);
@@ -248,7 +246,7 @@ class ElementController extends BaseController
             return new Response("No user logged in!", 403);
         }
         if (!$this->hasWriteAccess($projectId)) {
-            return new Response("Access not permitted!", 403);
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
         }
         $realId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $data = $this->entityManager->getRepository(EditorElement::class)
@@ -267,9 +265,12 @@ class ElementController extends BaseController
         return $response;
     }
 
-    public function revertAction(Request $request, $layerId)
+    public function revertAction(Request $request, $layerId, $projectId)
     {
-        // TODO project id mit reinreichen
+        $this->initialize();
+        if (!$this->hasWriteAccess($projectId)) {
+            return new Response($GLOBALS['TL_LANG']['editor_api']['permission_denied'], 403);
+        }
         $historyService = System::getContainer()->get('editor_history');
         $realId = C4GBrickCommon::getLayerIDParam($layerId, 'id');
         $returnElement = $historyService->revertElement($realId);

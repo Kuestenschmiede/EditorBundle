@@ -1,4 +1,6 @@
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/DialogHandler";
+import {langConstants} from "./c4g-editor-i18n";
 
 /**
  * Class for handling the data manipulation.
@@ -25,6 +27,7 @@ export class ElementController {
   }
 
   deleteElement(feature) {
+    const scope = this;
     let layerId = feature.get('layerId');
     let featureSource = this.editor.featureHandler.getSourceForLayerId(layerId);
     // remove Feature from the source
@@ -38,7 +41,7 @@ export class ElementController {
     let projectId = this.editor.projectController.currentProject.id;
     // send delete request to server
     $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"}).fail(function(data) {
-      console.error(data.responseText);
+      scope.handleApiError(data.responseText);
     });
     // rerender the selectionList
     this.selectInteraction.updateFeatures();
@@ -185,13 +188,31 @@ export class ElementController {
   revertElement(feature) {
     const scope = this;
     let layerId = feature.get('layerId');
+    let projectId = this.editor.projectController.currentProject.id;
     let layer = this.mapsInterface.getLayerFromArray(layerId);
-    $.ajax('/con4gis/element/revert/' + layerId, {method: 'PUT'}).done(function(data) {
+    $.ajax('/con4gis/element/revert/' + layerId + '/' + projectId, {method: 'PUT'}).done(function(data) {
       scope.editor.mapsInterface.removeLayerFromArray(layer.id);
       scope.editor.featureHandler.updateLayer(data, layer, feature, true);
       scope.editor.mapsInterface.proxy.layerController.showLayer(layer.id);
     }).fail(function (data) {
-      console.error(data.responseText);
+      scope.handleApiError(data.responseText, feature);
     });
+  }
+
+  handleApiError(response) {
+    let alertHandler = new AlertHandler();
+    alertHandler.showErrorDialog(langConstants.EDITOR_API_ERROR_TITLE, response);
+    // let htmlElement = document.createElement('div');
+    // htmlElement.innerHTML = '<label>' + response + '</label>';
+    // $(htmlElement).addClass('c4g-popup-wrapper').addClass('c4g-active');
+    // const map = this.editor.options.mapController.map;
+    // console.log(map);
+    // let mapSize = map.getSize();
+    // let overlay = new ol.Overlay({
+    //   element: htmlElement,
+    //   position: map.getView().getCenter(),
+    //   offset: [0, -(mapSize[1] / 2)]
+    // });
+    // map.addOverlay(overlay);
   }
 }

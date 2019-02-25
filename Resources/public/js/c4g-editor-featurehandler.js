@@ -1,5 +1,6 @@
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/DialogHandler";
 
 export class FeatureHandler {
 
@@ -100,7 +101,10 @@ export class FeatureHandler {
     this.mapsInterface.updateLayerIndex(layerId, layer);
     this.mapsInterface.updateStarboard();
     let url = this.editor.dataBaseUrl + this.editor.projectController.currentProject.id + "/" + layer.id;
-    $.ajax(url, {method: 'PUT', data: changes});
+    $.ajax(url, {method: 'PUT', data: changes}).fail(function(data) {
+      let ah = new AlertHandler();
+      ah.showErrorDialog("Es ist ein Fehler aufgetreten", data.responseText);
+    });
   }
 
   /**

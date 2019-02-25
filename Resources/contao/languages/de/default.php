@@ -7,3 +7,5 @@
  */
 $GLOBALS['TL_LANG']['tl_maintenance_jobs']['con4gis_editor'] =
     array('con4gis Editor-Cache leeren', 'Löscht die temporären con4gis Editor-Konfigurations-Dateien.');
+
+$GLOBALS['TL_LANG']['editor_api']['permission_denied'] = "Sie verfügen nicht über die erforderlichen Berechtigungen.";

@@ -25,11 +25,6 @@ export class EditorSelectInteraction {
     let scope = this;
     let selectCollection = new ol.Collection();
 
-    // TODO Filter funktion wieder einbauen, in FeatureInteraction!!
-    // let selectInteraction = new ol.interaction.Select({
-    //   filter: ,
-    //   toggleCondition: ol.events.condition.platformModifierKeyOnly,
-    //   collection: selectCollection,
     let styleFn = function (feature, projection) {
       var styleId,
         styleArray = [],

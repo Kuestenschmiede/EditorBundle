@@ -23,13 +23,11 @@ use con4gis\EditorBundle\Classes\Events\DeleteProjectEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
-use con4gis\EditorBundle\Classes\Events\LoadPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
 use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
-use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\Database;
 use Contao\FrontendUser;
@@ -83,7 +81,6 @@ class ProjectController extends BaseController
         if (!$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
-        // TODO write projectId into request url to have it as parameter
         if (!$this->hasWriteAccess($projectId)) {
             return new Response("Access not permitted!", 403);
         }
@@ -133,6 +130,7 @@ class ProjectController extends BaseController
         if (!$this->hasWriteAccess($projectId)) {
             return new Response("Access not permitted!", 403);
         }
+        // TODO permission check (need groupid)
         $plugins = $this->getPlugins();
         $event = new SaveProjectEvent();
         $event->setPluginInstances($plugins);

@@ -35,5 +35,7 @@ export var projectEditorLang = {
   EDITOR_VIEW_TRIGGER_DRAW_POLYGON: 'Flächenwerkzeuge',
   EDITOR_VIEW_TRIGGER_DRAW_CIRCLE: 'Kreiswerkzeuge',
 
+  EDITOR_API_ERROR_TITLE: 'Es ist ein Fehler aufgetreten',
+
   NONE: '' // last line
 };

@@ -19,6 +19,7 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Entity\EditorMapProject;
+use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
 use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
@@ -53,7 +54,12 @@ class LoadProjectsListener
         $groups = MemberGroupModel::getGroupListForMember($memberId);
         $groupIds = [];
         foreach ($groups as $group) {
-            $groupIds[] = $group->id;
+            // only add group to array when member has read access
+            // it also does not make sense to load a project when member has no read access for the data
+            if (MemberModel::hasRightInGroup($memberId, $group->id, EditorBrickTypes::RIGHT_READ_PROJECT)
+                && MemberModel::hasRightInGroup($memberId, $group->id, EditorBrickTypes::RIGHT_READ_DATA)) {
+                $groupIds[] = $group->id;
+            }
         }
         $projects = $this->entityManager->getRepository(EditorProject::class)
             ->findBy(['groupid' => $groupIds]);
