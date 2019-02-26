@@ -5,11 +5,13 @@ export class EditorProject {
    */
   id;
   name;
+  _permissions;
   _additionalData; // map for plugin fields
 
-  constructor(id, name) {
+  constructor(id, name, permissions) {
     this._id = id;
     this._name = name;
+    this._permissions = permissions;
     this._additionalData = {};
   }
 
@@ -23,6 +25,10 @@ export class EditorProject {
 
   set name(value) {
     this._name = value;
+  }
+
+  get permissions() {
+    return this._permissions;
   }
 
   get additionalData() {

@@ -122,88 +122,6 @@ class AlertHandler {
 
 /***/ }),
 
-/***/ "../CoreBundle/Resources/public/js/DialogHandler.js":
-/*!**********************************************************!*\
-  !*** ../CoreBundle/Resources/public/js/DialogHandler.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * con4gis - the gis-kit
- *
- * @package   con4gis
- * @author    con4gis contributors (see "authors.txt")
- * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
- * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018
- * @link      https://www.kuestenschmiede.de
- */
-
-
-/**
- * DialogHandler
- *
- * Useage:
- * var dh = new DialogHandler();
- * dh.show('TestTitle', 'Dies ist eine Testmessage!','');
- *
- * @constructor
- */
-function DialogHandler() {
-  var scope = this;
-  this.buttons    = {
-    'OK': function() {jQuery(this).dialog('close');},
-    'Abbruch': function() {
-      scope.callback = null;
-      jQuery(this).dialog('close');
-    }
-  };
-  this.modal      = true;
-  this.callback = null;
-
-  this.show = function (title, msg, linkUrl, opt_callback) {
-    var date        = new Date();
-    var randomId    = Math.random() * Math.random() + date.getTime();
-    var uiMessage   = jQuery('<div class="uiMessage" id="uiMessage-' + randomId + '">' + msg + '</div>');
-    if (opt_callback && opt_callback.function && typeof window[opt_callback.function] === 'function' ) {
-      scope.callback = opt_callback;
-    } else {
-        delete scope.buttons['Abbruch'];
-    }
-
-    uiMessage.dialog({
-      title:      title,
-      modal:      this.modal,
-      buttons:    this.buttons,
-
-      open: function() {
-        var parent = jQuery(this).parent();
-        parent.next().css('z-index', parent.css('z-index'));
-      },
-
-      close: function() {
-        jQuery(this).dialog('destroy').remove();
-        if (linkUrl) {
-          if ((linkUrl.indexOf(':')<0) && (linkUrl[0]!='/')) {
-            linkUrl = linkUrl.replace('index.php/', "");
-            window.location = linkUrl;
-          }
-        }
-        if (scope.callback && scope.callback.function && typeof window[scope.callback.function] === 'function' && scope.callback.params) {
-          window[scope.callback.function](scope.callback.params);
-        } else if (scope.callback && scope.callback.function && typeof scope.callback.function === 'function') {
-          window[scope.callback.function]();
-        }
-      }
-    });
-
-    uiMessage.dialog('moveToTop');
-  }
-}
-
-
-/***/ }),
-
 /***/ "../CoreBundle/node_modules/sweetalert/dist/sweetalert.min.js":
 /*!********************************************************************!*\
   !*** ../CoreBundle/node_modules/sweetalert/dist/sweetalert.min.js ***!
@@ -5410,7 +5328,7 @@ var _c4gMapsUtils = __webpack_require__(/*! ./../../../../MapsBundle/Resources/p
 
 var _c4gLayer = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-layer */ "../MapsBundle/Resources/public/js/c4g-layer.js");
 
-var _DialogHandler = __webpack_require__(/*! ./../../../../CoreBundle/Resources/public/js/DialogHandler */ "../CoreBundle/Resources/public/js/DialogHandler.js");
+var _AlertHandler = __webpack_require__(/*! ./../../../../CoreBundle/Resources/public/js/AlertHandler */ "../CoreBundle/Resources/public/js/AlertHandler.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5518,7 +5436,7 @@ var FeatureHandler = exports.FeatureHandler = function () {
       this.mapsInterface.updateStarboard();
       var url = this.editor.dataBaseUrl + this.editor.projectController.currentProject.id + "/" + layer.id;
       $.ajax(url, { method: 'PUT', data: changes }).fail(function (data) {
-        var ah = new _DialogHandler.AlertHandler();
+        var ah = new _AlertHandler.AlertHandler();
         ah.showErrorDialog("Es ist ein Fehler aufgetreten", data.responseText);
       });
     }
@@ -5547,7 +5465,6 @@ var FeatureHandler = exports.FeatureHandler = function () {
             // update tooltip of feature according to the name change
             feature.set('tooltip', changeData[key]);
           }
-          // TODO das muss woanders gemacht werden, das breakt das Zeichnen von features
         }
       }
       return layer;
@@ -6231,18 +6148,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var EditorProject = exports.EditorProject = function () {
   // map for plugin fields
 
-  function EditorProject(id, name) {
+  /**
+   * Class properties
+   */
+  function EditorProject(id, name, permissions) {
     _classCallCheck(this, EditorProject);
 
     this._id = id;
     this._name = name;
+    this._permissions = permissions;
     this._additionalData = {};
   }
-
-  /**
-   * Class properties
-   */
-
 
   _createClass(EditorProject, [{
     key: "addData",
@@ -6268,6 +6184,11 @@ var EditorProject = exports.EditorProject = function () {
     },
     set: function set(value) {
       this._name = value;
+    }
+  }, {
+    key: "permissions",
+    get: function get() {
+      return this._permissions;
     }
   }, {
     key: "additionalData",
@@ -6387,7 +6308,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
       };
       var filter = function filter(feature, layer) {
         // returns true when the projectId of the given feature equals the current project id
-        if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+        if (feature && typeof feature.get === "function" && editor.projectController.currentProject && editor.projectController.currentProject.permissions.data.write) {
           return feature.get('projectId') === editor.projectController.currentProject.id;
         } else {
           return false;
@@ -7442,7 +7363,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _c4gLayer = __webpack_require__(/*! ./../../../../MapsBundle/Resources/public/js/c4g-layer */ "../MapsBundle/Resources/public/js/c4g-layer.js");
 
-var _DialogHandler = __webpack_require__(/*! ./../../../../CoreBundle/Resources/public/js/DialogHandler */ "../CoreBundle/Resources/public/js/DialogHandler.js");
+var _AlertHandler = __webpack_require__(/*! ./../../../../CoreBundle/Resources/public/js/AlertHandler */ "../CoreBundle/Resources/public/js/AlertHandler.js");
 
 var _c4gEditorI18n = __webpack_require__(/*! ./c4g-editor-i18n */ "./Resources/public/js/c4g-editor-i18n.js");
 
@@ -7657,20 +7578,8 @@ var ElementController = exports.ElementController = function () {
   }, {
     key: "handleApiError",
     value: function handleApiError(response) {
-      var alertHandler = new _DialogHandler.AlertHandler();
+      var alertHandler = new _AlertHandler.AlertHandler();
       alertHandler.showErrorDialog(_c4gEditorI18n.langConstants.EDITOR_API_ERROR_TITLE, response);
-      // let htmlElement = document.createElement('div');
-      // htmlElement.innerHTML = '<label>' + response + '</label>';
-      // $(htmlElement).addClass('c4g-popup-wrapper').addClass('c4g-active');
-      // const map = this.editor.options.mapController.map;
-      // console.log(map);
-      // let mapSize = map.getSize();
-      // let overlay = new ol.Overlay({
-      //   element: htmlElement,
-      //   position: map.getView().getCenter(),
-      //   offset: [0, -(mapSize[1] / 2)]
-      // });
-      // map.addOverlay(overlay);
     }
   }]);
 
@@ -8504,7 +8413,7 @@ var ProjectController = exports.ProjectController = function () {
     key: "createProjects",
     value: function createProjects(jsonProjects) {
       for (var i = 0; i < jsonProjects.length; i++) {
-        this.projects.push(new _c4gEditorProject.EditorProject(jsonProjects[i].id, jsonProjects[i].name));
+        this.projects.push(new _c4gEditorProject.EditorProject(jsonProjects[i].id, jsonProjects[i].name, jsonProjects[i].permissions));
       }
     }
 
@@ -9005,6 +8914,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
     value: function changeProjectSelection(newProject) {
       var editor = this.editor;
       this._projectController.selectProject(newProject);
+      this.reloadProjectControls();
       if (window.c4gMapsHooks && window.c4gMapsHooks.project_changed && window.c4gMapsHooks.project_changed.length) {
         _c4gMapsUtils.utils.callHookFunctions(window.c4gMapsHooks.project_changed, { newProject: newProject });
       }
@@ -9156,12 +9066,39 @@ var ProjectUIController = exports.ProjectUIController = function () {
       projectDiv.className = _c4gEditorConstantCss.cssConstants.PROJECT_BUTTON_BAR;
       projectDiv.appendChild(this.projectSelector);
       for (var i = 0; i < this.projectButtons.length; i++) {
-        projectDiv.appendChild(this.projectButtons[i]);
+        if (this.checkPermissionForButton(this.projectButtons[i], this.projectController.currentProject)) {
+          projectDiv.appendChild(this.projectButtons[i]);
+        }
       }
       if (!this._projectBar) {
         this._projectBar = projectDiv;
       }
       return projectDiv;
+    }
+  }, {
+    key: "reloadProjectControls",
+    value: function reloadProjectControls() {
+      var container = $(this.editor.topToolbar).children('.' + _c4gEditorConstantCss.cssConstants.PROJECT_BUTTON_BAR)[0];
+      container.replaceWith(this.getButtonBar());
+      // TODO editor.topToolbar > $(cssConstants.PROJECT_BUTTON_BAR)
+      // TODO muss ersetzt werden
+      // TODO mit den controls fürs aktuelle projekt
+      // TODO bei keinem Projekt wird nur der add button angezeigt
+      // TODO sonst ists rechte-abhängig
+    }
+  }, {
+    key: "checkPermissionForButton",
+    value: function checkPermissionForButton(button, project) {
+      if ($(button).hasClass(_c4gEditorConstantCss.cssConstants.BUTTON_PROJECT_CREATE)) {
+        // always show create project button
+        return true;
+      }
+      if (!project) {
+        // do not show button when no project is selected
+        return false;
+      }
+      // return the write permission
+      return project.permissions.project.write;
     }
 
     /**

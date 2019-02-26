@@ -20,12 +20,9 @@ use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
 use con4gis\EditorBundle\Classes\Events\DeleteProjectEvent;
-use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
-use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
-use con4gis\EditorBundle\Classes\Plugins\DefaultProjectPlugin;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
 use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Entity\EditorElement;
@@ -130,7 +127,6 @@ class ProjectController extends BaseController
         if (!$this->hasWriteAccess($projectId)) {
             return new Response("Access not permitted!", 403);
         }
-        // TODO permission check (need groupid)
         $plugins = $this->getPlugins();
         $event = new SaveProjectEvent();
         $event->setPluginInstances($plugins);

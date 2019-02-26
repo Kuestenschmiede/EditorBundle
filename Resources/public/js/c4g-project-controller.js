@@ -41,7 +41,7 @@ export class ProjectController {
    */
   createProjects(jsonProjects) {
     for (let i = 0; i < jsonProjects.length; i++) {
-      this.projects.push(new EditorProject(jsonProjects[i].id, jsonProjects[i].name));
+      this.projects.push(new EditorProject(jsonProjects[i].id, jsonProjects[i].name, jsonProjects[i].permissions));
     }
   }
 

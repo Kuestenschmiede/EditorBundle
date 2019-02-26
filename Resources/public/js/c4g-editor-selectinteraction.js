@@ -74,7 +74,8 @@ export class EditorSelectInteraction {
     };
     let filter = function(feature, layer) {
       // returns true when the projectId of the given feature equals the current project id
-      if (feature && typeof feature.get === "function" && editor.projectController.currentProject) {
+      if (feature && typeof feature.get === "function"
+        && editor.projectController.currentProject && editor.projectController.currentProject.permissions.data.write) {
         return feature.get('projectId') === editor.projectController.currentProject.id;
       } else {
         return false;

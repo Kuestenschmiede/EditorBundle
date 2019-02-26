@@ -251,6 +251,7 @@ export class ProjectUIController {
   changeProjectSelection(newProject) {
     let editor = this.editor;
     this._projectController.selectProject(newProject);
+    this.reloadProjectControls();
     if (window.c4gMapsHooks && window.c4gMapsHooks.project_changed && window.c4gMapsHooks.project_changed.length) {
       utils.callHookFunctions(window.c4gMapsHooks.project_changed, {newProject: newProject});
     }
@@ -384,12 +385,37 @@ export class ProjectUIController {
     projectDiv.className = cssConstants.PROJECT_BUTTON_BAR;
     projectDiv.appendChild(this.projectSelector);
     for (let i = 0; i < this.projectButtons.length; i++) {
-      projectDiv.appendChild(this.projectButtons[i]);
+      if (this.checkPermissionForButton(this.projectButtons[i], this.projectController.currentProject)) {
+        projectDiv.appendChild(this.projectButtons[i]);
+      }
     }
     if (!this._projectBar) {
       this._projectBar = projectDiv;
     }
     return projectDiv;
+  }
+
+  reloadProjectControls() {
+    let container = $(this.editor.topToolbar).children('.'+ cssConstants.PROJECT_BUTTON_BAR)[0];
+    container.replaceWith(this.getButtonBar());
+    // TODO editor.topToolbar > $(cssConstants.PROJECT_BUTTON_BAR)
+    // TODO muss ersetzt werden
+    // TODO mit den controls fürs aktuelle projekt
+    // TODO bei keinem Projekt wird nur der add button angezeigt
+    // TODO sonst ists rechte-abhängig
+  }
+
+  checkPermissionForButton(button, project) {
+    if ($(button).hasClass(cssConstants.BUTTON_PROJECT_CREATE)) {
+      // always show create project button
+      return true;
+    }
+    if (!project) {
+      // do not show button when no project is selected
+      return false;
+    }
+    // return the write permission
+    return project.permissions.project.write;
   }
 
   /**

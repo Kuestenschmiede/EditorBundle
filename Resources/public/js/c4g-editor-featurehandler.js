@@ -1,6 +1,6 @@
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
-import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/DialogHandler";
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 
 export class FeatureHandler {
 
@@ -128,7 +128,6 @@ export class FeatureHandler {
           // update tooltip of feature according to the name change
           feature.set('tooltip', changeData[key]);
         }
-        // TODO das muss woanders gemacht werden, das breakt das Zeichnen von features
       }
     }
     return layer;

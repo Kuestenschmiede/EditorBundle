@@ -16,11 +16,14 @@ namespace con4gis\EditorBundle\Controller;
 use con4gis\CoreBundle\Controller\BaseController;
 use con4gis\EditorBundle\Classes\Cache\C4GEditorConfigurationCache;
 use con4gis\EditorBundle\Classes\Contao\GeoEditor;
+use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\Events\EditorConfigurationEvent;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
+use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
+use Contao\FrontendUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,11 +75,7 @@ class EditorController extends BaseController
             $formattedProjects = [];
             // reformat project data for editor display
             foreach ($projects as $project) {
-                $formattedProjects[] = [
-                    'id' => $project->getId(),
-                    'name' => $project->getCaption(),
-                    'groupid' => $project->getGroupid()
-                ];
+                $formattedProjects[] = $this->createProjectArray($project);
             }
             $editorConfig = $configurationEvent->getEditorConfig();
             $editorConfig['projects'] = $formattedProjects;
@@ -145,5 +144,25 @@ class EditorController extends BaseController
             $members[] = $arrMember;
         }
         return $members;
+    }
+    
+    private function createProjectArray(EditorProject $project)
+    {
+        $memberId = FrontendUser::getInstance()->id;
+        $arrProject = [];
+        $arrProject['id'] = $project->getId();
+        $arrProject['name'] = $project->getCaption();
+        $arrProject['groupid'] = $project->getGroupid();
+        $arrProject['permissions'] = [
+            'data' => [
+                'write' => MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_WRITE_DATA),
+                'read' => MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_READ_DATA)
+            ],
+            'project' => [
+                'write' => MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_WRITE_PROJECT),
+                'read' => MemberModel::hasRightInGroup($memberId, $project->getGroupid(), EditorBrickTypes::RIGHT_READ_PROJECT)
+            ]
+        ];
+        return $arrProject;
     }
 }
