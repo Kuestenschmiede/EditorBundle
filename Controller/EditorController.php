@@ -32,9 +32,16 @@ class EditorController extends BaseController
      */
     public function __construct()
     {
-        $this->cacheInstance = C4GEditorConfigurationCache::getInstance();
+    
     }
-
+    
+    protected function initialize($withEntityManager = true)
+    {
+        $this->cacheInstance = C4GEditorConfigurationCache::getInstance();
+        parent::initialize($withEntityManager);
+    }
+    
+    
     public function configEditorAction(Request $request, $configId)
     {
         $this->initialize();

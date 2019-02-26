@@ -12,7 +12,7 @@ import {ElementController} from "./c4g-element-controller";
 import {ElementUIController} from "./c4g-element-ui-controller";
 import {ProjectController} from "./c4g-project-controller";
 import {cssConstants} from './c4g-editor-constant-css';
-// import {EditorGroups} from "./c4g-editor-groups";
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -139,8 +139,8 @@ export class Editor extends Sideboard {
         //   1) Visible message 4 users (i18n)
         //   2) Technical console.warn
         console.warn('An error occured while trying to load the editor configuration...');
-        window.alert("Bitte melden Sie sich zur Nutzung des Editors an.");
-        console.error(data.responseText);
+        let ah = new AlertHandler();
+        ah.showErrorDialog("Bitte melden Sie sich zur Nutzung des Editors an.", data.responseText);
         scope.close();
         return false;
       })

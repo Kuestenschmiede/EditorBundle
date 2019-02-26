@@ -86,17 +86,16 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../CoreBundle/Resources/public/js/DialogHandler.js":
-/*!**********************************************************!*\
-  !*** ../CoreBundle/Resources/public/js/DialogHandler.js ***!
-  \**********************************************************/
-/*! exports provided: AlertHandler, DialogHandler */
+/***/ "../CoreBundle/Resources/public/js/AlertHandler.js":
+/*!*********************************************************!*\
+  !*** ../CoreBundle/Resources/public/js/AlertHandler.js ***!
+  \*********************************************************/
+/*! exports provided: AlertHandler */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlertHandler", function() { return AlertHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DialogHandler", function() { return DialogHandler; });
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "../CoreBundle/node_modules/sweetalert/dist/sweetalert.min.js");
 /* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
 /**
@@ -110,6 +109,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
 class AlertHandler {
   showErrorDialog(title, content) {
     sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(title, content, "error");
@@ -119,6 +119,26 @@ class AlertHandler {
     sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(title, content, "info");
   }
 }
+
+/***/ }),
+
+/***/ "../CoreBundle/Resources/public/js/DialogHandler.js":
+/*!**********************************************************!*\
+  !*** ../CoreBundle/Resources/public/js/DialogHandler.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * con4gis - the gis-kit
+ *
+ * @package   con4gis
+ * @author    con4gis contributors (see "authors.txt")
+ * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
+ * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018
+ * @link      https://www.kuestenschmiede.de
+ */
+
 
 /**
  * DialogHandler
@@ -7011,13 +7031,13 @@ var _c4gProjectController = __webpack_require__(/*! ./c4g-project-controller */ 
 
 var _c4gEditorConstantCss = __webpack_require__(/*! ./c4g-editor-constant-css */ "./Resources/public/js/c4g-editor-constant-css.js");
 
+var _AlertHandler = __webpack_require__(/*! ./../../../../CoreBundle/Resources/public/js/AlertHandler */ "../CoreBundle/Resources/public/js/AlertHandler.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import {EditorGroups} from "./c4g-editor-groups";
 
 'use strict';
 
@@ -7146,8 +7166,8 @@ var Editor = exports.Editor = function (_Sideboard) {
         //   1) Visible message 4 users (i18n)
         //   2) Technical console.warn
         console.warn('An error occured while trying to load the editor configuration...');
-        window.alert("Bitte melden Sie sich zur Nutzung des Editors an.");
-        console.error(data.responseText);
+        var ah = new _AlertHandler.AlertHandler();
+        ah.showErrorDialog("Bitte melden Sie sich zur Nutzung des Editors an.", data.responseText);
         scope.close();
         return false;
       }).always(function () {
