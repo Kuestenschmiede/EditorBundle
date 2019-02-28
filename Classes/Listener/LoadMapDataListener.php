@@ -1,13 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cro
- * Date: 21.01.19
- * Time: 17:38
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 
 namespace con4gis\EditorBundle\Classes\Listener;
-
 
 use con4gis\MapsBundle\Classes\Events\LoadMapdataEvent;
 use con4gis\MapsBundle\Resources\contao\models\C4gMapProfilesModel;

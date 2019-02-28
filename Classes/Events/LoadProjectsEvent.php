@@ -1,19 +1,19 @@
 <?php
-/**
- * con4gis - the gis-kit
- *
- * @version   php 7
- * @package   con4gis
- * @author    con4gis contributors (see "authors.txt")
- * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
- * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018.
- * @link      https://www.kuestenschmiede.de
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
-use con4gis\MapsProjectBundle\Entity\MapsProject;
+use con4gis\EditorBundle\Entity\EditorProject;
 use Symfony\Component\EventDispatcher\Event;
 
 class LoadProjectsEvent extends Event
@@ -23,7 +23,7 @@ class LoadProjectsEvent extends Event
     private $memberId = 0;
 
     /**
-     * @var MapsProject[]
+     * @var EditorProject[]
      */
     private $projects = [];
 
@@ -44,7 +44,7 @@ class LoadProjectsEvent extends Event
     }
 
     /**
-     * @return MapsProject[]
+     * @return EditorProject[]
      */
     public function getProjects(): array
     {

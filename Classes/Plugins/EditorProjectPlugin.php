@@ -13,7 +13,6 @@
 
 namespace con4gis\EditorBundle\Classes\Plugins;
 
-
 use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Entity\EditorConfiguration;

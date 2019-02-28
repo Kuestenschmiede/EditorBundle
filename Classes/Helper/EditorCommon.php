@@ -1,25 +1,25 @@
 <?php
-/**
- * con4gis - the gis-kit
- *
- * @version   php 7
- * @package   con4gis
- * @author    con4gis contributors (see "authors.txt")
- * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
- * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018.
- * @link      https://www.kuestenschmiede.de
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 
 namespace con4gis\EditorBundle\Classes\Helper;
+
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorElementType;
-use con4gis\EditorBundle\Entity\PluginTrackingDeviceData;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
-use con4gis\TrackingBundle\Resources\contao\models\C4gTrackingDevicesModel;
+
 use Doctrine\ORM\EntityManager;
 
 /**
- * TODO Find better name for the class
  * Class EditorCommon
  * Provides utility functions that are used by several components.
  * @package con4gis\mapsproject\Classes\Helper

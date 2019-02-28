@@ -1,24 +1,23 @@
 <?php
-/**
- * con4gis - the gis-kit
- *
- * @version   php 7
- * @package   con4gis
- * @author    con4gis contributors (see "authors.txt")
- * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
- * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018.
- * @link      https://www.kuestenschmiede.de
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 
 namespace con4gis\EditorBundle\Classes\Listener;
-
 
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
 use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
-use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
