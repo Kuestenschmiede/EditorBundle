@@ -1,15 +1,16 @@
 <?php
 
-/**
- * Contao Open Source CMS
- *
- * @version   php 5
- * @package   con4gis_rescuemap
- * @author    Matthias Eilers
- * @license   GNU/LGPL http://opensource.org/licenses/lgpl-3.0.html
- * @copyright Küstenschmiede GmbH Software & Design 2011 - 2018
- * @link      https://www.kuestenschmiede.de
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 
 
 $GLOBALS['TL_LANG']['tl_c4g_maps']['tDontShowIfEmpty'] = array('Ausblenden wenn keine Einträge vorhanden', 'Blendet die Ebene im Starboard aus, wenn sie keine Einträge enthält.');

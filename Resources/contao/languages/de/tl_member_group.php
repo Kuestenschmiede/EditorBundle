@@ -1,10 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cro
- * Date: 16.05.18
- * Time: 18:07
- */
+/*
+  * This file is part of con4gis,
+  * the gis-kit for Contao CMS.
+  *
+  * @package   	con4gis
+  * @version    6
+  * @author  	con4gis contributors (see "authors.txt")
+  * @license 	LGPL-3.0-or-later
+  * @copyright 	Küstenschmiede GmbH Software & Design
+  * @link       https://www.con4gis.org
+  */
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_DATA_MANAGER_MODULE]  = 'Kartenprojekt-Daten verwalten';
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_GENERIC_PROJECT]  = 'Projekte verwalten';
 $GLOBALS['TL_LANG']['tl_member_group']['cg_rights'][\con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_DATA_PLUGINS]  = 'Datenplugins';
