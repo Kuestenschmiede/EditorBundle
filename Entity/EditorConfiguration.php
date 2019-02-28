@@ -75,6 +75,12 @@ class EditorConfiguration extends BaseEntity
      * @ORM\Column(type="integer", name="is_backend_editor_default")
      */
     protected $isBackendEditorDefault = 0;
+    
+    /**
+     * @var int
+     * @ORM\Column(type="integer", name="editor_project_group")
+     */
+    protected $editorProjectGroup = 0;
 
     /**
      * @return int
@@ -218,5 +224,21 @@ class EditorConfiguration extends BaseEntity
     public function setIsBackendEditorDefault(int $isBackendEditorDefault): void
     {
         $this->isBackendEditorDefault = $isBackendEditorDefault;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getEditorProjectGroup(): int
+    {
+        return $this->editorProjectGroup;
+    }
+    
+    /**
+     * @param int $editorProjectGroup
+     */
+    public function setEditorProjectGroup(int $editorProjectGroup): void
+    {
+        $this->editorProjectGroup = $editorProjectGroup;
     }
 }

@@ -6515,10 +6515,13 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             outerDiv.appendChild(scope._elementUiController.createEditButton(i));
             // add copy button
             outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
-            // add displace button
-            outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
-            // add copy&displace button
-            outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+            if (scope.editor.projectController.projects.length > 1) {
+              // add displace button
+              outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
+              // add copy&displace button
+              outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+            }
+
             // add rotation button
             // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
             // add deselect button
@@ -6618,22 +6621,24 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         scope.toggleButtons(true);
         applyTranslationButton.removeAttribute('disabled');
       });
-      var displaceButton = document.createElement('button');
-      displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
-      $(displaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_DISPLACE_ALL);
-      $(displaceButton).on('click', function (event) {
-        scope.showDisplaceDialog(bar, false);
-      });
-      var copyDisplaceButton = document.createElement('button');
-      copyDisplaceButton.title = _c4gEditorI18n.langConstants.BUTTON_COPY_DISPLACE_ALL;
-      $(copyDisplaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_COPY_DISPLACE_ALL);
-      $(copyDisplaceButton).on('click', function (event) {
-        scope.showDisplaceDialog(bar, true);
-      });
       bar.appendChild(translateButton);
       bar.appendChild(deleteButton);
-      bar.appendChild(displaceButton);
-      bar.appendChild(copyDisplaceButton);
+      if (this.editor.projectController.projects.length > 1) {
+        var displaceButton = document.createElement('button');
+        displaceButton.title = _c4gEditorI18n.langConstants.BUTTON_DISPLACE_ALL;
+        $(displaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_DISPLACE_ALL);
+        $(displaceButton).on('click', function (event) {
+          scope.showDisplaceDialog(bar, false);
+        });
+        var copyDisplaceButton = document.createElement('button');
+        copyDisplaceButton.title = _c4gEditorI18n.langConstants.BUTTON_COPY_DISPLACE_ALL;
+        $(copyDisplaceButton).addClass(_c4gEditorConstantCss.cssConstants.BUTTON_COPY_DISPLACE_ALL);
+        $(copyDisplaceButton).on('click', function (event) {
+          scope.showDisplaceDialog(bar, true);
+        });
+        bar.appendChild(displaceButton);
+        bar.appendChild(copyDisplaceButton);
+      }
       bar.appendChild(deselectButton);
       return bar;
     }
@@ -7042,9 +7047,9 @@ var Editor = exports.Editor = function (_Sideboard) {
         layers: new ol.Collection([]),
         visible: false
       });
-      var configId = this.options.mapController.data.feEditorProfile;
+      this.configId = this.options.mapController.data.feEditorProfile;
       // load editor configuration
-      var url = "con4gis/editorService/" + configId;
+      var url = "con4gis/editorService/" + this.configId;
       $.getJSON(url)
       // Create views for draw-features with at least one locationstyle
       .done(function (data) {
@@ -8516,7 +8521,7 @@ var ProjectController = exports.ProjectController = function () {
   }, {
     key: "createProject",
     value: function createProject(projectData, callback) {
-      var url = "con4gis/project/";
+      var url = "con4gis/project/" + this.editor.configId;
       $.ajax(url, { method: "POST", data: projectData }).done(function (data) {
         callback(data);
       });
@@ -8531,7 +8536,7 @@ var ProjectController = exports.ProjectController = function () {
     key: "addNewProject",
     value: function addNewProject(data) {
       // create new project object
-      this._projects.push(new _c4gEditorProject.EditorProject(data.id, data.name));
+      this._projects.push(new _c4gEditorProject.EditorProject(data.id, data.name, data.permissions));
       var projectLayer = new _c4gLayer.C4gLayer(data.projectLayer);
       // add project layer to layer structure
       this._editor.mapsInterface.addToLayerArray(projectLayer);
@@ -9028,7 +9033,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
       var editor = this.editor;
       var name = data.name;
       var id = data.id;
-      var newProject = { id: id, name: name };
+      var newProject = { id: id, name: name, permissions: data.permissions };
       var option = document.createElement('option');
       this._projectController.addNewProject(data);
       option.text = name;

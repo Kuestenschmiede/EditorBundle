@@ -353,7 +353,7 @@ export class ProjectUIController {
     let editor = this.editor;
     let name = data.name;
     let id = data.id;
-    let newProject = {id: id, name: name};
+    let newProject = {id: id, name: name, permissions: data.permissions};
     let option = document.createElement('option');
     this._projectController.addNewProject(data);
     option.text = name;

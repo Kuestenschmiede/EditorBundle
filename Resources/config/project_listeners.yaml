@@ -73,6 +73,13 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+    editor.onSaveProjectLoadPermissions:
+        class: con4gis\EditorBundle\Classes\Listener\SaveProjectListener
+        tags:
+            - { name: kernel.event_listener, event: editor.project.save, method: onSaveProjectLoadPermissions, priority: 1000 }
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
     ## Delete project
     editor.onDeleteProjectGetEntities:
         class: con4gis\EditorBundle\Classes\Listener\DeleteProjectListener

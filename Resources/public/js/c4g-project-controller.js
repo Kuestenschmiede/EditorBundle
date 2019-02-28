@@ -132,7 +132,7 @@ export class ProjectController {
    * @param callback
    */
   createProject(projectData, callback) {
-    let url = "con4gis/project/";
+    let url = "con4gis/project/" + this.editor.configId;
     $.ajax(url, {method: "POST", data: projectData}).done(function(data) {
       callback(data);
     });
@@ -144,7 +144,7 @@ export class ProjectController {
    */
   addNewProject(data) {
     // create new project object
-    this._projects.push(new EditorProject(data.id, data.name));
+    this._projects.push(new EditorProject(data.id, data.name, data.permissions));
     let projectLayer = new C4gLayer(data.projectLayer);
     // add project layer to layer structure
     this._editor.mapsInterface.addToLayerArray(projectLayer);

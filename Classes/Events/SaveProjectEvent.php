@@ -18,6 +18,8 @@ class SaveProjectEvent extends Event
     const NAME = "editor.project.save";
 
     private $data = [];
+    
+    private $configId = 0;
 
     private $pluginInstances = [];
 
@@ -41,6 +43,22 @@ class SaveProjectEvent extends Event
     public function setData(array $data): void
     {
         $this->data = $data;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getConfigId(): int
+    {
+        return $this->configId;
+    }
+    
+    /**
+     * @param int $configId
+     */
+    public function setConfigId(int $configId): void
+    {
+        $this->configId = $configId;
     }
 
     /**

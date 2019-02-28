@@ -277,10 +277,13 @@ export class EditorSelectInteraction {
           outerDiv.appendChild(scope._elementUiController.createEditButton(i));
           // add copy button
           outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
-          // add displace button
-          outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
-          // add copy&displace button
-          outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+          if (scope.editor.projectController.projects.length > 1) {
+            // add displace button
+            outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
+            // add copy&displace button
+            outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+          }
+
           // add rotation button
           // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
           // add deselect button
@@ -380,22 +383,24 @@ export class EditorSelectInteraction {
       scope.toggleButtons(true);
       applyTranslationButton.removeAttribute('disabled');
     });
-    let displaceButton = document.createElement('button');
-    displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
-    $(displaceButton).addClass(cssConstants.BUTTON_DISPLACE_ALL);
-    $(displaceButton).on('click', function(event) {
-      scope.showDisplaceDialog(bar, false);
-    });
-    let copyDisplaceButton = document.createElement('button');
-    copyDisplaceButton.title = langConstants.BUTTON_COPY_DISPLACE_ALL;
-    $(copyDisplaceButton).addClass(cssConstants.BUTTON_COPY_DISPLACE_ALL);
-    $(copyDisplaceButton).on('click', function(event) {
-      scope.showDisplaceDialog(bar, true);
-    });
     bar.appendChild(translateButton);
     bar.appendChild(deleteButton);
-    bar.appendChild(displaceButton);
-    bar.appendChild(copyDisplaceButton);
+    if (this.editor.projectController.projects.length > 1) {
+      let displaceButton = document.createElement('button');
+      displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
+      $(displaceButton).addClass(cssConstants.BUTTON_DISPLACE_ALL);
+      $(displaceButton).on('click', function(event) {
+        scope.showDisplaceDialog(bar, false);
+      });
+      let copyDisplaceButton = document.createElement('button');
+      copyDisplaceButton.title = langConstants.BUTTON_COPY_DISPLACE_ALL;
+      $(copyDisplaceButton).addClass(cssConstants.BUTTON_COPY_DISPLACE_ALL);
+      $(copyDisplaceButton).on('click', function(event) {
+        scope.showDisplaceDialog(bar, true);
+      });
+      bar.appendChild(displaceButton);
+      bar.appendChild(copyDisplaceButton);
+    }
     bar.appendChild(deselectButton);
     return bar;
   }

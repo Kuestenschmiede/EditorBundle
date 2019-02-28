@@ -12,15 +12,13 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
-
-use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
-use con4gis\EditorBundle\Classes\EditorMapFrontend;
+use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
-use con4gis\EditorBundle\Entity\EditorMapProject;
 use con4gis\EditorBundle\Entity\EditorProject;
+use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
-use Contao\Database;
+use Contao\FrontendUser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -182,5 +180,36 @@ class SaveProjectListener
 
             }
         }
+    }
+    
+    public function onSaveProjectLoadPermissions(
+        SaveProjectEvent $event,
+        $eventName,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $entities = $event->getEntities();
+        $projectEntity = null;
+        foreach ($entities as $entity) {
+            if ($entity instanceof EditorProject) {
+                $projectEntity = $entity;
+                break;
+            }
+        }
+        $groupId = $projectEntity->getGroupid();
+        $memberId = FrontendUser::getInstance()->id;
+        $arrProject = [];
+        $arrProject['groupid'] = $groupId;
+        $arrProject['permissions'] = [
+            'data' => [
+                'write' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_WRITE_DATA),
+                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_DATA)
+            ],
+            'project' => [
+                'write' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_WRITE_PROJECT),
+                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_PROJECT)
+            ]
+        ];
+        $retData = $event->getReturnData();
+        $event->setReturnData(array_merge($retData, $arrProject));
     }
 }

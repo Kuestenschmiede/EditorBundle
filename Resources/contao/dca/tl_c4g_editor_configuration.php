@@ -91,7 +91,7 @@ $GLOBALS['TL_DCA'][$strName] = array
     //Palettes
     'palettes' => array
     (
-        'default'   =>  '{data_legend},name,type,categories,editor_helpurl,is_backend_editor_default;',
+        'default'   =>  '{data_legend},name,type,categories,editor_helpurl,is_backend_editor_default,editor_project_group;',
     ),
 
     //Fields
@@ -154,7 +154,6 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'wizard'),
-//            'wizard'                  => array(array('tl_c4g_map_profiles', 'pickUrl')),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'is_backend_editor_default' => array
@@ -164,9 +163,19 @@ $GLOBALS['TL_DCA'][$strName] = array
             'default'                 => false,
             'inputType'               => 'checkbox',
             'eval'                    => array('tl_class'=>'long'),
-//            'save_callback'           => array(array('tl_c4g_map_profiles','set_backend_default')),
             'sql'                     => "char(1) NULL"
         ),
+    
+        'editor_project_group' => [
+            'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_project_group'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'foreignKey'              => 'tl_member_group.name',
+            'relation'                => array('type'=>'belongsToMany', 'load'=>'lazy'),
+            'eval'                    => array('tl_class'=>'clr'),
+            'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
+            'sql'                     => "char(10) NOT NULL default ''"
+        ]
     )
 );
 

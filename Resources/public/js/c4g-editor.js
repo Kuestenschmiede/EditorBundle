@@ -93,9 +93,9 @@ export class Editor extends Sideboard {
       layers: new ol.Collection([]),
       visible: false
     });
-    let configId = this.options.mapController.data.feEditorProfile;
+    this.configId = this.options.mapController.data.feEditorProfile;
     // load editor configuration
-    let url = "con4gis/editorService/" + configId;
+    let url = "con4gis/editorService/" + this.configId;
     $.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {

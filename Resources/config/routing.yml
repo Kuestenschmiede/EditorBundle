@@ -98,7 +98,7 @@ project_create_getList:
 
 # process form for project
 project_create_save:
-    path: /con4gis/project/
+    path: /con4gis/project/{configId}
     defaults:
         _scope: frontend
         _controller: "con4gisEditorBundle:Project:saveProject"

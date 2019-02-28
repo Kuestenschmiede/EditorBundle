@@ -62,6 +62,7 @@ class PluginService
         $event = new InstantiateProjectPluginsEvent();
         $event->setMode($loadMode);
         $event->setPluginConfigs($configs);
+        $event->setValidConfigs($configs);
         $this->eventDispatcher->dispatch($event::NAME, $event);
         return $event->getInstances();
     }

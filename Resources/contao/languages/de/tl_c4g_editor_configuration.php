@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG'][$strName]['editor_vars'] = ['Zusatzfelder', 'Zusatzfelder st
 $GLOBALS['TL_LANG'][$strName]['editor_show_items'] = ['Alle Karteneinträge im Editor anzeigen', 'Zeigt im Editor nicht nur den zu bearbeitenden Karteneintrag an, sondern auch alle Anderen.'];
 $GLOBALS['TL_LANG'][$strName]['editor_helpurl'] = ['Hilfe-Link', 'Wenn hier eine URL eingetragen wird, so erscheint ein "Hilfe" Link im Editor, der zu der angegebenen URL führt.'];
 $GLOBALS['TL_LANG'][$strName]['is_backend_editor_default'] = ['Als Standardprofil für Backend-Geoeditor verwenden', 'Setzen Sie diese Checkbox, um das Kartenprofil als Standardwert im Backend-Geoeditor zu verwenden (Kartenstrukturelement GeoJson).'];
+$GLOBALS['TL_LANG'][$strName]['editor_project_group'] = ['Projektgruppe', 'Wählen Sie hier die Gruppe aus, die als Projektgruppe verwendet werden soll. Über diese Gruppe werden die Berechtigungen für die Editorprojekte verwaltet.'];
 
 /** LEGENDS **/
 $GLOBALS['TL_LANG'][$strName]['data_legend'] = "Allgemeine Information";

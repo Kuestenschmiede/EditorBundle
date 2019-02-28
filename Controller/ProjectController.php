@@ -48,7 +48,7 @@ class ProjectController extends BaseController
         return $response;
     }
 
-    public function saveProjectAction(Request $request)
+    public function saveProjectAction(Request $request, $configId)
     {
         $this->initialize();
         // every logged in user is authorized to create new projects
@@ -58,6 +58,7 @@ class ProjectController extends BaseController
         $plugins = $this->getPlugins();
         $event = new SaveProjectEvent();
         // get entities
+        $event->setConfigId($configId);
         $event->setEntities($this->getEntities($plugins));
         $data = $request->request->all();
         $data['createGroup'] = true;
@@ -121,7 +122,7 @@ class ProjectController extends BaseController
         return new JsonResponse(['form' => $event->getDialog()]);
     }
 
-    public function saveEditedProjectAction(Request $request, $projectId)
+    public function saveEditedProjectAction(Request $request, $projectId, $configId)
     {
         $this->initialize();
         if (!$this->hasWriteAccess($projectId)) {
@@ -129,6 +130,7 @@ class ProjectController extends BaseController
         }
         $plugins = $this->getPlugins();
         $event = new SaveProjectEvent();
+        $event->setConfigId($configId);
         $event->setPluginInstances($plugins);
         $data = array_merge($request->request->all(), ['id' => $projectId]);
         foreach ($data as $key => $value) {
@@ -196,7 +198,6 @@ class ProjectController extends BaseController
         // it is assumed here that the parent of the project element is the starboard tab
         $arrData['tabId'] = $projectElem->pid;
         $arrData['childsCount'] = 0;
-        $returnData['name'] = $data['caption'];
         $returnData['projectLayer'] = $arrData;
         return $returnData;
     }
