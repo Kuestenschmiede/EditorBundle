@@ -63,8 +63,6 @@ export class Editor extends Sideboard {
 
     super(options);
     this.options = options;
-    // TODO tabs aufteilen in selectTabs und drawTabs, am besten für jeden Tab eigene Property, damit alle einzeln
-    // TODO angesteuert werden können!
     this.tabs = [];
     this.lastDrawInteraction = undefined;
     this.proxy = this.options.mapController.proxy;
@@ -375,6 +373,11 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
     });
     mapController.map.addControl(editor);
     mapController.controls.editor = editor;
+
+    // open editor if opened before
+    if (mapData.editor.open || (mapData.caching && (utils.getValue(mapController.controls.editor.options.name) === '1'))) {
+      mapController.controls.editor.open();
+    }
   }
 });
 

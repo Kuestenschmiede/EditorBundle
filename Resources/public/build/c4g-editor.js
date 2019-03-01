@@ -821,9 +821,9 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
       this.options.mapController.map.on('change:size', this.update, this);
 
       // Show open if desired
-      if (this.options.defaultOpen || this.options.caching && _c4gMapsUtils.utils.getValue(this.options.name) == '1') {
-        this.open();
-      }
+      // if ((this.options.defaultOpen) || (this.options.caching && (utils.getValue(this.options.name) == '1'))) {
+      //   this.open();
+      // }
 
       return true;
     } // end of "create"
@@ -7154,8 +7154,6 @@ var Editor = exports.Editor = function (_Sideboard) {
     var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, options));
 
     _this.options = options;
-    // TODO tabs aufteilen in selectTabs und drawTabs, am besten für jeden Tab eigene Property, damit alle einzeln
-    // TODO angesteuert werden können!
     _this.tabs = [];
     _this.lastDrawInteraction = undefined;
     _this.proxy = _this.options.mapController.proxy;
@@ -7497,6 +7495,11 @@ window.c4gMapsHooks.mapController_addControls.push(function (params) {
     });
     mapController.map.addControl(editor);
     mapController.controls.editor = editor;
+
+    // open editor if opened before
+    if (mapData.editor.open || mapData.caching && _c4gMapsUtils.utils.getValue(mapController.controls.editor.options.name) === '1') {
+      mapController.controls.editor.open();
+    }
   }
 });
 
