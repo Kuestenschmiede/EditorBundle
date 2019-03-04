@@ -8972,7 +8972,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
     key: "editProject",
     value: function editProject(container, project) {
       var scope = this;
-      var request = new C4GAjaxRequest("con4gis/projectForm/" + project.id, "POST");
+      var request = new C4GAjaxRequest("con4gis/projectForm/" + project.id + '/' + this.editor.configId, "POST");
       // get data
       var data = {};
       var fields = container.getElementsByClassName('formdata');

@@ -104,7 +104,7 @@ export class ProjectUIController {
    */
   editProject(container, project) {
     let scope = this;
-    let request = new C4GAjaxRequest("con4gis/projectForm/" + project.id, "POST");
+    let request = new C4GAjaxRequest("con4gis/projectForm/" + project.id + '/' + this.editor.configId, "POST");
     // get data
     let data = {};
     let fields = container.getElementsByClassName('formdata');

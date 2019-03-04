@@ -119,7 +119,7 @@ project_edit:
     methods: [GET]
 
 project_edit_save:
-    path: /con4gis/projectForm/{projectId}
+    path: /con4gis/projectForm/{projectId}/{configId}
     defaults:
         _scope: frontend
         _controller: "con4gisEditorBundle:Project:saveEditedProject"
