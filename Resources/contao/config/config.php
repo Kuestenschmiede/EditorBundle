@@ -38,6 +38,6 @@ $GLOBALS['c4g_locationtypes'][] = \con4gis\EditorBundle\Classes\EditorBrickTypes
 $GLOBALS['con4gis']['api-caching'][] = "projectEditorService";
 $GLOBALS['TL_PURGE']['folders']['con4gis_editor'] = array
 (
-    'callback' => array('\con4gis\EditorBundle\Classes\Caches\C4GEditorAutomator', 'purgeEditorConfigCache'),
+    'callback' => array('\con4gis\EditorBundle\Classes\Cache\C4GEditorAutomator', 'purgeEditorConfigCache'),
     'affected' => array('var/cache/prod/con4gis_projectEditorService')
 );

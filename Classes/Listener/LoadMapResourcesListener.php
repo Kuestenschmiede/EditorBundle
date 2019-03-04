@@ -29,9 +29,9 @@ class LoadMapResourcesListener
             ResourceLoader::loadJavaScriptResource("/bundles/con4giseditor/build/c4g-editor.js", ResourceLoader::BODY, 'c4g-editor');
             ResourceLoader::loadJavaScriptResource("/bundles/con4gisprojects/js/C4GBrickDialog.js", ResourceLoader::BODY, 'c4g-dialog-js');
             ResourceLoader::loadJavaScriptResource("/bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.js", ResourceLoader::BODY, 'c4g-dialog-datepicker');
-            ResourceLoader::loadCssResource("bundles/con4giseditor/css/c4g-project-editor.css", "c4g-project-editor");
-            ResourceLoader::loadCssResource("bundles/con4gisprojects/css/c4g_brick.css","c4g-brick");
-            ResourceLoader::loadCssResource("bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.css", "dialog-datepicker");
+            ResourceLoader::loadCssResource("bundles/con4giseditor/css/c4g-project-editor.css");
+            ResourceLoader::loadCssResourceDeferred("bundles/con4gisprojects/css/c4g_brick.css");
+            ResourceLoader::loadCssResourceDeferred("bundles/con4giscore/vendor/jQuery/plugins/jquery-simple-datetimepicker/1.13.0/jquery.simple-dtpicker.css");
         } else {
             ResourceLoader::loadJavaScriptResource('/bundles/con4giseditor/build/c4g-backend-editor.js', ResourceLoader::BODY, 'c4g-editor');
         }
