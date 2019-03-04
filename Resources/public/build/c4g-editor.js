@@ -7342,6 +7342,7 @@ var Editor = exports.Editor = function (_Sideboard) {
         this.editLayerGroup.setVisible(true);
       }
       this.mapsInterface.proxy.deactivateClickObserver();
+      this.options.mapController.mapHover.hoverTooltip.close();
     }
   }, {
     key: "loadLocationStyles",
