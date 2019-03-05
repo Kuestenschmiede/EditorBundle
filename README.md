@@ -3,7 +3,7 @@
 The con4gis EditorBundle is an extension of the con4gis MapsBundle.
 It enables a frontend editing tool, which can be used to draw different geometries 
 onto a map. Main features include:
-* Drawing of single points, line strings, polygons, circles and custom geometries via the freehand drawing.
+* Drawing of single points, line strings, polygons, circles and custom geometries via the freehand draw mode.
 * Serverside persistence of the drawn elements
 * Semantic categorization of your different draw styles 
 ## Installation

@@ -52,7 +52,7 @@ class ElementTypeController extends BaseController
             $eid,
             $cid,
             $pid,
-            71,
+            70,
             'none',
             $element->getCaption(),
             $element->getCaption(),
