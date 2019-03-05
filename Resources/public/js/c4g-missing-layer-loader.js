@@ -81,22 +81,16 @@ export class LayerLoader {
         // concat empty string in case the id is an integer
         scope.editor.mapsInterface.proxy.activeLayerIds[catLayer.id + ''] = catLayer.id + '';
 
-        // check if parent (project) exists
-        if (!scope.editor.mapsInterface.getLayerFromArray(catLayer.pid)) {
-          // category layer does not exist either
-          // scope.getProjectLayer(layerId, projectId, callable, catLayer);
-        } else {
-          let projectLayer = scope.editor.mapsInterface.getLayerFromArray(catLayer.pid);
-          console.log(projectLayer);
-          projectLayer.display = true;
-          projectLayer.hasChilds = true;
-          projectLayer.childsCount = projectLayer.childsCount || 0;
-          projectLayer.childsCount++;
-          projectLayer.visibleChilds = true;
-          projectLayer.childs = projectLayer.childs || [];
-          projectLayer.childs.push(catLayer);
-          callable(param, layerId);
-        }
+        let projectLayer = scope.editor.mapsInterface.getLayerFromArray(catLayer.pid);
+        console.log(projectLayer);
+        projectLayer.display = true;
+        projectLayer.hasChilds = true;
+        projectLayer.childsCount = projectLayer.childsCount || 0;
+        projectLayer.childsCount++;
+        projectLayer.visibleChilds = true;
+        projectLayer.childs = projectLayer.childs || [];
+        projectLayer.childs.push(catLayer);
+        callable(param, layerId);
         catLayer.childs = [];
         catLayer.childs.push(param);
         catLayer.hasChilds = true;
@@ -109,31 +103,5 @@ export class LayerLoader {
     });
 
     request.execute();
-  }
-
-  getProjectLayer(layerId, projectId, callable, categoryLayer) {
-    const scope = this;
-    let url = '/con4gis/projects/layer/' + projectId;
-    $.ajax(url).done(function(data) {
-      if (data.projectLayer) {
-        let projectLayer = new C4gLayer(data.projectLayer);
-        console.log(projectLayer.id);
-        scope.editor.mapsInterface.addToLayerArray(projectLayer);
-        let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-        scope.editor.mapsInterface.insertIntoLayerIds(projectLayer.id, index - 2);
-        scope.editor.mapsInterface.addToLayerIds(projectLayer.id);
-        // concat empty string in case the id is an integer
-        scope.editor.mapsInterface.proxy.activeLayerIds[projectLayer.id + ''] = projectLayer.id + '';
-        // execute callback for category layer
-        // callable(categoryLayer, layerId);
-        projectLayer.childs = [];
-        projectLayer.childs.push(categoryLayer);
-        projectLayer.hasChilds = true;
-        projectLayer.childsCount = projectLayer.childsCount || 0;
-        projectLayer.childsCount++;
-        projectLayer.tabId = categoryLayer.tabId;
-        scope.editor.mapsInterface.updateStarboard();
-      }
-    });
   }
 }

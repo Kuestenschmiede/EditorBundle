@@ -409,8 +409,8 @@ export class EditorSelectInteraction {
       $(copyDisplaceButton).on('click', function(event) {
         scope.showDisplaceDialog(bar, true);
       });
-      bar.appendChild(displaceButton);
-      bar.appendChild(copyDisplaceButton);
+      // bar.appendChild(displaceButton);
+      // bar.appendChild(copyDisplaceButton);
     }
     bar.appendChild(deselectButton);
     return bar;
