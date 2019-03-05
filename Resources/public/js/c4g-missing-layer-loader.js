@@ -34,10 +34,10 @@ export class LayerLoader {
       if (data.layer) {
         let elemLayer = new C4gLayer(data.layer);
         layer.pid = elemLayer.id;
-        let fnAddLayer = function(layer, layerId) {
-          scope.editor.mapsInterface.addToLayerArray(layer);
-          let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-          scope.editor.mapsInterface.insertIntoLayerIds(layer.id, index-1);
+        let fnAddLayer = function(lLayer, lLayerId) {
+          scope.editor.mapsInterface.addToLayerArray(lLayer);
+          let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(lLayerId);
+          scope.editor.mapsInterface.insertIntoLayerIds(lLayer.id, index-1);
         };
         if (!scope.editor.mapsInterface.getLayerFromArray(elemLayer.pid)) {
           // category layer does not exist either
@@ -75,12 +75,10 @@ export class LayerLoader {
         let catLayer = new C4gLayer(data.layer);
         scope.editor.mapsInterface.addToLayerArray(catLayer);
         let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-
         scope.editor.mapsInterface.insertIntoLayerIds(catLayer.id, index - 2);
-        // scope.editor.mapsInterface.addToLayerIds(catLayer.id);
         // concat empty string in case the id is an integer
         scope.editor.mapsInterface.proxy.activeLayerIds[catLayer.id + ''] = catLayer.id + '';
-
+        console.log(scope.editor.mapsInterface.getLayerArray());
         let projectLayer = scope.editor.mapsInterface.getLayerFromArray(catLayer.pid);
         console.log(projectLayer);
         projectLayer.display = true;
@@ -98,6 +96,7 @@ export class LayerLoader {
         catLayer.childsCount++;
         catLayer.visibleChilds = true;
         catLayer.tabId = param.tabId;
+        catLayer.content = [];
         scope.editor.mapsInterface.updateStarboard();
       }
     });

@@ -6646,12 +6646,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             outerDiv.appendChild(scope._elementUiController.createEditButton(i));
             // add copy button
             outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
-            if (scope.editor.projectController.projects.length > 1) {
-              // add displace button
-              outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
-              // add copy&displace button
-              outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
-            }
+            if (scope.editor.projectController.projects.length > 1) {}
+            // add displace button
+            // outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
+            // add copy&displace button
+            // outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+
 
             // add rotation button
             // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
@@ -8320,10 +8320,10 @@ var LayerLoader = exports.LayerLoader = function () {
         if (data.layer) {
           var elemLayer = new _c4gLayer.C4gLayer(data.layer);
           layer.pid = elemLayer.id;
-          var fnAddLayer = function fnAddLayer(layer, layerId) {
-            scope.editor.mapsInterface.addToLayerArray(layer);
-            var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-            scope.editor.mapsInterface.insertIntoLayerIds(layer.id, index - 1);
+          var fnAddLayer = function fnAddLayer(lLayer, lLayerId) {
+            scope.editor.mapsInterface.addToLayerArray(lLayer);
+            var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(lLayerId);
+            scope.editor.mapsInterface.insertIntoLayerIds(lLayer.id, index - 1);
           };
           if (!scope.editor.mapsInterface.getLayerFromArray(elemLayer.pid)) {
             // category layer does not exist either
@@ -8364,12 +8364,10 @@ var LayerLoader = exports.LayerLoader = function () {
           var catLayer = new _c4gLayer.C4gLayer(data.layer);
           scope.editor.mapsInterface.addToLayerArray(catLayer);
           var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-
           scope.editor.mapsInterface.insertIntoLayerIds(catLayer.id, index - 2);
-          // scope.editor.mapsInterface.addToLayerIds(catLayer.id);
           // concat empty string in case the id is an integer
           scope.editor.mapsInterface.proxy.activeLayerIds[catLayer.id + ''] = catLayer.id + '';
-
+          console.log(scope.editor.mapsInterface.getLayerArray());
           var projectLayer = scope.editor.mapsInterface.getLayerFromArray(catLayer.pid);
           console.log(projectLayer);
           projectLayer.display = true;
@@ -8387,6 +8385,7 @@ var LayerLoader = exports.LayerLoader = function () {
           catLayer.childsCount++;
           catLayer.visibleChilds = true;
           catLayer.tabId = param.tabId;
+          catLayer.content = [];
           scope.editor.mapsInterface.updateStarboard();
         }
       });

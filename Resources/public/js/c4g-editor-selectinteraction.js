@@ -290,9 +290,9 @@ export class EditorSelectInteraction {
           outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
           if (scope.editor.projectController.projects.length > 1) {
             // add displace button
-            outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
+            // outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
             // add copy&displace button
-            outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+            // outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
           }
 
           // add rotation button
