@@ -201,12 +201,16 @@ export class ProjectUIController {
    */
   deleteProject() {
     let project = this.projectController.currentProject;
+    // activate first tab
+    this.editor.tabs[0].activate();
     this.editor.selectView.reloadHelpContent();
     for (let i = 0; i < this.projectSelector.options.length; i++) {
       if (parseInt(this.projectSelector.options[i].value, 10) === project.id) {
         this.projectSelector.remove(this.projectSelector.options[i].index);
       }
     }
+    // select "choose project"
+    this.projectSelector.value = 0;
     this.projectController.deleteProject(project);
     if (window.c4gMapsHooks.project_deleted && window.c4gMapsHooks.project_deleted.length) {
       utils.callHookFunctions(window.c4gMapsHooks.project_deleted, {projectId: project.id})
@@ -228,7 +232,7 @@ export class ProjectUIController {
     selectBox.id = 'c4g_projects_select';
     option = document.createElement('option');
     option.text = langConstants.CHOOSE_PROJECT;
-    option.value = "";
+    option.value = "0";
     option.disabled = true;
     option.selected = true;
     selectBox.options[0] = option;
