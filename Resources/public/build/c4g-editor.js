@@ -4914,9 +4914,14 @@ var EditorDrawview = exports.EditorDrawview = function () {
     value: function createProjectFilter() {
       var scope = this;
       var filterDiv = document.createElement("div");
+      filterDiv.className = 'c4g-editor-filter';
       var filterInput = document.createElement("input");
-
+      filterInput.type = 'text';
+      filterInput.placeHolder = "";
+      var filterIcon = document.createElement('i');
+      filterIcon.className = 'fas fa-filter';
       filterDiv.appendChild(filterInput);
+      filterDiv.appendChild(filterIcon);
       $(filterInput).keyup(function () {
         var filterString = $(this).val();
         if (filterString.length === 0) {
