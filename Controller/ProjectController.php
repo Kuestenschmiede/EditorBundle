@@ -167,12 +167,28 @@ class ProjectController extends BaseController
         }
         return $entities;
     }
+    
+    public function getProjectLayerAction(Request $request, $projectId)
+    {
+        $this->initialize();
+        $data = [];
+        $data['id'] = $projectId;
+        $event = new SaveProjectEvent();
+        $event->setReturnData($data);
+        $data = $this->getProjectLayer($event);
+        return new JsonResponse($data);
+    }
 
     private function getProjectLayer(SaveProjectEvent $event)
     {
         $returnData = $event->getReturnData();
-        $data = $event->getData();
         $database = Database::getInstance();
+        $id = intval($returnData['id']);
+        $project = $this->entityManager->getRepository(EditorProject::class)->findOneBy(['id' => $id]);
+        if ($project) {
+            $returnData['caption'] = $project->getCaption();
+        }
+        
         $type = EditorBrickTypes::BRICK_GENERIC_PROJECT;
         $frontend = $this->get('editor_frontend');
         $projectElem = $database->prepare("SELECT * FROM tl_c4g_maps WHERE location_type = '$type'")->execute();
@@ -182,8 +198,8 @@ class ProjectController extends BaseController
             $projectElem->pid,
             69,
             'none',
-            $data['caption'],
-            $data['caption'],
+            $returnData['caption'],
+            $returnData['caption'],
             true,
             ""
         );

@@ -152,3 +152,10 @@ revert_element:
         _scope: frontend
         _controller: "con4gisEditorBundle:Element:revert"
     methods: [PUT]
+
+get_project_layer:
+    path: /con4gis/projects/layer/{projectId}
+    defaults:
+        _scope: frontend
+        _controller: "con4gisEditorBundle:Project:getProjectLayer"
+    methods: [GET]

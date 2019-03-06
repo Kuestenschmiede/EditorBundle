@@ -55,8 +55,12 @@ class CategoryController extends BaseController
             true,
             ""
         );
-        $arrElement['id'] = C4GBrickCommon::calcLayerId($cid, $pid, 70);
-        $arrElement['projectId'] = $pid;
+        $projectParentId = 3;
+        $arrElement['id'] = C4GBrickCommon::calcLayerId($cid, $pid, 71);
+        $arrElement['pid'] = C4GBrickCommon::calcLayerID($pid, $projectParentId, 70);
+        $arrElement['projectId'] = intval($pid);
+        $arrElement['display'] = true;
+        $arrElement['renderSpecial'] = true;
         $arrElement['hide'] = "";
         return new JsonResponse(['layer' => $arrElement]);
     }

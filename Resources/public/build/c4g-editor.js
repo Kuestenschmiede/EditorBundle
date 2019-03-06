@@ -4914,9 +4914,14 @@ var EditorDrawview = exports.EditorDrawview = function () {
     value: function createProjectFilter() {
       var scope = this;
       var filterDiv = document.createElement("div");
+      filterDiv.className = 'c4g-editor-filter';
       var filterInput = document.createElement("input");
-
+      filterInput.type = 'text';
+      filterInput.placeHolder = "";
+      var filterIcon = document.createElement('i');
+      filterIcon.className = 'fas fa-filter';
       filterDiv.appendChild(filterInput);
+      filterDiv.appendChild(filterIcon);
       $(filterInput).keyup(function () {
         var filterString = $(this).val();
         if (filterString.length === 0) {
@@ -6646,12 +6651,12 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
             outerDiv.appendChild(scope._elementUiController.createEditButton(i));
             // add copy button
             outerDiv.appendChild(scope._elementUiController.createCopyButton(i));
-            if (scope.editor.projectController.projects.length > 1) {
-              // add displace button
-              outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
-              // add copy&displace button
-              outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
-            }
+            if (scope.editor.projectController.projects.length > 1) {}
+            // add displace button
+            // outerDiv.appendChild(scope._elementUiController.createDisplaceButton(i));
+            // add copy&displace button
+            // outerDiv.appendChild(scope._elementUiController.createCopyAndDisplaceButton(i));
+
 
             // add rotation button
             // outerDiv.appendChild(scope._elementUiController.createRotateButton(i));
@@ -6767,8 +6772,8 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
         $(copyDisplaceButton).on('click', function (event) {
           scope.showDisplaceDialog(bar, true);
         });
-        bar.appendChild(displaceButton);
-        bar.appendChild(copyDisplaceButton);
+        // bar.appendChild(displaceButton);
+        // bar.appendChild(copyDisplaceButton);
       }
       bar.appendChild(deselectButton);
       return bar;
@@ -8320,10 +8325,10 @@ var LayerLoader = exports.LayerLoader = function () {
         if (data.layer) {
           var elemLayer = new _c4gLayer.C4gLayer(data.layer);
           layer.pid = elemLayer.id;
-          var fnAddLayer = function fnAddLayer(layer, layerId) {
-            scope.editor.mapsInterface.addToLayerArray(layer);
-            var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
-            scope.editor.mapsInterface.insertIntoLayerIds(layer.id, index - 1);
+          var fnAddLayer = function fnAddLayer(lLayer, lLayerId) {
+            scope.editor.mapsInterface.addToLayerArray(lLayer);
+            var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(lLayerId);
+            scope.editor.mapsInterface.insertIntoLayerIds(lLayer.id, index - 1);
           };
           if (!scope.editor.mapsInterface.getLayerFromArray(elemLayer.pid)) {
             // category layer does not exist either
@@ -8365,21 +8370,31 @@ var LayerLoader = exports.LayerLoader = function () {
           scope.editor.mapsInterface.addToLayerArray(catLayer);
           var index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
           scope.editor.mapsInterface.insertIntoLayerIds(catLayer.id, index - 2);
-          scope.editor.mapsInterface.addToLayerIds(catLayer.id);
           // concat empty string in case the id is an integer
           scope.editor.mapsInterface.proxy.activeLayerIds[catLayer.id + ''] = catLayer.id + '';
-          if (callable && param) {
-            callable(param, layerId);
-          }
+          console.log(scope.editor.mapsInterface.getLayerArray());
+          var projectLayer = scope.editor.mapsInterface.getLayerFromArray(catLayer.pid);
+          console.log(projectLayer);
+          projectLayer.display = true;
+          projectLayer.hasChilds = true;
+          projectLayer.childsCount = projectLayer.childsCount || 0;
+          projectLayer.childsCount++;
+          projectLayer.visibleChilds = true;
+          projectLayer.childs = projectLayer.childs || [];
+          projectLayer.childs.push(catLayer);
+          callable(param, layerId);
           catLayer.childs = [];
           catLayer.childs.push(param);
           catLayer.hasChilds = true;
           catLayer.childsCount = catLayer.childsCount || 0;
           catLayer.childsCount++;
+          catLayer.visibleChilds = true;
           catLayer.tabId = param.tabId;
+          catLayer.content = [];
           scope.editor.mapsInterface.updateStarboard();
         }
       });
+
       request.execute();
     }
   }]);
@@ -8803,6 +8818,7 @@ var ProjectController = exports.ProjectController = function () {
           }
         }
       }
+      this._editor.mapsInterface.updateStarboard();
     }
   }, {
     key: "editor",
@@ -9075,12 +9091,16 @@ var ProjectUIController = exports.ProjectUIController = function () {
     key: "deleteProject",
     value: function deleteProject() {
       var project = this.projectController.currentProject;
+      // activate first tab
+      this.editor.tabs[0].activate();
       this.editor.selectView.reloadHelpContent();
       for (var i = 0; i < this.projectSelector.options.length; i++) {
         if (parseInt(this.projectSelector.options[i].value, 10) === project.id) {
           this.projectSelector.remove(this.projectSelector.options[i].index);
         }
       }
+      // select "choose project"
+      this.projectSelector.value = 0;
       this.projectController.deleteProject(project);
       if (window.c4gMapsHooks.project_deleted && window.c4gMapsHooks.project_deleted.length) {
         _c4gMapsUtils.utils.callHookFunctions(window.c4gMapsHooks.project_deleted, { projectId: project.id });
@@ -9105,7 +9125,7 @@ var ProjectUIController = exports.ProjectUIController = function () {
       selectBox.id = 'c4g_projects_select';
       option = document.createElement('option');
       option.text = _c4gEditorI18n.langConstants.CHOOSE_PROJECT;
-      option.value = "";
+      option.value = "0";
       option.disabled = true;
       option.selected = true;
       selectBox.options[0] = option;

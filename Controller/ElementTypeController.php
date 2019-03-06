@@ -60,7 +60,7 @@ class ElementTypeController extends BaseController
             ""
         );
         // set correct id
-        $arrElement['id'] = EditorCommon::calcLayerId($eid, $cid, $pid, 71);
+        $arrElement['id'] = EditorCommon::calcLayerId($eid, $cid, $pid, 72);
         $arrElement['projectId'] = intval($pid);
         $arrElement['content'] = [];
         $arrElement['hasChilds'] = true;
