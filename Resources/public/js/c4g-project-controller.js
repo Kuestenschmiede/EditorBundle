@@ -207,6 +207,7 @@ export class ProjectController {
         }
       }
     }
+    this._editor.mapsInterface.updateStarboard();
   }
 
   get editor() {

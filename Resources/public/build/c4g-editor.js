@@ -8818,6 +8818,7 @@ var ProjectController = exports.ProjectController = function () {
           }
         }
       }
+      this._editor.mapsInterface.updateStarboard();
     }
   }, {
     key: "editor",
