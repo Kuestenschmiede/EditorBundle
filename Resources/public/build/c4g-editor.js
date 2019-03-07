@@ -7453,7 +7453,13 @@ var Editor = exports.Editor = function (_Sideboard) {
       if (this.editLayerGroup.getVisible()) {
         this.editLayerGroup.setVisible(false);
       }
+      this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "";
       this.mapsInterface.proxy.activateClickObserver();
+    }
+  }, {
+    key: "preHideFunction",
+    value: function preHideFunction() {
+      this.preCloseFunction();
     }
 
     /**
@@ -7470,6 +7476,9 @@ var Editor = exports.Editor = function (_Sideboard) {
       }
       this.mapsInterface.proxy.deactivateClickObserver();
       this.options.mapController.mapHover.hoverTooltip.close();
+      if (this.options.mapController.proxy.currentPopup) {
+        this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "none";
+      }
     }
   }, {
     key: "loadLocationStyles",

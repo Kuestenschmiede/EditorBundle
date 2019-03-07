@@ -225,7 +225,12 @@ export class Editor extends Sideboard {
     if (this.editLayerGroup.getVisible()) {
       this.editLayerGroup.setVisible(false);
     }
+    this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "";
     this.mapsInterface.proxy.activateClickObserver();
+  }
+
+  preHideFunction() {
+    this.preCloseFunction();
   }
 
   /**
@@ -239,6 +244,9 @@ export class Editor extends Sideboard {
     }
     this.mapsInterface.proxy.deactivateClickObserver();
     this.options.mapController.mapHover.hoverTooltip.close();
+    if (this.options.mapController.proxy.currentPopup) {
+      this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "none";
+    }
   }
 
   loadLocationStyles(drawStyles, callback) {
