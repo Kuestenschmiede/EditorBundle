@@ -58,12 +58,6 @@ class EditorConfiguration extends BaseEntity
     protected $categories = [];
 
     /**
-     * @var array
-     * @ORM\Column(type="array", name="editor_vars")
-     */
-    protected $editorVars = [];
-
-    /**
      * @var int
      * @ORM\Column(type="integer", name="editor_show_items")
      */
@@ -165,22 +159,6 @@ class EditorConfiguration extends BaseEntity
     public function setCategories(array $categories): void
     {
         $this->categories = $categories;
-    }
-
-    /**
-     * @return array
-     */
-    public function getEditorVars(): array
-    {
-        return $this->editorVars;
-    }
-
-    /**
-     * @param array $editorVars
-     */
-    public function setEditorVars(array $editorVars): void
-    {
-        $this->editorVars = $editorVars;
     }
 
     /**

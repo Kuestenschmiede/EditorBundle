@@ -133,14 +133,6 @@ $GLOBALS['TL_DCA'][$strName] = array
                 'tl_class' => 'c4g_w50',
             ),
         ),
-        'editor_vars' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_vars'],
-            'inputType'               => 'keyValueWizard',
-            'exclude'                 => true,
-            'sql'                     => "text NULL"
-        ),
-
         'editor_show_items' => array
         (
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_show_items'],
