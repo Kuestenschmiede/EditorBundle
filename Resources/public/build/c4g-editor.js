@@ -150,6 +150,17 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/*
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
 var C4gLayer = exports.C4gLayer = function C4gLayer(layerArr) {
   _classCallCheck(this, C4gLayer);
 
@@ -202,6 +213,18 @@ var C4gLayer = exports.C4gLayer = function C4gLayer(layerArr) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/*
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
+
 
 
 /**
@@ -306,6 +329,18 @@ var langConstantsGerman = exports.langConstantsGerman = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+/*
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
+
 /**
  * Language constants (en)
  */
@@ -414,6 +449,18 @@ var langConstantsEnglish = exports.langConstantsEnglish = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/*
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
+
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -564,7 +611,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This file is part of con4gis,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * the gis-kit for Contao CMS.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @package    con4gis
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @version    6
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author     con4gis contributors (see "authors.txt")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @license    LGPL-3.0-or-later
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @copyright  Küstenschmiede GmbH Software & Design
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @link       https://www.con4gis.org
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 "use strict";
 /**
@@ -1357,7 +1414,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This file is part of con4gis,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * the gis-kit for Contao CMS.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @package    con4gis
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @version    6
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author     con4gis contributors (see "authors.txt")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @license    LGPL-3.0-or-later
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @copyright  Küstenschmiede GmbH Software & Design
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @link       https://www.con4gis.org
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 'use strict';
 
@@ -1434,6 +1501,18 @@ var _c4gMapsConstantI18nDe = __webpack_require__(/*! ./c4g-maps-constant-i18n-de
 
 var _c4gMapsConstantI18nEn = __webpack_require__(/*! ./c4g-maps-constant-i18n-en */ "../MapsBundle/Resources/public/js/c4g-maps-constant-i18n-en.js");
 
+/*
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
+
 /**
  *  This script imports all different languages and exports the one that is valid for the configured language.
  */
@@ -1465,7 +1544,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Spinner = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of con4gis,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * the gis-kit for Contao CMS.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @package    con4gis
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @version    6
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @author     con4gis contributors (see "authors.txt")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @license    LGPL-3.0-or-later
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @copyright  Küstenschmiede GmbH Software & Design
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @link       https://www.con4gis.org
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 var _c4gMapsConstant = __webpack_require__(/*! ./c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
 
@@ -1555,7 +1644,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TooltipPopUp = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of con4gis,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * the gis-kit for Contao CMS.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @package    con4gis
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @version    6
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @author     con4gis contributors (see "authors.txt")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @license    LGPL-3.0-or-later
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @copyright  Küstenschmiede GmbH Software & Design
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @link       https://www.con4gis.org
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 var _c4gMapsConstant = __webpack_require__(/*! ./c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
 
@@ -1760,10 +1859,16 @@ exports.fnSicherheitAdditional = fnSicherheitAdditional;
 exports.fnWreckInfo = fnWreckInfo;
 exports.fnKlosterAdditional = fnKlosterAdditional;
 /*
-  K?stenschmiede GmbH Software & Design 2011 - 2018
- @author     K?stenschmiede <http://www.kuestenschmiede.de>
- @license    http://opensource.org/licenses/lgpl-3.0.html
-*/
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
 function trim(b) {
     return b.replace(/^\s+/, "").replace(/\s+$/, "");
 }
@@ -2619,10 +2724,16 @@ exports.fnSicherheitAdditional = fnSicherheitAdditional;
 exports.fnWreckInfo = fnWreckInfo;
 exports.fnKlosterAdditional = fnKlosterAdditional;
 /*
-  K?stenschmiede GmbH Software & Design 2011 - 2018
- @author     K?stenschmiede <http://www.kuestenschmiede.de>
- @license    http://opensource.org/licenses/lgpl-3.0.html
-*/
+ * This file is part of con4gis,
+ * the gis-kit for Contao CMS.
+ *
+ * @package    con4gis
+ * @version    6
+ * @author     con4gis contributors (see "authors.txt")
+ * @license    LGPL-3.0-or-later
+ * @copyright  Küstenschmiede GmbH Software & Design
+ * @link       https://www.con4gis.org
+ */
 function trim(b) {
     return b.replace(/^\s+/, "").replace(/\s+$/, "");
 }
@@ -3435,7 +3546,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.utils = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /*
+                                                                                                                                                                                                                                                                               * This file is part of con4gis,
+                                                                                                                                                                                                                                                                               * the gis-kit for Contao CMS.
+                                                                                                                                                                                                                                                                               *
+                                                                                                                                                                                                                                                                               * @package    con4gis
+                                                                                                                                                                                                                                                                               * @version    6
+                                                                                                                                                                                                                                                                               * @author     con4gis contributors (see "authors.txt")
+                                                                                                                                                                                                                                                                               * @license    LGPL-3.0-or-later
+                                                                                                                                                                                                                                                                               * @copyright  Küstenschmiede GmbH Software & Design
+                                                                                                                                                                                                                                                                               * @link       https://www.con4gis.org
+                                                                                                                                                                                                                                                                               */
+
 
 var _c4gMapsConstant = __webpack_require__(/*! ./c4g-maps-constant */ "../MapsBundle/Resources/public/js/c4g-maps-constant.js");
 
