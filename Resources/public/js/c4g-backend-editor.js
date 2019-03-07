@@ -11,9 +11,9 @@
   */
 import {cssConstants} from "./c4g-editor-constant-css";
 import {utils} from "../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
-import {Sideboard} from "../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
+import {Sideboard} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
 import {TooltipPopUp} from "../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";
-import {langConstants} from "../../../../MapsBundle/Resources/public/js/c4g-maps-i18n";
+import {getLanguage} from "../../../../MapsBundle/Resources/public/js/c4g-maps-i18n";
 
 'use strict';
 export class BackendEditor extends Sideboard {
@@ -44,9 +44,10 @@ export class BackendEditor extends Sideboard {
         'Freehand'
       ],
       direction: 'left',
-      headline: langConstants.EDITOR
+      headline: getLanguage(options.mapController.data).EDITOR
       // initMode: 'select'
     }, options);
+    this.langConstants = getLanguage(options.mapController.data);
 
     if (!this.options.mapController) {
       console.warn('Coul not initiallize Editor, without valid mapController.');
@@ -69,7 +70,7 @@ export class BackendEditor extends Sideboard {
     }
 
     // call parent constructor
-    Sideboard.call(this, this.options);
+    // Sideboard.call(this, this.options);
   };
 
   /**
@@ -212,7 +213,6 @@ export class BackendEditor extends Sideboard {
     if (returnData.styles_linestring) {
       returnData.styles_line = returnData.styles_linestring;
     }
-    console.log(returnData);
     return returnData;
   }
 
@@ -257,23 +257,23 @@ export class BackendEditor extends Sideboard {
 
     selectContentWrapper = document.createElement('div');
 
-    selectContentHeadline = document.createElement('div');
-    selectContentHeadline.innerHTML = langConstants.EDITOR_VIEW_TRIGGER_SELECT;
-    selectContentHeadline.className = 'contentHeadline';
-    selectContentWrapper.appendChild(selectContentHeadline);
-
+    // selectContentHeadline = document.createElement('div');
+    // selectContentHeadline.innerHTML = this.langConstants.EDITOR_VIEW_TRIGGER_SELECT;
+    // selectContentHeadline.className = 'contentHeadline';
+    // selectContentWrapper.appendChild(selectContentHeadline);
+    this.contentHeadline.style.display = "none";
     selectContent = document.createElement('div');
     selectContent.className = cssConstants.EDITOR_CONTENT_SELECT;
     selectContentInfo = document.createElement('p');
-    selectContentInfo.innerHTML = langConstants.EDITOR_SELECT_INFO;
-    selectContentInfo.innerHTML += '<br><br><sub>' + langConstants.EDITOR_SELECT_INFO_ADDITIONAL + '</sub>';
+    selectContentInfo.innerHTML = this.langConstants.EDITOR_SELECT_INFO;
+    selectContentInfo.innerHTML += '<br><br><sub>' + this.langConstants.EDITOR_SELECT_INFO_ADDITIONAL + '</sub>';
     selectContent.appendChild(selectContentInfo);
     selectContentWrapper.appendChild(selectContent);
 
     selectView = this.addView({
       name: 'select',
       triggerConfig: {
-        tipLabel: langConstants.EDITOR_VIEW_TRIGGER_SELECT,
+        tipLabel: this.langConstants.EDITOR_VIEW_TRIGGER_SELECT,
         className: cssConstants.EDITOR_VIEW_TRIGGER_SELECT,
         withHeadline: true
       },
@@ -463,7 +463,7 @@ export class BackendEditor extends Sideboard {
             // add apply button
             applyButton = document.createElement('button');
             applyButton.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_APPLY;
-            applyButton.title = langConstants.EDITOR_FEATURE_APPLY;
+            applyButton.title = this.langConstants.EDITOR_FEATURE_APPLY;
             applyButton.setAttribute('feat_id', i);
 
             self.applyFeatureModification = function (event) {
@@ -572,14 +572,14 @@ export class BackendEditor extends Sideboard {
                 // add modify button
                 modifyButtonElement = document.createElement('button');
                 modifyButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_MODIFY;
-                modifyButtonElement.title = langConstants.EDITOR_FEATURE_MODIFY;
+                modifyButtonElement.title = self.langConstants.EDITOR_FEATURE_MODIFY;
                 modifyButtonElement.setAttribute('feat_id', i);
                 $(modifyButtonElement).click(modifyFeatureFunction);
                 headlineElement.appendChild(modifyButtonElement);
                 // add delete button
                 deleteButtonElement = document.createElement('button');
                 deleteButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_DELETE;
-                deleteButtonElement.title = langConstants.EDITOR_FEATURE_DELETE;
+                deleteButtonElement.title = self.langConstants.EDITOR_FEATURE_DELETE;
                 deleteButtonElement.setAttribute('feat_id', i);
                 $(deleteButtonElement).click(deleteFeatureFunction);
                 headlineElement.appendChild(deleteButtonElement);
@@ -587,11 +587,11 @@ export class BackendEditor extends Sideboard {
                 selectContent.appendChild(headlineElement);
                 if (selectedFeature.get('measuredLength')) {
                   if (selectedFeature.getGeometry() instanceof ol.geom.LineString) {
-                    label = langConstants.LENGTH;
+                    label = self.langConstants.LENGTH;
                   } else if (selectedFeature.getGeometry() instanceof ol.geom.Polygon) {
-                    label = langConstants.PERIMETER;
+                    label = self.langConstants.PERIMETER;
                   } else {
-                    label = langConstants.RADIUS;
+                    label = self.langConstants.RADIUS;
                   }
                   paragraphElement = document.createElement('p');
                   paragraphElement.innerHTML += '<strong>' + label + ':</strong> ' + selectedFeature.get('measuredLength').htmlValue;
@@ -599,12 +599,12 @@ export class BackendEditor extends Sideboard {
                 }
                 if (selectedFeature.get('measuredArea')) {
                   paragraphElement = document.createElement('p');
-                  paragraphElement.innerHTML += '<strong>' + langConstants.SURFACEAREA + ':</strong> ' + selectedFeature.get('measuredArea').htmlValue;
+                  paragraphElement.innerHTML += '<strong>' + self.langConstants.SURFACEAREA + ':</strong> ' + selectedFeature.get('measuredArea').htmlValue;
                   selectContent.appendChild(paragraphElement);
                 }
                 if (selectedFeature.get('measuredRadius')) {
                   paragraphElement = document.createElement('p');
-                  paragraphElement.innerHTML += '<strong>' + langConstants.RADIUS + ':</strong> ' + selectedFeature.get('measuredRadius').htmlValue;
+                  paragraphElement.innerHTML += '<strong>' + self.langConstants.RADIUS + ':</strong> ' + selectedFeature.get('measuredRadius').htmlValue;
                   selectContent.appendChild(paragraphElement);
                 }
                 // check and append editor-vars
@@ -632,13 +632,13 @@ export class BackendEditor extends Sideboard {
                   selectContent.appendChild(paragraphElement);
                 }
               }
-              selectContentHeadline.style.display = 'none';
+              // selectContentHeadline.style.display = 'none';
               // self.statusBar.innerHTML = featureCount;
 
             } else {
               selectContent.appendChild(selectContentInfo);
               // self.statusBar.innerHTML = 0;
-              selectContentHeadline.style.display = '';
+              // selectContentHeadline.style.display = '';
             }
             self.update();
           }; // end of "renderSelectedFeaturesList"
@@ -664,7 +664,7 @@ export class BackendEditor extends Sideboard {
           selectContent.innerHTML = '';
           selectContent.appendChild(selectContentInfo);
           // self.statusBar.innerHTML = 0;
-          selectContentHeadline.style.display = '';
+          // selectContentHeadline.style.display = '';
         }
 
         // Enable interaction
@@ -727,7 +727,7 @@ export class BackendEditor extends Sideboard {
 
     drawContent = document.createElement('div');
     drawContent.className = cssConstants['EDITOR_DRAW_CONTENT_' + options.type.toUpperCase()];
-    drawContent.innerHTML = '<h4>' + langConstants[TRIGGER_DRAW] + '</h4>';
+    drawContent.innerHTML = '<h4>' + self.langConstants[TRIGGER_DRAW] + '</h4>';
 
     if (options.type.toLowerCase() !== 'point') {
       optionsDiv = document.createElement('div');
@@ -741,7 +741,7 @@ export class BackendEditor extends Sideboard {
 
       enableInstantMeasureCheckboxLabel = document.createElement('label');
       enableInstantMeasureCheckboxLabel.setAttribute('for', 'enableInstantMeasureFor' + options.type);
-      enableInstantMeasureCheckboxLabel.innerHTML = langConstants.EDITOR_ENABLE_INSTANT_MEASURE;
+      enableInstantMeasureCheckboxLabel.innerHTML = self.langConstants.EDITOR_ENABLE_INSTANT_MEASURE;
       optionsDiv.appendChild(enableInstantMeasureCheckboxLabel);
 
       optionsDiv.appendChild(document.createElement('br'));
@@ -868,7 +868,6 @@ export class BackendEditor extends Sideboard {
           tipLabel: self.proxy.locationStyleController.arrLocStyles[styleId].tooltip || name,
           className: cssConstants.EDITOR_DRAW_TRIGGER,
           target: drawContent,
-          withHeadline: true
         },
         sectionElements: [
           {section: self.contentContainer, element: drawContent},
@@ -1064,9 +1063,8 @@ export class BackendEditor extends Sideboard {
     drawView = self.addView({
       name: 'draw:' + options.type.toLowerCase(),
       triggerConfig: {
-        tipLabel: langConstants[TRIGGER_DRAW],
+        tipLabel: self.langConstants[TRIGGER_DRAW],
         className: cssConstants[TRIGGER_DRAW],
-        withHeadline: true
       },
       sectionElements: [
         {section: self.contentContainer, element: drawContent},
@@ -1476,18 +1474,20 @@ export class BackendEditor extends Sideboard {
 window.c4gMapsHooks = window.c4gMapsHooks || {};
 window.c4gMapsHooks.mapController_addControls = window.c4gMapsHooks.mapController_addControls || [];
 window.c4gMapsHooks.mapController_addControls.push(function(params) {
-  console.log("hook called");
   let mapController = params.mapController;
   const mapData = mapController.data;
   // mapController.map.removeControl(mapController.controls.editor);
   let editor = new BackendEditor({
-    tipLabel: langConstants.CTRL_EDITOR,
+    tipLabel: getLanguage(mapData).CTRL_EDITOR,
     type: mapData.editor.type || 'frontend',
     target: mapData.editor.target || params.Container,
     initOpen: mapData.editor.open || false,
     dataField: mapData.editor.data_field || false,
     caching: mapData.caching,
-    mapController: mapController
+    mapController: mapController,
+    direction: 'left',
+    name: 'editor',
+    headline: getLanguage(mapData).EDITOR
   });
   mapController.map.addControl(editor);
   mapController.controls.editor = editor;

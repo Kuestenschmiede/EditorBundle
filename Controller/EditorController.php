@@ -48,7 +48,7 @@ class EditorController extends BaseController
     public function configEditorAction(Request $request, $configId)
     {
         $this->initialize();
-        if (!$this->checkFeUser()) {
+        if (TL_MODE === 'FE' && !$this->checkFeUser()) {
             return new Response("No user logged in!", 403);
         }
         // check for cache
@@ -111,8 +111,12 @@ class EditorController extends BaseController
     {
         $geoEditor = new GeoEditor($layerId);
         $strResponse = $geoEditor->run();
-        $response = new Response($strResponse['data'], 200, array('Content-Type: Document'));
-        return $response;
+        if ($strResponse instanceof Response) {
+            return $strResponse;
+        } else {
+            $response = new Response($strResponse['data'], 200, array('Content-Type: Document'));
+            return $response;
+        }
     }
     
     private function getGroupsForProjects($arrProjects)

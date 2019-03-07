@@ -81,6 +81,7 @@ class GeoEditor extends \Contao\Backend
         $this->id = $mapId;
         $this->c4g_map_id = $mapId;
         $objMapData = MapDataConfigurator::prepareMapData($this, $this->Database, array('geoeditor' => true));
+        ResourceLoader::loadCssResource('bundles/con4giseditor/css/c4g-project-editor.css');
         $objMapData['editor']['enable'] = true;
         $objMapData['editor']['type'] = 'backend';
         $objMapData['editor']['open'] = true;
@@ -88,7 +89,7 @@ class GeoEditor extends \Contao\Backend
 
         $this->Template->mapData = $objMapData;
 
-		$this->Template->output();
+		return $this->Template->getResponse();
 	}
 
 	private function findMapId($layerId)

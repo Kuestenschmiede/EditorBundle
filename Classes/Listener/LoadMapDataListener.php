@@ -13,6 +13,7 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
+use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
 use con4gis\MapsBundle\Classes\Events\LoadMapdataEvent;
 use con4gis\MapsBundle\Resources\contao\models\C4gMapProfilesModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,10 +26,14 @@ class LoadMapDataListener
         EventDispatcherInterface $eventDispatcher
     ) {
         $data = $event->getMapData();
-        $profileId = $data['profile'];
-        $profile = C4gMapProfilesModel::findByPk($profileId);
-        $data['feEditorProfile'] = $profile->feEditorProfile;
-        $data['beEditorProfile'] = $profile->beEditorProfile;
+        if (!C4GUtils::isFrontendUserLoggedIn()) {
+            $data['editor']['enable'] = false;
+        } else {
+            $profileId = $data['profile'];
+            $profile = C4gMapProfilesModel::findByPk($profileId);
+            $data['feEditorProfile'] = $profile->feEditorProfile;
+            $data['beEditorProfile'] = $profile->beEditorProfile;
+        }
         $event->setMapData($data);
     }
 }

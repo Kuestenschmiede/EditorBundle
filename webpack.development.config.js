@@ -1,9 +1,12 @@
 var path = require('path');
 var config = {
-  entry: './Resources/public/js/c4g-editor.js',
+  entry: {
+    'c4g-editor': './Resources/public/js/c4g-editor.js',
+    'c4g-backend-editor': './Resources/public/js/c4g-backend-editor.js'
+  },
   mode: "development",
   output: {
-    filename: 'c4g-editor.js',
+    filename: '[name].js',
     path: path.resolve('./Resources/public/build/')
   },
   devtool: "source-map",
