@@ -377,7 +377,14 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
 
     // open editor if opened before
     if (mapData.editor.open || (mapData.caching && (utils.getValue(mapController.controls.editor.options.name) === '1'))) {
-      mapController.controls.editor.open();
+      if (mapController.proxy.layers_loaded) {
+        mapController.controls.editor.open();
+      } else {
+        window.c4gMapsHooks.proxy_layer_drawn = window.c4gMapsHooks.proxy_layer_drawn || [];
+        window.c4gMapsHooks.proxy_layer_drawn.push(function() {
+          mapController.controls.editor.open();
+        });
+      }
     }
   }
 });
