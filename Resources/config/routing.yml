@@ -6,6 +6,14 @@ project_editor_service:
         _controller: "con4gisEditorBundle:Editor:configEditor"
     methods: [GET]
 
+# Editor config
+backend_editor_service:
+    path: /con4gis/editorServiceBackend/{configId}
+    defaults:
+        _scope: frontend
+        _controller: "con4gisEditorBundle:Editor:configEditorBackend"
+    methods: [GET]
+
 # Id service for generated Ids
 project_id_service:
     path: /con4gis/projectIdService

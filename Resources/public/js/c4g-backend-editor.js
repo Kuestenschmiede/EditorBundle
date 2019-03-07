@@ -125,7 +125,7 @@ export class BackendEditor extends Sideboard {
     this.tabs[0].activate();
 
     //   AJAX: get editor config
-    $.getJSON(self.options.mapController.data.api.editor + '/' + self.options.mapController.data.beEditorProfile)
+    $.getJSON('/con4gis/editorServiceBackend/' + self.options.mapController.data.beEditorProfile)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
         data = self.prepareEditorStyleData(data);

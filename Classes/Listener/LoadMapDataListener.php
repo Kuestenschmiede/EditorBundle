@@ -26,11 +26,13 @@ class LoadMapDataListener
         EventDispatcherInterface $eventDispatcher
     ) {
         $data = $event->getMapData();
+        $profileId = $data['profile'];
+        $profile = C4gMapProfilesModel::findByPk($profileId);
         if (!C4GUtils::isFrontendUserLoggedIn()) {
             $data['editor']['enable'] = false;
+            // set profile in case its backend editor
+            $data['beEditorProfile'] = $profile->beEditorProfile;
         } else {
-            $profileId = $data['profile'];
-            $profile = C4gMapProfilesModel::findByPk($profileId);
             $data['feEditorProfile'] = $profile->feEditorProfile;
             $data['beEditorProfile'] = $profile->beEditorProfile;
         }

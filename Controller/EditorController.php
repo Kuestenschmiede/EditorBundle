@@ -91,6 +91,50 @@ class EditorController extends BaseController
         $response->setData($this->responseData);
         return $response;
     }
+    
+    public function configEditorBackendAction(Request $request, $configId)
+    {
+        $this->initialize();
+        // check for cache
+//        $this->checkForCacheSettings("projectEditorService");
+//        if (self::$useCache) {
+//            $this->checkAndStoreCachedData($request);
+//        }
+        $response = new JsonResponse();
+        // return if cached data exists
+        if (!self::$outputFromCache) {
+            $configurationEvent = new EditorConfigurationEvent();
+            $configurationEvent->setConfigId($configId);
+            $this->eventDispatcher->dispatch($configurationEvent::NAME, $configurationEvent);
+            if (\FrontendUser::getInstance()->id) {
+                $loadProjectsEvent = new LoadProjectsEvent();
+                $loadProjectsEvent->setMemberId(\FrontendUser::getInstance()->id);
+                $this->eventDispatcher->dispatch($loadProjectsEvent::NAME, $loadProjectsEvent);
+                $projects = $loadProjectsEvent->getProjects();
+            } else {
+                // fallback
+                $projects = [];
+            }
+            
+            $formattedProjects = [];
+            // reformat project data for editor display
+            foreach ($projects as $project) {
+                $formattedProjects[] = $this->createProjectArray($project);
+            }
+            $editorConfig = $configurationEvent->getEditorConfig();
+            $editorConfig['projects'] = $formattedProjects;
+            $editorConfig['groups'] = $this->getGroupsForProjects($formattedProjects);
+            $this->responseData = $editorConfig;
+            $this->storeDataInCache($request);
+        } else {
+            // load from cache
+            $editorConfig = $this->responseData;
+            $editorConfig['fromcache'] = true;
+            $this->responseData = $editorConfig;
+        }
+        $response->setData($this->responseData);
+        return $response;
+    }
 
     public function getIdAction(Request $request)
     {
