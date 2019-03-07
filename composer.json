@@ -23,7 +23,8 @@
         "contao/core-bundle": "^4.4",
         "con4gis/maps": "^6.0",
         "con4gis/projects": "^1.3",
-        "con4gis/groups": "^2.3"
+        "con4gis/groups": "^2.3",
+        "symfony/serializer": "*"
     },
     "conflict": {
         "contao/core": "*",
