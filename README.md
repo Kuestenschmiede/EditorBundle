@@ -1,4 +1,4 @@
-# con4gis EditorBundle
+# con4gis-EditorBundle
 ## Overview
 The con4gis EditorBundle is an extension of the con4gis MapsBundle.
 It enables a frontend editing tool, which can be used to draw different geometries 

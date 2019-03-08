@@ -12,6 +12,6 @@
   */
 
 
-$GLOBALS['TL_LANG']['MOD']['EditorMapCategories'] = array('Editor: Categories', 'Categories for projects.');
-$GLOBALS['TL_LANG']['MOD']['EditorMapElements']   = array('Editor: Element types', 'Element types for projects.');
-$GLOBALS['TL_LANG']['MOD']['EditorConfiguration']   = array('Editor: Configuration', 'Configure the editor');
+$GLOBALS['TL_LANG']['MOD']['EditorMapCategories'] = array('Editor categories', 'Categories for projects.');
+$GLOBALS['TL_LANG']['MOD']['EditorMapElements']   = array('Editor element types', 'Element types for projects.');
+$GLOBALS['TL_LANG']['MOD']['EditorConfiguration']   = array('Editor configuration', 'Configure the editor');
