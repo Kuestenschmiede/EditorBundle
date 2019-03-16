@@ -121,7 +121,7 @@ export class ProjectController {
    */
   deleteProject(project) {
     let scope = this;
-    $.ajax('con4gis/project/' + project.id, {
+    jQuery.ajax('con4gis/project/' + project.id, {
       method: 'DELETE'
     }).done(function(data) {
       if (data.success) {
@@ -144,7 +144,7 @@ export class ProjectController {
    */
   createProject(projectData, callback) {
     let url = "con4gis/project/" + this.editor.configId;
-    $.ajax(url, {method: "POST", data: projectData}).done(function(data) {
+    jQuery.ajax(url, {method: "POST", data: projectData}).done(function(data) {
       callback(data);
     });
   }

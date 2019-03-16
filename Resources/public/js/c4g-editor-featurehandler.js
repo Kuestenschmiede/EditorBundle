@@ -112,7 +112,7 @@ export class FeatureHandler {
     this.mapsInterface.updateLayerIndex(layerId, layer);
     this.mapsInterface.updateStarboard();
     let url = this.editor.dataBaseUrl + this.editor.projectController.currentProject.id + "/" + layer.id;
-    $.ajax(url, {method: 'PUT', data: changes}).fail(function(data) {
+    jQuery.ajax(url, {method: 'PUT', data: changes}).fail(function(data) {
       let ah = new AlertHandler();
       ah.showErrorDialog("Es ist ein Fehler aufgetreten", data.responseText);
     });

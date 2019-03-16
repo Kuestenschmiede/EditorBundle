@@ -11,7 +11,7 @@
   */
 import {cssConstants as styles} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-constant";
 
-export let cssConstants = $.extend({
+export let cssConstants = jQuery.extend({
   BUTTON_APPLY: 'c4g-button-apply',
   DRAW_CONTENT_POINT: "c4g-draw-content-point",
   DRAW_CONTENT_LINESTRING: "c4g-draw-content-point",

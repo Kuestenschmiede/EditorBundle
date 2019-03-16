@@ -24,4 +24,4 @@ if (typeof mapData !== "undefined") {
     mapsLang = langConstantsGerman;
   }
 }
-export var langConstants = $.extend(mapsLang, projectEditorLang);
+export var langConstants = jQuery.extend(mapsLang, projectEditorLang);

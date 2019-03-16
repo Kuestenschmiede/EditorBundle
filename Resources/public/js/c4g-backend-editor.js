@@ -30,7 +30,7 @@ export class BackendEditor extends Sideboard {
   constructor(options) {
     super(options);
     // extend options
-    this.options = $.extend({
+    this.options = jQuery.extend({
       name: 'editor',
       type: 'frontend',
       dataField: false,
@@ -66,7 +66,7 @@ export class BackendEditor extends Sideboard {
     this.proxy = this.options.mapController.proxy;
 
     if (this.options.dataField && typeof this.options.dataField === 'string') {
-      this.options.dataField = $(this.options.dataField) || false;
+      this.options.dataField = jQuery(this.options.dataField) || false;
     }
 
     // call parent constructor
@@ -125,7 +125,7 @@ export class BackendEditor extends Sideboard {
     this.tabs[0].activate();
 
     //   AJAX: get editor config
-    $.getJSON('/con4gis/editorServiceBackend/' + self.options.mapController.data.beEditorProfile)
+    jQuery.getJSON('/con4gis/editorServiceBackend/' + self.options.mapController.data.beEditorProfile)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
         data = self.prepareEditorStyleData(data);
@@ -491,7 +491,7 @@ export class BackendEditor extends Sideboard {
               }
             };
 
-            $(applyButton).click(self.applyFeatureModification);
+            jQuery(applyButton).click(self.applyFeatureModification);
             modifyButton = modifyButton.parentNode.replaceChild(applyButton, modifyButton);
           }; // end of "modifyFeatureFunction()"
 
@@ -566,7 +566,7 @@ export class BackendEditor extends Sideboard {
                   utils.decodeGeoJsonProperty(selectedFeature.get('tooltip') || '')
                 );
                 inputNameElement.setAttribute('feat_id', i);
-                $(inputNameElement).keydown(blurOnEnter);
+                jQuery(inputNameElement).keydown(blurOnEnter);
                 inputNameElement.onchange = nameChangeHandler;
                 headlineElement.appendChild(inputNameElement);
                 // add modify button
@@ -574,14 +574,14 @@ export class BackendEditor extends Sideboard {
                 modifyButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_MODIFY;
                 modifyButtonElement.title = self.langConstants.EDITOR_FEATURE_MODIFY;
                 modifyButtonElement.setAttribute('feat_id', i);
-                $(modifyButtonElement).click(modifyFeatureFunction);
+                jQuery(modifyButtonElement).click(modifyFeatureFunction);
                 headlineElement.appendChild(modifyButtonElement);
                 // add delete button
                 deleteButtonElement = document.createElement('button');
                 deleteButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_DELETE;
                 deleteButtonElement.title = self.langConstants.EDITOR_FEATURE_DELETE;
                 deleteButtonElement.setAttribute('feat_id', i);
-                $(deleteButtonElement).click(deleteFeatureFunction);
+                jQuery(deleteButtonElement).click(deleteFeatureFunction);
                 headlineElement.appendChild(deleteButtonElement);
 
                 selectContent.appendChild(headlineElement);
@@ -623,7 +623,7 @@ export class BackendEditor extends Sideboard {
                   );
                   inputElement.setAttribute('feat_id', i);
                   inputElement.setAttribute('var_id', j);
-                  $(inputElement).keydown(blurOnEnter);
+                  jQuery(inputElement).keydown(blurOnEnter);
                   inputElement.onchange = inputChangeHandler;
 
                   paragraphElement.appendChild(strongElement);
@@ -711,7 +711,7 @@ export class BackendEditor extends Sideboard {
 
     self = this;
 
-    options = $.extend({
+    options = jQuery.extend({
       type: 'Point',
       styleIds: []
     }, options);
@@ -1278,7 +1278,7 @@ export class BackendEditor extends Sideboard {
     for (i = 0; i < featureCollection.length; i += 1) {
       styleId = featureCollection[i].get('styleId');
 
-      if ((!self.proxy.locationStyleController.arrLocStyles[styleId] || !self.proxy.locationStyleController.arrLocStyles[styleId].style) && $.inArray(styleId, neededStyles) === -1) {
+      if ((!self.proxy.locationStyleController.arrLocStyles[styleId] || !self.proxy.locationStyleController.arrLocStyles[styleId].style) && jQuery.inArray(styleId, neededStyles) === -1) {
         neededStyles.push(styleId);
       }
     }
@@ -1424,7 +1424,7 @@ export class BackendEditor extends Sideboard {
         return false;
       }
 
-      if (styleId && (!self.proxy.locationStyleController.arrLocStyles[styleId] || !self.proxy.locationStyleController.arrLocStyles[styleId].style) && $.inArray(styleId, neededStyles) === -1) {
+      if (styleId && (!self.proxy.locationStyleController.arrLocStyles[styleId] || !self.proxy.locationStyleController.arrLocStyles[styleId].style) && jQuery.inArray(styleId, neededStyles) === -1) {
         neededStyles.push(styleId);
       }
 

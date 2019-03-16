@@ -43,12 +43,12 @@ export class ProjectUIController {
   createEditProjectButton() {
     const scope = this;
     let button = document.createElement("button");
-    $(button).on('click', function (event) {
+    jQuery(button).on('click', function (event) {
       scope.clearFeatureSelection();
-      $(this).addClass(cssConstants.ACTIVE);
+      jQuery(this).addClass(cssConstants.ACTIVE);
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass(cssConstants.ACTIVE);
+          jQuery(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createEditProjectForm();
@@ -84,10 +84,10 @@ export class ProjectUIController {
       cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
       cancelButton.title = "Abbrechen";
       // clear selectContent
-      $(cancelButton).on('click', function(event) {
+      jQuery(cancelButton).on('click', function(event) {
         scope.cancelDialog();
       });
-      $(confirmButton).on('click', function(event) {
+      jQuery(confirmButton).on('click', function(event) {
         scope.editProject(formContainer, project);
       });
       formContainer.appendChild(confirmButton);
@@ -150,12 +150,12 @@ export class ProjectUIController {
     let scope = this;
     let button = document.createElement("button");
     button.className = cssConstants.BUTTON_PROJECT_DELETE;
-    $(button).on("click", function (event) {
+    jQuery(button).on("click", function (event) {
       scope.clearFeatureSelection();
-      $(this).addClass(cssConstants.ACTIVE);
+      jQuery(this).addClass(cssConstants.ACTIVE);
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass(cssConstants.ACTIVE);
+          jQuery(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createDeleteProjectForm();
@@ -182,10 +182,10 @@ export class ProjectUIController {
     cancelButton.title = "Abbrechen";
     // clear selectContent
 
-    $(cancelButton).on('click', function(event) {
+    jQuery(cancelButton).on('click', function(event) {
       scope.cancelDialog();
     });
-    $(confirmButton).on("click", function(event) {
+    jQuery(confirmButton).on("click", function(event) {
       scope.deleteProject();
     });
     confirmForm.appendChild(confirmButton);
@@ -245,7 +245,7 @@ export class ProjectUIController {
       }
     }
     oldValue = selectBox.value;
-    $(selectBox).on('change', function(event) {
+    jQuery(selectBox).on('change', function(event) {
       let currentVal = parseInt(this.value, 10);
       for (let i = 0; i < projects.length; i++) {
         if (projects[i].id === currentVal) {
@@ -270,8 +270,8 @@ export class ProjectUIController {
     if (window.c4gMapsHooks && window.c4gMapsHooks.project_changed && window.c4gMapsHooks.project_changed.length) {
       utils.callHookFunctions(window.c4gMapsHooks.project_changed, {newProject: newProject});
     }
-    $(editor.viewTriggerBar).show();
-    $(editor.contentHeadline).show();
+    jQuery(editor.viewTriggerBar).show();
+    jQuery(editor.contentHeadline).show();
     // cancel any running form on project change
     this.cancelDialog();
     editor.toggleDrawContent(true);
@@ -305,13 +305,13 @@ export class ProjectUIController {
     let createButton = document.createElement('button');
     createButton.className = cssConstants.BUTTON_PROJECT_CREATE;
     // ".done" listener
-    $(createButton).on('click', function(event) {
+    jQuery(createButton).on('click', function(event) {
       scope.clearFeatureSelection();
-      $(this).addClass(cssConstants.ACTIVE);
+      jQuery(this).addClass(cssConstants.ACTIVE);
       event.preventDefault();
       scope.projectButtons.forEach(function(element) {
         if (element !== this) {
-          $(element).removeClass(cssConstants.ACTIVE);
+          jQuery(element).removeClass(cssConstants.ACTIVE);
         }
       });
       scope.createNewProjectForm();
@@ -328,17 +328,17 @@ export class ProjectUIController {
     let scope = this;
     let editor = this.editor;
     let url = '/con4gis/project/';
-    $.ajax(url).done(function(data) {
+    jQuery.ajax(url).done(function(data) {
       // activate tab with select view
       editor.tabs[0].activate();
       if (editor.selectView.selectContentHeadline) {
         editor.selectView.selectContentHeadline.innerHTML = data.headline;
       }
       editor.selectView.selectContent.innerHTML = data.form;
-      $(document.getElementById("send-dialog")).on('click', function(event) {
+      jQuery(document.getElementById("send-dialog")).on('click', function(event) {
         scope.createNewProject();
       });
-      $(document.getElementById("cancel-dialog")).on("click", function(event) {
+      jQuery(document.getElementById("cancel-dialog")).on("click", function(event) {
         scope.cancelDialog();
       });
     });
@@ -387,7 +387,7 @@ export class ProjectUIController {
     if (this.editor.selectView) {
       this.editor.selectView.reloadHelpContent();
       this.projectButtons.forEach(function(element) {
-        $(element).removeClass(cssConstants.ACTIVE);
+        jQuery(element).removeClass(cssConstants.ACTIVE);
       });
     }
   }
@@ -411,9 +411,9 @@ export class ProjectUIController {
   }
 
   reloadProjectControls() {
-    let container = $(this.editor.topToolbar).children('.'+ cssConstants.PROJECT_BUTTON_BAR)[0];
+    let container = jQuery(this.editor.topToolbar).children('.'+ cssConstants.PROJECT_BUTTON_BAR)[0];
     container.replaceWith(this.getButtonBar());
-    // TODO editor.topToolbar > $(cssConstants.PROJECT_BUTTON_BAR)
+    // TODO editor.topToolbar > jQuery(cssConstants.PROJECT_BUTTON_BAR)
     // TODO muss ersetzt werden
     // TODO mit den controls fürs aktuelle projekt
     // TODO bei keinem Projekt wird nur der add button angezeigt
@@ -421,7 +421,7 @@ export class ProjectUIController {
   }
 
   checkPermissionForButton(button, project) {
-    if ($(button).hasClass(cssConstants.BUTTON_PROJECT_CREATE)) {
+    if (jQuery(button).hasClass(cssConstants.BUTTON_PROJECT_CREATE)) {
       // always show create project button
       return true;
     }

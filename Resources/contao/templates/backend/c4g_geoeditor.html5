@@ -48,9 +48,9 @@
   <script>
   // since PHP wont convert the base64 properly, we let JS do the job
   try {
-    $('[name=geoData]').val(atob(decodeURIComponent($('[name=geoData]').val())));
+    jQuery('[name=geoData]').val(atob(decodeURIComponent(jQuery('[name=geoData]').val())));
   } catch (e) {
-    $('[name=geoData]').val('');
+    jQuery('[name=geoData]').val('');
   }
   </script>
   <?= implode('', $GLOBALS['TL_BODY']); ?>

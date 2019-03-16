@@ -172,13 +172,13 @@ export class EditorDrawview {
     }
 
     // click listener for toggling the categories
-    $(toggleView).click(function(event) {
-      if ($(this).hasClass(cssConstants.TOGGLE_CATEGORY_OPEN)) {
-        $(this).removeClass(cssConstants.TOGGLE_CATEGORY_OPEN).addClass(cssConstants.TOGGLE_CATEGORY_CLOSED);
+    jQuery(toggleView).click(function(event) {
+      if (jQuery(this).hasClass(cssConstants.TOGGLE_CATEGORY_OPEN)) {
+        jQuery(this).removeClass(cssConstants.TOGGLE_CATEGORY_OPEN).addClass(cssConstants.TOGGLE_CATEGORY_CLOSED);
         elementDiv.style.display = "none";
         category.visible = false;
       } else {
-        $(this).removeClass(cssConstants.TOGGLE_CATEGORY_CLOSED).addClass(cssConstants.TOGGLE_CATEGORY_OPEN);
+        jQuery(this).removeClass(cssConstants.TOGGLE_CATEGORY_CLOSED).addClass(cssConstants.TOGGLE_CATEGORY_OPEN);
         elementDiv.style.display = "block";
         category.visible = true;
       }
@@ -186,7 +186,7 @@ export class EditorDrawview {
 
     //closed categories by default
     //ToDo insert caching mechanism
-    //$(toggleView).removeClass("c4g-toggle-category-opened").addClass("c4g-toggle-category-open");
+    //jQuery(toggleView).removeClass("c4g-toggle-category-opened").addClass("c4g-toggle-category-open");
     //elementDiv.style.display = "block";
     category.visible = true;
 
@@ -276,12 +276,12 @@ export class EditorDrawview {
     filterIcon.className = 'fas fa-filter';
     filterDiv.appendChild(filterInput);
     filterDiv.appendChild(filterIcon);
-    $(filterInput).keyup(function() {
-      let filterString = $(this).val();
+    jQuery(filterInput).keyup(function() {
+      let filterString = jQuery(this).val();
       if (filterString.length === 0) {
         // show all entries when no filterString exists
-        $('.c4g-category-headline').css('display', '');
-        $('.c4g-draw-trigger').css('display', '');
+        jQuery('.c4g-category-headline').css('display', '');
+        jQuery('.c4g-draw-trigger').css('display', '');
         return;
       }
       let matchedCatIds = [];

@@ -43,7 +43,7 @@ export class Editor extends Sideboard {
       return;
     }
     // extend options
-    options = $.extend({
+    options = jQuery.extend({
       name: 'editor',
       type: 'frontend',
       dataField: false,
@@ -80,7 +80,7 @@ export class Editor extends Sideboard {
       utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
     }
     if (this.options.dataField && typeof this.options.dataField === 'string') {
-      this.options.dataField = $(this.options.dataField) || false;
+      this.options.dataField = jQuery(this.options.dataField) || false;
     }
   };
 
@@ -105,14 +105,14 @@ export class Editor extends Sideboard {
     this.configId = this.options.mapController.data.feEditorProfile;
     // load editor configuration
     let url = "con4gis/editorService/" + this.configId;
-    $.getJSON(url)
+    jQuery.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
         scope.projectController.createProjects(data.projects);
 
         scope.dataBaseUrl = data.dataBaseUrl;
-        $(scope.viewTriggerBar).hide();
-        $(scope.contentHeadline).hide();
+        jQuery(scope.viewTriggerBar).hide();
+        jQuery(scope.contentHeadline).hide();
         scope.projectUiController.createProjectSelect();
         scope.projectUiController.createNewProjectButton();
         scope.projectUiController.createEditProjectButton();

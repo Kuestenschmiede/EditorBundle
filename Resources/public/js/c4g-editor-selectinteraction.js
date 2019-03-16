@@ -351,20 +351,20 @@ export class EditorSelectInteraction {
     let bar = document.createElement('div');
     let deselectButton = document.createElement('button');
     deselectButton.title = langConstants.BUTTON_DESELECT_ALL;
-    $(deselectButton).addClass(cssConstants.BUTTON_DESELECT_ALL);
-    $(deselectButton).on('click', function(event) {
+    jQuery(deselectButton).addClass(cssConstants.BUTTON_DESELECT_ALL);
+    jQuery(deselectButton).on('click', function(event) {
       scope.deselectAllElements();
     });
     let deleteButton = document.createElement('button');
     deleteButton.title = langConstants.BUTTON_DELETE_ALL;
-    $(deleteButton).addClass(cssConstants.BUTTON_DELETE_ALL);
-    $(deleteButton).on('click', function(event) {
+    jQuery(deleteButton).addClass(cssConstants.BUTTON_DELETE_ALL);
+    jQuery(deleteButton).on('click', function(event) {
       scope.showDeleteConfirmDialog(bar);
     });
     let translateButton = document.createElement('button');
     translateButton.title = langConstants.BUTTON_TRANSLATE_ALL;
-    $(translateButton).addClass(cssConstants.BUTTON_TRANSLATE_ALL);
-    $(translateButton).on('click', function(event) {
+    jQuery(translateButton).addClass(cssConstants.BUTTON_TRANSLATE_ALL);
+    jQuery(translateButton).on('click', function(event) {
       // exchange interactions
       scope.selectInteraction.deactivate();
       scope._editor.options.mapController.map.removeInteraction(scope.selectInteraction);
@@ -377,8 +377,8 @@ export class EditorSelectInteraction {
       // exchange button
       let applyTranslationButton = document.createElement('button');
       applyTranslationButton.title = langConstants.BUTTON_APPLY_TRANSLATE;
-      $(applyTranslationButton).addClass(cssConstants.BUTTON_APPLY);
-      $(applyTranslationButton).on('click', function (event) {
+      jQuery(applyTranslationButton).addClass(cssConstants.BUTTON_APPLY);
+      jQuery(applyTranslationButton).on('click', function (event) {
         applyTranslationButton.replaceWith(translateButton);
         let features = scope.selectInteraction.getFeatures().getArray();
         for (let i = 0; i < features.length; i++) {
@@ -399,14 +399,14 @@ export class EditorSelectInteraction {
     if (this.editor.projectController.projects.length > 1) {
       let displaceButton = document.createElement('button');
       displaceButton.title = langConstants.BUTTON_DISPLACE_ALL;
-      $(displaceButton).addClass(cssConstants.BUTTON_DISPLACE_ALL);
-      $(displaceButton).on('click', function(event) {
+      jQuery(displaceButton).addClass(cssConstants.BUTTON_DISPLACE_ALL);
+      jQuery(displaceButton).on('click', function(event) {
         scope.showDisplaceDialog(bar, false);
       });
       let copyDisplaceButton = document.createElement('button');
       copyDisplaceButton.title = langConstants.BUTTON_COPY_DISPLACE_ALL;
-      $(copyDisplaceButton).addClass(cssConstants.BUTTON_COPY_DISPLACE_ALL);
-      $(copyDisplaceButton).on('click', function(event) {
+      jQuery(copyDisplaceButton).addClass(cssConstants.BUTTON_COPY_DISPLACE_ALL);
+      jQuery(copyDisplaceButton).on('click', function(event) {
         scope.showDisplaceDialog(bar, true);
       });
       // bar.appendChild(displaceButton);
@@ -432,13 +432,13 @@ export class EditorSelectInteraction {
     let confirmLabel = document.createElement("p");
     confirmLabel.innerText = langConstants.CONFIRM_DELETE_ALL;
     const confirmButton = document.createElement("button");
-    $(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
-    $(confirmButton).on('click', function(event) {
+    jQuery(confirmButton).addClass(cssConstants.ICON + " c4g-editor-dialog-confirm");
+    jQuery(confirmButton).on('click', function(event) {
       scope.deleteAllElements();
     });
     const cancelButton = document.createElement("button");
-    $(cancelButton).addClass(cssConstants.ICON + " c4g-editor-dialog-cancel");
-    $(cancelButton).on('click', function(event) {
+    jQuery(cancelButton).addClass(cssConstants.ICON + " c4g-editor-dialog-cancel");
+    jQuery(cancelButton).on('click', function(event) {
       scope.elementUiController.reloadSelectedFeatureView();
     });
     buttonBar.appendChild(confirmLabel);
@@ -479,10 +479,10 @@ export class EditorSelectInteraction {
     let cancelButton = document.createElement("button");
     cancelButton.className = "c4g-editor-dialog-cancel";
     cancelButton.title = langConstants.BUTTON_CANCEL;
-    $(confirmButton).on('click', function(event) {
-      scope.displaceAllElements($(projectSelect).val(), withCopy);
+    jQuery(confirmButton).on('click', function(event) {
+      scope.displaceAllElements(jQuery(projectSelect).val(), withCopy);
     });
-    $(cancelButton).on('click', function(event) {
+    jQuery(cancelButton).on('click', function(event) {
       scope._elementUiController.reloadSelectedFeatureView();
     });
     formContainer.appendChild(projectSelect);

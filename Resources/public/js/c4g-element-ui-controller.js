@@ -39,7 +39,7 @@ export class ElementUIController {
     modifyButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_MODIFY;
     modifyButtonElement.title = langConstants.EDITOR_FEATURE_MODIFY;
     modifyButtonElement.setAttribute('feat_id', index);
-    $(modifyButtonElement).click(function(event) {
+    jQuery(modifyButtonElement).click(function(event) {
       scope.modifyFeatureFunction(event);
     });
     return modifyButtonElement;
@@ -53,7 +53,7 @@ export class ElementUIController {
       modifyButton,
       applyButton;
 
-    $(event.target.parentNode).children('button').each(function(idx, elem) {
+    jQuery(event.target.parentNode).children('button').each(function(idx, elem) {
       elem.setAttribute('disabled', true);
     });
     let editor = this.editor;
@@ -80,7 +80,7 @@ export class ElementUIController {
     applyButton.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_APPLY;
     applyButton.title = langConstants.EDITOR_FEATURE_APPLY;
     applyButton.setAttribute('feat_id', modifyButton.getAttribute('feat_id'));
-    $(applyButton).click(function(event) {
+    jQuery(applyButton).click(function(event) {
       scope.applyFeatureModification(translateInteraction, modifyInteraction, modifyFeature, modifyButton, applyButton);
     });
     modifyButton = modifyButton.parentNode.replaceChild(applyButton, modifyButton);
@@ -137,7 +137,7 @@ export class ElementUIController {
     deleteButtonElement.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_DELETE;
     deleteButtonElement.title = langConstants.EDITOR_FEATURE_DELETE;
     deleteButtonElement.setAttribute('feat_id', index);
-    $(deleteButtonElement).click(function(event) {
+    jQuery(deleteButtonElement).click(function(event) {
       scope.showDeleteDialog(event.target.getAttribute('feat_id'));
     });
     return deleteButtonElement;
@@ -150,14 +150,14 @@ export class ElementUIController {
     deleteHintLabel.innerText = langConstants.EDITOR_FEATURE_DELETE_QUESTION;
     container.appendChild(deleteHintLabel);
     const confirmButton = document.createElement("button");
-    $(confirmButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CONFIRM);
-    $(confirmButton).on('click', function(event) {
+    jQuery(confirmButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CONFIRM);
+    jQuery(confirmButton).on('click', function(event) {
       scope.handleDeleteFeatureEvent(featureId);
     });
     container.appendChild(confirmButton);
     const cancelButton = document.createElement("button");
-    $(cancelButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CANCEL);
-    $(cancelButton).on('click', function(event) {
+    jQuery(cancelButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CANCEL);
+    jQuery(cancelButton).on('click', function(event) {
       scope.reloadSelectedFeatureView();
     });
     container.appendChild(cancelButton);
@@ -179,7 +179,7 @@ export class ElementUIController {
     editButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_EDIT_DATA;
     editButtonElement.title = langConstants.METADATA_EDIT;
     editButtonElement.setAttribute('feat_id', index);
-    $(editButtonElement).click(function(event) {
+    jQuery(editButtonElement).click(function(event) {
       scope.handleEditFeatureEvent(event);
     });
     return editButtonElement;
@@ -256,7 +256,7 @@ export class ElementUIController {
     copyButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DUPLICATE_DATA;
     copyButtonElement.title = langConstants.DUPLICATE_ELEMENT;
     copyButtonElement.setAttribute('feat_id', index);
-    $(copyButtonElement).click(function(event) {
+    jQuery(copyButtonElement).click(function(event) {
       scope.handleCopyFeatureEvent(event);
     });
     return copyButtonElement;
@@ -279,7 +279,7 @@ export class ElementUIController {
     displaceButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DISPLACE_DATA;
     displaceButtonElement.title = langConstants.DISPLACE_ELEMENT;
     displaceButtonElement.setAttribute('feat_id', index);
-    $(displaceButtonElement).click(function(event) {
+    jQuery(displaceButtonElement).click(function(event) {
       scope.handleDisplaceFeatureEvent(event, false);
     });
     return displaceButtonElement;
@@ -301,10 +301,10 @@ export class ElementUIController {
     cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
     cancelButton.title = "Abbrechen";
     // clear selectContent
-    $(cancelButton).on('click', function(event) {
+    jQuery(cancelButton).on('click', function(event) {
       scope.reloadSelectedFeatureView();
     });
-    $(confirmButton).on('click', function(event) {
+    jQuery(confirmButton).on('click', function(event) {
       scope.elementController.displaceElement(feature, layerId, withCopy, projectSelect.value);
     });
     formContainer.appendChild(projectSelect);
@@ -322,7 +322,7 @@ export class ElementUIController {
     copyDisplaceButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DUPLICATE_DISPLACE_DATA;
     copyDisplaceButton.title = langConstants.DUPLICATE_AND_DELETE;
     copyDisplaceButton.setAttribute('feat_id', index);
-    $(copyDisplaceButton).click(function(event) {
+    jQuery(copyDisplaceButton).click(function(event) {
       scope.handleDisplaceFeatureEvent(event, true);
     });
     return copyDisplaceButton;
@@ -334,15 +334,15 @@ export class ElementUIController {
     rotateButtonElement.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_ROTATE_DATA;
     rotateButtonElement.title = langConstants.ROTATE_ELEMENT;
     rotateButtonElement.setAttribute('feat_id', index);
-    $(rotateButtonElement).click(function(event) {
+    jQuery(rotateButtonElement).click(function(event) {
       // exchange interactions
       scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
       let rotateInteraction = new RotationInteraction(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
       scope.editor.options.mapController.map.addInteraction(rotateInteraction);
       // swap buttons
       let applyButton = document.createElement('button');
-      $(applyButton).addClass(cssConstants.BUTTON_APPLY);
-      $(applyButton).on('click', function (event) {
+      jQuery(applyButton).addClass(cssConstants.BUTTON_APPLY);
+      jQuery(applyButton).on('click', function (event) {
         // exchange interactions back
         scope.editor.options.mapController.map.removeInteraction(scope.selectInteraction.selectInteraction);
         scope.editor.options.mapController.map.addInteraction(rotateInteraction);
@@ -362,7 +362,7 @@ export class ElementUIController {
     deselectButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_DESELECT_DATA;
     deselectButton.title = langConstants.DESELECT_ELEMENT;
     deselectButton.setAttribute('feat_id', index);
-    $(deselectButton).click(function(event) {
+    jQuery(deselectButton).click(function(event) {
       scope.elementController.deselectElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
     });
     return deselectButton;
@@ -374,7 +374,7 @@ export class ElementUIController {
     revertButton.className = cssConstants.ICON + ' ' + cssConstants.BUTTON_REVERT_DATA;
     revertButton.title = langConstants.REVERT_ELEMENT;
     revertButton.setAttribute('feat_id', index);
-    $(revertButton).click(function(event) {
+    jQuery(revertButton).click(function(event) {
       scope.elementController.revertElement(scope.selectInteraction.selectInteraction.getFeatures().item(event.target.getAttribute('feat_id')));
     });
     return revertButton;

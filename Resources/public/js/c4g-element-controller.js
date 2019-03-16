@@ -51,7 +51,7 @@ export class ElementController {
     this.mapsInterface.removeLayerFromArray(layerId);
     let projectId = this.editor.projectController.currentProject.id;
     // send delete request to server
-    $.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"}).fail(function(data) {
+    jQuery.ajax(this.editor.dataBaseUrl + projectId + "/" + layerId, {method: "DELETE"}).fail(function(data) {
       scope.handleApiError(data.responseText);
     });
     // rerender the selectionList
@@ -102,7 +102,7 @@ export class ElementController {
     const scope = this;
     let layerId = feature.get('layerId');
     let url = "/con4gis/projectDataCopy/" + this.editor.projectController.currentProject.id + "/" + layerId;
-    $.ajax(url, {method: "POST"}).done(function (data) {
+    jQuery.ajax(url, {method: "POST"}).done(function (data) {
       scope.selectInteraction.showNewLayer(data.layer, true);
     });
   }
@@ -126,7 +126,7 @@ export class ElementController {
     if (withCopy) {
       this.copyElement(feature);
     }
-    $.ajax(url, {method: 'POST'}).done(function (data) {
+    jQuery.ajax(url, {method: 'POST'}).done(function (data) {
       let newProjectId = parseInt(data.newProjectId, 10);
       feature.set('projectId', newProjectId);
       // and from the selection
@@ -201,7 +201,7 @@ export class ElementController {
     let layerId = feature.get('layerId');
     let projectId = this.editor.projectController.currentProject.id;
     let layer = this.mapsInterface.getLayerFromArray(layerId);
-    $.ajax('/con4gis/element/revert/' + layerId + '/' + projectId, {method: 'PUT'}).done(function(data) {
+    jQuery.ajax('/con4gis/element/revert/' + layerId + '/' + projectId, {method: 'PUT'}).done(function(data) {
       scope.editor.mapsInterface.removeLayerFromArray(layer.id);
       scope.editor.featureHandler.updateLayer(data, layer, feature, true);
       scope.editor.mapsInterface.proxy.layerController.showLayer(layer.id);

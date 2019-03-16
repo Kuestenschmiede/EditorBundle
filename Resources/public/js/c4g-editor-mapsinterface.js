@@ -140,7 +140,7 @@ export class MapsInterface {
             // entryWrapper is the element which has the acutal content, and a open/close arrow or nothing, if there
             // are no childs for the current element
             let entryWrapper = layer.entryWrappers[0];
-            if ($(entryWrapper).hasClass(cssConstants.OPEN)) {
+            if (jQuery(entryWrapper).hasClass(cssConstants.OPEN)) {
               unfoldedLayers[key] = key;
             }
           }
@@ -152,7 +152,7 @@ export class MapsInterface {
             let layer = layers[key];
             let entryWrapper = layer.entryWrappers[0];
             if (unfoldedLayers[key]) {
-              $(entryWrapper).removeClass(cssConstants.CLOSE).addClass(cssConstants.OPEN);
+              jQuery(entryWrapper).removeClass(cssConstants.CLOSE).addClass(cssConstants.OPEN);
             }
           }
         }
