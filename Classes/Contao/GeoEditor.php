@@ -76,10 +76,21 @@ class GeoEditor extends \Contao\Backend
 
         // $this->Template->geoData = base64_decode(chunk_split($geoData));
         $this->Template->geoData = $geoData;
+        // 1. check if layer is child of a map element
         $mapId = $this->findMapId($this->layerId);
+        if ($mapId > 0) {
+            $this->id = $mapId;
+            $this->c4g_map_id = $mapId;
+        } else {
+            // get any map
+            $mapId = C4gMapsModel::findBy('is_map', 1)->id;
+            if ($mapId) {
+                $this->id = $mapId;
+                $this->c4g_map_id = $mapId;
+            }
+        }
         // we have to set these here so the map data will be configured correctly
-        $this->id = $mapId;
-        $this->c4g_map_id = $mapId;
+        
         $objMapData = MapDataConfigurator::prepareMapData($this, $this->Database, array('geoeditor' => true));
         ResourceLoader::loadCssResource('bundles/con4giseditor/css/c4g-project-editor.css');
         $objMapData['editor']['enable'] = true;
@@ -95,7 +106,7 @@ class GeoEditor extends \Contao\Backend
 	private function findMapId($layerId)
     {
         $layer = C4gMapsModel::findByPk($layerId);
-        while ($layer->is_map != 1) {
+        while ($layer && $layer->is_map != 1) {
             $layer = C4gMapsModel::findByPk($layer->pid);
         }
         return $layer->id;
