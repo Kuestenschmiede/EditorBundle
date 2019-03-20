@@ -5047,7 +5047,7 @@ var BackendEditor = exports.BackendEditor = function (_Sideboard) {
             }
 
             olType = options.type;
-            if (olType == 'Freehand') {
+            if (olType === 'Freehand') {
               olType = 'LineString';
             }
 
@@ -5056,7 +5056,7 @@ var BackendEditor = exports.BackendEditor = function (_Sideboard) {
               features: features,
               source: source,
               type: olType,
-              freehand: options.type == 'Freehand',
+              freehand: options.type === 'Freehand',
               style: [new ol.style.Style({
                 stroke: new ol.style.Stroke({
                   color: 'rgba(255,255,255,.5)',
@@ -5089,10 +5089,10 @@ var BackendEditor = exports.BackendEditor = function (_Sideboard) {
             //
             self.options.mapController.map.on('pointermove', function (event) {
               if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
-                if (activeTooltip && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue == "0.00") {
+                if (activeTooltip && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
                   activeTooltip.close();
                   activeTooltip = null;
-                } else if (!activeTooltip && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue != "0.00") {
+                } else if (!activeTooltip && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && _c4gMapsUtils.utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
                   activeTooltip = new _c4gMapsMiscTooltippopup.TooltipPopUp({
                     map: self.options.mapController.map,
                     position: event.coordinate,
@@ -5162,7 +5162,7 @@ var BackendEditor = exports.BackendEditor = function (_Sideboard) {
             return true;
           },
 
-          deactivateFunction: function deactivateFunction() {
+          deactivateFunction: function deactivateFunction(paused) {
 
             // reactivate mapHover
             self.options.mapController.mapHover.activate();
@@ -5175,10 +5175,12 @@ var BackendEditor = exports.BackendEditor = function (_Sideboard) {
                 // 0_o
               }
             }
+            if (!paused) {
+              // Remove from map
+              // self.options.mapController.map.removeInteraction(interaction);
+              interaction.setActive(false);
+            }
 
-            // Remove from map
-            // self.options.mapController.map.removeInteraction(interaction);
-            interaction.setActive(false);
             return true;
           }
         }, drawView);
