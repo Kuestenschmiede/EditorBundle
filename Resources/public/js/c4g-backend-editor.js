@@ -845,7 +845,7 @@ export class BackendEditor extends Sideboard {
 
           img.onload = function () {
             ctx.drawImage(img, strokewidth, strokewidth, width, height);
-          }
+          };
 
           styleIcon = canvas;
 
@@ -910,7 +910,7 @@ export class BackendEditor extends Sideboard {
           }
 
           olType = options.type;
-          if (olType == 'Freehand') {
+          if (olType === 'Freehand') {
             olType = 'LineString'
           }
 
@@ -919,7 +919,7 @@ export class BackendEditor extends Sideboard {
             features: features,
             source: source,
             type: olType,
-            freehand: options.type == 'Freehand',
+            freehand: options.type === 'Freehand',
             style: [
               new ol.style.Style({
                 stroke: new ol.style.Stroke({
@@ -957,11 +957,11 @@ export class BackendEditor extends Sideboard {
           self.options.mapController.map.on('pointermove',
             function (event) {
               if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
-                if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue == "0.00") {
+                if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
                   activeTooltip.close();
                   activeTooltip = null;
                 }
-                else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue != "0.00") {
+                else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
                   activeTooltip = new TooltipPopUp({
                     map: self.options.mapController.map,
                     position: event.coordinate,
@@ -1036,7 +1036,7 @@ export class BackendEditor extends Sideboard {
           return true;
         },
 
-        deactivateFunction: function () {
+        deactivateFunction: function (paused) {
 
           // reactivate mapHover
           self.options.mapController.mapHover.activate();
@@ -1049,10 +1049,12 @@ export class BackendEditor extends Sideboard {
               // 0_o
             }
           }
+          if (!paused) {
+            // Remove from map
+            // self.options.mapController.map.removeInteraction(interaction);
+            interaction.setActive(false);
+          }
 
-          // Remove from map
-          // self.options.mapController.map.removeInteraction(interaction);
-          interaction.setActive(false);
           return true;
         }
       }, drawView);
