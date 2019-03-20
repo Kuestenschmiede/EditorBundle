@@ -68,13 +68,10 @@ export class Editor extends Sideboard {
     this.proxy = this.options.mapController.proxy;
     this.mapsInterface = new MapsInterface(this, this.proxy, options.mapController);
     this.featureHandler = new FeatureHandler(this, this.mapsInterface);
-    // this.projects = [];
-    // this.currentProject = null;
     this.projectController = new ProjectController(this);
     this.projectUiController = new ProjectUIController(this, this.projectController);
     this.layerLoader = new LayerLoader(this);
     this.cacheController = null;
-    // this.elementController = null;
     this.elementUiController = null;
     if (window.c4gMapsHooks.extend_editor && window.c4gMapsHooks.extend_editor.length) {
       utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
@@ -230,7 +227,7 @@ export class Editor extends Sideboard {
   }
 
   preHideFunction() {
-    this.preCloseFunction();
+    // this.preCloseFunction();
   }
 
   /**

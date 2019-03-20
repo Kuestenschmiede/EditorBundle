@@ -185,12 +185,7 @@ export class EditorDrawview {
     });
 
     //closed categories by default
-    //ToDo insert caching mechanism
-    //jQuery(toggleView).removeClass("c4g-toggle-category-opened").addClass("c4g-toggle-category-open");
-    //elementDiv.style.display = "block";
     category.visible = true;
-
-    // categoryDiv.className = "project-" + project.projectId;
     catHeadline = document.createElement('div');
     elementCount = 0;
     if (category.elementTypes) {
@@ -202,7 +197,6 @@ export class EditorDrawview {
     headlineDiv.appendChild(toggleView);
     categoryDiv.appendChild(headlineDiv);
     categoryDiv.appendChild(elementDiv);
-    // this.plugin.categories[category.id] = category;
     return {categoryDiv: categoryDiv, elements: elementDiv};
   }
 

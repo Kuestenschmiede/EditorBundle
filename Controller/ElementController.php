@@ -84,8 +84,6 @@ class ElementController extends BaseController
         $this->eventDispatcher->dispatch($event::NAME, $event);
         $response = new JsonResponse();
         $response->setData($event->getReturnData());
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
         return $response;
     }
 
@@ -116,8 +114,6 @@ class ElementController extends BaseController
         if (count($errors) > 0) {
             $response->setData($errors);
         }
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
         return $response;
     }
 
@@ -141,9 +137,6 @@ class ElementController extends BaseController
         if (count($errors) > 0) {
             $response->setData($errors);
         }
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
 
@@ -164,9 +157,6 @@ class ElementController extends BaseController
         $copyEvent->setDataId($realId);
         $copyEvent->setPlugins($plugins);
         $this->eventDispatcher->dispatch($copyEvent::NAME, $copyEvent);
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return new JsonResponse($copyEvent->getReturnData());
     }
 
@@ -218,9 +208,6 @@ class ElementController extends BaseController
             "id"           => $layerId,
             "pid"          => $pid
         ]);
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
 
@@ -265,9 +252,6 @@ class ElementController extends BaseController
         $event->setPluginClasses($plugins);
         $this->eventDispatcher->dispatch($event::NAME, $event);
         $response = new JsonResponse($event->getData());
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
-//        C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
 

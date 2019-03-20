@@ -95,11 +95,6 @@ class EditorController extends BaseController
     public function configEditorBackendAction(Request $request, $configId)
     {
         $this->initialize();
-        // check for cache
-//        $this->checkForCacheSettings("projectEditorService");
-//        if (self::$useCache) {
-//            $this->checkAndStoreCachedData($request);
-//        }
         $response = new JsonResponse();
         // return if cached data exists
         if (!self::$outputFromCache) {

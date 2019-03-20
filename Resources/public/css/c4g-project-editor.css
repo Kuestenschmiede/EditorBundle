@@ -5,6 +5,7 @@
     font-style: normal;
 }
 
+
 button.c4g-button-enable-edit:before {
     content: "\f040";
 }

@@ -68,8 +68,6 @@ class ProjectController extends BaseController
         $this->eventDispatcher->dispatch($event::NAME, $event);
         // return the layer for the project
         $response = new JsonResponse($this->getProjectLayer($event));
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
         C4GEditorConfigurationCache::getInstance()->clearCache();
         return $response;
     }
@@ -103,8 +101,6 @@ class ProjectController extends BaseController
             $event->setDataId($dataId);
             $this->eventDispatcher->dispatch($event::NAME, $event);
         }
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
         C4GEditorConfigurationCache::getInstance()->clearCache();
         return new JsonResponse(['success' => $delEvent->getSuccess()]);
     }
@@ -143,8 +139,6 @@ class ProjectController extends BaseController
         $event->setData($data);
         $event->setEntities($this->loadExistingEntities($plugins, $data));
         $this->eventDispatcher->dispatch($event::NAME, $event);
-        // data was updated, clear caches
-        C4GLayerApiCache::getInstance()->clearCache();
         C4GEditorConfigurationCache::getInstance()->clearCache();
         return new JsonResponse($event->getData());
     }
