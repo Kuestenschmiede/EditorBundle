@@ -71,16 +71,18 @@ export class EditorSelectView {
         selectInteraction.activate();
         return true;
       },
-      deactivateFunction: function () {
+      deactivateFunction: function (paused) {
         // Disable interaction
-        selectInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(selectInteraction);
-        selectBoxInteraction.setActive(false);
-        editor.options.mapController.map.removeInteraction(selectBoxInteraction);
-        objSelect.deselectAllElements();
-        selectInteraction.deactivate();
-        // enable mapHover
-        editor.options.mapController.mapHover.activate();
+        if (!paused) {
+          selectInteraction.setActive(false);
+          editor.options.mapController.map.removeInteraction(selectInteraction);
+          selectBoxInteraction.setActive(false);
+          editor.options.mapController.map.removeInteraction(selectBoxInteraction);
+          objSelect.deselectAllElements(true);
+          selectInteraction.deactivate();
+          // enable mapHover
+          editor.options.mapController.mapHover.activate();
+        }
 
         return true;
       }

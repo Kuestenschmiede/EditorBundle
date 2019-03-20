@@ -456,7 +456,7 @@ export class EditorSelectInteraction {
     }
   }
 
-  deselectAllElements() {
+  deselectAllElements(noUpdate) {
     let arrFeatures = this.selectInteraction.getFeatures().getArray();
     // this is needed because the array is modified in place by the deselection
     // the for loop will half the length of the array by the time it completes
@@ -466,7 +466,9 @@ export class EditorSelectInteraction {
         this._elementUiController.elementController.deselectElement(arrFeatures[i], true);
       }
     }
-    this.updateFeatures();
+    if (!noUpdate) {
+      this.updateFeatures();
+    }
   }
 
   showDisplaceDialog(bar, withCopy) {

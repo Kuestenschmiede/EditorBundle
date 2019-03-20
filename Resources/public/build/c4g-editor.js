@@ -732,7 +732,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
             // [note] "this.blur()" does not work in IE-fullscreen-mode
             console.warn(e.name + ': ' + e.message);
           }
-          if (capitalizedName == "Router" || capitalizedName == "Measure" || capitalizedName == "Editor") {
+          if (capitalizedName === "Router" || capitalizedName === "Measure" || capitalizedName === "Editor") {
             self.toggle(true);
           } else {
             self.toggle();
@@ -902,7 +902,7 @@ var Sideboard = exports.Sideboard = function (_ol$control$Control) {
       }*/
 
       contentContainerOuterHeight = jQuery(this.wrapper).height() - (jQuery(this.titleBar).outerHeight(true) + jQuery(this.statusBar).outerHeight(true));
-      if (this.options && this.options.direction && this.options.direction != "undefined" && this.options.direction === 'left') {
+      if (this.options && this.options.direction && this.options.direction !== "undefined" && this.options.direction === 'left') {
         if (this !== this.options.mapController["active" + this.identifier]) {
           containerOffsetWidth = 0;
         }
@@ -6935,7 +6935,7 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
     }
   }, {
     key: "deselectAllElements",
-    value: function deselectAllElements() {
+    value: function deselectAllElements(noUpdate) {
       var arrFeatures = this.selectInteraction.getFeatures().getArray();
       // this is needed because the array is modified in place by the deselection
       // the for loop will half the length of the array by the time it completes
@@ -6945,7 +6945,9 @@ var EditorSelectInteraction = exports.EditorSelectInteraction = function () {
           this._elementUiController.elementController.deselectElement(arrFeatures[i], true);
         }
       }
-      this.updateFeatures();
+      if (!noUpdate) {
+        this.updateFeatures();
+      }
     }
   }, {
     key: "showDisplaceDialog",
@@ -7096,16 +7098,18 @@ var EditorSelectView = exports.EditorSelectView = function () {
           selectInteraction.activate();
           return true;
         },
-        deactivateFunction: function deactivateFunction() {
+        deactivateFunction: function deactivateFunction(paused) {
           // Disable interaction
-          selectInteraction.setActive(false);
-          editor.options.mapController.map.removeInteraction(selectInteraction);
-          selectBoxInteraction.setActive(false);
-          editor.options.mapController.map.removeInteraction(selectBoxInteraction);
-          objSelect.deselectAllElements();
-          selectInteraction.deactivate();
-          // enable mapHover
-          editor.options.mapController.mapHover.activate();
+          if (!paused) {
+            selectInteraction.setActive(false);
+            editor.options.mapController.map.removeInteraction(selectInteraction);
+            selectBoxInteraction.setActive(false);
+            editor.options.mapController.map.removeInteraction(selectBoxInteraction);
+            objSelect.deselectAllElements(true);
+            selectInteraction.deactivate();
+            // enable mapHover
+            editor.options.mapController.mapHover.activate();
+          }
 
           return true;
         }
