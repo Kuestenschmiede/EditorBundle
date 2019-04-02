@@ -10,11 +10,21 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
+
 $strName = 'tl_c4g_map_profiles';
+
 $GLOBALS['TL_DCA'][$strName]['palettes']['default'] = str_replace(
-    '{editor_legend:hide},editor;',
-    '{editor_legend:hide},editor,feEditorProfile,beEditorProfile;',
+    '{measure_legend:hide},measuretool;',
+    '{measure_legend:hide},measuretool;{editor_legend:hide},editor,feEditorProfile,beEditorProfile;',
     $GLOBALS['TL_DCA'][$strName]['palettes']['default']
+);
+
+$GLOBALS['TL_DCA'][$strName]['fields']['editor'] = array(
+    'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array('mandatory'=>false),
+    'sql'                     => "char(1) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA'][$strName]['fields']['feEditorProfile'] = array
