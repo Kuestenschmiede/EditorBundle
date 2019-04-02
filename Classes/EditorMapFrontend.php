@@ -305,28 +305,35 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
     private function createGeoJsonContent(EditorElement $data)
     {
         $projection = 'EPSG:3857';
-        $decodedData = json_decode($data->getGeojson());
-        $popup = $this->createPopup($data);
-        $properties = $decodedData->properties;
-        $arrData = array
-        (
-            'type' => 'Feature',
-            'geometry' => $decodedData->geometry,
-            'properties' => array
+        $data = $data->getGeojson();
+        if ($data) {
+            $decodedData = json_decode($data);
+            $popup = $this->createPopup($data);
+            $properties = $decodedData->properties; //???
+            $geometry = $decodedData->geometry;
+            $arrData = array
             (
-                'popup' => $popup,
-                'projection' => $projection,
-                'label' => $data->getLoclabel() . "",
-                'zoom_onclick' => false,
-                'tooltip' => $data->getName(),
-                'graphicTitle' => $data->getName()
-            ),
-            'format' => 'GeoJSON'
-        );
-        $arrGeoJson = [];
-        $arrGeoJson['data'] = $arrData;
-        $arrGeoJson['format'] = 'GeoJSON';
-        $arrGeoJson['locationStyle'] = EditorCommon::getLocstyleForData($data, $this->em);
+                'type' => 'Feature',
+                'geometry' => $geometry,
+                'properties' => array
+                (
+                    'popup' => $popup,
+                    'projection' => $projection,
+                    'label' => $data->getLoclabel() . "",
+                    'zoom_onclick' => false,
+                    'tooltip' => $data->getName(),
+                    'graphicTitle' => $data->getName()
+                ),
+                'format' => 'GeoJSON'
+            );
+            $arrGeoJson = [];
+            $arrGeoJson['data'] = $arrData;
+            $arrGeoJson['format'] = 'GeoJSON';
+            $arrGeoJson['locationStyle'] = EditorCommon::getLocstyleForData($data, $this->em);
+        } else {
+            $arrGeoJson = [];
+        }
+        
         return [$arrGeoJson];
     }
 
