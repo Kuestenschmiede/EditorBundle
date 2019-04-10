@@ -9,10 +9,12 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
+import {Pointer} from "ol/interaction";
+
 /**
  * Implements a translate interaction for multiple features at the same time.
  */
-export class TranslateAllInteraction extends ol.interaction.Pointer {
+export class TranslateAllInteraction extends Pointer {
 
   _active;
   _features;  // the features that should be translated

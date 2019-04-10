@@ -24,6 +24,8 @@ import {ElementUIController} from "./c4g-element-ui-controller";
 import {ProjectController} from "./c4g-project-controller";
 import {cssConstants} from './c4g-editor-constant-css';
 import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
+import {Group} from "ol/layer";
+import {Collection} from "ol";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -95,8 +97,8 @@ export class Editor extends Sideboard {
     const scope = this;
     this.spinner.show();
 
-    this.editLayerGroup = new ol.layer.Group({
-      layers: new ol.Collection([]),
+    this.editLayerGroup = new Group({
+      layers: new Collection([]),
       visible: false
     });
     this.configId = this.options.mapController.data.feEditorProfile;

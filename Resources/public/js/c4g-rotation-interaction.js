@@ -9,7 +9,11 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-export class RotationInteraction extends ol.interaction.Pointer {
+import {Pointer} from "ol/interaction";
+import {Point, Polygon} from "ol/geom";
+import Circle from "ol/geom/Circle";
+
+export class RotationInteraction extends Pointer {
 
   _feature;
   _mouseStart;
@@ -35,8 +39,8 @@ export class RotationInteraction extends ol.interaction.Pointer {
   handleDragEvent(event) {
     // idx 0 = X, idx 1 = Y
     let currentCoord = event.map.getCoordinateFromPixel(event.pixel);
-    if (this._feature.getGeometry() instanceof ol.geom.Point || this._feature.getGeometry() instanceof ol.geom.Circle) {
-    } else if (this._feature.getGeometry() instanceof ol.geom.Polygon) {
+    if (this._feature.getGeometry() instanceof Point || this._feature.getGeometry() instanceof Circle) {
+    } else if (this._feature.getGeometry() instanceof Polygon) {
       let center = this._feature.getGeometry().getInteriorPoint();
       let currentXDist = currentCoord[0] - center[0];
       let currentYDist = currentCoord[1] - center[1];

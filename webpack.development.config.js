@@ -9,7 +9,7 @@ var config = {
     filename: '[name].js',
     path: path.resolve('./Resources/public/build/')
   },
-  devtool: "source-map",
+  devtool: "inline-source-map",
   module: {
     rules: [
       {

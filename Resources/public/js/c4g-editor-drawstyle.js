@@ -12,6 +12,10 @@
 import {cssConstants} from './c4g-editor-constant-css';
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {TooltipPopUp} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";
+import {Style, Stroke, Circle, Icon} from "ol/style";
+import {Vector} from "ol/source";
+import {Collection} from "ol";
+import {Draw} from "ol/interaction";
 
 export class EditorDrawStyle {
   /**
@@ -84,7 +88,7 @@ export class EditorDrawStyle {
     // @TODO use css-class for dimensions
     styleTriggerLabel.style.margin = '2px';
 
-    if (editorStyle.iconSrc || styleImage instanceof ol.style.Icon) {
+    if (editorStyle.iconSrc || styleImage instanceof Icon) {
       styleIcon = document.createElement('img');
       if (styleData.editor_icon_size) {
           styleIcon.height = styleData.editor_icon_size[0];
@@ -178,33 +182,33 @@ export class EditorDrawStyle {
         if (scope.type.toLowerCase() === 'point' && style.getImage()) {
           interactionStyleImage = style.getImage();
         } else {
-          interactionStyleImage = new ol.style.Circle({
+          interactionStyleImage = new Circle({
             fill: style.getFill(),
             stroke: style.getStroke(),
             radius: 5,
           });
         }
-        source = new ol.source.Vector();
+        source = new Vector();
         olType = scope.type;
         if (olType === 'Freehand') {
           olType = 'LineString'
         }
 
-        features = new ol.Collection();
-        interaction = new ol.interaction.Draw({
+        features = new Collection();
+        interaction = new Draw({
           features: features,
           source: source,
           type: olType,
           freehand: scope.type === 'Freehand',
           style: [
-            new ol.style.Style({
-              stroke: new ol.style.Stroke({
+            new Style({
+              stroke: new Stroke({
                 color: 'rgba(255,255,255,.5)',
                 width: style.getStroke().getWidth() + 2
               }),
               image: interactionStyleImage
             }),
-            new ol.style.Style({
+            new Style({
               geometry: style.getGeometry(),
               fill: style.getFill(),
               stroke: style.getStroke()

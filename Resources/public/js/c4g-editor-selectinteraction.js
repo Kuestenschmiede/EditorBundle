@@ -14,6 +14,15 @@ import {FeatureInteraction} from "./c4g-editor-feature-interaction";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {cssConstants} from "./c4g-editor-constant-css";
 import {TranslateAllInteraction} from "./c4g-translate-all-interaction";
+import {Collection} from "ol";
+import {Style, Circle, Stroke, Fill, Icon} from "ol/style";
+import {shiftKeyOnly} from "ol/events/condition";
+import {DragBox, Modify} from "ol/interaction";
+import {toLonLat} from "ol/proj";
+import {Polygon, Point, LineString} from "ol/geom";
+import {default as CircleGeom} from "ol/geom/Circle";
+import {GeoJSON} from "ol/format";
+import {add} from "ol/coordinate";
 
 export class EditorSelectInteraction {
   /**
@@ -34,7 +43,7 @@ export class EditorSelectInteraction {
   createSelectInteraction() {
     let editor = this.editor;
     let scope = this;
-    let selectCollection = new ol.Collection();
+    let selectCollection = new Collection();
 
     let styleFn = function (feature, projection) {
       var styleId,
@@ -54,28 +63,28 @@ export class EditorSelectInteraction {
           // else use the locationstyle function
         } else if (locStyles[styleId] && locStyles[styleId].style) {
           styleArray = locStyles[styleId].style(feature, projection);
-          if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage() instanceof ol.style.Icon) {
+          if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage() instanceof Icon) {
             styleRadius = 5;
           } else {
-            styleRadius = parseInt(styleArray[0].getImage().getRadius(), 10) + 4;
+            styleRadius = 4;
           }
         }
 
         // create border style
         styleArray.push(
-          new ol.style.Style({
-            image: new ol.style.Circle({
-              stroke: new ol.style.Stroke({
+          new Style({
+            image: new Circle({
+              stroke: new Stroke({
                 color: 'rgba(255,255,255,.7)',
                 width: 5
               }),
               radius: styleRadius
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new Stroke({
               color: 'rgba(255,255,255,.7)',
               width: 5
             }),
-            fill: new ol.style.Fill({
+            fill: new Fill({
               color: 'rgba(255,255,255,.5)'
             })
           })
@@ -99,7 +108,7 @@ export class EditorSelectInteraction {
     selectInteraction.onTranslateend(function(feature) {
       scope.applyFeatureTranslation(feature);
     });
-    let selectBoxInteraction = new ol.interaction.DragBox({condition: ol.events.condition.shiftKeyOnly});
+    let selectBoxInteraction = new DragBox({condition: shiftKeyOnly});
 
     selectBoxInteraction.on('boxend', function (e) {
       var extent = selectBoxInteraction.getGeometry().getExtent();
@@ -129,25 +138,25 @@ export class EditorSelectInteraction {
    */
   applyFeatureTranslation(feature) {
     let change = {};
-    if (feature.getGeometry() instanceof ol.geom.Point) {
-      let coordinates = ol.proj.toLonLat(feature.getGeometry().getCoordinates());
+    if (feature.getGeometry() instanceof Point) {
+      let coordinates = toLonLat(feature.getGeometry().getCoordinates());
       change['locgeox'] = coordinates[0];
       change['locgeoy'] = coordinates[1];
-    } else if (feature.getGeometry() instanceof ol.geom.Circle) {
-      let coordinates = ol.proj.toLonLat(feature.getGeometry().getCenter());
+    } else if (feature.getGeometry() instanceof CircleGeom) {
+      let coordinates = toLonLat(feature.getGeometry().getCenter());
       change['locgeox'] = coordinates[0];
       change['locgeoy'] = coordinates[1];
       change['radius'] = feature.getGeometry().getRadius();
     } else {
-      let geoJson = new ol.format.GeoJSON();
+      let geoJson = new GeoJSON();
       change['geojson'] = geoJson.writeFeature(feature);
     }
     // update feature measurements
     feature.set('measuredLength', utils.measureGeometry(feature.getGeometry(), true));
-    if (feature.getGeometry() instanceof ol.geom.Polygon) {
+    if (feature.getGeometry() instanceof Polygon) {
       feature.set('measuredArea', utils.measureGeometry(feature.getGeometry()));
     }
-    if (feature.getGeometry() instanceof ol.geom.Circle) {
+    if (feature.getGeometry() instanceof CircleGeom) {
       feature.set('measuredRadius', utils.measureGeometry(feature.getGeometry()));
     }
     // call featurehandler
@@ -161,9 +170,9 @@ export class EditorSelectInteraction {
     let translateInteraction = false;
     let modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry instanceof ol.geom.Point)) {
-      modifyInteraction = new ol.interaction.Modify({
-        features: new ol.Collection([modifyFeature])
+    if (!(featureGeometry instanceof Point)) {
+      modifyInteraction = new Modify({
+        features: new Collection([modifyFeature])
       });
       this.editor.options.mapController.map.addInteraction(modifyInteraction);
     }
@@ -207,23 +216,23 @@ export class EditorSelectInteraction {
           feature.set('styleId', layer.content[0].locationStyle);
         }
         if (opt_offset) {
-          if (feature.getGeometry() instanceof ol.geom.Point) {
+          if (feature.getGeometry() instanceof Point) {
             let coordinates = feature.getGeometry().getCoordinates();
-            coordinates = ol.coordinate.add(coordinates, [10, 10]);
-            feature.setGeometry(new ol.geom.Point(coordinates));
-            coordinates = ol.proj.toLonLat(coordinates);
+            coordinates = add(coordinates, [10, 10]);
+            feature.setGeometry(new Point(coordinates));
+            coordinates = toLonLat(coordinates);
             change['locgeox'] = coordinates[0];
             change['locgeoy'] = coordinates[1];
-          } else if (feature.getGeometry() instanceof ol.geom.Circle) {
+          } else if (feature.getGeometry() instanceof CircleGeom) {
             let center = feature.getGeometry().getCenter();
-            center = ol.coordinate.add(center, [30, 30]);
-            feature.setGeometry(new ol.geom.Circle(center, feature.getGeometry().getRadius()));
-            center = ol.proj.toLonLat(center);
+            center = add(center, [30, 30]);
+            feature.setGeometry(new CircleGeom(center, feature.getGeometry().getRadius()));
+            center = toLonLat(center);
             change['locgeox'] = center[0];
             change['locgeoy'] = center[1];
           } else {
             feature.getGeometry().translate(30, 30);
-            let geoJson = new ol.format.GeoJSON();
+            let geoJson = new GeoJSON();
             change['geojson'] = geoJson.writeFeature(feature);
           }
           scope.editor.featureHandler.modifyFeature(feature, change);
@@ -278,7 +287,7 @@ export class EditorSelectInteraction {
           inputNameElement.setAttribute('feat_id', i);
           inputNameElement.setAttribute('disabled', true);
           outerDiv.appendChild(inputNameElement);
-          if (!(selectedFeature.getGeometry() instanceof ol.geom.Point)) {
+          if (!(selectedFeature.getGeometry() instanceof Point)) {
             // add modify button
             outerDiv.appendChild(scope._elementUiController.createMoveButton(i));
           }
@@ -306,9 +315,9 @@ export class EditorSelectInteraction {
             let label = "";
             if (selectedFeature.getGeometry() instanceof ol.geom.LineString) {
               label = langConstants.LENGTH;
-            } else if (selectedFeature.getGeometry() instanceof ol.geom.Polygon){
+            } else if (selectedFeature.getGeometry() instanceof Polygon){
               label = langConstants.PERIMETER;
-            } else if (selectedFeature.getGeometry() instanceof ol.geom.Circle){
+            } else if (selectedFeature.getGeometry() instanceof CircleGeom){
               label = langConstants.RADIUS;
             }
             let paragraphElement = document.createElement('p');
