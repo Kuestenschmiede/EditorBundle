@@ -305,9 +305,9 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
     private function createGeoJsonContent(EditorElement $data)
     {
         $projection = 'EPSG:3857';
-        $data = $data->getGeojson();
-        if ($data) {
-            $decodedData = json_decode($data);
+        $geoJson = $data->getGeojson();
+        if ($geoJson) {
+            $decodedData = json_decode($geoJson);
             $popup = $this->createPopup($data);
             $properties = $decodedData->properties; //???
             $geometry = $decodedData->geometry;

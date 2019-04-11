@@ -14,6 +14,12 @@ import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
 import {RotationInteraction} from "./c4g-rotation-interaction";
+import {Modify} from "ol/interaction";
+import {Point, Polygon} from "ol/geom";
+import {Collection} from "ol";
+import {toLonLat} from "ol/proj";
+import {GeoJSON} from "ol/format";
+import {Circle} from "ol/geom/Circle";
 
 /**
  * Class for creating all view elements that interact with elements.
@@ -68,9 +74,9 @@ export class ElementUIController {
     featureGeometry = modifyFeature.getGeometry();
     modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry instanceof ol.geom.Point)) {
-      modifyInteraction = new ol.interaction.Modify({
-        features: new ol.Collection([modifyFeature])
+    if (!(featureGeometry instanceof Point)) {
+      modifyInteraction = new Modify({
+        features: new Collection([modifyFeature])
       });
       scope.editor.options.mapController.map.addInteraction(modifyInteraction);
     }
@@ -96,26 +102,26 @@ export class ElementUIController {
       editor.options.mapController.map.removeInteraction(modifyInteraction);
       modifyInteraction.setActive(false);
       modifyInteraction = false;
-      if (modifyFeature.getGeometry() instanceof ol.geom.Point) {
-        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCoordinates());
+      if (modifyFeature.getGeometry() instanceof Point) {
+        let coordinates = toLonLat(modifyFeature.getGeometry().getCoordinates());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
-      } else if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
-        let coordinates = ol.proj.toLonLat(modifyFeature.getGeometry().getCenter());
+      } else if (modifyFeature.getGeometry() instanceof Circle) {
+        let coordinates = toLonLat(modifyFeature.getGeometry().getCenter());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
         change['radius'] = modifyFeature.getGeometry().getRadius();
       } else {
-        let geoJson = new ol.format.GeoJSON();
+        let geoJson = new GeoJSON();
         change['geojson'] = geoJson.writeFeature(modifyFeature);
       }
     }
     // update feature measurements
     modifyFeature.set('measuredLength', utils.measureGeometry(modifyFeature.getGeometry(), true));
-    if (modifyFeature.getGeometry() instanceof ol.geom.Polygon) {
+    if (modifyFeature.getGeometry() instanceof Polygon) {
       modifyFeature.set('measuredArea', utils.measureGeometry(modifyFeature.getGeometry()));
     }
-    if (modifyFeature.getGeometry() instanceof ol.geom.Circle) {
+    if (modifyFeature.getGeometry() instanceof Circle) {
       modifyFeature.set('measuredRadius', utils.measureGeometry(modifyFeature.getGeometry()));
     }
 

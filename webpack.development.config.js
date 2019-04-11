@@ -14,7 +14,7 @@ var config = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules(?!\/ol)/,
         use: [{
           loader: "echo-loader",
         }, {
