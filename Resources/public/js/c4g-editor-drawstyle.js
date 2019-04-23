@@ -88,7 +88,7 @@ export class EditorDrawStyle {
     // @TODO use css-class for dimensions
     styleTriggerLabel.style.margin = '2px';
 
-    if (editorStyle.iconSrc || styleImage instanceof Icon) {
+    if (editorStyle.iconSrc || (styleImage && (styleImage.constructor.name === Icon.name))) {
       styleIcon = document.createElement('img');
       if (styleData.editor_icon_size) {
           styleIcon.height = styleData.editor_icon_size[0];

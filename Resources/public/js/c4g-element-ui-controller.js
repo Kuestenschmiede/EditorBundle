@@ -19,7 +19,7 @@ import {Point, Polygon} from "ol/geom";
 import {Collection} from "ol";
 import {toLonLat} from "ol/proj";
 import {GeoJSON} from "ol/format";
-import {Circle} from "ol/geom/Circle";
+import Circle from "ol/geom/Circle";
 
 /**
  * Class for creating all view elements that interact with elements.
@@ -74,7 +74,7 @@ export class ElementUIController {
     featureGeometry = modifyFeature.getGeometry();
     modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry instanceof Point)) {
+    if (!(featureGeometry.constructor.name === Point.name)) {
       modifyInteraction = new Modify({
         features: new Collection([modifyFeature])
       });
@@ -102,11 +102,11 @@ export class ElementUIController {
       editor.options.mapController.map.removeInteraction(modifyInteraction);
       modifyInteraction.setActive(false);
       modifyInteraction = false;
-      if (modifyFeature.getGeometry() instanceof Point) {
+      if (modifyFeature.getGeometry().constructor.name === Point.name) {
         let coordinates = toLonLat(modifyFeature.getGeometry().getCoordinates());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
-      } else if (modifyFeature.getGeometry() instanceof Circle) {
+      } else if (modifyFeature.getGeometry().constructor.name === Circle.name) {
         let coordinates = toLonLat(modifyFeature.getGeometry().getCenter());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
@@ -118,10 +118,10 @@ export class ElementUIController {
     }
     // update feature measurements
     modifyFeature.set('measuredLength', utils.measureGeometry(modifyFeature.getGeometry(), true));
-    if (modifyFeature.getGeometry() instanceof Polygon) {
+    if (modifyFeature.getGeometry().constructor.name === Polygon.name) {
       modifyFeature.set('measuredArea', utils.measureGeometry(modifyFeature.getGeometry()));
     }
-    if (modifyFeature.getGeometry() instanceof Circle) {
+    if (modifyFeature.getGeometry().constructor.name === Circle.name) {
       modifyFeature.set('measuredRadius', utils.measureGeometry(modifyFeature.getGeometry()));
     }
 
