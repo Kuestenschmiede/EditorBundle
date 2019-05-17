@@ -9,7 +9,11 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-export class FeatureInteraction extends ol.interaction.Pointer {
+
+import {Pointer, Translate} from "ol/interaction";
+import {Collection} from "ol";
+
+export class FeatureInteraction extends Pointer {
 
   constructor(collection, fnFilter, style) {
     super();
@@ -78,8 +82,8 @@ export class FeatureInteraction extends ol.interaction.Pointer {
    */
   addTranslateInteractionForFeature(feature, map) {
     const scope = this;
-    let translateInteraction = new ol.interaction.Translate({
-      features: new ol.Collection([feature])
+    let translateInteraction = new Translate({
+      features: new Collection([feature])
     });
     map.addInteraction(translateInteraction);
     this.translateInteractions[feature.getId()] = translateInteraction;

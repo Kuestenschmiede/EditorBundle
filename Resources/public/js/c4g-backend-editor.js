@@ -14,6 +14,15 @@ import {utils} from "../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {Sideboard} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
 import {TooltipPopUp} from "../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";
 import {getLanguage} from "../../../../MapsBundle/Resources/public/js/c4g-maps-i18n";
+import {Vector, Group} from "ol/layer";
+import {Vector as VectorSource} from "ol/source";
+import {Collection} from "ol";
+import {platformModifierKeyOnly, shiftKeyOnly} from "ol/events/condition";
+import {Select, Modify, Translate, Draw} from "ol/interaction";
+import {Style, Circle, Stroke, Fill, Icon} from "ol/style";
+import {DragBox} from "ol/interaction";
+import {Point, LineString, Polygon, Circle as CircleGeom} from "ol/geom";
+import {GeoJSON} from "ol/format";
 
 'use strict';
 export class BackendEditor extends Sideboard {
@@ -60,7 +69,7 @@ export class BackendEditor extends Sideboard {
     // @TODO
     // this.typeLayer = undefined;
     // this.activeMode = this.options.initMode;
-    // this.vectorSource = new ol.source.Vector();
+    // this.vectorSource = new VectorSource();
     // this.activeDrawInteraction = undefined;
     this.lastDrawInteraction = undefined;
     this.proxy = this.options.mapController.proxy;
@@ -102,14 +111,14 @@ export class BackendEditor extends Sideboard {
     };
 
     // Add editor layers
-    this.editPointLayer = new ol.layer.Vector({source: new ol.source.Vector(), style: layerStyleFunction});
-    this.editLineLayer = new ol.layer.Vector({source: new ol.source.Vector(), style: layerStyleFunction});
-    this.editPolygonLayer = new ol.layer.Vector({source: new ol.source.Vector(), style: layerStyleFunction});
-    this.editCircleLayer = new ol.layer.Vector({source: new ol.source.Vector(), style: layerStyleFunction});
-    this.editFreehandLayer = new ol.layer.Vector({source: new ol.source.Vector(), style: layerStyleFunction});
+    this.editPointLayer = new Vector({source: new VectorSource(), style: layerStyleFunction});
+    this.editLineLayer = new Vector({source: new VectorSource(), style: layerStyleFunction});
+    this.editPolygonLayer = new Vector({source: new VectorSource(), style: layerStyleFunction});
+    this.editCircleLayer = new Vector({source: new VectorSource(), style: layerStyleFunction});
+    this.editFreehandLayer = new Vector({source: new VectorSource(), style: layerStyleFunction});
 
-    this.editLayerGroup = new ol.layer.Group({
-      layers: new ol.Collection([
+    this.editLayerGroup = new Group({
+      layers: new Collection([
         this.editFreehandLayer,
         this.editCircleLayer,
         this.editPolygonLayer,
@@ -282,9 +291,9 @@ export class BackendEditor extends Sideboard {
         {section: this.topToolbar, element: this.viewTriggerBar}
       ],
       initFunction: function () {
-        selectInteraction = new ol.interaction.Select({
+        selectInteraction = new Select({
           layers: self.editLayerGroup.getLayers().getArray(),
-          toggleCondition: ol.events.condition.platformModifierKeyOnly,
+          toggleCondition: platformModifierKeyOnly,
           style: function (feature, projection) {
             var styleId,
               styleArray,
@@ -297,26 +306,26 @@ export class BackendEditor extends Sideboard {
               if (self.proxy.locationStyleController.arrLocStyles[styleId]) {
                 styleArray = self.proxy.locationStyleController.arrLocStyles[styleId].style(feature, projection);
 
-                if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage() instanceof ol.style.Icon) {
+                if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage().constructor.name === Icon.name) {
                   styleRadius = 5;
                 } else {
                   styleRadius = parseInt(styleArray[0].getImage().getRadius(), 10) + 4;
                 }
 
                 styleArray.push(
-                  new ol.style.Style({
-                    image: new ol.style.Circle({
-                      stroke: new ol.style.Stroke({
+                  new Style({
+                    image: new Circle({
+                      stroke: new Stroke({
                         color: 'rgba(255,255,255,.7)',
                         width: 5
                       }),
                       radius: styleRadius
                     }),
-                    stroke: new ol.style.Stroke({
+                    stroke: new Stroke({
                       color: 'rgba(255,255,255,.7)',
                       width: 5
                     }),
-                    fill: new ol.style.Fill({
+                    fill: new Fill({
                       color: 'rgba(255,255,255,.5)'
                     })
                   })
@@ -331,7 +340,7 @@ export class BackendEditor extends Sideboard {
 
         selectedFeatures = selectInteraction.getFeatures();
 
-        selectBoxInteraction = new ol.interaction.DragBox({condition: ol.events.condition.shiftKeyOnly});
+        selectBoxInteraction = new DragBox({condition: shiftKeyOnly});
 
         selectBoxInteraction.on('boxend', function (e) {
           var extent = selectBoxInteraction.getGeometry().getExtent();
@@ -445,15 +454,15 @@ export class BackendEditor extends Sideboard {
             translateInteraction = false;
             modifyInteraction = false;
 
-            if (!(featureGeometry instanceof ol.geom.LineString)) {
-              translateInteraction = new ol.interaction.Translate({
-                features: new ol.Collection([modifyFeature])
+            if (!(featureGeometry.constructor.name === LineString.name)) {
+              translateInteraction = new Translate({
+                features: new Collection([modifyFeature])
               });
               self.options.mapController.map.addInteraction(translateInteraction);
             }
-            if (!(featureGeometry instanceof ol.geom.Point)) {
-              modifyInteraction = new ol.interaction.Modify({
-                features: new ol.Collection([modifyFeature])
+            if (!(featureGeometry.constructor.name === Point.name)) {
+              modifyInteraction = new Modify({
+                features: new Collection([modifyFeature])
               });
               self.options.mapController.map.addInteraction(modifyInteraction);
             }
@@ -510,13 +519,13 @@ export class BackendEditor extends Sideboard {
             featureGeometry = deleteFeature.getGeometry();
 
             // find right source
-            if (featureGeometry instanceof ol.geom.Point) {
+            if (featureGeometry.constructor.name === Point.name) {
               featureSource = self.editPointLayer.getSource();
-            } else if (featureGeometry instanceof ol.geom.LineString) {
+            } else if (featureGeometry.constructor.name === LineString.name) {
               featureSource = self.editLineLayer.getSource();
-            } else if (featureGeometry instanceof ol.geom.Polygon) {
+            } else if (featureGeometry.constructor.name === Polygon.name) {
               featureSource = self.editPolygonLayer.getSource();
-            } else if (featureGeometry instanceof ol.geom.Circle) {
+            } else if (featureGeometry.constructor.name === CircleGeom.name) {
               featureSource = self.editCircleLayer.getSource();
             } else {
               // could not find right source
@@ -528,7 +537,7 @@ export class BackendEditor extends Sideboard {
             try {
               featureSource.removeFeature(deleteFeature);
             } catch (ignore) {
-              if (featureGeometry instanceof ol.geom.LineString) {
+              if (featureGeometry.constructor.name === LineString.name) {
                 featureSource = self.editFreehandLayer.getSource();
                 featureSource.removeFeature(deleteFeature);
               }
@@ -586,9 +595,9 @@ export class BackendEditor extends Sideboard {
 
                 selectContent.appendChild(headlineElement);
                 if (selectedFeature.get('measuredLength')) {
-                  if (selectedFeature.getGeometry() instanceof ol.geom.LineString) {
+                  if (selectedFeature.getGeometry().constructor.name === LineString.name) {
                     label = self.langConstants.LENGTH;
-                  } else if (selectedFeature.getGeometry() instanceof ol.geom.Polygon) {
+                  } else if (selectedFeature.getGeometry().constructor.name === Polygon.name) {
                     label = self.langConstants.PERIMETER;
                   } else {
                     label = self.langConstants.RADIUS;
@@ -790,7 +799,7 @@ export class BackendEditor extends Sideboard {
       styleTriggerLabel.style.margin = '2px';
       // "style.getImage().getImage()", does not work in every case
       styleImage = style.getImage() || undefined;
-      if (editorStyle.iconSrc || styleImage instanceof ol.style.Icon) {
+      if (editorStyle.iconSrc || styleImage.constructor.name === Icon.name) {
         styleIcon = document.createElement('img');
 
         if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') != -1)) {
@@ -882,7 +891,7 @@ export class BackendEditor extends Sideboard {
           if (options.type.toLowerCase() === 'point' && style.getImage()) {
             interactionStyleImage = style.getImage();
           } else {
-            interactionStyleImage = new ol.style.Circle({
+            interactionStyleImage = new Circle({
               fill: style.getFill(),
               stroke: style.getStroke(),
               radius: 5,
@@ -914,21 +923,21 @@ export class BackendEditor extends Sideboard {
             olType = 'LineString'
           }
 
-          features = new ol.Collection();
-          interaction = new ol.interaction.Draw({
+          features = new Collection();
+          interaction = new Draw({
             features: features,
             source: source,
             type: olType,
             freehand: options.type === 'Freehand',
             style: [
-              new ol.style.Style({
-                stroke: new ol.style.Stroke({
+              new Style({
+                stroke: new Stroke({
                   color: 'rgba(255,255,255,.5)',
                   width: style.getStroke().getWidth() + 2
                 }),
                 image: interactionStyleImage
               }),
-              new ol.style.Style({
+              new Style({
                 geometry: style.getGeometry(),
                 fill: style.getFill(),
                 stroke: style.getStroke()
@@ -1207,7 +1216,7 @@ export class BackendEditor extends Sideboard {
       return this.exportGeoJSON();
     }
 
-    format = new ol.format.GeoJSON();
+    format = new GeoJSON();
     saveData = {};
 
     saveData.points = format.writeFeatures(this.editPointLayer.getSource().getFeatures());
@@ -1254,7 +1263,7 @@ export class BackendEditor extends Sideboard {
       importFeatures;
 
     self = this;
-    format = new ol.format.GeoJSON();
+    format = new GeoJSON();
     self.spinner.show();
 
     slotName = 'c4gMaps_';
@@ -1333,7 +1342,7 @@ export class BackendEditor extends Sideboard {
     var format,
       features;
 
-    format = new ol.format.GeoJSON();
+    format = new GeoJSON();
 
     features = this.editPointLayer.getSource().getFeatures();
     features = features.concat(this.editLineLayer.getSource().getFeatures());
@@ -1390,7 +1399,7 @@ export class BackendEditor extends Sideboard {
     //   features = JSON.parse(features);
     // } catch (ignore) {}
 
-    format = new ol.format.GeoJSON();
+    format = new GeoJSON();
     try {
       features = format.readFeatures(features);
     } catch (ignore) {
@@ -1408,17 +1417,17 @@ export class BackendEditor extends Sideboard {
       styleId = features[i].get('styleId') || features[i].get('locstyle') || false;
 
       if (features[i] && typeof features[i].getGeometry === 'function') {
-        if (features[i].getGeometry() instanceof ol.geom.Point) {
+        if (features[i].getGeometry().constructor.name === Point.name) {
           points.push(features[i]);
-        } else if (features[i].getGeometry() instanceof ol.geom.LineString) {
+        } else if (features[i].getGeometry().constructor.name === LineString.name) {
           if (features.options && features.options.type && features.options.type.toLowerCase() == 'freehand') {
             freehand.push(features[i]);
           } else {
             lines.push(features[i]);
           }
-        } else if (features[i].getGeometry() instanceof ol.geom.Polygon) {
+        } else if (features[i].getGeometry().constructor.name === Polygon.name) {
           polygons.push(features[i]);
-        } else if (features[i].getGeometry() instanceof ol.geom.Circle) {
+        } else if (features[i].getGeometry().constructor.name === CircleGeom.name) {
           circles.push(features[i]);
         }
       } else {

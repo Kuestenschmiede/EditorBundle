@@ -12,6 +12,12 @@
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
+import {GeoJSON} from "ol/format";
+import {Vector} from "ol/source";
+import {Group} from "ol/layer";
+import {toLonLat, fromLonLat} from "ol/proj";
+import {Point} from "ol/geom";
+import Circle from "ol/geom/Circle";
 
 export class FeatureHandler {
 
@@ -62,7 +68,7 @@ export class FeatureHandler {
     finalRequestData['categoryid'] = category.id;
     finalRequestData['drawType'] = drawType;
     if (drawType !== "point" && drawType !== "circle") {
-      let format = new ol.format.GeoJSON();
+      let format = new GeoJSON();
       finalRequestData['geojson'] = format.writeFeature(feature);
     }
     request.addRequestData(finalRequestData);
@@ -159,13 +165,13 @@ export class FeatureHandler {
     if (recreateVectorLayer) {
       if (changeData.content) {
         let geometry = changeData.content[0].data.geometry;
-        if (feature.getGeometry() instanceof ol.geom.Point) {
-          feature.getGeometry().setCoordinates(ol.proj.fromLonLat(geometry.coordinates));
-        } else if (feature.getGeometry() instanceof ol.geom.Circle) {
-          feature.getGeometry().setCenter(ol.proj.fromLonLat(geometry.center));
+        if (feature.getGeometry() instanceof Point) {
+          feature.getGeometry().setCoordinates(fromLonLat(geometry.coordinates));
+        } else if (feature.getGeometry() instanceof Circle) {
+          feature.getGeometry().setCenter(fromLonLat(geometry.center));
           feature.getGeometry().setRadius(geometry.radius);
         } else {
-          let objGeom = (new ol.format.GeoJSON()).readGeometry(geometry);
+          let objGeom = (new GeoJSON()).readGeometry(geometry);
           if (objGeom) {
             // update geometry
             feature.getGeometry().setCoordinates(objGeom.getCoordinates());
@@ -217,9 +223,9 @@ export class FeatureHandler {
     feature.set('name', newName);
     feature.set('layerId', newId);
     feature.set('projectId', project.id);
-    let vectorSource = new ol.source.Vector({features: [feature]});
+    let vectorSource = new Vector({features: [feature]});
     let vectorLayer = this.mapsInterface.getVectorLayer(vectorSource, feature.getStyle());
-    layer.vectorLayer = new ol.layer.Group({layers: [vectorLayer]});
+    layer.vectorLayer = new Group({layers: [vectorLayer]});
     // add to editLayerGroup so the layer can be selected
     this.editor.editLayerGroup.getLayers().push(layer.vectorLayer);
     // add new layer to existing data structures
@@ -271,15 +277,15 @@ export class FeatureHandler {
     switch (drawType.toLowerCase()) {
       case "point":
         geometry.type = "Point";
-        geometry.coordinates = ol.proj.toLonLat(feature.getGeometry().getCoordinates());
+        geometry.coordinates = toLonLat(feature.getGeometry().getCoordinates());
         break;
       case "line":
         geometry.type = "LineString";
-        geometry.coordinates = ol.proj.toLonLat(feature.getGeometry().getCoordinates());
+        geometry.coordinates = toLonLat(feature.getGeometry().getCoordinates());
         break;
       case "circle":
         geometry.type = "Circle";
-        geometry.center = ol.proj.toLonLat(feature.getGeometry().getCenter());
+        geometry.center = toLonLat(feature.getGeometry().getCenter());
         geometry.radius = feature.getGeometry().getRadius();
         break;
     }

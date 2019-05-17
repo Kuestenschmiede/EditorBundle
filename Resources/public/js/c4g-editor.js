@@ -24,6 +24,8 @@ import {ElementUIController} from "./c4g-element-ui-controller";
 import {ProjectController} from "./c4g-project-controller";
 import {cssConstants} from './c4g-editor-constant-css';
 import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
+import {Group} from "ol/layer";
+import {Collection} from "ol";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -63,16 +65,7 @@ export class Editor extends Sideboard {
 
     super(options);
     this.options = options;
-    this.tabs = [];
-    this.lastDrawInteraction = undefined;
-    this.proxy = this.options.mapController.proxy;
-    this.mapsInterface = new MapsInterface(this, this.proxy, options.mapController);
-    this.featureHandler = new FeatureHandler(this, this.mapsInterface);
-    this.projectController = new ProjectController(this);
-    this.projectUiController = new ProjectUIController(this, this.projectController);
-    this.layerLoader = new LayerLoader(this);
-    this.cacheController = null;
-    this.elementUiController = null;
+
     if (window.c4gMapsHooks.extend_editor && window.c4gMapsHooks.extend_editor.length) {
       utils.callHookFunctions(window.c4gMapsHooks.extend_editor, {editor: this, utils: utils});
     }
@@ -95,13 +88,42 @@ export class Editor extends Sideboard {
     const scope = this;
     this.spinner.show();
 
-    this.editLayerGroup = new ol.layer.Group({
-      layers: new ol.Collection([]),
+    this.editLayerGroup = new Group({
+      layers: new Collection([]),
       visible: false
     });
     this.configId = this.options.mapController.data.feEditorProfile;
     // load editor configuration
+    if (this.options.mapController.proxy.layers_loaded) {
+      this.setupConfiguration();
+    } else {
+      // add to hook
+      this.spinner.show();
+      window.c4gMapsHooks.proxy_layer_drawn.push(function() {
+        scope.setupConfiguration();
+        scope.spinner.hide();
+      });
+    }
+    if (opt_externalinit) {
+      this.initialized = true;
+    }
+
+    return true;
+  }
+
+  setupConfiguration() {
+    this.tabs = [];
+    this.lastDrawInteraction = undefined;
+    this.proxy = this.options.mapController.proxy;
+    this.mapsInterface = new MapsInterface(this, this.proxy, this.options.mapController);
+    this.featureHandler = new FeatureHandler(this, this.mapsInterface);
+    this.projectController = new ProjectController(this);
+    this.projectUiController = new ProjectUIController(this, this.projectController);
+    this.layerLoader = new LayerLoader(this);
+    this.cacheController = null;
+    this.elementUiController = null;
     let url = "con4gis/editorService/" + this.configId;
+    const scope = this;
     jQuery.getJSON(url)
     // Create views for draw-features with at least one locationstyle
       .done(function (data) {
@@ -153,11 +175,6 @@ export class Editor extends Sideboard {
       .always(function () {
         scope.spinner.hide();
       });
-    if (opt_externalinit) {
-      this.initialized = true;
-    }
-
-    return true;
   }
 
   createDrawViews(drawStyles) {
@@ -239,7 +256,7 @@ export class Editor extends Sideboard {
     if (!this.editLayerGroup.getVisible()) {
       this.editLayerGroup.setVisible(true);
     }
-    this.mapsInterface.proxy.deactivateClickObserver();
+    this.options.mapController.proxy.deactivateClickObserver();
     this.options.mapController.mapHover.hoverTooltip.close();
     if (this.options.mapController.proxy.currentPopup) {
       this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "none";
