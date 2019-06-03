@@ -47,6 +47,24 @@ class TlEditorConfiguration
     {
         return $this->getProfilesByType('backend');
     }
+    
+    public function saveCheckbox($varValue)
+    {
+        if ($varValue === '') {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    
+    public function loadCheckbox($varValue)
+    {
+        if ($varValue === 0 || $varValue === "0") {
+            return '';
+        } else {
+            return '1';
+        }
+    }
 
     private function getProfilesByType($type)
     {

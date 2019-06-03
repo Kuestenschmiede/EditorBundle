@@ -73,7 +73,8 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 $child['name'],
                 $child['layername'],
                 true,
-                $child['hide']);
+                $child['hide']
+            );
 
             // set hide when in tab if set in backend
             if ($child['hide_when_in_tab']) {
@@ -173,7 +174,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                     $child['hide']
                 );
                 $arrCategory['projectId'] = $project->getId();
-
                 $withElements = false;
                 foreach ($elements as $element) {
                     $containingCategories = $element->getCategories();
@@ -193,7 +193,6 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                         // append random value
                         $arrElement['id'] = EditorCommon::calcLayerId($element->getId(), $category->getId(), $project->getId(), 71);
                         $arrElement['projectId'] = $project->getId();
-
                         $elementData = [];
                         foreach ($arrData as $datum) {
                             if ($datum->getTypeid() === $element->getId()) {

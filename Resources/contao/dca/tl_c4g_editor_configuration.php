@@ -117,7 +117,6 @@ $GLOBALS['TL_DCA'][$strName] = array
             'options'                 => array('frontend', 'backend'),
             'eval'                    => array('tl_class'=>'clr'),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
-            'sql'                     => "char(10) NOT NULL default ''"
         ],
 
         'categories' => array
@@ -139,24 +138,25 @@ $GLOBALS['TL_DCA'][$strName] = array
             'exclude'                 => true,
             'default'                 => false,
             'inputType'               => 'checkbox',
-            'sql'                     => "char(1) NOT NULL default ''"
         ),
+        
         'editor_helpurl' => array
         (
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_helpurl'],
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'wizard'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
         ),
+        
         'is_backend_editor_default' => array
         (
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['is_backend_editor_default'],
             'exclude'                 => true,
-            'default'                 => false,
+            'default'                 => '0',
             'inputType'               => 'checkbox',
+            'save_callback'           => [[$cbClass, 'saveCheckbox']],
+            'load_callback'           => [[$cbClass, 'loadCheckbox']],
             'eval'                    => array('tl_class'=>'long'),
-            'sql'                     => "char(1) NULL"
         ),
     
         'editor_project_group' => [
@@ -167,7 +167,6 @@ $GLOBALS['TL_DCA'][$strName] = array
             'relation'                => array('type'=>'belongsToMany', 'load'=>'lazy'),
             'eval'                    => array('tl_class'=>'clr'),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
-            'sql'                     => "char(10) NOT NULL default ''"
         ]
     )
 );
