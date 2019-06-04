@@ -136,7 +136,9 @@ export class Editor extends Sideboard {
         scope.projectUiController.createNewProjectButton();
         scope.projectUiController.createEditProjectButton();
         scope.projectUiController.createDeleteProjectButton();
-        scope.topToolbar.appendChild(scope.projectUiController.getButtonBar());
+        let buttonBar = scope.projectUiController.getButtonBar();
+        scope.buttonBar = buttonBar;
+        scope.topToolbar.appendChild(buttonBar);
 
         // Add and activate select view
         scope.selectView = new EditorSelectView({editor: scope});
@@ -157,6 +159,7 @@ export class Editor extends Sideboard {
         if (window.c4gMapsHooks.editor_configurated && window.c4gMapsHooks.editor_configurated.length) {
           utils.callHookFunctions(window.c4gMapsHooks.editor_configurated, {editor: scope, utils: utils, data: data});
         }
+
         window.c4gMapsHooks.baselayer_changed = window.c4gMapsHooks.baselayer_changed || [];
         window.c4gMapsHooks.baselayer_changed.push(function(id) {
           scope.cacheController.saveSettingsForProject(scope.projectController.currentProject.id, "baselayer", id);

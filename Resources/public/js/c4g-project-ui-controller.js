@@ -413,11 +413,6 @@ export class ProjectUIController {
   reloadProjectControls() {
     let container = jQuery(this.editor.topToolbar).children('.'+ cssConstants.PROJECT_BUTTON_BAR)[0];
     container.replaceWith(this.getButtonBar());
-    // TODO editor.topToolbar > jQuery(cssConstants.PROJECT_BUTTON_BAR)
-    // TODO muss ersetzt werden
-    // TODO mit den controls fürs aktuelle projekt
-    // TODO bei keinem Projekt wird nur der add button angezeigt
-    // TODO sonst ists rechte-abhängig
   }
 
   checkPermissionForButton(button, project) {

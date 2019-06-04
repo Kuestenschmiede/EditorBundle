@@ -18,6 +18,7 @@ import {Collection} from "ol";
 import {Draw} from "ol/interaction";
 
 export class EditorDrawStyle {
+
   /**
    * Constructor for EditorDrawStyle.
    * @param editor
@@ -326,6 +327,7 @@ export class EditorDrawStyle {
           editor.mapsInterface.mapController.mapHover.deactivate();
           // Reset feature-list
           features.clear();
+          interaction.setActive(true);
         }
         return true;
       },
