@@ -20,6 +20,7 @@ import {Collection} from "ol";
 import {toLonLat} from "ol/proj";
 import {GeoJSON} from "ol/format";
 import Circle from "ol/geom/Circle";
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 
 /**
  * Class for creating all view elements that interact with elements.
@@ -29,11 +30,13 @@ export class ElementUIController {
   editor;
   selectInteraction;
   elementController;
+  alertHandler;
 
   constructor(editor, selectInteraction, elementController) {
     this._editor = editor;
     this._selectInteraction = selectInteraction;
     this._elementController = editor.elementController;
+    this._alertHandler = new AlertHandler();
   }
 
   /**
@@ -151,23 +154,14 @@ export class ElementUIController {
 
   showDeleteDialog(featureId) {
     const scope = this;
-    const container = document.createElement("div");
-    let deleteHintLabel = document.createElement("p");
-    deleteHintLabel.innerText = langConstants.EDITOR_FEATURE_DELETE_QUESTION;
-    container.appendChild(deleteHintLabel);
-    const confirmButton = document.createElement("button");
-    jQuery(confirmButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CONFIRM);
-    jQuery(confirmButton).on('click', function(event) {
-      scope.handleDeleteFeatureEvent(featureId);
-    });
-    container.appendChild(confirmButton);
-    const cancelButton = document.createElement("button");
-    jQuery(cancelButton).addClass(cssConstants.ICON + " " + cssConstants.EDITOR_DIALOG_CANCEL);
-    jQuery(cancelButton).on('click', function(event) {
-      scope.reloadSelectedFeatureView();
-    });
-    container.appendChild(cancelButton);
-    this.addToEditor(container);
+    this.alertHandler.showConfirmDialog(
+      langConstants.EDITOR_FEATURE_DELETE_HEADLINE,
+      langConstants.EDITOR_FEATURE_DELETE_QUESTION,
+      function() {scope.handleDeleteFeatureEvent(featureId);},
+      function() {scope.reloadSelectedFeatureView()},
+      'Löschen',
+      'Abbrechen'
+    );
   }
 
   handleDeleteFeatureEvent(featureIndex) {
@@ -296,16 +290,13 @@ export class ElementUIController {
     let selectedFeatures = this.selectInteraction.selectInteraction.getFeatures();
     let feature = selectedFeatures.item(event.target.getAttribute('feat_id'));
     let layerId = feature.get('layerId');
-    let projectSelect = this.createProjectSelectionForDisplace();
-    let withCopy = opt_copy;
-    let formContainer = document.createElement("div");
-    // create buttons
-    let confirmButton = document.createElement("button");
-    confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
-    confirmButton.title = "Bestätigen";
-    let cancelButton = document.createElement("button");
-    cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
-    cancelButton.title = "Abbrechen";
+    let projects = scope.editor.projectController.projects;
+    let objProjectOptions = {};
+    for (let key in projects) {
+      if (projects.hasOwnProperty(key)) {
+        objProjectOptions[projects[key].id] = projects[key].name;
+      }
+    }
     // clear selectContent
     jQuery(cancelButton).on('click', function(event) {
       scope.reloadSelectedFeatureView();
@@ -313,10 +304,12 @@ export class ElementUIController {
     jQuery(confirmButton).on('click', function(event) {
       scope.elementController.displaceElement(feature, layerId, withCopy, projectSelect.value);
     });
-    formContainer.appendChild(projectSelect);
-    formContainer.appendChild(confirmButton);
-    formContainer.appendChild(cancelButton);
-    scope.addToEditor(formContainer);
+    this.alertHandler.showSelectDialog(
+      'In welches Projekt soll das Element verschoben werden?',
+      objProjectOptions,
+      "Bestätigen",
+      "Abbrechen"
+    );
   }
 
   /**
@@ -434,5 +427,9 @@ export class ElementUIController {
 
   get elementController() {
     return this._elementController;
+  }
+
+  get alertHandler() {
+    return this._alertHandler;
   }
 }

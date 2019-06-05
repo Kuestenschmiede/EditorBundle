@@ -13,6 +13,7 @@ import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {cssConstants} from './c4g-editor-constant-css';
+import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 
 /**
  * Class for creating all view elements that interact with a project. Handles all events that are fired on these view
@@ -172,28 +173,37 @@ export class ProjectUIController {
       return;
     }
     // show confirm dialog
-    let confirmForm = document.createElement("div");
-    confirmForm.innerHTML = "Wollen Sie dieses Projekt wirklich löschen?";
-    let confirmButton = document.createElement("button");
-    confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
-    confirmButton.title = "Bestätigen";
-    let cancelButton = document.createElement("button");
-    cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
-    cancelButton.title = "Abbrechen";
-    // clear selectContent
-
-    jQuery(cancelButton).on('click', function(event) {
-      scope.cancelDialog();
-    });
-    jQuery(confirmButton).on("click", function(event) {
-      scope.deleteProject();
-    });
-    confirmForm.appendChild(confirmButton);
-    confirmForm.appendChild(cancelButton);
-    editor.tabs[0].activate();
-    editor.contentHeadline.innerHTML = "Projekt löschen?";
-    editor.selectView.selectContent.innerHTML = "";
-    editor.selectView.selectContent.appendChild(confirmForm);
+    // let confirmForm = document.createElement("div");
+    // confirmForm.innerHTML = "Wollen Sie dieses Projekt wirklich löschen?";
+    // let confirmButton = document.createElement("button");
+    // confirmButton.className = cssConstants.EDITOR_DIALOG_CONFIRM;
+    // confirmButton.title = "Bestätigen";
+    // let cancelButton = document.createElement("button");
+    // cancelButton.className = cssConstants.EDITOR_DIALOG_CANCEL;
+    // cancelButton.title = "Abbrechen";
+    // // clear selectContent
+    //
+    // jQuery(cancelButton).on('click', function(event) {
+    //   scope.cancelDialog();
+    // });
+    // jQuery(confirmButton).on("click", function(event) {
+    //   scope.deleteProject();
+    // });
+    // confirmForm.appendChild(confirmButton);
+    // confirmForm.appendChild(cancelButton);
+    // editor.tabs[0].activate();
+    // editor.contentHeadline.innerHTML = "Projekt löschen?";
+    // editor.selectView.selectContent.innerHTML = "";
+    // editor.selectView.selectContent.appendChild(confirmForm);
+    const ah = new AlertHandler();
+    ah.showConfirmDialog(
+      "Projekt löschen?",
+      "Wollen Sie dieses Projekt wirklich löschen?",
+      this.deleteProject,
+      this.cancelDialog,
+      "Bestätigen",
+      "Abbrechen"
+    );
   }
 
   /**
