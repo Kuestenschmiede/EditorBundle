@@ -231,10 +231,10 @@ export class BackendEditor extends Sideboard {
    * @return  {[type]}  [description]
    */
   preCloseFunction() {
-    if (this.editLayerGroup.getVisible()) {
-      this.editLayerGroup.setVisible(false);
-      this.options.mapController.map.removeLayer(this.editLayerGroup);
-    }
+    // if (this.editLayerGroup.getVisible()) {
+    //   this.editLayerGroup.setVisible(false);
+    //   this.options.mapController.map.removeLayer(this.editLayerGroup);
+    // }
 
   }
 

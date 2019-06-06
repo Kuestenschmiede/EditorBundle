@@ -54,7 +54,7 @@ export class FeatureHandler {
       drawType
     );
 
-    let request = new C4GAjaxRequest(this.editor.dataBaseUrl + project.id, "POST");
+    // let request = new C4GAjaxRequest(this.editor.dataBaseUrl + project.id, "POST");
     let requestData = Object.values(layerToSend);
     let requestDataKeys = Object.keys(layerToSend);
     let finalRequestData = {};
@@ -71,8 +71,11 @@ export class FeatureHandler {
       let format = new GeoJSON();
       finalRequestData['geojson'] = format.writeFeature(feature);
     }
-    request.addRequestData(finalRequestData);
-    request.addDoneCallback(function(data) {
+    $.ajax({
+      url: this.editor.dataBaseUrl + project.id,
+      method: 'POST',
+      data: finalRequestData
+    }).done(function(data) {
       let updatedLayer = scope.updateLayer(data, layerToSend, feature);
       // update layerid
       if (data.hasOwnProperty("id")) {
@@ -88,7 +91,6 @@ export class FeatureHandler {
       scope.mapsInterface.showLayer(updatedLayer.id);
       scope.activateLayerParents(updatedLayer);
     });
-    request.execute();
   }
 
   /**
