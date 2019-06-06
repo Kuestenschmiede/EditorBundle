@@ -180,6 +180,7 @@ export class EditorDrawStyle {
           activeTooltip;
 
         // Only show original icon, when the drawing POIs
+        // this is the style that is shown under the cursor while drawing
         if (scope.type.toLowerCase() === 'point' && style.getImage()) {
           interactionStyleImage = style.getImage();
         } else {

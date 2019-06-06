@@ -231,11 +231,12 @@ export class BackendEditor extends Sideboard {
    * @return  {[type]}  [description]
    */
   preCloseFunction() {
-    // if (this.editLayerGroup.getVisible()) {
-    //   this.editLayerGroup.setVisible(false);
-    //   this.options.mapController.map.removeLayer(this.editLayerGroup);
-    // }
-
+    if (this.editLayerGroup.getVisible()) {
+      this.editLayerGroup.setVisible(false);
+      this.options.mapController.map.removeLayer(this.editLayerGroup);
+    }
+    this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "";
+    this.mapsInterface.proxy.activateClickObserver();
   }
 
   /**
@@ -247,6 +248,11 @@ export class BackendEditor extends Sideboard {
     if (!this.editLayerGroup.getVisible()) {
       this.editLayerGroup.setVisible(true);
       this.options.mapController.map.addLayer(this.editLayerGroup);
+    }
+    this.options.mapController.proxy.deactivateClickObserver();
+    this.options.mapController.mapHover.hoverTooltip.close();
+    if (this.options.mapController.proxy.currentPopup) {
+      this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "none";
     }
   }
 
@@ -695,7 +701,7 @@ export class BackendEditor extends Sideboard {
         self.options.mapController.map.removeInteraction(selectBoxInteraction);
 
         // enable mapHover
-        self.options.mapController.mapHover.activate();
+        // self.options.mapController.mapHover.activate();
 
         return true;
       }
@@ -888,6 +894,7 @@ export class BackendEditor extends Sideboard {
             activeTooltip;
 
           // Only show original icon, when the drawing POIs
+          // this is the style that is shown under the cursor while drawing
           if (options.type.toLowerCase() === 'point' && style.getImage()) {
             interactionStyleImage = style.getImage();
           } else {
@@ -963,26 +970,26 @@ export class BackendEditor extends Sideboard {
 
           // @TODO doku
           //
-          self.options.mapController.map.on('pointermove',
-            function (event) {
-              if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
-                if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
-                  activeTooltip.close();
-                  activeTooltip = null;
-                }
-                else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
-                  activeTooltip = new TooltipPopUp({
-                    map: self.options.mapController.map,
-                    position: event.coordinate,
-                    horizontal: true
-                  });
-                }
-                if (activeTooltip) {
-                  activeTooltip.setPosition(event.coordinate);
-                  activeTooltip.setContent(utils.measureGeometry(activeSketch.getGeometry(), true).htmlValue);
-                }
-              }
-            }, self);
+          // self.options.mapController.map.on('pointermove',
+            // function (event) {
+            //   if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
+            //     if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
+            //       activeTooltip.close();
+            //       activeTooltip = null;
+            //     }
+            //     else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
+            //       activeTooltip = new TooltipPopUp({
+            //         map: self.options.mapController.map,
+            //         position: event.coordinate,
+            //         horizontal: true
+            //       });
+            //     }
+            //     if (activeTooltip) {
+            //       activeTooltip.setPosition(event.coordinate);
+            //       activeTooltip.setContent(utils.measureGeometry(activeSketch.getGeometry(), true).htmlValue);
+            //     }
+            //   }
+            // }, self);
 
           // @TODO doku
           //
@@ -1048,7 +1055,7 @@ export class BackendEditor extends Sideboard {
         deactivateFunction: function (paused) {
 
           // reactivate mapHover
-          self.options.mapController.mapHover.activate();
+          // self.options.mapController.mapHover.activate();
 
           // finish drawings, if not already done
           if (options.type.toLowerCase() !== 'point') {
