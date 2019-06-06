@@ -41,8 +41,10 @@ export class FeatureHandler {
    * @param projectLayer
    * @param source
    * @param drawType
+   * @param reactivationNeeded
+   * @param parentReactivationNeeded
    */
-  handleDrawnFeature(feature, element, category, project, projectLayer, source, drawType) {
+  handleDrawnFeature(feature, element, category, project, projectLayer, source, drawType, reactivationNeeded, parentReactivationNeeded) {
     let scope = this;
     let layerToSend = this.createLayerFromFeature(
       feature,
@@ -54,7 +56,10 @@ export class FeatureHandler {
       drawType
     );
 
-    // let request = new C4GAjaxRequest(this.editor.dataBaseUrl + project.id, "POST");
+    if (reactivationNeeded) {
+      console.log(layerToSend);
+    }
+
     let requestData = Object.values(layerToSend);
     let requestDataKeys = Object.keys(layerToSend);
     let finalRequestData = {};
@@ -87,22 +92,30 @@ export class FeatureHandler {
           feature.set('popup', data.content[0].data.properties.popup);
         }
       }
+      // workaround for mysterious feature disappearance issue
+      if (reactivationNeeded) {
+        scope.mapsInterface.hideLayer(updatedLayer.id);
+      }
       // show layer
       scope.mapsInterface.showLayer(updatedLayer.id);
-      scope.activateLayerParents(updatedLayer);
+      scope.activateLayerParents(updatedLayer, parentReactivationNeeded);
     });
   }
 
   /**
    * Shows the parents of a layer.
    * @param layer
+   * @param parentReactivationNeeded
    */
-  activateLayerParents(layer) {
+  activateLayerParents(layer, parentReactivationNeeded) {
     let currentLayer = layer;
     while (this.mapsInterface.getLayerArray()[currentLayer.pid]) {
       currentLayer = this.mapsInterface.getLayerArray()[currentLayer.pid];
       currentLayer.display = true;
       if (currentLayer.projectId === this.editor.projectController.currentProject.id) {
+        if (parentReactivationNeeded) {
+          this.mapsInterface.hideLayer(currentLayer.id);
+        }
         this.mapsInterface.showLayer(currentLayer.id);
       }
     }

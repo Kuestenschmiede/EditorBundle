@@ -236,7 +236,7 @@ export class BackendEditor extends Sideboard {
       this.options.mapController.map.removeLayer(this.editLayerGroup);
     }
     this.options.mapController.proxy.currentPopup.popup.getElement().style.display = "";
-    this.mapsInterface.proxy.activateClickObserver();
+    this.options.mapController.proxy.activateClickObserver();
   }
 
   /**
@@ -271,11 +271,6 @@ export class BackendEditor extends Sideboard {
     self = this;
 
     selectContentWrapper = document.createElement('div');
-
-    // selectContentHeadline = document.createElement('div');
-    // selectContentHeadline.innerHTML = this.langConstants.EDITOR_VIEW_TRIGGER_SELECT;
-    // selectContentHeadline.className = 'contentHeadline';
-    // selectContentWrapper.appendChild(selectContentHeadline);
     this.contentHeadline.style.display = "none";
     selectContent = document.createElement('div');
     selectContent.className = cssConstants.EDITOR_CONTENT_SELECT;
@@ -647,13 +642,9 @@ export class BackendEditor extends Sideboard {
                   selectContent.appendChild(paragraphElement);
                 }
               }
-              // selectContentHeadline.style.display = 'none';
-              // self.statusBar.innerHTML = featureCount;
 
             } else {
               selectContent.appendChild(selectContentInfo);
-              // self.statusBar.innerHTML = 0;
-              // selectContentHeadline.style.display = '';
             }
             self.update();
           }; // end of "renderSelectedFeaturesList"
@@ -700,9 +691,6 @@ export class BackendEditor extends Sideboard {
         selectBoxInteraction.setActive(false);
         self.options.mapController.map.removeInteraction(selectBoxInteraction);
 
-        // enable mapHover
-        // self.options.mapController.mapHover.activate();
-
         return true;
       }
     });
@@ -731,13 +719,6 @@ export class BackendEditor extends Sideboard {
       styleIds: []
     }, options);
 
-    checkboxChangeHandler = function (event) {
-      // var interaction = self.options.mapController.map.interaction;
-      // self.options.mapController.map.removeInteraction(interaction);
-      // //self.options.mapController.map.addInteraction(interaction);
-
-    }
-
     TRIGGER_DRAW = 'EDITOR_VIEW_TRIGGER_DRAW_' + options.type.toUpperCase();
 
     drawContent = document.createElement('div');
@@ -760,17 +741,6 @@ export class BackendEditor extends Sideboard {
       optionsDiv.appendChild(enableInstantMeasureCheckboxLabel);
 
       optionsDiv.appendChild(document.createElement('br'));
-
-      // enableFreehandDrawCheckbox = document.createElement('input');
-      // enableFreehandDrawCheckbox.type = 'checkbox';
-      // enableFreehandDrawCheckbox.id = 'enableFreehandDrawFor' + options.type;
-      // enableFreehandDrawCheckbox.onchange = checkboxChangeHandler;
-      // optionsDiv.appendChild(enableFreehandDrawCheckbox);
-      //
-      // enableFreehandDrawCheckboxLabel = document.createElement('label');
-      // enableFreehandDrawCheckboxLabel.setAttribute('for', 'enableFreehandDrawFor' + options.type);
-      // enableFreehandDrawCheckboxLabel.innerHTML = langConstants.EDITOR_ENABLE_FREEHAND_DRAW;
-      // optionsDiv.appendChild(enableFreehandDrawCheckboxLabel);
     }
 
     addDrawStyle = function (styleId) {
@@ -808,7 +778,7 @@ export class BackendEditor extends Sideboard {
       if (editorStyle.iconSrc || styleImage.constructor.name === Icon.name) {
         styleIcon = document.createElement('img');
 
-        if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') != -1)) {
+        if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') !== -1)) {
           styleIcon.src = editorStyle.iconSrc;
           if (styleData.editor_icon_size) {
             styleIcon.height = styleData.editor_icon_size[0];
@@ -970,26 +940,26 @@ export class BackendEditor extends Sideboard {
 
           // @TODO doku
           //
-          // self.options.mapController.map.on('pointermove',
-            // function (event) {
-            //   if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
-            //     if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
-            //       activeTooltip.close();
-            //       activeTooltip = null;
-            //     }
-            //     else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
-            //       activeTooltip = new TooltipPopUp({
-            //         map: self.options.mapController.map,
-            //         position: event.coordinate,
-            //         horizontal: true
-            //       });
-            //     }
-            //     if (activeTooltip) {
-            //       activeTooltip.setPosition(event.coordinate);
-            //       activeTooltip.setContent(utils.measureGeometry(activeSketch.getGeometry(), true).htmlValue);
-            //     }
-            //   }
-            // }, self);
+          self.options.mapController.map.on('pointermove',
+            function (event) {
+              if (enableInstantMeasureCheckbox && enableInstantMeasureCheckbox.checked && activeSketch) {
+                if (activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue === "0.00") {
+                  activeTooltip.close();
+                  activeTooltip = null;
+                }
+                else if (!activeTooltip && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue && utils.measureGeometry(activeSketch.getGeometry(), true).rawValue !== "0.00") {
+                  activeTooltip = new TooltipPopUp({
+                    map: self.options.mapController.map,
+                    position: event.coordinate,
+                    horizontal: true
+                  });
+                }
+                if (activeTooltip) {
+                  activeTooltip.setPosition(event.coordinate);
+                  activeTooltip.setContent(utils.measureGeometry(activeSketch.getGeometry(), true).htmlValue);
+                }
+              }
+            }, self);
 
           // @TODO doku
           //

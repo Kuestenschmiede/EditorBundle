@@ -268,6 +268,9 @@ export class EditorDrawStyle {
 
             // name the feature
             featureIdCount += 1;
+            // at 9, the current feature disappears, at 38, all features disappear (unknown to me why)
+            let reacticate = featureIdCount === 9;
+            let reactivateParents = featureIdCount === 38;
             let drawType = scope.type.toLowerCase();
             name = scope.editor.mapsInterface.getLocstyleArray()[styleId].name.replace("&#40;", "(").replace("&#41;", ")");
             activeSketch.set('tooltip', (scope.editor.mapsInterface.getLocstyleArray()[styleId].tooltip || name) + ' (' + featureIdCount + ')');
@@ -300,7 +303,9 @@ export class EditorDrawStyle {
               editor.projectController.currentProject,
               editor.projectController.projectLayer,
               source,
-              drawType
+              drawType,
+              reacticate,
+              reactivateParents
             );
             scope.editor.mapsInterface.updateStarboard();
             // reset active-element variables

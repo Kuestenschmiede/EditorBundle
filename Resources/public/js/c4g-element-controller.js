@@ -47,6 +47,7 @@ export class ElementController {
     this.selectInteraction.removeSelectedFeature(feature);
     // remove layer from layer structure
     let layer = this.mapsInterface.getLayerFromArray(layerId);
+    this.mapsInterface.mapController.map.removeLayer(layer.vectorLayer);
     this.checkParentsForDeletion(layer);
     this.mapsInterface.removeLayerFromArray(layerId);
     let projectId = this.editor.projectController.currentProject.id;
