@@ -93,6 +93,11 @@ class GeoEditor extends \Contao\Backend
         
         $objMapData = MapDataConfigurator::prepareMapData($this, $this->Database, array('geoeditor' => true));
         ResourceLoader::loadCssResource('bundles/con4giseditor/css/c4g-project-editor.css');
+        // load clipboard library if permalink is enabled
+        if ($objMapData['permalink']['enable']) {
+            ResourceLoader::loadJavaScriptResource('bundles/con4giscore/vendor/clipboard.min.js', $location = ResourceLoader::JAVASCRIPT, $key = 'clipboard');
+        }
+        
         $objMapData['editor']['enable'] = true;
         $objMapData['editor']['type'] = 'backend';
         $objMapData['editor']['open'] = true;
