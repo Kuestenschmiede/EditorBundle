@@ -139,11 +139,11 @@ export class EditorSelectInteraction {
    */
   applyFeatureTranslation(feature) {
     let change = {};
-    if (feature.getGeometry().constructor.name === Point.name) {
+    if (feature.getGeometry().getType() === 'Point') {
       let coordinates = toLonLat(feature.getGeometry().getCoordinates());
       change['locgeox'] = coordinates[0];
       change['locgeoy'] = coordinates[1];
-    } else if (feature.getGeometry().constructor.name === CircleGeom.name) {
+    } else if (feature.getGeometry().getType() === 'Circle') {
       let coordinates = toLonLat(feature.getGeometry().getCenter());
       change['locgeox'] = coordinates[0];
       change['locgeoy'] = coordinates[1];
@@ -154,10 +154,10 @@ export class EditorSelectInteraction {
     }
     // update feature measurements
     feature.set('measuredLength', utils.measureGeometry(feature.getGeometry(), true));
-    if (feature.getGeometry().constructor.name === Polygon.name) {
+    if (feature.getGeometry().getType() === 'Polygon') {
       feature.set('measuredArea', utils.measureGeometry(feature.getGeometry()));
     }
-    if (feature.getGeometry().constructor.name === CircleGeom.name) {
+    if (feature.getGeometry().getType() === 'Circle') {
       feature.set('measuredRadius', utils.measureGeometry(feature.getGeometry()));
     }
     // call featurehandler
@@ -171,7 +171,7 @@ export class EditorSelectInteraction {
     let translateInteraction = false;
     let modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry.constructor.name === Point.name)) {
+    if (!(featureGeometry.getType() === 'Point')) {
       modifyInteraction = new Modify({
         features: new Collection([modifyFeature])
       });
@@ -217,14 +217,14 @@ export class EditorSelectInteraction {
           feature.set('styleId', layer.content[0].locationStyle);
         }
         if (opt_offset) {
-          if (feature.getGeometry().constructor.name === Point.name) {
+          if (feature.getGeometry().getType() === 'Point') {
             let coordinates = feature.getGeometry().getCoordinates();
             coordinates = add(coordinates, [10, 10]);
             feature.setGeometry(new Point(coordinates));
             coordinates = toLonLat(coordinates);
             change['locgeox'] = coordinates[0];
             change['locgeoy'] = coordinates[1];
-          } else if (feature.getGeometry().constructor.name === CircleGeom.name) {
+          } else if (feature.getGeometry().getType() === 'Circle') {
             let center = feature.getGeometry().getCenter();
             center = add(center, [30, 30]);
             feature.setGeometry(new CircleGeom(center, feature.getGeometry().getRadius()));
@@ -288,7 +288,7 @@ export class EditorSelectInteraction {
           inputNameElement.setAttribute('feat_id', i);
           inputNameElement.setAttribute('disabled', true);
           outerDiv.appendChild(inputNameElement);
-          if (selectedFeature.getGeometry().constructor.name !== Point.name) {
+          if (selectedFeature.getGeometry().getType() !== 'Point') {
             // add modify button
             outerDiv.appendChild(scope._elementUiController.createMoveButton(i));
           }
@@ -314,11 +314,11 @@ export class EditorSelectInteraction {
           scope.selectView.selectContent.appendChild(outerDiv);
           if (selectedFeature.get('measuredLength')) {
             let label = "";
-            if (selectedFeature.getGeometry().constructor.name === LineString.name) {
+            if (selectedFeature.getGeometry().getType() === 'LineString') {
               label = langConstants.LENGTH;
-            } else if (selectedFeature.getGeometry().constructor.name === Polygon.name){
+            } else if (selectedFeature.getGeometry().getType() === 'Polygon') {
               label = langConstants.PERIMETER;
-            } else if (selectedFeature.getGeometry().constructor.name === CircleGeom.name){
+            } else if (selectedFeature.getGeometry().getType() === 'Circle') {
               label = langConstants.RADIUS;
             }
             let paragraphElement = document.createElement('p');

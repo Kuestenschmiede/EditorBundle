@@ -455,13 +455,13 @@ export class BackendEditor extends Sideboard {
             translateInteraction = false;
             modifyInteraction = false;
 
-            if (!(featureGeometry.constructor.name === LineString.name)) {
+            if (!(featureGeometry.getType() === 'LineString')) {
               translateInteraction = new Translate({
                 features: new Collection([modifyFeature])
               });
               self.options.mapController.map.addInteraction(translateInteraction);
             }
-            if (!(featureGeometry.constructor.name === Point.name)) {
+            if (!(featureGeometry.getType() === 'Point')) {
               modifyInteraction = new Modify({
                 features: new Collection([modifyFeature])
               });
@@ -520,13 +520,13 @@ export class BackendEditor extends Sideboard {
             featureGeometry = deleteFeature.getGeometry();
 
             // find right source
-            if (featureGeometry.constructor.name === Point.name) {
+            if (featureGeometry.getType() === 'Point') {
               featureSource = self.editPointLayer.getSource();
-            } else if (featureGeometry.constructor.name === LineString.name) {
+            } else if (featureGeometry.getType() === 'LineString') {
               featureSource = self.editLineLayer.getSource();
-            } else if (featureGeometry.constructor.name === Polygon.name) {
+            } else if (featureGeometry.getType() === 'Polygon') {
               featureSource = self.editPolygonLayer.getSource();
-            } else if (featureGeometry.constructor.name === CircleGeom.name) {
+            } else if (featureGeometry.getType() === 'Circle') {
               featureSource = self.editCircleLayer.getSource();
             } else {
               // could not find right source
@@ -538,7 +538,7 @@ export class BackendEditor extends Sideboard {
             try {
               featureSource.removeFeature(deleteFeature);
             } catch (ignore) {
-              if (featureGeometry.constructor.name === LineString.name) {
+              if (featureGeometry.getType() === 'LineString') {
                 featureSource = self.editFreehandLayer.getSource();
                 featureSource.removeFeature(deleteFeature);
               }
@@ -596,9 +596,9 @@ export class BackendEditor extends Sideboard {
 
                 selectContent.appendChild(headlineElement);
                 if (selectedFeature.get('measuredLength')) {
-                  if (selectedFeature.getGeometry().constructor.name === LineString.name) {
+                  if (selectedFeature.getGeometry().getType() === 'LineString') {
                     label = self.langConstants.LENGTH;
-                  } else if (selectedFeature.getGeometry().constructor.name === Polygon.name) {
+                  } else if (selectedFeature.getGeometry().getType() === 'Polygon') {
                     label = self.langConstants.PERIMETER;
                   } else {
                     label = self.langConstants.RADIUS;
@@ -1394,17 +1394,17 @@ export class BackendEditor extends Sideboard {
       styleId = features[i].get('styleId') || features[i].get('locstyle') || false;
 
       if (features[i] && typeof features[i].getGeometry === 'function') {
-        if (features[i].getGeometry().constructor.name === Point.name) {
+        if (features[i].getGeometry().getType() === 'Point') {
           points.push(features[i]);
-        } else if (features[i].getGeometry().constructor.name === LineString.name) {
+        } else if (features[i].getGeometry().getType() === 'LineString') {
           if (features.options && features.options.type && features.options.type.toLowerCase() == 'freehand') {
             freehand.push(features[i]);
           } else {
             lines.push(features[i]);
           }
-        } else if (features[i].getGeometry().constructor.name === Polygon.name) {
+        } else if (features[i].getGeometry().getType() === 'Polygon') {
           polygons.push(features[i]);
-        } else if (features[i].getGeometry().constructor.name === CircleGeom.name) {
+        } else if (features[i].getGeometry().getType() === 'Circle') {
           circles.push(features[i]);
         }
       } else {

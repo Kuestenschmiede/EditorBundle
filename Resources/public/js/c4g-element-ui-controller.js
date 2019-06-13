@@ -77,7 +77,7 @@ export class ElementUIController {
     featureGeometry = modifyFeature.getGeometry();
     modifyInteraction = false;
     // add interactions to map
-    if (!(featureGeometry.constructor.name === Point.name)) {
+    if (!(featureGeometry.getType() === 'Point')) {
       modifyInteraction = new Modify({
         features: new Collection([modifyFeature])
       });
@@ -105,11 +105,11 @@ export class ElementUIController {
       editor.options.mapController.map.removeInteraction(modifyInteraction);
       modifyInteraction.setActive(false);
       modifyInteraction = false;
-      if (modifyFeature.getGeometry().constructor.name === Point.name) {
+      if (modifyFeature.getGeometry().getType() === 'Point') {
         let coordinates = toLonLat(modifyFeature.getGeometry().getCoordinates());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
-      } else if (modifyFeature.getGeometry().constructor.name === Circle.name) {
+      } else if (modifyFeature.getGeometry().getType() === 'Circle') {
         let coordinates = toLonLat(modifyFeature.getGeometry().getCenter());
         change['locgeox'] = coordinates[0];
         change['locgeoy'] = coordinates[1];
@@ -121,10 +121,10 @@ export class ElementUIController {
     }
     // update feature measurements
     modifyFeature.set('measuredLength', utils.measureGeometry(modifyFeature.getGeometry(), true));
-    if (modifyFeature.getGeometry().constructor.name === Polygon.name) {
+    if (modifyFeature.getGeometry().getType() === 'Polygon') {
       modifyFeature.set('measuredArea', utils.measureGeometry(modifyFeature.getGeometry()));
     }
-    if (modifyFeature.getGeometry().constructor.name === Circle.name) {
+    if (modifyFeature.getGeometry().getType() === 'Circle') {
       modifyFeature.set('measuredRadius', utils.measureGeometry(modifyFeature.getGeometry()));
     }
 
