@@ -144,6 +144,7 @@ $GLOBALS['TL_DCA'][$strName] = array
         (
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_helpurl'],
             'exclude'                 => true,
+            'default'                 => '',
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'wizard'),
         ),
@@ -162,12 +163,18 @@ $GLOBALS['TL_DCA'][$strName] = array
         'editor_project_group' => [
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor_project_group'],
             'exclude'                 => true,
+            'default'                 => 0,
             'inputType'               => 'select',
             'foreignKey'              => 'tl_member_group.name',
             'relation'                => array('type'=>'belongsToMany', 'load'=>'lazy'),
             'eval'                    => array('tl_class'=>'clr'),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
+        ],
+
+        'type' => [
+            'default' => ''
         ]
+
     )
 );
 
