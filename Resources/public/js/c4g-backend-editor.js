@@ -307,7 +307,7 @@ export class BackendEditor extends Sideboard {
               if (self.proxy.locationStyleController.arrLocStyles[styleId]) {
                 styleArray = self.proxy.locationStyleController.arrLocStyles[styleId].style(feature, projection);
 
-                if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage().constructor.name === Icon.name) {
+                if (typeof styleArray[0].getImage === 'function' && styleArray[0].getImage()) {
                   styleRadius = 5;
                 } else {
                   styleRadius = parseInt(styleArray[0].getImage().getRadius(), 10) + 4;
@@ -775,7 +775,7 @@ export class BackendEditor extends Sideboard {
       styleTriggerLabel.style.margin = '2px';
       // "style.getImage().getImage()", does not work in every case
       styleImage = style.getImage() || undefined;
-      if (editorStyle.iconSrc || styleImage.constructor.name === Icon.name) {
+      if (editorStyle.iconSrc || styleImage) {
         styleIcon = document.createElement('img');
 
         if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') !== -1)) {
