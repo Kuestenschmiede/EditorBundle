@@ -1478,5 +1478,7 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
     headline: getLanguage(mapData).EDITOR
   });
   mapController.map.addControl(editor);
+  editor.init();
   mapController.controls.editor = editor;
+  console.log("added");
 });

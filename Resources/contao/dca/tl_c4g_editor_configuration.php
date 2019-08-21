@@ -114,6 +114,7 @@ $GLOBALS['TL_DCA'][$strName] = array
             'label'                   => &$GLOBALS['TL_LANG'][$strName]['type'],
             'exclude'                 => true,
             'inputType'               => 'select',
+            'default'                 => '',
             'options'                 => array('frontend', 'backend'),
             'eval'                    => array('tl_class'=>'clr'),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
@@ -170,10 +171,6 @@ $GLOBALS['TL_DCA'][$strName] = array
             'eval'                    => array('tl_class'=>'clr'),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
         ],
-
-        'type' => [
-            'default' => ''
-        ]
 
     )
 );

@@ -102,6 +102,7 @@ class GeoEditor extends \Contao\Backend
         $objMapData['editor']['type'] = 'backend';
         $objMapData['editor']['open'] = true;
         $objMapData['editor']['data_field'] = '[name="geoData"]';
+        $objMapData['lang'] = $GLOBALS['TL_LANGUAGE'];
 
         $this->Template->mapData = $objMapData;
 

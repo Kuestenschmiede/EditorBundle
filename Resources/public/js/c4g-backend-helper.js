@@ -31,8 +31,8 @@ var showGeoEditor = function(href, dataField, opt_options) {
 
   href += "&geoData=" + encodeURIComponent(btoa(dataField.value));
 
-  c4g.maps.backend.currentId = dataField;
-  c4g.maps.backend.ppGeoData = dataField.value;
+  // c4g.maps.backend.currentId = dataField;
+  // c4g.maps.backend.ppGeoData = dataField.value;
 
   options = opt_options || {};
 
