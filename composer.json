@@ -21,8 +21,8 @@
     },
     "require": {
         "contao/core-bundle": "^4.4",
-        "con4gis/maps": "^6.1",
-        "con4gis/projects": "^1.4",
+        "con4gis/maps": "^6.2",
+        "con4gis/projects": "^1.5",
         "con4gis/groups": "^2.4",
         "symfony/serializer": "*"
     },
