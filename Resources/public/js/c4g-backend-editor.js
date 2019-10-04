@@ -14,6 +14,7 @@ import {utils} from "../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {Sideboard} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-control-sideboard";
 import {TooltipPopUp} from "../../../../MapsBundle/Resources/public/js/c4g-maps-misc-tooltippopup";
 import {getLanguage} from "../../../../MapsBundle/Resources/public/js/c4g-maps-i18n";
+import {getEditorLanguage} from "./c4g-editor-i18n";
 import {Vector, Group} from "ol/layer";
 import {Vector as VectorSource} from "ol/source";
 import {Collection} from "ol";
@@ -56,7 +57,7 @@ export class BackendEditor extends Sideboard {
       headline: getLanguage(options.mapController.data).EDITOR
       // initMode: 'select'
     }, options);
-    this.langConstants = getLanguage(options.mapController.data);
+    this.langConstants = jQuery.extend(getLanguage(options.mapController.data), getEditorLanguage(options.mapController.data));
 
     if (!this.options.mapController) {
       console.warn('Coul not initiallize Editor, without valid mapController.');
@@ -133,6 +134,7 @@ export class BackendEditor extends Sideboard {
     this.tabs.push(this.addSelectView());
     this.tabs[0].activate();
 
+    console.log("hallo");
     //   AJAX: get editor config
     jQuery.getJSON('/con4gis/editorServiceBackend/' + self.options.mapController.data.beEditorProfile)
     // Create views for draw-features with at least one locationstyle
@@ -1465,8 +1467,9 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
   const mapData = mapController.data;
   // mapController.map.removeControl(mapController.controls.editor);
+  console.log(mapData.lang);
   let editor = new BackendEditor({
-    tipLabel: getLanguage(mapData).CTRL_EDITOR,
+    tipLabel: getEditorLanguage(mapData).CTRL_EDITOR,
     type: mapData.editor.type || 'frontend',
     target: mapData.editor.target || params.Container,
     initOpen: mapData.editor.open || false,
@@ -1475,10 +1478,10 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
     mapController: mapController,
     direction: 'left',
     name: 'editor',
-    headline: getLanguage(mapData).EDITOR
+    headline: getEditorLanguage(mapData).EDITOR
   });
   mapController.map.addControl(editor);
-  editor.init();
+  editor.init(true);
   mapController.controls.editor = editor;
   console.log("added");
 });

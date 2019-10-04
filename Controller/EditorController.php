@@ -101,21 +101,7 @@ class EditorController extends BaseController
             $configurationEvent = new EditorConfigurationEvent();
             $configurationEvent->setConfigId($configId);
             $this->eventDispatcher->dispatch($configurationEvent::NAME, $configurationEvent);
-            if (\FrontendUser::getInstance()->id) {
-                $loadProjectsEvent = new LoadProjectsEvent();
-                $loadProjectsEvent->setMemberId(\FrontendUser::getInstance()->id);
-                $this->eventDispatcher->dispatch($loadProjectsEvent::NAME, $loadProjectsEvent);
-                $projects = $loadProjectsEvent->getProjects();
-            } else {
-                // fallback
-                $projects = [];
-            }
-            
             $formattedProjects = [];
-            // reformat project data for editor display
-            foreach ($projects as $project) {
-                $formattedProjects[] = $this->createProjectArray($project);
-            }
             $editorConfig = $configurationEvent->getEditorConfig();
             $editorConfig['projects'] = $formattedProjects;
             $editorConfig['groups'] = $this->getGroupsForProjects($formattedProjects);

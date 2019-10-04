@@ -29,6 +29,7 @@ $GLOBALS['BE_MOD']['con4gis_maps'] = array_merge($GLOBALS['BE_MOD']['con4gis_map
         'tables'    => array('tl_c4g_editor_configuration')
     )
 ));
+
 //$GLOBALS['BE_MOD']['con4gis'] =
 //    \con4gis\CoreBundle\Resources\contao\classes\C4GUtils::sortBackendModules($GLOBALS['BE_MOD']['con4gis']);
 // add js file to c4g_maps be module

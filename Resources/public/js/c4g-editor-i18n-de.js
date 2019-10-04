@@ -46,6 +46,7 @@ export var projectEditorLang = {
   EDITOR_VIEW_TRIGGER_DRAW_LINESTRING: 'Streckenwerkzeuge',
   EDITOR_VIEW_TRIGGER_DRAW_POLYGON: 'Flächenwerkzeuge',
   EDITOR_VIEW_TRIGGER_DRAW_CIRCLE: 'Kreiswerkzeuge',
+  CTRL_EDITOR: 'Editor ein-/ausblenden',
 
   EDITOR_API_ERROR_TITLE: 'Es ist ein Fehler aufgetreten',
 

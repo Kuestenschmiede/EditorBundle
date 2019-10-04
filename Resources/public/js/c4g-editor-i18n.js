@@ -24,4 +24,15 @@ if (typeof mapData !== "undefined") {
     mapsLang = langConstantsGerman;
   }
 }
+
+export function getEditorLanguage(mapData) {
+  if (mapData.lang === "de") {
+    return projectEditorLang;
+  } else if (mapData.lang === "en") {
+    return projectEditorLang;
+  } else {
+    // fallback
+    return projectEditorLang;
+  }
+}
 export var langConstants = jQuery.extend(mapsLang, projectEditorLang);
