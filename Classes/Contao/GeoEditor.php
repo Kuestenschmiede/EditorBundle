@@ -52,7 +52,7 @@ class GeoEditor extends \Contao\Backend
         $strField = 'ctrl_' . $dc->field . (($this->Input->get('act') == 'editAll') ? '_' . $dc->id : '');
 
         // return ($dc->value < 1) ? '' : ' <a href="bundles/con4gismaps/be/geoeditor.php?rt=' . REQUEST_TOKEN . '" title="' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor'] . '" style="padding-left:3px" onclick="c4g.maps.backend.showGeoEditor(this.href,' . $strFieldX . ',' . $strFieldY . ', {title:\'' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor']. '\'});return false">' . \Image::getHtml('bundles/con4gismaps/images/be-icons/geopicker.png', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:top"') . '</a>';
-        return ' <a href="con4gis/beEditorService/'. $dc->id .'?rt=' . REQUEST_TOKEN . '" title="' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor'] . '" style="padding-left:3px" onclick="window.showGeoEditor(this.href,' . $strField . ', {title:\'' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor']. '\'});return false">' . \Image::getHtml('bundles/con4gismaps/images/be-icons/geopicker.png', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:top"') . '</a>';
+        return ' <a href="con4gis/beEditorService/'. $dc->id .'?rt=' . REQUEST_TOKEN . '" title="' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor'] . '" style="padding-left:3px" onclick="window.showGeoEditor(this.href,' . $strField . ', {title:\'' . $GLOBALS['TL_LANG']['c4g_maps']['geoeditor']. '\'}, ' . $dc->id . ');return false">' . \Image::getHtml('bundles/con4gismaps/images/be-icons/geopicker.png', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:top"') . '</a>';
 
     }
 
@@ -72,8 +72,9 @@ class GeoEditor extends \Contao\Backend
 		$this->c4g_map_layer_switcher = true;
 
         // get base64 encoded geoData
-        $geoData = $this->Input->get('geoData');
-
+        $editedLayerId = $this->Input->get('layerId');
+        $editedLayer = C4gMapsModel::findByPk($editedLayerId);
+        $geoData = base64_encode($editedLayer->data_content);
         // $this->Template->geoData = base64_decode(chunk_split($geoData));
         $this->Template->geoData = $geoData;
         // 1. check if layer is child of a map element

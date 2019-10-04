@@ -134,7 +134,6 @@ export class BackendEditor extends Sideboard {
     this.tabs.push(this.addSelectView());
     this.tabs[0].activate();
 
-    console.log("hallo");
     //   AJAX: get editor config
     jQuery.getJSON('/con4gis/editorServiceBackend/' + self.options.mapController.data.beEditorProfile)
     // Create views for draw-features with at least one locationstyle
@@ -1467,7 +1466,6 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
   const mapData = mapController.data;
   // mapController.map.removeControl(mapController.controls.editor);
-  console.log(mapData.lang);
   let editor = new BackendEditor({
     tipLabel: getEditorLanguage(mapData).CTRL_EDITOR,
     type: mapData.editor.type || 'frontend',
@@ -1483,5 +1481,4 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
   mapController.map.addControl(editor);
   editor.init(true);
   mapController.controls.editor = editor;
-  console.log("added");
 });

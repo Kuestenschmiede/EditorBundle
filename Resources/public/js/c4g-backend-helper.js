@@ -18,7 +18,7 @@
  *
  * @return  {[type]}               [description]
  */
-var showGeoEditor = function(href, dataField, opt_options) {
+var showGeoEditor = function(href, dataField, opt_options, layerId) {
   var options,
     minWidth,
     maxWidth,
@@ -29,7 +29,8 @@ var showGeoEditor = function(href, dataField, opt_options) {
     return false;
   }
 
-  href += "&geoData=" + encodeURIComponent(btoa(dataField.value));
+  // href += "&geoData=" + encodeURIComponent(btoa(dataField.value));
+  href += "&layerId=" + layerId;
 
   // c4g.maps.backend.currentId = dataField;
   // c4g.maps.backend.ppGeoData = dataField.value;
@@ -67,6 +68,7 @@ var showGeoEditor = function(href, dataField, opt_options) {
 
     dataField.value = document.getElementById('geo_editor_iframe').contentWindow.document.getElementById('c4gGeoEditorGeoData').value;
     this.hide();
+    document.getElementById('tl_c4g_maps').submit();
   });
   modalWindow.show({
     'title': options.title || '',
