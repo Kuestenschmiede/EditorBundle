@@ -92,8 +92,14 @@ $GLOBALS['TL_DCA'][$strName] = array
     //Palettes
     'palettes' => array
     (
-        'default'   =>  '{data_legend},name,type,categories,editor_helpurl,is_backend_editor_default,editor_project_group;',
+        '__selector__' => ['type'],
+        'default'   =>  '{data_legend},name,type,categories,editor_helpurl;',
     ),
+    
+    'subpalettes' => [
+        'type_frontend' => "editor_project_group",
+        'type_backend' => "is_backend_editor_default",
+    ],
 
     //Fields
     'fields' => array

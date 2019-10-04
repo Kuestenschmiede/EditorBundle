@@ -475,7 +475,7 @@ export class BackendEditor extends Sideboard {
             // add apply button
             applyButton = document.createElement('button');
             applyButton.className = cssConstants.ICON + ' ' + cssConstants.EDITOR_FEATURE_APPLY;
-            applyButton.title = this.langConstants.EDITOR_FEATURE_APPLY;
+            applyButton.title = self.langConstants.EDITOR_FEATURE_APPLY;
             applyButton.setAttribute('feat_id', i);
 
             self.applyFeatureModification = function (event) {
