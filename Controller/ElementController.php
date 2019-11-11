@@ -36,6 +36,7 @@ use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Contao\FrontendUser;
 use Contao\System;
 use Doctrine\ORM\ORMException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,9 +56,9 @@ class ElementController extends BaseController
     /**
      * ElementController constructor.
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-//        parent::__construct();
+        parent::__construct($container);
     }
     
     protected function initialize($withEntityManager = true)

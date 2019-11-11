@@ -24,6 +24,7 @@ use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use Contao\FrontendUser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,9 +34,9 @@ class EditorController extends BaseController
     /**
      * EditorController constructor.
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-    
+        parent::__construct($container);
     }
     
     protected function initialize($withEntityManager = true)

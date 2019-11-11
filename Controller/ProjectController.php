@@ -29,12 +29,18 @@ use con4gis\EditorBundle\Classes\Events\CreateProjectEvent;
 use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\Database;
 use Contao\FrontendUser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends BaseController
 {
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+    }
+    
     public function createProjectAction(Request $request)
     {
         $this->initialize();

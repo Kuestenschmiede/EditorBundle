@@ -19,6 +19,7 @@ use con4gis\EditorBundle\Classes\Events\InstantiateDataPluginsEvent;
 use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorElement;
 use Contao\System;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,8 +34,9 @@ class DataPopupController extends BaseController
     /**
      * ElementController constructor.
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
+        parent::__construct($container);
         $this->pluginService = System::getContainer()->get('editor_plugin_service');
     }
     

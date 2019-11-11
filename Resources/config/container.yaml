@@ -21,3 +21,39 @@ services:
             - '@event_dispatcher'
             - '@service_container'
             - '@file_locator'
+
+    con4gis\EditorBundle\Controller\CategoryController:
+        class: con4gis\EditorBundle\Controller\CategoryController
+        public: true
+        arguments:
+            - "@service_container"
+
+    con4gis\EditorBundle\Controller\DataPopupController:
+        class: con4gis\EditorBundle\Controller\DataPopupController
+        public: true
+        arguments:
+            - "@service_container"
+
+    con4gis\EditorBundle\Controller\EditorController:
+        class: con4gis\EditorBundle\Controller\EditorController
+        public: true
+        arguments:
+            - "@service_container"
+
+    con4gis\EditorBundle\Controller\ElementController:
+        class: con4gis\EditorBundle\Controller\ElementController
+        public: true
+        arguments:
+            - "@service_container"
+
+    con4gis\EditorBundle\Controller\ElementTypeController:
+        class: con4gis\EditorBundle\Controller\ElementTypeController
+        public: true
+        arguments:
+            - "@service_container"
+
+    con4gis\EditorBundle\Controller\ProjectController:
+        class: con4gis\EditorBundle\Controller\ProjectController
+        public: true
+        arguments:
+            - "@service_container"

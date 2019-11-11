@@ -18,12 +18,18 @@ use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ElementTypeController extends BaseController
 {
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+    }
+    
     /**
      * @param Request $request
      * @param $layerId      int The layer id
