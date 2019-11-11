@@ -776,7 +776,7 @@ export class BackendEditor extends Sideboard {
       styleTriggerLabel.style.margin = '2px';
       // "style.getImage().getImage()", does not work in every case
       styleImage = style.getImage() || undefined;
-      if (editorStyle.iconSrc || styleImage) {
+      if (styleData.styletype === "cust_icon" && (editorStyle.iconSrc || styleImage)) {
         styleIcon = document.createElement('img');
 
         if (editorStyle.iconSrc && (editorStyle.iconSrc.indexOf('.') !== -1)) {
@@ -789,11 +789,13 @@ export class BackendEditor extends Sideboard {
             styleIcon.width = '32';
           }
         } else {
-          styleIcon.src = styleImage.getSrc();
+          if (styleImage.getSrc && typeof styleImage.getSrc === "function") {
+            styleIcon.src = styleImage.getSrc();
+          }
           styleIcon.scale = styleImage.getScale();
         }
         styleTriggerLabel.appendChild(styleIcon);
-      } else if (svgSrc) {
+      } else if (styleData.styletype === "cust_icon_svg" && svgSrc) {
         if (styleData.svgSrc && styleData.icon_scale && styleData.icon_size) {
           let canvas = document.createElement('canvas');
           let ctx = canvas.getContext("2d");
