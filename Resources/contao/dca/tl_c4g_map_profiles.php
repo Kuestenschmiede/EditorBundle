@@ -13,17 +13,22 @@
 
 $strName = 'tl_c4g_map_profiles';
 
+$GLOBALS['TL_DCA'][$strName]['palettes']['__selector__'][] = "editor";
+
 $GLOBALS['TL_DCA'][$strName]['palettes']['default'] = str_replace(
     '{measure_legend:hide},measuretool;',
-    '{measure_legend:hide},measuretool;{editor_legend:hide},editor,feEditorProfile,beEditorProfile;',
+    '{measure_legend:hide},measuretool;{editor_legend:hide},editor;',
     $GLOBALS['TL_DCA'][$strName]['palettes']['default']
 );
 
-$GLOBALS['TL_DCA'][$strName]['fields']['editor'] = array(
+$GLOBALS['TL_DCA'][$strName]['subpalettes']['editor'] = "feEditorProfile,beEditorProfile";
+
+$GLOBALS['TL_DCA'][$strName]['fields']['editor'] = array
+(
     'label'                   => &$GLOBALS['TL_LANG'][$strName]['editor'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'                    => array('mandatory'=>false),
+    'eval'                    => array('mandatory'=>false, "submitOnChange" => true),
     'sql'                     => "char(1) NOT NULL default ''"
 );
 
