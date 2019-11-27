@@ -89,7 +89,10 @@ export class EditorDrawStyle {
     // @TODO use css-class for dimensions
     styleTriggerLabel.style.margin = '2px';
 
-    if (editorStyle.iconSrc || (styleImage)) {
+    let styleType = styleData ? styleData.styletype : "default";
+    if (styleData && (styleType === "cust_icon" || styleType === "cust_icon_svg")
+      && (editorStyle.iconSrc || (styleImage))
+    ) {
       styleIcon = document.createElement('img');
       if (styleData.editor_icon_size) {
           styleIcon.height = styleData.editor_icon_size[0];
@@ -118,17 +121,17 @@ export class EditorDrawStyle {
             canvas.width = width + (2 * strokewidth);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (styleData.fillcolor) {
-              ctx.fillStyle = utils.getRgbaFromHexAndOpacity(styleData.fillcolor, styleData.fillopacity.value);
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-
-            if (strokewidth && styleData.strokecolor) {
-              ctx.strokeStyle = utils.getRgbaFromHexAndOpacity(styleData.strokecolor, styleData.strokeopacity.value);
-              ctx.lineWidth = strokewidth;
-              ctx.strokeRect(0, 0, canvas.width, canvas.height);
-              ctx.translate(0.5, 0.5);
-            }
+            // if (styleData.fillcolor) {
+            //   ctx.fillStyle = utils.getRgbaFromHexAndOpacity(styleData.fillcolor, styleData.fillopacity.value);
+            //   ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // }
+            //
+            // if (strokewidth && styleData.strokecolor) {
+            //   ctx.strokeStyle = utils.getRgbaFromHexAndOpacity(styleData.strokecolor, styleData.strokeopacity.value);
+            //   ctx.lineWidth = strokewidth;
+            //   ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            //   ctx.translate(0.5, 0.5);
+            // }
 
             let img = new Image();
             img.src = styleData.svgSrc;
@@ -197,25 +200,28 @@ export class EditorDrawStyle {
         }
 
         features = new Collection();
+        let drawStyle = null;
+        if (styleType === "cust_icon" || styleType === "cust_icon_svg") {
+          drawStyle = new Style({
+            stroke: new Stroke({
+              color: 'rgba(255,255,255,.5)',
+              width: style.getStroke().getWidth() + 2
+            }),
+            image: interactionStyleImage
+          });
+        } else {
+          drawStyle = new Style({
+            geometry: style.getGeometry(),
+            fill: style.getFill(),
+            stroke: style.getStroke()
+          });
+        }
         interaction = new Draw({
           features: features,
           source: source,
           type: olType,
           freehand: scope.type === 'Freehand',
-          style: [
-            new Style({
-              stroke: new Stroke({
-                color: 'rgba(255,255,255,.5)',
-                width: style.getStroke().getWidth() + 2
-              }),
-              image: interactionStyleImage
-            }),
-            new Style({
-              geometry: style.getGeometry(),
-              fill: style.getFill(),
-              stroke: style.getStroke()
-            })
-          ]
+          style: drawStyle
         });
 
         // @TODO doku
