@@ -201,21 +201,19 @@ export class EditorDrawStyle {
 
         features = new Collection();
         let drawStyle = null;
-        if (styleType === "cust_icon" || styleType === "cust_icon_svg") {
-          drawStyle = new Style({
-            stroke: new Stroke({
-              color: 'rgba(255,255,255,.5)',
-              width: style.getStroke().getWidth() + 2
-            }),
-            image: interactionStyleImage
-          });
-        } else {
-          drawStyle = new Style({
+        drawStyle = [new Style({
+          stroke: new Stroke({
+            color: 'rgba(255,255,255,.5)',
+            width: style.getStroke().getWidth() + 2
+          }),
+          image: interactionStyleImage
+        }),
+          new Style({
             geometry: style.getGeometry(),
             fill: style.getFill(),
             stroke: style.getStroke()
-          });
-        }
+          })
+        ];
         interaction = new Draw({
           features: features,
           source: source,
