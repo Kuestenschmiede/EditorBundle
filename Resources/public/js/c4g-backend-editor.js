@@ -836,7 +836,7 @@ export class BackendEditor extends Sideboard {
           };
 
           styleIcon = canvas;
-
+          styleTriggerLabel.appendChild(styleIcon);
           styleTriggerLabel.style.width = (width * styleData.icon_scale) + 'px';
           styleTriggerLabel.style.height = (height * styleData.icon_scale) + 'px';
         }
