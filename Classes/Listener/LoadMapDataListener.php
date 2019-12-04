@@ -29,7 +29,11 @@ class LoadMapDataListener
         $profileId = $data['profile'];
         $profile = C4gMapProfilesModel::findByPk($profileId);
         if (!C4GUtils::isFrontendUserLoggedIn()) {
-            $data['editor']['enable'] = false;
+            if ($data['editor']['type'] === "backend") {
+                $data['editor']['enable'] = true;
+            } else {
+                $data['editor']['enable'] = false;
+            }
             // set profile in case its backend editor
             $data['beEditorProfile'] = $profile->beEditorProfile;
         } else {
