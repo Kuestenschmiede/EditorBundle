@@ -36,6 +36,9 @@ export class ProjectUIController {
     this._editor = editor;
     this._projectController = projectController;
     this._projectBar = null;
+
+    this.deleteProject = this.deleteProject.bind(this);
+    this.cancelDialog = this.cancelDialog.bind(this);
   }
 
   /**

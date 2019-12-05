@@ -148,17 +148,19 @@ export class FeatureHandler {
    */
   updateLayerProperties(changeData, layer, feature) {
     for (let key in changeData) {
-      if (changeData.hasOwnProperty(key) && layer.hasOwnProperty(key)) {
-        // current key is contained in both objects
-        layer[key] = changeData[key];
-        // this is needed to sync the feature and the layer
-        if (feature && feature.get(key + "")) {
-          feature.set(key + "", changeData[key]);
-        }
-        if (key === 'name') {
-          layer['layername'] = changeData[key];
-          // update tooltip of feature according to the name change
-          feature.set('tooltip', changeData[key]);
+      if (layer && changeData) {
+        if (changeData.hasOwnProperty(key) && layer.hasOwnProperty(key)) {
+          // current key is contained in both objects
+          layer[key] = changeData[key];
+          // this is needed to sync the feature and the layer
+          if (feature && feature.get(key + "")) {
+            feature.set(key + "", changeData[key]);
+          }
+          if (key === 'name') {
+            layer['layername'] = changeData[key];
+            // update tooltip of feature according to the name change
+            feature.set('tooltip', changeData[key]);
+          }
         }
       }
     }
@@ -180,11 +182,8 @@ export class FeatureHandler {
     if (recreateVectorLayer) {
       if (changeData.content) {
         let geometry = changeData.content[0].data.geometry;
-        console.log(geometry);
-        console.log(feature.getGeometry());
         if (feature.getGeometry().getType() === "Point") {
           feature.getGeometry().setCoordinates(fromLonLat(geometry.coordinates));
-          console.log(feature.getGeometry());
         } else if (feature.getGeometry().getType() === "Circle") {
           feature.getGeometry().setCenter(fromLonLat(geometry.center));
           feature.getGeometry().setRadius(geometry.radius);
