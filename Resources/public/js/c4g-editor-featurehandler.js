@@ -180,9 +180,12 @@ export class FeatureHandler {
     if (recreateVectorLayer) {
       if (changeData.content) {
         let geometry = changeData.content[0].data.geometry;
-        if (feature.getGeometry() instanceof Point) {
+        console.log(geometry);
+        console.log(feature.getGeometry());
+        if (feature.getGeometry().getType() === "Point") {
           feature.getGeometry().setCoordinates(fromLonLat(geometry.coordinates));
-        } else if (feature.getGeometry() instanceof Circle) {
+          console.log(feature.getGeometry());
+        } else if (feature.getGeometry().getType() === "Circle") {
           feature.getGeometry().setCenter(fromLonLat(geometry.center));
           feature.getGeometry().setRadius(geometry.radius);
         } else {
