@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA'][$strName] = array
             'inputType'               => 'select',
             'default'                 => 'frontend',
             'options'                 => array('frontend', 'backend'),
-            'eval'                    => array('tl_class'=>'clr', "withEmptyOption" => true, 'mandatory' => true),
+            'eval'                    => array('tl_class'=>'clr', "withEmptyOption" => true, 'mandatory' => true, 'submitOnChange' => true),
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
         ],
 
