@@ -14,27 +14,29 @@
 /**
  * Backend Modules
  */
-$GLOBALS['BE_MOD']['con4gis_maps'] = array_merge($GLOBALS['BE_MOD']['con4gis_maps'], array
+$GLOBALS['BE_MOD']['con4gis'] = array_merge($GLOBALS['BE_MOD']['con4gis'], array
 (
-    'EditorMapCategories' => array
+    'c4g_editor_element_category' => array
     (
         'tables'    => array('tl_c4g_editor_element_category')
     ),
-    'EditorMapElements' => array
+    'c4g_editor_element_type' => array
     (
         'tables'    => array('tl_c4g_editor_element_type')
     ),
-    'EditorConfiguration' => array
+    'c4g_editor_configuration' => array
     (
         'tables'    => array('tl_c4g_editor_configuration')
     )
 ));
 
-//$GLOBALS['BE_MOD']['con4gis'] =
-//    \con4gis\CoreBundle\Resources\contao\classes\C4GUtils::sortBackendModules($GLOBALS['BE_MOD']['con4gis']);
+if(TL_MODE == "BE") {
+    $GLOBALS['TL_CSS'][] = '/bundles/con4giseditor/css/con4gis.css';
+}
+
 // add js file to c4g_maps be module
-$script = $GLOBALS['BE_MOD']['con4gis_maps']['c4g_maps']['javascript'];
-$GLOBALS['BE_MOD']['con4gis_maps']['c4g_maps']['javascript'] = [$script, '/bundles/con4giseditor/js/c4g-backend-helper.js'];
+$script = $GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'];
+$GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'] = [$script, '/bundles/con4giseditor/js/c4g-backend-helper.js'];
 
 $GLOBALS['c4g_locationtypes'][] = \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_GENERIC_PROJECT;
 
