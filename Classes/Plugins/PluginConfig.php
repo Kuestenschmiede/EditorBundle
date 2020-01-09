@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -14,13 +14,13 @@ namespace con4gis\EditorBundle\Classes\Plugins;
 
 class PluginConfig
 {
-    private $name = "";
+    private $name = '';
 
     private $id = 0;
 
-    private $projectPlugin = "";
+    private $projectPlugin = '';
 
-    private $dataPlugin = "";
+    private $dataPlugin = '';
 
     private $languageFiles = [];
 
@@ -36,8 +36,8 @@ class PluginConfig
         $this->name = $arrConfig['name'];
         $this->id = $arrConfig['id'];
         // optional plugin values
-        $this->projectPlugin = $arrConfig['projectPlugin'] ? $arrConfig['projectPlugin'] : "";
-        $this->dataPlugin = $arrConfig['dataPlugin'] ? $arrConfig['dataPlugin'] : "";
+        $this->projectPlugin = $arrConfig['projectPlugin'] ? $arrConfig['projectPlugin'] : '';
+        $this->dataPlugin = $arrConfig['dataPlugin'] ? $arrConfig['dataPlugin'] : '';
         $this->languageFiles = $arrConfig['language'] ? $arrConfig['language'] : [];
         $this->backend = $arrConfig['backend'] ? $arrConfig['backend'] : 0;
     }

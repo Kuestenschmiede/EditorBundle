@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -14,37 +14,38 @@ namespace con4gis\EditorBundle\Classes\Plugins;
 
 use con4gis\EditorBundle\Classes\Events\SaveMetadataEvent;
 use con4gis\EditorBundle\Entity\EditorMapElementPreset;
-use con4gis\EditorBundle\Classes\Plugins\AbstractPlugin;
-use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 
 abstract class AbstractDataPlugin extends AbstractPlugin implements DataPluginInterface
 {
     public function getData($dataId, $fieldList, $entityManager)
     {
         $entity = $entityManager->getRepository($this->getEntityClass())->findOneBy([
-            'pid' => $dataId
+            'pid' => $dataId,
         ]);
         $data = [];
         foreach ($fieldList as $field) {
-            $getter = 'get' . ucfirst(str_replace("_", "", $field->getFieldName()));
+            $getter = 'get' . ucfirst(str_replace('_', '', $field->getFieldName()));
             if (method_exists($entity, $getter)) {
                 $data[$field->getFieldName()] = $entity->$getter();
             }
         }
+
         return $data;
     }
 
-    public function getDefaultValue($pluginId, $elementId, $pluginField, $entityManager) {
+    public function getDefaultValue($pluginId, $elementId, $pluginField, $entityManager)
+    {
         if ($pluginId && $elementId && $pluginField && $entityManager) {
             $entity = $entityManager->getRepository(EditorMapElementPreset::class)->findOneBy([
-                'pluginId'  => $pluginId,
+                'pluginId' => $pluginId,
                 'pid' => $elementId,
-                'pluginField' => $pluginField
+                'pluginField' => $pluginField,
             ]);
             if ($entity) {
                 return $entity->getPluginValue();
             }
         }
+
         return false;
     }
 

@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -36,13 +36,15 @@ class EditorCommon
             $type = 'line';
         }
         $getter = 'get' . ucfirst($type) . 'style';
+
         return $element->$getter();
     }
 
     public static function calcLayerId($id, $pid, $key, $additionalId)
     {
         $resId = C4GBrickCommon::calcLayerID($id, $pid, $key);
-        $resId .= str_pad($additionalId, 4, "0", STR_PAD_LEFT);
+        $resId .= str_pad($additionalId, 4, '0', STR_PAD_LEFT);
+
         return $resId;
     }
 
@@ -62,22 +64,23 @@ class EditorCommon
                 ->findOneBy(['pid' => $data->getId()]);
             if ($trackingData) {
                 $settings = [
-                    'refresh'      => true,
-                    'interval'     => 60000,
-                    'crossOrigin'  => false,
-                    'boundingBox'  => false
+                    'refresh' => true,
+                    'interval' => 60000,
+                    'crossOrigin' => false,
+                    'boundingBox' => false,
                 ];
                 $objDevice = C4gTrackingDevicesModel::findByPk($trackingData->getTrackingdevice());
                 if ($objDevice) {
                     $settings['settings'] = $settings;
-                    $settings['url'] = "con4gis/api/trackingService/getLive/?maps=" . $objDevice->mapStructureId . "&id=" . $objDevice->id;
+                    $settings['url'] = 'con4gis/api/trackingService/getLive/?maps=' . $objDevice->mapStructureId . '&id=' . $objDevice->id;
+
                     return $settings;
-                } else {
-                    return [];
                 }
 
+                return [];
             }
         }
+
         return [];
     }
 }

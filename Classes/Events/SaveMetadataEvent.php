@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -13,12 +13,11 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
 use Symfony\Component\EventDispatcher\Event;
 
 class SaveMetadataEvent extends Event
 {
-    const NAME = "editor.metadata.save";
+    const NAME = 'editor.metadata.save';
 
     private $dataId = 0;
 
@@ -161,6 +160,4 @@ class SaveMetadataEvent extends Event
     {
         $this->returnData = $returnData;
     }
-
-
 }

@@ -4,14 +4,13 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
 namespace con4gis\EditorBundle\Classes\Listener;
-
 
 use con4gis\EditorBundle\Classes\Events\DeleteDataEvent;
 use con4gis\EditorBundle\Entity\EditorElement;
@@ -66,7 +65,7 @@ class DeleteDataListener
             try {
                 $this->entityManager->remove($entity);
                 $this->entityManager->flush();
-            } catch(ORMException $exception) {
+            } catch (ORMException $exception) {
                 $event->addError($exception->getMessage());
             }
         }

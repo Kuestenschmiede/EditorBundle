@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -23,27 +23,26 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class PluginService
 {
-    
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher = null;
-    
+
     /**
      * @var ContainerInterface
      */
     private $container = null;
-    
+
     /**
      * @var FileLocator
      */
     private $locator = null;
-    
+
     /**
      * @var PluginConfig[]
      */
     private $configs = [];
-    
+
     /**
      * PluginService constructor.
      * @param EventDispatcherInterface $eventDispatcher
@@ -59,7 +58,7 @@ class PluginService
         $this->container = $container;
         $this->locator = $locator;
     }
-    
+
     public function getProjectPlugins($loadMode = 'fe')
     {
         $configs = $this->getProjectConfigs();
@@ -68,9 +67,10 @@ class PluginService
         $event->setPluginConfigs($configs);
         $event->setValidConfigs($configs);
         $this->eventDispatcher->dispatch($event::NAME, $event);
+
         return $event->getInstances();
     }
-    
+
     public function getDataPlugins($typeId)
     {
         $configs = $this->getDataConfigs();
@@ -78,19 +78,20 @@ class PluginService
         $event->setElementId($typeId);
         $event->setPluginConfigs($configs);
         $this->eventDispatcher->dispatch($event::NAME, $event);
+
         return $event->getInstances();
     }
-    
+
     public function getProjectConfigs()
     {
         return $this->getPlugins('getProjectPlugin');
     }
-    
+
     public function getDataConfigs()
     {
         return $this->getPlugins('getDataPlugin');
     }
-    
+
     private function getPlugins($pluginGetter)
     {
         $configs = $this->loadConfigs();
@@ -100,9 +101,10 @@ class PluginService
                 $plugins[] = $config;
             }
         }
+
         return $plugins;
     }
-    
+
     /**
      * @param array $bundles
      * @return array|PluginConfig[]
@@ -112,33 +114,33 @@ class PluginService
         // check if we already got configs
         if (count($this->configs) > 0) {
             return $this->configs;
-        } else {
-            if (!$bundles) {
-                // if no bundles were specified, check every bundle for plugins
-                $bundles = $this->container->getParameter('kernel.bundles');
-            }
-            $configs = [];
-            foreach ($bundles as $key => $bundle) {
-                try  {
-                    // read the json ($key is the bundle name)
-                    $path = $this->locator->locate("@" . $key . "/Resources/config/plugins.json");
-                    $strContent = file_get_contents($path);
-                    $encoder = new JsonEncoder();
-                    // convert to array
-                    $arrFile = $encoder->decode($strContent, 'json');
-                    $arrConfig = $arrFile['plugins'];
-                    // $arrConfig is the configuration for 1 or more plugins
-                    foreach ($arrConfig as $singleConfig) {
-                        $configs[$singleConfig['id']] = new PluginConfig($singleConfig);
-                    }
-                } catch (\InvalidArgumentException $exception) {
-                    // no plugin configuration found for the current bundle, the bundle either has none or there
-                    // is a spelling mistake
-                    continue;
-                }
-            }
-            $this->configs = $configs;
-            return $configs;
         }
+        if (!$bundles) {
+            // if no bundles were specified, check every bundle for plugins
+            $bundles = $this->container->getParameter('kernel.bundles');
+        }
+        $configs = [];
+        foreach ($bundles as $key => $bundle) {
+            try {
+                // read the json ($key is the bundle name)
+                $path = $this->locator->locate('@' . $key . '/Resources/config/plugins.json');
+                $strContent = file_get_contents($path);
+                $encoder = new JsonEncoder();
+                // convert to array
+                $arrFile = $encoder->decode($strContent, 'json');
+                $arrConfig = $arrFile['plugins'];
+                // $arrConfig is the configuration for 1 or more plugins
+                foreach ($arrConfig as $singleConfig) {
+                    $configs[$singleConfig['id']] = new PluginConfig($singleConfig);
+                }
+            } catch (\InvalidArgumentException $exception) {
+                // no plugin configuration found for the current bundle, the bundle either has none or there
+                // is a spelling mistake
+                continue;
+            }
+        }
+        $this->configs = $configs;
+
+        return $configs;
     }
 }

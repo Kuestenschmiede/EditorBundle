@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class ShowEditProjectDialogEvent extends Event
 {
-    const NAME = "editor.project.edit";
+    const NAME = 'editor.project.edit';
 
     private $projectId = 0;
 
@@ -37,7 +37,7 @@ class ShowEditProjectDialogEvent extends Event
 
     private $dialogParams = null;
 
-    private $dialog = "";
+    private $dialog = '';
 
     /**
      * @return int

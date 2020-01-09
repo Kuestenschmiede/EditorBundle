@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -78,14 +78,14 @@ class CreateProjectListener
         $eventName,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $html = "";
+        $html = '';
         $dialogParams = $event->getDialogParams();
         $list = $event->getFieldList();
         $html = C4GBrickDialog::buildDialogView(
             $list,
             Database::getInstance(),
             [],
-            "",
+            '',
             $dialogParams
         );
         $view = [];
@@ -93,7 +93,7 @@ class CreateProjectListener
         $html .= "<button id ='send-dialog' title='Projekt speichern'></button>";
         $html .= "<button id ='cancel-dialog' title='Abbrechen'></button>";
         $view['form'] = $html;
-        $view['headline'] = "Neues Projekt erzeugen";
+        $view['headline'] = 'Neues Projekt erzeugen';
         $event->setView($view);
     }
 }

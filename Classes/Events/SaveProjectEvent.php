@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -16,10 +16,10 @@ use Symfony\Component\EventDispatcher\Event;
 
 class SaveProjectEvent extends Event
 {
-    const NAME = "editor.project.save";
+    const NAME = 'editor.project.save';
 
     private $data = [];
-    
+
     private $configId = 0;
 
     private $pluginInstances = [];
@@ -45,7 +45,7 @@ class SaveProjectEvent extends Event
     {
         $this->data = $data;
     }
-    
+
     /**
      * @return int
      */
@@ -53,7 +53,7 @@ class SaveProjectEvent extends Event
     {
         return $this->configId;
     }
-    
+
     /**
      * @param int $configId
      */

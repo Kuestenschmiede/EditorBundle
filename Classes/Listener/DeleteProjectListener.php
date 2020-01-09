@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -67,7 +67,7 @@ class DeleteProjectListener
             try {
                 $this->entityManager->remove($entity);
                 $this->entityManager->flush();
-            } catch(ORMException $exception) {
+            } catch (ORMException $exception) {
                 $event->setSuccess(0);
             }
         }

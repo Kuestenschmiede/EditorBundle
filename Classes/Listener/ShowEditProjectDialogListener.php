@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -15,7 +15,6 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\Events\ShowEditProjectDialogEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
-use con4gis\EditorBundle\Classes\Plugins\AbstractProjectPlugin;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
 use con4gis\ProjectsBundle\Classes\Views\C4GBrickViewType;
@@ -26,8 +25,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ShowEditProjectDialogListener
 {
     /**
-    * @var EntityManager
-    */
+     * @var EntityManager
+     */
     private $entityManager = null;
 
     /**

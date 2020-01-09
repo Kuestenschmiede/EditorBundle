@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -15,10 +15,7 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\Events\InstantiateProjectPluginsEvent;
 use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
-
 
 class InstantiateProjectPluginsListener
 {

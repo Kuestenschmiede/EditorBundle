@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -27,12 +27,12 @@ class SaveMetadataListener
      * @var EntityManager
      */
     private $entityManager = null;
-    
+
     /**
      * @var LoggerInterface
      */
     private $logger = null;
-    
+
     /**
      * SaveMetadataListener constructor.
      * @param EntityManager $entityManager
@@ -63,12 +63,12 @@ class SaveMetadataListener
                 // default case
                 $dataEntity = $this->entityManager->getRepository($entity)->findOneBy([
                     'id' => $event->getDataId(),
-                    'projectid' => $event->getProjectId()
+                    'projectid' => $event->getProjectId(),
                 ]);
             } else {
                 // plugin entity - there has to be a pid
                 $dataEntity = $this->entityManager->getRepository($entity)->findOneBy([
-                    'pid' => $event->getDataId()
+                    'pid' => $event->getDataId(),
                 ]);
                 if (!$dataEntity) {
                     // no entity existent - create one
@@ -99,13 +99,14 @@ class SaveMetadataListener
         $entities = $event->getEntities();
         foreach ($data as $key => $datum) {
             // remove underscores so the setter can be built
-            $setter = 'set' . ucfirst(str_replace("_", "", $key));
+            $setter = 'set' . ucfirst(str_replace('_', '', $key));
             foreach ($entities as $entity) {
                 if (method_exists($entity, $setter)) {
                     try {
                         $entity->$setter($datum);
                     } catch (\Throwable $error) {
-                        $this->logger->error("An error occured while setting " . $key . " with value " . $datum);
+                        $this->logger->error('An error occured while setting ' . $key . ' with value ' . $datum);
+
                         continue;
                     }
                 }
@@ -114,7 +115,7 @@ class SaveMetadataListener
 
         // loop and set general values, like timestamp
         foreach ($entities as $entity) {
-            if (method_exists($entity, "setTstamp")) {
+            if (method_exists($entity, 'setTstamp')) {
                 $entity->setTstamp(time());
             }
             if (method_exists($entity, 'setLastmemberid')) {
@@ -188,13 +189,12 @@ class SaveMetadataListener
                 // if there is a return value != false, the check failed
                 $event->stopPropagation();
                 $returnData = $event->getData();
-                $returnData['errorString'] = "There went something wrong in the mandatory check of field with fieldname " . $field->getFieldName();
+                $returnData['errorString'] = 'There went something wrong in the mandatory check of field with fieldname ' . $field->getFieldName();
                 $event->setData($returnData);
                 // exit loop
                 break;
-            } else {
-                // check passes...nothing to do
             }
+            // check passes...nothing to do
         }
     }
 
@@ -221,7 +221,6 @@ class SaveMetadataListener
                 $this->entityManager->persist($entity);
                 $this->entityManager->flush();
             } catch (ORMException $e) {
-
             }
         }
     }

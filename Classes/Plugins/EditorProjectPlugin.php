@@ -4,7 +4,7 @@
  * the gis-kit for Contao CMS.
  *
  * @package   	con4gis
- * @version    6
+ * @version    7
  * @author  	con4gis contributors (see "authors.txt")
  * @license 	LGPL-3.0-or-later
  * @copyright 	Küstenschmiede GmbH Software & Design
@@ -13,7 +13,6 @@
 
 namespace con4gis\EditorBundle\Classes\Plugins;
 
-use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
 use con4gis\EditorBundle\Entity\EditorConfiguration;
 use con4gis\EditorBundle\Entity\EditorProject;
@@ -32,37 +31,37 @@ class EditorProjectPlugin extends AbstractProjectPlugin
     public function getFields()
     {
         $fieldList = [];
-        
-        $strName = "tl_c4g_editor_project";
-        
+
+        $strName = 'tl_c4g_editor_project';
+
         $headlineField = new C4GHeadlineField();
         $headlineField->setTitle($GLOBALS['TL_LANG'][$strName]['headline']);
         $fieldList[] = $headlineField;
-        
+
         $nameField = new C4GTextField();
-        $nameField->setFieldName("caption")->setFormField()->setTitle($GLOBALS['TL_LANG'][$strName]['caption']);
+        $nameField->setFieldName('caption')->setFormField()->setTitle($GLOBALS['TL_LANG'][$strName]['caption']);
         $nameField->setMandatory(true);
         $fieldList[] = $nameField;
-        
+
         $descriptionField = new C4GTextareaField();
-        $descriptionField->setFieldName("description")->setFormField()->setTitle($GLOBALS['TL_LANG'][$strName]['description']);
+        $descriptionField->setFieldName('description')->setFormField()->setTitle($GLOBALS['TL_LANG'][$strName]['description']);
         $fieldList[] = $descriptionField;
-        
+
         $groupidField = new C4GNumberField();
         $groupidField->setFieldName('groupid')->setHidden();
         $fieldList[] = $groupidField;
-        
+
         $lastmemberField = new C4GNumberField();
         $lastmemberField->setFieldName('lastmemberid')->setHidden();
         $fieldList[] = $lastmemberField;
-        
+
         $tstampField = new C4GNumberField();
         $tstampField->setFieldName('tstamp')->setHidden();
         $fieldList[] = $tstampField;
-        
+
         return $fieldList;
     }
-    
+
     /**
      * Returns the projects entity.
      * @return mixed|string
@@ -71,7 +70,7 @@ class EditorProjectPlugin extends AbstractProjectPlugin
     {
         return EditorProject::class;
     }
-    
+
     /**
      * Fills the EditorProject entity with data.
      * @param SaveProjectEvent $event
@@ -90,9 +89,8 @@ class EditorProjectPlugin extends AbstractProjectPlugin
                     $groupId = $this->getGroupIdFromConfig($event->getConfigId());
                     if ($groupId) {
                         $data['groupid'] = $groupId;
-                    } else {
-                        // TODO Fehler
                     }
+                    // TODO Fehler
                 }
                 $data['lastmemberid'] = $userId;
                 if ($data['name']) {
@@ -102,9 +100,10 @@ class EditorProjectPlugin extends AbstractProjectPlugin
         }
         $event->setData($data);
         $event->setEntities($entities);
+
         return $event;
     }
-    
+
     public function getProjectData($projectId, $fieldList): array
     {
         $data = [];
@@ -113,26 +112,26 @@ class EditorProjectPlugin extends AbstractProjectPlugin
             ->findOneBy(['id' => $projectId]);
         if ($project) {
             foreach ($fieldList as $field) {
-                $getter = "get" . ucfirst($field->getFieldName());
+                $getter = 'get' . ucfirst($field->getFieldName());
                 if (method_exists($project, $getter)) {
                     $data[$field->getFieldName()] = $project->$getter();
                 }
             }
+
             return $data;
-        } else {
-            return [];
         }
+
+        return [];
     }
-    
+
     private function getGroupIdFromConfig($configId)
     {
         $config = System::getContainer()->get('doctrine.orm.entity_manager')
             ->getRepository(EditorConfiguration::class)->findOneBy(['id' => $configId]);
         if ($config) {
             return $config->getEditorProjectGroup();
-        } else {
-            // no config found
-            return 0;
         }
+        // no config found
+        return 0;
     }
 }

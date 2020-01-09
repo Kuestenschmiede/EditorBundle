@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -23,26 +23,26 @@ class JsonLayer
     private $id = 0;
     private $pid = 0;
     private $content = [];
-    private $hide = "";
-    private $type = "";
+    private $hide = '';
+    private $type = '';
     private $display = true;
     private $hasChilds = false;
     private $childsCount = 0;
     private $renderSpecial = true;
     private $editable = true;
-    private $name = "";
+    private $name = '';
     private $tabId = 0;
-    private $layername = "";
+    private $layername = '';
     private $visibleChilds = false;
     private $projectId = 0;
     private $zoom = [];
     private $isInactive = false;
     private $elementid = 0;
     private $categoryid = 0;
-    private $drawType = "";
-    private $geojson = "";
-    private $locgeox = "";
-    private $locgeoy = "";
+    private $drawType = '';
+    private $geojson = '';
+    private $locgeox = '';
+    private $locgeoy = '';
     private $radius = 0.0;
 
     /**
@@ -71,10 +71,10 @@ class JsonLayer
         $this->elementid = $arrLayer['elementid'];
         $this->categoryid = $arrLayer['categoryid'];
         $this->drawType = $arrLayer['drawType'];
-        if ($this->drawType === "point") {
+        if ($this->drawType === 'point') {
             $this->locgeox = $arrLayer['content'][0]['data']['geometry']['coordinates'][0];
             $this->locgeoy = $arrLayer['content'][0]['data']['geometry']['coordinates'][1];
-        } elseif ($this->drawType === "circle") {
+        } elseif ($this->drawType === 'circle') {
             $this->locgeox = $arrLayer['content'][0]['data']['geometry']['center'][0];
             $this->locgeoy = $arrLayer['content'][0]['data']['geometry']['center'][1];
             $this->radius = $arrLayer['content'][0]['data']['geometry']['radius'];
@@ -466,5 +466,4 @@ class JsonLayer
     {
         $this->radius = $radius;
     }
-
 }

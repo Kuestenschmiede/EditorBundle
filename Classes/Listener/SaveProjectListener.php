@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -107,13 +107,12 @@ class SaveProjectListener
             if ($field->checkMandatory($data)) {
                 // if there is a return value != false, the check failed
                 $event->stopPropagation();
-                $data['errorString'] = "There went something wrong in the mandatoy check of field with fieldname " . $field->getFieldName();
+                $data['errorString'] = 'There went something wrong in the mandatoy check of field with fieldname ' . $field->getFieldName();
                 $event->setData($data);
                 // exit loop
                 break;
-            } else {
-                // check passes...nothing to do
             }
+            // check passes...nothing to do
         }
     }
 
@@ -135,7 +134,7 @@ class SaveProjectListener
         foreach ($entities as $entity) {
             $currentData = $data;
             foreach ($currentData as $key => $datum) {
-                $setter = 'set' . ucfirst(str_replace("_", "", $key));
+                $setter = 'set' . ucfirst(str_replace('_', '', $key));
                 // set the value if it belongs in this entity
                 if (method_exists($entity, $setter)) {
                     $currentField = $fields[$key];
@@ -174,15 +173,14 @@ class SaveProjectListener
                     $pid = $entity->getId();
                     $event->setReturnData([
                         'id' => $entity->getId(),
-                        'name' => $entity->getCaption()
+                        'name' => $entity->getCaption(),
                     ]);
                 }
             } catch (ORMException $exception) {
-
             }
         }
     }
-    
+
     public function onSaveProjectLoadPermissions(
         SaveProjectEvent $event,
         $eventName,
@@ -193,6 +191,7 @@ class SaveProjectListener
         foreach ($entities as $entity) {
             if ($entity instanceof EditorProject) {
                 $projectEntity = $entity;
+
                 break;
             }
         }
@@ -203,12 +202,12 @@ class SaveProjectListener
         $arrProject['permissions'] = [
             'data' => [
                 'write' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_WRITE_DATA),
-                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_DATA)
+                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_DATA),
             ],
             'project' => [
                 'write' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_WRITE_PROJECT),
-                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_PROJECT)
-            ]
+                'read' => MemberModel::hasRightInGroup($memberId, $groupId, EditorBrickTypes::RIGHT_READ_PROJECT),
+            ],
         ];
         $retData = $event->getReturnData();
         $event->setReturnData(array_merge($retData, $arrProject));

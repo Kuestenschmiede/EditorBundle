@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -190,7 +190,7 @@ class EditorConfigurationListener
             $arrCategories = [];
             $drawStyles[$key] = [];
             /** @var EditorElementCategory $category */
-            foreach ($categories as $cid  => $category) {
+            foreach ($categories as $cid => $category) {
                 $arrCategory = [];
                 $arrCategory['id'] = $cid;
                 $arrCategory['name'] = $category->getCaption();
@@ -228,7 +228,7 @@ class EditorConfigurationListener
         EventDispatcherInterface $eventDispatcher
     ) {
         $editorConfig = $event->getEditorConfig();
-        $editorConfig['dataBaseUrl'] = "con4gis/projectData/";
+        $editorConfig['dataBaseUrl'] = 'con4gis/projectData/';
         $event->setEditorConfig($editorConfig);
     }
 }

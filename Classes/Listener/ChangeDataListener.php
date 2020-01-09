@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -27,7 +27,7 @@ class ChangeDataListener
      * @var EntityManager
      */
     private $entityManager = null;
-    
+
     /**
      * @var EditorHistoryService
      */
@@ -51,18 +51,18 @@ class ChangeDataListener
     ) {
         $changes = $event->getChanges();
         $dataId = $event->getDataId();
-        $cleanId = C4GBrickCommon::getLayerIDParam($dataId, "id");
+        $cleanId = C4GBrickCommon::getLayerIDParam($dataId, 'id');
         $projectId = $event->getProjectId();
         $dataRepo = $this->entityManager->getRepository(EditorElement::class);
         $entity = $dataRepo->findOneBy([
             'id' => $cleanId,
-            'projectid' => $projectId
+            'projectid' => $projectId,
         ]);
         $changeCount = 0;
         if ($entity) {
             $this->historyService->createHistoryEntry($entity);
             foreach ($changes as $key => $change) {
-                $setter = "set" . ucfirst($key);
+                $setter = 'set' . ucfirst($key);
                 if (method_exists($entity, $setter)) {
                     $entity->$setter($change);
                     $changeCount++;
@@ -77,7 +77,7 @@ class ChangeDataListener
                 }
             }
         } else {
-            $event->addError("No entity found with ID " . $cleanId);
+            $event->addError('No entity found with ID ' . $cleanId);
         }
     }
 }

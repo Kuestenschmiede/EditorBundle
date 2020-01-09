@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -13,14 +13,13 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
 use con4gis\EditorBundle\Classes\Helper\JsonLayer;
 use con4gis\EditorBundle\Entity\MapsProjectData;
 use Symfony\Component\EventDispatcher\Event;
 
 class CreateDataEvent extends Event
 {
-    const NAME = "editor.data.create";
+    const NAME = 'editor.data.create';
 
     private $projectId = 0;
 

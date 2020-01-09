@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -50,6 +50,7 @@ class EditorHistoryService
         if ($historyEntry) {
             $element = $this->updateElementWithHistory($element, $historyEntry);
         }
+
         try {
             $this->entityManager->persist($element);
             if ($historyEntry) {
@@ -59,12 +60,14 @@ class EditorHistoryService
         } catch (ORMException $exception) {
             $this->logger->error($exception->getMessage());
         }
+
         return $element;
     }
 
     public function createHistoryEntry(EditorElement $element)
     {
         $historyEntry = $this->convertToHistory($element);
+
         try {
             $this->entityManager->persist($historyEntry);
             $this->entityManager->flush();
@@ -78,6 +81,7 @@ class EditorHistoryService
         $historyRepo = $this->entityManager
             ->getRepository(EditorElementHistory::class);
         $entry = $historyRepo->findLatestByElementId($elementId);
+
         return $entry;
     }
 
@@ -104,6 +108,7 @@ class EditorHistoryService
         $historyEntry->setDrawtype($element->getDrawtype());
         $historyEntry->setElementid($element->getId());
         $historyEntry->setVersiontstamp(time());
+
         return $historyEntry;
     }
 
@@ -127,6 +132,7 @@ class EditorHistoryService
         $element->setGeojson($history->getGeojson());
         $element->setRadius($history->getRadius());
         $element->setDrawtype($history->getDrawtype());
+
         return $element;
     }
 }

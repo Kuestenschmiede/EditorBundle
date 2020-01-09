@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -17,8 +17,6 @@ use con4gis\EditorBundle\Classes\Events\DuplicateDataEvent;
 use con4gis\EditorBundle\Classes\EditorMapFrontend;
 use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 use con4gis\EditorBundle\Classes\Plugins\DefaultDataPlugin;
-use con4gis\EditorBundle\Entity\EditorElementCategory;
-use con4gis\EditorBundle\Entity\EditorElementType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -77,7 +75,6 @@ class DuplicateDataListener
                     $entities['plugin'][] = $entity;
                 }
             }
-
         }
         $event->setEntities($entities);
     }
@@ -100,12 +97,12 @@ class DuplicateDataListener
         $newMainEntity = clone $mainEntity;
         // update tstamp
         $newMainEntity->setTstamp(time());
-        $newMainEntity->setName($mainEntity->getName() . " (Kopie)");
+        $newMainEntity->setName($mainEntity->getName() . ' (Kopie)');
+
         try {
             $this->entityManager->persist($newMainEntity);
             $this->entityManager->flush();
-        } catch(ORMException $e) {
-
+        } catch (ORMException $e) {
         }
         $newEntities['main'] = $newMainEntity;
         $newId = $newMainEntity->getId();
@@ -117,12 +114,12 @@ class DuplicateDataListener
             if ((method_exists($newPluginEntity, 'setTstamp'))) {
                 $newPluginEntity->setTstamp(time());
             }
+
             try {
                 $this->entityManager->persist($newPluginEntity);
                 $this->entityManager->flush();
                 $newEntities['plugin'][] = $newPluginEntity;
-            } catch(ORMException $e) {
-
+            } catch (ORMException $e) {
             }
         }
         $event->setNewEntities($newEntities);
@@ -143,7 +140,7 @@ class DuplicateDataListener
         $dataEntity = $entities['main'];
         $arrLayer = $this->frontend->getSingleDataArray(
             $dataEntity,
-            ['hide' => ""]
+            ['hide' => '']
         );
         $arrLayer['projectId'] = $dataEntity->getProjectid();
         $event->setReturnData(['layer' => $arrLayer]);

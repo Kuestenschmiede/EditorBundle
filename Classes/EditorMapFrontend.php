@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -14,18 +14,14 @@
 namespace con4gis\EditorBundle\Classes;
 
 use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
-use con4gis\GroupsBundle\Resources\contao\models\MemberGroupModel;
 use con4gis\MapsBundle\Classes\Events\LoadLayersEvent;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;
 use con4gis\EditorBundle\Entity\EditorElementCategory;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorElementType;
-use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Maps\C4GBrickMapFrontendParent;
-use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Contao\FrontendUser;
-use Contao\System;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -86,6 +82,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                 case EditorBrickTypes::BRICK_GENERIC_PROJECT:
                     $GLOBALS['TL_BODY'][] = '<script src="bundles/con4gisprojects/js/C4GBrickLivePositions.js"></script>';
                     $arrChildData = $this->getProjectsPoiData($child);
+
                     break;
                 default:
                     break;
@@ -107,7 +104,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
      */
     protected function getProjectsPoiData($child)
     {
-        $arrProjects = array();
+        $arrProjects = [];
         $dataRepo = $this->em->getRepository(EditorElement::class);
         $categoryRepo = $this->em->getRepository(EditorElementCategory::class);
         $elementRepo = $this->em->getRepository(EditorElementType::class);
@@ -144,7 +141,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
             $elementIds = [];
             $arrData = $dataRepo->findBy([
                 'projectid' => $project->getId(),
-                'published' => 1
+                'published' => 1,
             ]);
             // get all used categories for project
             // get all used elements for project
@@ -216,13 +213,13 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
 
             if ($withCategories) {
                 $arrProject['display'] = true;
-
             } else {
                 $arrProject['display'] = false;
             }
             $arrProject['content'] = [];
             $arrProjects[] = $arrProject;
         }
+
         return $arrProjects;
     }
 
@@ -251,6 +248,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                     $child['hide'],
                     $content
                 );
+
                 break;
             case EditorDrawStyles::POINT:
                 $content = $this->addMapStructureContent(
@@ -278,6 +276,7 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                     $child['hide'],
                     $content
                 );
+
                 break;
             case EditorDrawStyles::CIRCLE:
                 $content = $this->createContentForCircleGeom($data);
@@ -293,11 +292,14 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
                     $child['hide'],
                     $content
                 );
+
                 break;
             default:
                 $arrDatum = [];
+
                 break;
         }
+
         return $arrDatum;
     }
 
@@ -310,21 +312,19 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
             $popup = $this->createPopup($data);
             $properties = $decodedData->properties; //???
             $geometry = $decodedData->geometry;
-            $arrData = array
-            (
+            $arrData = [
                 'type' => 'Feature',
                 'geometry' => $geometry,
-                'properties' => array
-                (
+                'properties' => [
                     'popup' => $popup,
                     'projection' => $projection,
-                    'label' => $data->getLoclabel() . "",
+                    'label' => $data->getLoclabel() . '',
                     'zoom_onclick' => false,
                     'tooltip' => $data->getName(),
-                    'graphicTitle' => $data->getName()
-                ),
-                'format' => 'GeoJSON'
-            );
+                    'graphicTitle' => $data->getName(),
+                ],
+                'format' => 'GeoJSON',
+            ];
             $arrGeoJson = [];
             $arrGeoJson['data'] = $arrData;
             $arrGeoJson['format'] = 'GeoJSON';
@@ -332,52 +332,52 @@ class EditorMapFrontend extends C4GBrickMapFrontendParent
         } else {
             $arrGeoJson = [];
         }
-        
+
         return [$arrGeoJson];
     }
 
     private function createContentForCircleGeom(EditorElement $data)
     {
-        $content = array(
+        $content = [
             'id' => 0,
             'type' => 'single',
             'format' => 'GeoJSON',
             //'origType' => 'single',
             'locationStyle' => EditorCommon::getLocstyleForData($data, $this->em),
-            'data' => array(
+            'data' => [
                 'type' => 'Feature',
-                'geometry' => array(
+                'geometry' => [
                     'type' => 'Circle',
-                    'center' => array(
+                    'center' => [
                         (float) $data->getLocgeox(),
-                        (float) $data->getLocgeoy()
-                    ),
-                    'radius' => $data->getRadius()
-                ),
-                'properties' => array
-                (
+                        (float) $data->getLocgeoy(),
+                    ],
+                    'radius' => $data->getRadius(),
+                ],
+                'properties' => [
                     'projection' => 'EPSG:4326',
                     'positionId' => 0,
                     'popup' => $this->createPopup($data),
                     'label' => $data->getLoclabel(),
                     'graphicTitle' => $data->getName(),
-                    'tooltip' => $data->getName()
-                )
-            ),
-            'settings' => []
-        );
+                    'tooltip' => $data->getName(),
+                ],
+            ],
+            'settings' => [],
+        ];
+
         return [$content];
     }
 
     public function createPopup(EditorElement $data)
     {
         $popup = [];
-        $popup['content'] = "<div id='async-popup-data'><script>jQuery.get('con4gis/projectData/popup/' + ". $data->getId() .").done(function(data) {
+        $popup['content'] = "<div id='async-popup-data'><script>jQuery.get('con4gis/projectData/popup/' + " . $data->getId() . ").done(function(data) {
             document.getElementById('async-popup-data').innerHTML = data;
         });</script></div>";
         $popup['async'] = false;
-        $popup['routing_link'] = "1";
+        $popup['routing_link'] = '1';
+
         return $popup;
     }
-
 }

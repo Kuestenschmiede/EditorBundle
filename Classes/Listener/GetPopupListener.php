@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -13,12 +13,10 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
-
 use con4gis\EditorBundle\Classes\Events\GetPopupEvent;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorElementType;
 use con4gis\ProjectsBundle\Classes\Fieldtypes\C4GHeadlineField;
-use Contao\System;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GetPopupListener
@@ -90,26 +88,25 @@ class GetPopupListener
             ->findOneBy(['id' => $typeid])->getCaption();
 
         $removeHeadline = true;
-        $headline = array();
-        foreach ($fields as $key=>$field) {
+        $headline = [];
+        foreach ($fields as $key => $field) {
             if ($field->isPopupfield()) {
-
                 if ($field->getFieldName() === 'name') {
                     $removeHeadline = false;
-                    $view .= '<div class="c4g_popup_header_featurename">'. $data[$field->getFieldName()] .'</div>';
-                    $view .= '<div class="c4g_popup_header_featuretype">'.$caption.'</div></div><br>';
+                    $view .= '<div class="c4g_popup_header_featurename">' . $data[$field->getFieldName()] . '</div>';
+                    $view .= '<div class="c4g_popup_header_featuretype">' . $caption . '</div></div><br>';
                 } else {
                     //remove headline if all fields empty.
                     // TODO in C4GHeadlineField auslagern
                     // TODO Oder "DataPopup" (oder anderer name) Klasse
-                    if (($field instanceof C4GHeadlineField) &! $removeHeadline) {
+                    if (($field instanceof C4GHeadlineField) & ! $removeHeadline) {
                         if ($headline['title'] && $headline['view']) {
-                            $view .= $headline['headline'].$headline['view'];
+                            $view .= $headline['headline'] . $headline['view'];
                         }
 
                         $headline['title'] = $field->getTitle();
                         $headline['headline'] = $field->getC4GPopupField($data, $groupId);
-                        $headline['view']  = '';
+                        $headline['view'] = '';
                     }
 
                     if (!$field instanceof C4GHeadlineField) {
@@ -125,7 +122,7 @@ class GetPopupListener
 
         //add last headline with fields
         if ($headline['title'] && $headline['view']) {
-            $view .= $headline['headline'].$headline['view'];
+            $view .= $headline['headline'] . $headline['view'];
         }
 
         $event->setView($view);

@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -21,7 +21,6 @@ use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
-use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use con4gis\ProjectsBundle\Classes\Views\C4GBrickViewType;
 use Contao\Database;
 use Doctrine\ORM\EntityManager;
@@ -42,7 +41,6 @@ class LoadProjectsListener
     {
         $this->entityManager = $entityManager;
     }
-
 
     public function onLoadProjectsGetGenericProjects(
         LoadProjectsEvent $event,

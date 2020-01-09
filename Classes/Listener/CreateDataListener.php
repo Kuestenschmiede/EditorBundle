@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -20,7 +20,6 @@ use con4gis\EditorBundle\Classes\EditorMapFrontend;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
-use con4gis\ProjectsBundle\Classes\Models\C4gProjectsModel;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -77,15 +76,18 @@ class CreateDataListener
             case EditorDrawStyles::POLYGON:
             case EditorDrawStyles::FREEHAND:
                 $entity->setGeojson($layer->getGeojson());
+
                 break;
             case EditorDrawStyles::POINT:
                 $entity->setLocgeox($layer->getLocgeox());
                 $entity->setLocgeoy($layer->getLocgeoy());
+
                 break;
             case EditorDrawStyles::CIRCLE:
                 $entity->setLocgeox($layer->getLocgeox());
                 $entity->setLocgeoy($layer->getLocgeoy());
                 $entity->setRadius($layer->getRadius());
+
                 break;
         }
 

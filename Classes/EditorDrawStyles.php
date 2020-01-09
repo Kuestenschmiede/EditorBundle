@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -15,11 +15,11 @@ namespace con4gis\EditorBundle\Classes;
 
 class EditorDrawStyles
 {
-    const POINT = "point";
-    const LINESTRING = "linestring";
-    const POLYGON = "polygon";
-    const CIRCLE = "circle";
-    const FREEHAND = "freehand";
+    const POINT = 'point';
+    const LINESTRING = 'linestring';
+    const POLYGON = 'polygon';
+    const CIRCLE = 'circle';
+    const FREEHAND = 'freehand';
 
     public static function getDrawStyleArray()
     {
@@ -28,7 +28,7 @@ class EditorDrawStyles
             'linestring' => 'Strecke',
             'polygon' => 'Fläche',
             'freehand' => 'Freihand zeichnen',
-            'circle' => 'Kreis'
+            'circle' => 'Kreis',
         ];
     }
 }

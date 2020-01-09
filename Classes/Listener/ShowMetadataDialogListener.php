@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -15,10 +15,8 @@ namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\EditorBundle\Classes\Events\ShowMetadataDialogEvent;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
-use con4gis\EditorBundle\Classes\Plugins\DataPluginInterface;
 use con4gis\EditorBundle\Entity\EditorElement;
 use con4gis\EditorBundle\Entity\EditorElementType;
-use con4gis\ProjectsBundle\Classes\Common\C4GBrickCommon;
 use con4gis\ProjectsBundle\Classes\Common\C4GBrickConst;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialog;
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
@@ -93,7 +91,6 @@ class ShowMetadataDialogListener
             if (is_array($tmpData)) {
                 $data = array_merge($data, $tmpData);
             }
-
         }
         $event->setData($data);
     }
@@ -122,7 +119,7 @@ class ShowMetadataDialogListener
                 $pluginData = $plugin->getData($dataid, $fieldList, $this->entityManager);
                 if ($config->getId() == 1) {
                     $preData = $event->getData();
-                    foreach ($fieldList as $key=>$field) {
+                    foreach ($fieldList as $key => $field) {
                         if ($field->getFieldName() && $preData[$field->getFieldName()]) {
                             $field->setInitialValue($preData[$field->getFieldName()]);
                             $fieldList[$key] = $field;
@@ -139,7 +136,7 @@ class ShowMetadataDialogListener
                     foreach ($defaultFields as $defaultField => $values) {
                         $value = $plugin->getDefaultValue($config->getId(), $typeid, $defaultField, $this->entityManager);
                         if ($value) {
-                            foreach ($fieldList as $key=>$field) {
+                            foreach ($fieldList as $key => $field) {
                                 if ($field->getFieldName() && ($field->getFieldName() == $defaultField)) {
                                     $field->setInitialValue($value);
                                     $fieldList[$key] = $field;
@@ -158,12 +155,12 @@ class ShowMetadataDialogListener
             $data = $event->getData();
         }
 
-        $html = '<br><div class="c4g_editor_metadata_headline">'.$caption.' bearbeiten</div><br>'; //ToDo Language
+        $html = '<br><div class="c4g_editor_metadata_headline">' . $caption . ' bearbeiten</div><br>'; //ToDo Language
         $html .= C4GBrickDialog::buildDialogView(
             $list,
             Database::getInstance(),
             $data,
-            "",
+            '',
             $dialogParams
         );
         $view = [];
@@ -171,7 +168,7 @@ class ShowMetadataDialogListener
         $html .= "<button id ='send-dialog'></button>";
         $html .= "<button id ='cancel-dialog'></button>";
         $view['form'] = $html;
-        $view['headline'] = "Datensatz bearbeiten"; //ToDo Language
+        $view['headline'] = 'Datensatz bearbeiten'; //ToDo Language
         $event->setView($view);
     }
 }

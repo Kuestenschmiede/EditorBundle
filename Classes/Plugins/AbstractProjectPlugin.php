@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -14,9 +14,6 @@
 namespace con4gis\EditorBundle\Classes\Plugins;
 
 use con4gis\EditorBundle\Classes\Events\SaveProjectEvent;
-use con4gis\EditorBundle\Classes\Plugins\PluginConfig;
-use con4gis\EditorBundle\Classes\Plugins\ProjectPluginInterface;
-use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 use Contao\System;
 
 abstract class AbstractProjectPlugin extends AbstractPlugin implements ProjectPluginInterface
@@ -34,17 +31,18 @@ abstract class AbstractProjectPlugin extends AbstractPlugin implements ProjectPl
             ->findOneBy(['pid' => $projectId]);
         if ($project) {
             foreach ($fieldList as $field) {
-                $getter = "get" . ucfirst($field->getFieldName());
+                $getter = 'get' . ucfirst($field->getFieldName());
                 if (method_exists($project, $getter)) {
                     $data[$field->getFieldName()] = $project->$getter();
                 }
             }
+
             return $data;
-        } else {
-            return [];
         }
+
+        return [];
     }
-    
+
     public function getProjectTypes(): array
     {
         return [];

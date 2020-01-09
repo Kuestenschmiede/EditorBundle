@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -24,10 +24,12 @@ class C4GEditorConfigurationCache extends C4GApiCache
      */
     protected static $instance = null;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!static::$instance) {
             static::$instance = new self();
         }
+
         return static::$instance;
     }
 

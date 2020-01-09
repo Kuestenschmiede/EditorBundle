@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -25,7 +25,7 @@ class TlEditorElementType extends Backend
      * @var PluginService
      */
     private $pluginService = null;
-    
+
     /**
      * Import the back end user object
      */
@@ -35,7 +35,7 @@ class TlEditorElementType extends Backend
         $this->import('BackendUser', 'User');
         $this->pluginService = System::getContainer()->get('editor_plugin_service');
     }
-    
+
     /**
      * Get a list of all available scenarios
      * @return array()
@@ -51,39 +51,43 @@ class TlEditorElementType extends Backend
         foreach ($categories as $category) {
             $return[$category->getId()] = $category->getCaption();
         }
+
         return $return;
     }
-    
+
     public function getDrawStyles()
     {
         $strName = 'tl_c4g_editor_element_type';
-        
-        return array(
+
+        return [
             'point' => $GLOBALS['TL_LANG'][$strName]['point'],
             'linestring' => $GLOBALS['TL_LANG'][$strName]['linestring'],
             'polygon' => $GLOBALS['TL_LANG'][$strName]['polygon'],
             'freehand' => $GLOBALS['TL_LANG'][$strName]['freehand'],
-            'circle' => $GLOBALS['TL_LANG'][$strName]['circle']
-        );
+            'circle' => $GLOBALS['TL_LANG'][$strName]['circle'],
+        ];
     }
-    
+
     public function getPluginList()
     {
         $configs = System::getContainer()->get('editor_plugin_service')->getDataConfigs();
         $return = [];
         foreach ($configs as $config) {
             if ($config->getDataPlugin()) {
-                $return[$config->getId()] = $config->getName() . " (" . $config->getId() . ")";
+                $return[$config->getId()] = $config->getName() . ' (' . $config->getId() . ')';
             }
         }
+
         return $return;
     }
-    
+
     public function updateDCA(DataContainer $dc)
     {
-        if (!$dc->id) return;
-        
-        $objType = $this->Database->prepare("SELECT plugins FROM tl_c4g_editor_element_type WHERE id=?")
+        if (!$dc->id) {
+            return;
+        }
+
+        $objType = $this->Database->prepare('SELECT plugins FROM tl_c4g_editor_element_type WHERE id=?')
             ->limit(1)
             ->execute($dc->id);
         if ($objType->numRows > 0) {
@@ -98,12 +102,12 @@ class TlEditorElementType extends Backend
                                     $pluginObj = new $pluginClass($config);
                                     $fields = $pluginObj->getBackendFields();
                                     if ($fields) {
-                                        $palette = ';{'.$config->getId().'_legend'.'}';
+                                        $palette = ';{' . $config->getId() . '_legend' . '}';
                                         foreach ($fields as $field => $valArr) {
-                                            $palette .= ','.$field;
+                                            $palette .= ',' . $field;
                                             $fields[$field]['pluginId'] = $config->getId();
                                         }
-                                        
+
                                         $GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['palettes']['default'] .= $palette;
                                         $GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'] = array_merge($GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'], $fields);
                                     }
@@ -115,35 +119,35 @@ class TlEditorElementType extends Backend
             }
         }
     }
-    
+
     public function loadField($varValue, DataContainer $dc)
     {
         $result = $varValue;
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?")
+        $objMap = $this->Database->prepare('SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?')
             ->limit(1)
             ->execute($dc->id, $dc->field);
         if ($objMap->numRows > 0) {
             $result = $objMap->pluginValue;
         }
-        
+
         return $result;
     }
-    
+
     public function saveField($varValue, DataContainer $dc)
     {
-        $objMap = $this->Database->prepare("SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?")
+        $objMap = $this->Database->prepare('SELECT pluginValue FROM tl_c4g_editor_element_preset WHERE pid=? AND pluginField=?')
             ->limit(1)
             ->execute($dc->id, $dc->field);
-        
+
         if ($objMap->numRows > 0) {
-            $this->Database->prepare("UPDATE tl_c4g_editor_element_preset SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?")
+            $this->Database->prepare('UPDATE tl_c4g_editor_element_preset SET tstamp=?, pluginValue=? WHERE pid=? AND pluginField=?')
                 ->execute(time(), $varValue, $dc->id, $dc->field);
         } else {
             $pluginId = intval($GLOBALS['TL_DCA']['tl_c4g_editor_element_type']['fields'][$dc->field]['pluginId']);
-            $this->Database->prepare("INSERT INTO tl_c4g_editor_element_preset SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?")
+            $this->Database->prepare('INSERT INTO tl_c4g_editor_element_preset SET tstamp=?, pid=?, pluginId=?, pluginField=?, pluginValue=?')
                 ->execute(time(), $dc->id, $pluginId, $dc->field, $varValue);
         }
-        
+
         return null;
     }
 }

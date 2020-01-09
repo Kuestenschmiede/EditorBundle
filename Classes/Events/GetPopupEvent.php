@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class GetPopupEvent extends Event
 {
-    const NAME = "editor.popup.get";
+    const NAME = 'editor.popup.get';
 
     private $dataId = 0;
 
@@ -31,7 +31,7 @@ class GetPopupEvent extends Event
 
     private $data = [];
 
-    private $view = "";
+    private $view = '';
 
     /**
      * @return int

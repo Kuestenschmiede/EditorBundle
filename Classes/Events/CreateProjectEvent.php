@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -13,14 +13,13 @@
 
 namespace con4gis\EditorBundle\Classes\Events;
 
-
 use con4gis\ProjectsBundle\Classes\Dialogs\C4GBrickDialogParams;
 use con4gis\ProjectsBundle\Classes\Fieldlist\C4GBrickField;
 use Symfony\Component\EventDispatcher\Event;
 
 class CreateProjectEvent extends Event
 {
-    const NAME = "editor.project.create";
+    const NAME = 'editor.project.create';
 
     private $plugins = [];
 

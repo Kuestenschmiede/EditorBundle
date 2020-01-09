@@ -4,7 +4,7 @@
   * the gis-kit for Contao CMS.
   *
   * @package   	con4gis
-  * @version    6
+  * @version    7
   * @author  	con4gis contributors (see "authors.txt")
   * @license 	LGPL-3.0-or-later
   * @copyright 	Küstenschmiede GmbH Software & Design
@@ -53,7 +53,7 @@ interface ProjectPluginInterface
      * @return mixed
      */
     public function getProjectData($projectId, $fieldList): array;
-    
+
     /**
      * Returns an array of projectTypes that are defined by this plugin. The array should be structured like
      * typeKey => Translation/language reference
