@@ -15,3 +15,6 @@
 li .c4g_editor_configuration, li .c4g_editor_element_type, li .c4g_editor_element_category {
   display: none !important;
 }
+li .active .c4g_editor_configuration, li .active .c4g_editor_element_type, li .active .c4g_editor_element_category {
+  display: block !important;
+}

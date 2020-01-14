@@ -12,6 +12,6 @@
   */
 
 
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_category'] = array('Editorkategorien', 'Kategorien für Kartenprojekte');
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_type']   = array('Editorelementtypen', 'Kartenelemente für Kartenprojekte');
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_configuration']   = array('Editorkonfiguration', 'Verschiedene Editorkonfigurationen');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_category'] = array('Editor: Kategorien', 'Kategorien für Kartenprojekte');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_type']   = array('Editor: Elementtypen', 'Kartenelemente für Kartenprojekte');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_configuration']   = array('Editor: Konfiguration', 'Verschiedene Editorkonfigurationen');
