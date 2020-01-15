@@ -13,7 +13,7 @@
 
 namespace con4gis\EditorBundle\Classes;
 
-use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
+use con4gis\CoreBundle\Classes\C4GUtils;
 use con4gis\MapsBundle\Classes\Events\LoadLayersEvent;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Classes\Events\LoadProjectsEvent;

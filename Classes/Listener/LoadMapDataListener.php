@@ -13,7 +13,7 @@
 
 namespace con4gis\EditorBundle\Classes\Listener;
 
-use con4gis\CoreBundle\Resources\contao\classes\C4GUtils;
+use con4gis\CoreBundle\Classes\C4GUtils;
 use con4gis\MapsBundle\Classes\Events\LoadMapdataEvent;
 use con4gis\MapsBundle\Resources\contao\models\C4gMapProfilesModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

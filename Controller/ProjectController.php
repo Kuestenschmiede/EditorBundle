@@ -14,7 +14,7 @@
 namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
-use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
+use con4gis\CoreBundle\Classes\C4GApiCache;
 use con4gis\EditorBundle\Entity\EditorProject;
 use con4gis\GroupsBundle\Resources\contao\models\MemberModel;
 use con4gis\MapsBundle\Classes\Caches\C4GLayerApiCache;

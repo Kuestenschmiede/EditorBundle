@@ -14,7 +14,7 @@
 namespace con4gis\EditorBundle\Controller;
 
 use con4gis\CoreBundle\Controller\BaseController;
-use con4gis\CoreBundle\Resources\contao\classes\C4GApiCache;
+use con4gis\CoreBundle\Classes\C4GApiCache;
 use con4gis\EditorBundle\Classes\EditorBrickTypes;
 use con4gis\EditorBundle\Classes\Helper\EditorCommon;
 use con4gis\EditorBundle\Classes\Services\PluginService;
