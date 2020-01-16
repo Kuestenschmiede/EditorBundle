@@ -13,6 +13,7 @@
 
 namespace con4gis\EditorBundle\Classes\Cache;
 
+use con4gis\CoreBundle\Resources\contao\models\C4gLogModel;
 use con4gis\MapsBundle\Classes\Caches\C4GMapsAutomator;
 
 class C4GEditorAutomator extends C4GMapsAutomator
@@ -20,5 +21,6 @@ class C4GEditorAutomator extends C4GMapsAutomator
     public function purgeEditorConfigCache()
     {
         C4GEditorConfigurationCache::getInstance()->clearCache();
+        C4gLogModel::addLogEntry('editor', 'cleared editor cache');
     }
 }

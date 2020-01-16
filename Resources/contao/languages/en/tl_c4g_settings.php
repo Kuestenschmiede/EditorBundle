@@ -10,4 +10,4 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-$GLOBALS['TL_LANG']['tl_c4g_settings']['references']['projectEditorService'] = "Projekt-Editor-Konfiguration";
+$GLOBALS['TL_LANG']['tl_c4g_settings']['references']['caching']['projectEditorService'] = "Projekt-Editor-Konfiguration";

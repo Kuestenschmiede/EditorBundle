@@ -10,7 +10,6 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-$GLOBALS['TL_LANG']['tl_maintenance_jobs']['con4gis_editor'] =
-    array('Clear con4gis-Editor cache', 'Clear the cached editor configuration files.');
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['con4gis_editor'] = array('Clear con4gis-Editor cache', 'Clear the cached editor configuration files.');
 
 $GLOBALS['TL_LANG']['editor_api']['permission_denied'] = "Permission denied.";
