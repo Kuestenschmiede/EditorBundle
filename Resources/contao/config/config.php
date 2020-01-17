@@ -16,18 +16,24 @@
  */
 $GLOBALS['BE_MOD']['con4gis'] = array_merge($GLOBALS['BE_MOD']['con4gis'], array
 (
+    'c4g_editor_configuration' => array
+    (
+        'brick' => 'editor',
+        'tables'    => array('tl_c4g_editor_configuration'),
+        'icon'      => 'bundles/con4giscore/images/be-icons/edit.svg'
+    ),
     'c4g_editor_element_category' => array
     (
-        'tables'    => array('tl_c4g_editor_element_category')
+        'brick' => 'editor',
+        'tables' => array('tl_c4g_editor_element_category'),
+        'icon' => 'bundles/con4giseditor/images/be-icons/editor_category.svg'
     ),
     'c4g_editor_element_type' => array
     (
-        'tables'    => array('tl_c4g_editor_element_type')
+        'brick' => 'editor',
+        'tables' => array('tl_c4g_editor_element_type'),
+        'icon'      => 'bundles/con4giseditor/images/be-icons/editor_type.svg'
     ),
-    'c4g_editor_configuration' => array
-    (
-        'tables'    => array('tl_c4g_editor_configuration')
-    )
 ));
 
 if(TL_MODE == "BE") {
