@@ -36,10 +36,6 @@ $GLOBALS['BE_MOD']['con4gis'] = array_merge($GLOBALS['BE_MOD']['con4gis'], array
     ),
 ));
 
-if(TL_MODE == "BE") {
-    $GLOBALS['TL_CSS'][] = '/bundles/con4giseditor/css/con4gis.css';
-}
-
 // add js file to c4g_maps be module
 $script = $GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'];
 $GLOBALS['BE_MOD']['con4gis']['c4g_maps']['javascript'] = [$script, '/bundles/con4giseditor/js/c4g-backend-helper.js'];

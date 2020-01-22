@@ -14,7 +14,7 @@
 namespace con4gis\EditorBundle\Classes\Listener;
 
 use con4gis\MapsBundle\Classes\Events\LoadMapResourcesEvent;
-use con4gis\MapsBundle\Resources\contao\classes\ResourceLoader;
+use con4gis\MapsBundle\Classes\ResourceLoader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LoadMapResourcesListener

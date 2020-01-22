@@ -15,7 +15,7 @@
 namespace con4gis\EditorBundle\Classes\Contao;
 
 use con4gis\CoreBundle\Classes\ResourceLoader;
-use con4gis\MapsBundle\Resources\contao\classes\MapDataConfigurator;
+use con4gis\MapsBundle\Classes\MapDataConfigurator;
 use con4gis\MapsBundle\Resources\contao\models\C4gMapsModel;
 
 /**
