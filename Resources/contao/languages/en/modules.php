@@ -12,6 +12,6 @@
   */
 
 
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_category'] = array('Editor: categories', 'Categories for projects.');
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_type']   = array('Editor: element types', 'Element types for projects.');
-$GLOBALS['TL_LANG']['MOD']['c4g_editor_configuration']   = array('Editor: configuration', 'Configure the editor');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_category'] = array('(editor) categories', 'Categories for projects.');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_element_type']   = array('(editor) element types', 'Element types for projects.');
+$GLOBALS['TL_LANG']['MOD']['c4g_editor_configuration']   = array('(editor) configuration', 'Configure the editor');
