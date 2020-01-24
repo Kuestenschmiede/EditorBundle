@@ -18,7 +18,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
  * Table tl_c4g_maps
  */
 
-$GLOBALS['TL_DCA']['tl_c4g_maps']['palettes']['gnrcPrjct'] = '{general_legend},name,profile,profile_mobile,published;{map_legend},is_map;{location_legend},location_type,tDontShowIfEmpty,data_layername,data_hidelayer,hide_when_in_tab;{protection_legend:hide},protect_element;';
+$GLOBALS['TL_DCA']['tl_c4g_maps']['palettes']['gnrcPrjct'] = '{general_legend},name,location_type;{location_legend},tDontShowIfEmpty,data_layername,data_hidelayer,hide_when_in_tab;{protection_legend:hide},protect_element;';
 
 $GLOBALS['TL_DCA']['tl_c4g_maps']['subpalettes']['memberVisibility_specialGroups'] = 'specialGroups';
 $GLOBALS['TL_DCA']['tl_c4g_maps']['subpalettes']['useDatabaseStatus'] = 'databaseStatus';

@@ -80,7 +80,7 @@ class GeoEditor extends \Contao\Backend
             $this->c4g_map_id = $mapId;
         } else {
             // get any map
-            $mapId = C4gMapsModel::findBy('is_map', 1)->id;
+            $mapId = C4gMapsModel::findBy('location_type', 'none')->id;
             if ($mapId) {
                 $this->id = $mapId;
                 $this->c4g_map_id = $mapId;
@@ -110,7 +110,7 @@ class GeoEditor extends \Contao\Backend
     private function findMapId($layerId)
     {
         $layer = C4gMapsModel::findByPk($layerId);
-        while ($layer && $layer->is_map != 1) {
+        while ($layer && $layer->location_type != 'none') {
             $layer = C4gMapsModel::findByPk($layer->pid);
         }
 
