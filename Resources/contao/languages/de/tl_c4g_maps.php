@@ -17,7 +17,7 @@ $GLOBALS['TL_LANG']['tl_c4g_maps']['tDontShowIfEmpty'] = array('Ausblenden wenn 
 $GLOBALS['TL_LANG']['tl_c4g_maps']['specialGroups'] = array('Ausgewählte Gruppen', 'Gruppen dessen Mitglieder con4gis-rescuemap Inhalte auf dieser Ebene dargestellt werden sollen.');
 $GLOBALS['TL_LANG']['tl_c4g_maps']['scenarios'] = array('Ausgewählte Szenarien', 'Bei welchen Szenarien sollen die Elemente angezeigt werden.');
 
-$GLOBALS['TL_LANG']['tl_c4g_maps']['references']['gnrcPrjct']  = 'Kartenprojekte';
+$GLOBALS['TL_LANG']['tl_c4g_maps']['references']['gnrcPrjct']  = '[editor] Projekte';
 
 /**
  * Legends

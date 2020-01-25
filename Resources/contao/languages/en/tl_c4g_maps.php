@@ -17,7 +17,7 @@ $GLOBALS['TL_LANG']['tl_c4g_maps']['tDontShowIfEmpty'] = array('Don\'t show if e
 $GLOBALS['TL_LANG']['tl_c4g_maps']['specialGroups'] = array('Special groups', 'Choose the special groups.');
 $GLOBALS['TL_LANG']['tl_c4g_maps']['scenarios'] = array('Chosen scenarios', 'In which scenarios should the layer appear?');
 
-$GLOBALS['TL_LANG']['tl_c4g_maps']['references']['gnrcPrjct']  = 'Editor projects';
+$GLOBALS['TL_LANG']['tl_c4g_maps']['references']['gnrcPrjct']  = '[editor] Projects';
 
 /**
  * Legends
