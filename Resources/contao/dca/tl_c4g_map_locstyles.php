@@ -26,8 +26,12 @@ if (method_exists('\System', 'getContainer')) {
     $imageSizes = $filteredSizes;
 }
 
+$GLOBALS['TL_DCA']['tl_c4g_map_locstyles']['palettes']['default'] = str_replace(
+    '{expert_legend:hide}',
+    '{editor_legend:hide},editor_icon,editor_icon_size,editor_sort,editor_vars,editor_collect;{expert_legend:hide}',
+    $GLOBALS['TL_DCA']['tl_c4g_map_locstyles']['palettes']['default']
+);
 
-$GLOBALS['TL_DCA']['tl_c4g_map_locstyles']['palettes']['default'] .= '{editor_legend:hide},editor_icon,editor_icon_size,editor_sort,editor_vars,editor_collect;';
 $GLOBALS['TL_DCA']['tl_c4g_map_locstyles']['fields']['editor_icon'] =
         [
             'label'                   => &$GLOBALS['TL_LANG']['tl_c4g_map_locstyles']['editor_icon'],
