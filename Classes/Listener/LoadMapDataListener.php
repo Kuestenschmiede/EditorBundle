@@ -40,6 +40,9 @@ class LoadMapDataListener
             $data['feEditorProfile'] = $profile->feEditorProfile;
             $data['beEditorProfile'] = $profile->beEditorProfile;
         }
+        $mapFunctions = unserialize($profile->mapFunctions);
+        $buttons = array_flip($mapFunctions);
+        $data['editor']['enable'] = array_key_exists('editor', $buttons) ? $buttons['editor'] + 1 : 0;
         $event->setMapData($data);
     }
 }

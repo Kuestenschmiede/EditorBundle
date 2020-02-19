@@ -1361,7 +1361,7 @@ export class BackendEditor extends Sideboard {
       i;
 
     self = this;
-
+    console.log("importing important imports...");
     if (this.options.type === 'backend' && this.options.dataField) {
       features = this.options.dataField.val();
     } else if (opt_geojson) {
@@ -1465,22 +1465,29 @@ export class BackendEditor extends Sideboard {
 window.c4gMapsHooks = window.c4gMapsHooks || {};
 window.c4gMapsHooks.mapController_addControls = window.c4gMapsHooks.mapController_addControls || [];
 window.c4gMapsHooks.mapController_addControls.push(function(params) {
-  let mapController = params.mapController;
-  const mapData = mapController.data;
-  // mapController.map.removeControl(mapController.controls.editor);
-  let editor = new BackendEditor({
-    tipLabel: getEditorLanguage(mapData).CTRL_EDITOR,
-    type: mapData.editor.type || 'frontend',
-    target: mapData.editor.target || params.Container,
-    initOpen: mapData.editor.open || false,
-    dataField: mapData.editor.data_field || false,
-    caching: mapData.caching,
-    mapController: mapController,
-    direction: 'left',
-    name: 'editor',
-    headline: getEditorLanguage(mapData).EDITOR
-  });
-  mapController.map.addControl(editor);
-  editor.init(true);
-  mapController.controls.editor = editor;
+  if (params.component === "editor" && params.mapController.data.editor.enable) {
+    let mapController = params.mapController;
+    if (mapController.controls && mapController.controls.editor) {
+      return;
+    }
+    const mapData = mapController.data;
+    let editor = new BackendEditor({
+      tipLabel: getEditorLanguage(mapData).CTRL_EDITOR,
+      type: mapData.editor.type || 'backend',
+      target: mapData.editor.target || params.Container,
+      initOpen: mapData.editor.open || false,
+      dataField: mapData.editor.data_field || false,
+      mapController: mapController,
+      direction: 'left',
+      name: 'editor',
+      headline: getEditorLanguage(mapData).EDITOR
+    });
+    mapController.map.addControl(editor);
+    mapController.controls = mapController.controls || {};
+    mapController.controls.editor = editor;
+    // window.setTimeout(function() {
+    //   editor.init(true)
+    // }, 1000);
+    // editor.init(true);
+  }
 });
