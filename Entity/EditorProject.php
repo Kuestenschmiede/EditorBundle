@@ -43,6 +43,12 @@ class EditorProject extends BaseEntity
      * @var int
      * @ORM\Column(type="integer")
      */
+    protected $importId = 0;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
     protected $groupid = 0;
 
     /**
@@ -93,6 +99,22 @@ class EditorProject extends BaseEntity
     public function setTstamp(int $tstamp)
     {
         $this->tstamp = $tstamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImportId(): int
+    {
+        return $this->importId;
+    }
+
+    /**
+     * @param int $importId
+     */
+    public function setImportId(int $importId): void
+    {
+        $this->tstamp = $importId;
     }
 
     /**

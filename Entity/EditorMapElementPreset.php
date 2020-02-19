@@ -50,6 +50,12 @@ class EditorMapElementPreset extends BaseEntity
      * @var int
      * @ORM\Column(type="integer")
      */
+    protected $importId = 0;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
     protected $pluginId = 0;
 
     /**
@@ -110,6 +116,22 @@ class EditorMapElementPreset extends BaseEntity
     public function setTstamp(int $tstamp): void
     {
         $this->tstamp = $tstamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImportId(): int
+    {
+        return $this->importId;
+    }
+
+    /**
+     * @param int $importId
+     */
+    public function setImportId(int $importId): void
+    {
+        $this->tstamp = $importId;
     }
 
     /**

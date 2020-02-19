@@ -46,6 +46,12 @@ class EditorElementHistory extends BaseEntity
     protected $uuid = '';
 
     /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $importId = 0;
+
+    /**
      * @var string
      * @ORM\Column(type="string")
      */
@@ -200,6 +206,22 @@ class EditorElementHistory extends BaseEntity
     public function setUuid(string $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImportId(): int
+    {
+        return $this->importId;
+    }
+
+    /**
+     * @param int $importId
+     */
+    public function setImportId(int $importId): void
+    {
+        $this->tstamp = $importId;
     }
 
     /**
