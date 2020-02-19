@@ -40,6 +40,12 @@ class EditorElementType extends BaseEntity
     protected $tstamp = 0;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $importId = 0;
+
+    /**
      * @var string
      * @ORM\Column(type="string")
      */
@@ -141,6 +147,22 @@ class EditorElementType extends BaseEntity
     {
         $this->tstamp = $tstamp;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImportId(): int
+    {
+        return $this->importId;
+    }
+
+    /**
+     * @param int $importId
+     */
+    public function setImportId(int $importId): void
+    {
+        $this->tstamp = $importId;
     }
 
     /**
