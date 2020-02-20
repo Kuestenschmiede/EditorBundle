@@ -657,8 +657,8 @@ export class BackendEditor extends Sideboard {
           fnHandleSelection(event.target.getFeatures());
         });
 
-        self.options.mapController.map.addInteraction(selectInteraction);
-        self.options.mapController.map.addInteraction(selectBoxInteraction);
+        // self.options.mapController.map.addInteraction(selectInteraction);
+        // self.options.mapController.map.addInteraction(selectBoxInteraction);
         return true;
       },
       activateFunction: function () {
@@ -674,11 +674,11 @@ export class BackendEditor extends Sideboard {
           // selectContentHeadline.style.display = '';
         }
 
+        self.options.mapController.map.addInteraction(selectInteraction);
         // Enable interaction
         selectInteraction.setActive(true);
-        self.options.mapController.map.addInteraction(selectInteraction);
-        selectBoxInteraction.setActive(true);
         self.options.mapController.map.addInteraction(selectBoxInteraction);
+        selectBoxInteraction.setActive(true);
 
         return true;
       },
@@ -1361,7 +1361,6 @@ export class BackendEditor extends Sideboard {
       i;
 
     self = this;
-    console.log("importing important imports...");
     if (this.options.type === 'backend' && this.options.dataField) {
       features = this.options.dataField.val();
     } else if (opt_geojson) {
@@ -1478,7 +1477,7 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
       initOpen: mapData.editor.open || false,
       dataField: mapData.editor.data_field || false,
       mapController: mapController,
-      direction: 'left',
+      direction: 'right',
       name: 'editor',
       headline: getEditorLanguage(mapData).EDITOR
     });

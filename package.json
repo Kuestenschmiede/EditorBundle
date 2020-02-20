@@ -25,10 +25,10 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-env": "^1.7.0",
     "echo-loader": "0.0.1",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "ol": "^5.3.3"
+    "ol": "^6.2.1"
   }
 }
