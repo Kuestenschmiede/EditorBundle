@@ -21,7 +21,7 @@ $GLOBALS['TL_LANG'][$strName]['categories'] = array("Categories", "Choose the ca
 $GLOBALS['TL_LANG'][$strName]['editor_vars'] = ['Additional Fields', 'Additional Fields are available for POIs, lines and areas and are accessible via ${fieldname} in the label, popup and tooltip.'];
 $GLOBALS['TL_LANG'][$strName]['editor_show_items'] = ['Show map entries in editor', 'Shows all map entries in the editor.'];
 $GLOBALS['TL_LANG'][$strName]['editor_helpurl'] = ['Help URL', 'If set, a help url is displayed in the editor.'];
-$GLOBALS['TL_LANG'][$strName]['is_backend_editor_default'] = ['Default for backend editor', 'Check this to use this configuration as the default for the backend editor.'];
+//$GLOBALS['TL_LANG'][$strName]['is_backend_editor_default'] = ['Default for backend editor', 'Check this to use this configuration as the default for the backend editor.'];
 $GLOBALS['TL_LANG'][$strName]['editor_project_group'] = ['Project group', 'Choose the group that should be used as project group. This group manages the permissions for editor projects.'];
 
 /** LEGENDS **/
