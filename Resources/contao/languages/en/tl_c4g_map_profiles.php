@@ -20,3 +20,6 @@ $GLOBALS['TL_LANG'][$strName]['editEditorConfiguration'] = 'Edit editor configur
 
 /** legend */
 $GLOBALS['TL_LANG'][$strName]['editor_legend'] = 'Editor settings';
+
+$GLOBALS['TL_LANG'][$strName]['mapFunctions']['reference']['editor'] = ['map editor', 'Adds a button in the map to open the editor.'];
+$GLOBALS['TL_LANG'][$strName]['initial_open_comp']['refs']['editor'] = 'map editor';

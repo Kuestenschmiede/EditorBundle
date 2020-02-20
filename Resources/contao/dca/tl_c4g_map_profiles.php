@@ -13,7 +13,9 @@
 
 $strName = 'tl_c4g_map_profiles';
 
-$GLOBALS['TL_DCA']['tl_c4g_map_profiles']['fields']['mapFunctions']['options'][] = 'editor';
+$GLOBALS['TL_DCA'][$strName]['fields']['mapFunctions']['options'][] = 'editor';
+$GLOBALS['TL_DCA'][$strName]['fields']['initial_open_comp']['options'][] = 'editor';
+
 
 Contao\CoreBundle\DataContainer\PaletteManipulator::create()
     ->addLegend('editor_legend', 'geosearch_legend', Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_AFTER, true)

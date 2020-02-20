@@ -20,3 +20,6 @@ $GLOBALS['TL_LANG'][$strName]['editEditorConfiguration'] = 'Editor-Konfiguration
 
 /** legend */
 $GLOBALS['TL_LANG'][$strName]['editor_legend'] = 'Editoreinstellungen';
+
+$GLOBALS['TL_LANG'][$strName]['mapFunctions']['reference']['editor'] = ['Karteneditor', 'Fügt einen Button in der Karte hinzu, mit dem der Editor geöffnet werden kann.'];
+$GLOBALS['TL_LANG'][$strName]['initial_open_comp']['refs']['editor'] = 'Karteneditor';
