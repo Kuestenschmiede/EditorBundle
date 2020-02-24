@@ -129,6 +129,11 @@ $GLOBALS['TL_DCA'][$strName] = array
             'eval'              => array('mandatory' => true, 'tl_class' => 'long')
         ),
 
+        'importId' =>
+            [
+                'eval'                    => array('doNotCopy' => true)
+            ],
+
         'pointstyle' => array
         (
             'label'             => &$GLOBALS['TL_LANG'][$strName]['pointstyle'],

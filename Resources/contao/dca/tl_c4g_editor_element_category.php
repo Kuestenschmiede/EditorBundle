@@ -114,7 +114,12 @@ $GLOBALS['TL_DCA'][$strName] = array
             'default'                 => '',
             'inputType'         => 'text',
             'eval'              => array('mandatory' => true, 'tl_class' => 'long'),
-        )
+        ),
+
+        'importId' =>
+            [
+                'eval'                    => array('doNotCopy' => true)
+            ]
     )
 );
 

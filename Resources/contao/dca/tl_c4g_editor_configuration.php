@@ -133,6 +133,11 @@ $GLOBALS['TL_DCA'][$strName] = array
             'reference'               => &$GLOBALS['TL_LANG'][$strName]['references'],
         ],
 
+        'importId' =>
+        [
+            'eval'                    => array('doNotCopy' => true)
+        ],
+
         'categories' => array
         (
             'label'                 => &$GLOBALS['TL_LANG'][$strName]['categories'],
