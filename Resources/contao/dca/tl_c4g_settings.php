@@ -12,6 +12,10 @@
  *
  */
 
+Contao\CoreBundle\DataContainer\PaletteManipulator::create()
+    ->addField('editorprofile','c4g_maps_legend', Contao\CoreBundle\DataContainer\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('default', 'tl_c4g_settings');
+
 
 $GLOBALS['TL_DCA']['tl_c4g_settings']['fields']['editorprofile'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_c4g_settings']['editorprofile'],
@@ -29,4 +33,4 @@ $GLOBALS['TL_DCA']['tl_c4g_settings']['fields']['editorprofile'] = [
     )
 ];
 
-$GLOBALS['TL_DCA']['tl_c4g_settings']['palettes']['default'] = str_replace('defaultprofile,', 'defaultprofile,editorprofile,', $GLOBALS['TL_DCA']['tl_c4g_settings']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_c4g_settings']['palettes']['default'] = str_replace('beGeopickerProfile,', 'beGeopickerProfile,editorprofile,', $GLOBALS['TL_DCA']['tl_c4g_settings']['palettes']['default']);
