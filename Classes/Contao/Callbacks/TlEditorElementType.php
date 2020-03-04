@@ -17,6 +17,7 @@ use con4gis\EditorBundle\Classes\Services\PluginService;
 use con4gis\EditorBundle\Entity\EditorElementCategory;
 use Contao\Backend;
 use Contao\DataContainer;
+use Contao\Message;
 use Contao\System;
 
 class TlEditorElementType extends Backend
@@ -117,6 +118,14 @@ class TlEditorElementType extends Backend
                     }
                 }
             }
+        }
+        
+        // check for categories and show hint if none exists
+        $objCategories = $this->Database->prepare('SELECT * FROM tl_c4g_editor_element_category')
+            ->limit(1)
+            ->execute($dc->id);
+        if (!($objCategories->numRows > 0)) {
+            Message::addInfo($GLOBALS['TL_LANG']['tl_c4g_editor_element_type']['missingCategoryHint']);
         }
     }
 
