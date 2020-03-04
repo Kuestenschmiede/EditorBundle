@@ -12,4 +12,4 @@
   */
 $GLOBALS['TL_LANG']['tl_c4g_settings']['references']['caching']['projectEditorService'] = "Projekt-Editor-Konfiguration";
 
-$GLOBALS['TL_LANG']['tl_c4g_settings']['editorprofile'] = ['Backend-Editor Profil', 'Wählen Sie ein Kartenprofil aus, das für den Backend-Editor verwendet wird.'];
+$GLOBALS['TL_LANG']['tl_c4g_settings']['editorprofile'] = ['Backend-Editor Profil (con4gis/editor)', 'Wählen Sie ein Kartenprofil aus, das für den Backend-Editor verwendet wird.'];
