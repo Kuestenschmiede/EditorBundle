@@ -31,6 +31,6 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "ol": "^6.3.0"
+    "ol": "^6.3.1"
   }
 }
