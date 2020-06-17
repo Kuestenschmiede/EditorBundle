@@ -10,7 +10,7 @@
   * @link       https://www.con4gis.org
   */
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
-import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+// import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 import {GeoJSON} from "ol/format";
 import {Vector} from "ol/source";
@@ -232,7 +232,7 @@ export class FeatureHandler {
       renderSpecial: true,
       projectId: project.id
     };
-    layer = new C4gLayer(layer);
+    // layer = new C4gLayer(layer);
     layer.content = this.createContent(feature, layer, drawType);
     // add vector layer
     feature.setStyle(this.mapsInterface.getLocstyleArray()[feature.get('styleId')].style);
@@ -395,7 +395,7 @@ export class FeatureHandler {
       renderSpecial: true,
       projectId: project.id
     };
-    layer = new C4gLayer(layer);
+    // layer = new C4gLayer(layer);
     layer.visibleChilds = true;
     this.mapsInterface.addToLayerArray(layer);
     this.mapsInterface.addToLayerIds(newId);
@@ -461,7 +461,7 @@ export class FeatureHandler {
       renderSpecial: true,
       projectId: project.id
     };
-    layer = new C4gLayer(layer);
+    // layer = new C4gLayer(layer);
     this.mapsInterface.addToLayerArray(layer);
     this.mapsInterface.addToLayerIds(newId);
     let request = new C4GAjaxRequest("/con4gis/projectIdService", "POST");

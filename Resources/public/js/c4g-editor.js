@@ -25,7 +25,11 @@ import {ProjectController} from "./c4g-project-controller";
 import {cssConstants} from './c4g-editor-constant-css';
 import {AlertHandler} from "./../../../../CoreBundle/Resources/public/js/AlertHandler";
 import {Group} from "ol/layer";
+import {Control} from "ol/control"
 import {Collection} from "ol";
+import ReactDOM from "react-dom";
+import React from "react";
+import {EditorComponent} from "./components/c4g-editor-component.jsx";
 
 'use strict';
 export class Editor extends Sideboard {
@@ -388,7 +392,23 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
   let mapController = params.mapController;
   const mapData = mapController.data;
   if (mapData.feEditorProfile) {
-    let editor = new Editor({
+      if (!mapController.editorContainer) {
+          if (mapController.data.editor_div) {
+              mapController.editorContainer = document.querySelector("." + mapController.data.editor_div);
+              if (!mapController.editorContainer) {
+                  mapController.editorContainer = document.createElement('div');
+                  mapController.editorContainer.className = "c4g-sideboard c4g-editor-container-right c4g-close";
+                  jQuery(".ol-overlaycontainer-stopevent").append(mapController.editorContainer);
+              } else {
+                  mapController.editorContainer.className += " c4g-external";
+              }
+          } else {
+              mapController.editorContainer = document.createElement('div');
+              mapController.editorContainer.className = "c4g-sideboard c4g-editor-container-right c4g-close";
+              jQuery(".ol-overlaycontainer-stopevent").append(mapController.editorContainer);
+          }
+      }
+    let editorProps = {
       tipLabel: langConstants.CTRL_EDITOR,
       type: mapData.editor.type || 'frontend',
       target: mapData.editor.target || params.Container,
@@ -396,21 +416,11 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
       dataField: mapData.editor.data_field || false,
       caching: mapData.caching,
       mapController: mapController
-    });
-    mapController.map.addControl(editor);
-    mapController.controls.editor = editor;
+    };
 
-    // open editor if opened before
-    if (mapData.editor.open || (mapData.caching && (utils.getValue(mapController.controls.editor.options.name) === '1'))) {
-      if (mapController.proxy.layers_loaded) {
-        mapController.controls.editor.open();
-      } else {
-        window.c4gMapsHooks.proxy_layer_drawn = window.c4gMapsHooks.proxy_layer_drawn || [];
-        window.c4gMapsHooks.proxy_layer_drawn.push(function() {
-          mapController.controls.editor.open();
-        });
-      }
-    }
+    let arrComponents = params.arrComps;
+    arrComponents.push(ReactDOM.createPortal(React.createElement(EditorComponent, editorProps), mapController.editorContainer));
+    params.arrComps = arrComponents;
   }
 });
 

@@ -1,3 +1,5 @@
+const CompressionPlugin = require('compression-webpack-plugin');
+const webpack = require("webpack");
 var path = require('path');
 var config = {
   entry: {
@@ -13,15 +15,14 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules(?!\/ol)/,
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: [{
-          loader: "echo-loader",
-        }, {
           loader: "babel-loader",
         }],
         include: [
           path.resolve('.'),
+          path.resolve('./Resources/public/js/components'),
           path.resolve('./../MapsBundle')
         ],
       }

@@ -228,35 +228,35 @@ button.c4g-btn-delete-all-data:before {
     font-size: inherit;
 }
 
-button.c4g-editor-view-trigger-select:before {
+button.c4g-editor-select:before {
     content: "\f245";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
 
-button.c4g-editor-view-trigger-draw-point:before {
+button.c4g-editor-Point:before {
     content: "\f3c5";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
 
-button.c4g-editor-view-trigger-draw-line:before {
+button.c4g-editor-LineString:before {
     content: "\f1e0";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
 
-button.c4g-editor-view-trigger-draw-polygon:before {
+button.c4g-editor-Polygon:before {
     content: "\f5ee";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
 
-button.c4g-editor-view-trigger-draw-circle:before {
+button.c4g-editor-Circle:before {
     content: "\f111";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
