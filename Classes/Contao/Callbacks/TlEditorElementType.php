@@ -60,11 +60,10 @@ class TlEditorElementType extends Backend
         $strName = 'tl_c4g_editor_element_type';
 
         return [
-            'point' => $GLOBALS['TL_LANG'][$strName]['point'],
-            'linestring' => $GLOBALS['TL_LANG'][$strName]['linestring'],
-            'polygon' => $GLOBALS['TL_LANG'][$strName]['polygon'],
-            'freehand' => $GLOBALS['TL_LANG'][$strName]['freehand'],
-            'circle' => $GLOBALS['TL_LANG'][$strName]['circle'],
+            'Point' => $GLOBALS['TL_LANG'][$strName]['Point'],
+            'LineString' => $GLOBALS['TL_LANG'][$strName]['LineString'],
+            'Polygon' => $GLOBALS['TL_LANG'][$strName]['Polygon'],
+            'Circle' => $GLOBALS['TL_LANG'][$strName]['Circle']
         ];
     }
 

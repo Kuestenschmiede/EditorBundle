@@ -21,6 +21,8 @@ import {Draw} from "ol/interaction";
 import {Vector as VectorSource} from "ol/source";
 import {Collection} from "ol";
 import {Circle} from "ol/geom";
+import {utils} from "./../../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
+import {Fill, Style, Text} from "ol/style";
 
 export class EditorComponent extends Component {
     constructor(props) {
@@ -51,8 +53,11 @@ export class EditorComponent extends Component {
             else {
                 scope.open();
             }
-        })
+        });
+        this.config = {};
+        this.arrLocstyles = [];
         let mapController = props.mapController;
+        this.getConfiguration(mapController.data.feEditorProfile);
         this.langConstants = getEditorLanguage(mapController.data);
         let control = new Control({element: element, target: props.target});
         control.isOpen = () => {
@@ -66,13 +71,42 @@ export class EditorComponent extends Component {
         this.state = {
             open: props.open || false,
             currentMode: "select",
+            styleData: {},
             control: control,
             range: 0,
             features: "[]",
             editorId: 0
-        }
+        };
+        this.clusterStyleFunction = function(feature, resolution) {
+            let size = false;
+            let returnStyle = [];
+            if (feature && feature.get && feature.get('features')) {
+                let features = feature.get('features');
+                size = features.length;
+                feature = features[0];
+            }
+            if (feature && feature.getStyle()) {
+                returnStyle = feature.getStyle();
+            }
+            else if (feature && feature.get && feature.get('locstyle')) {
+                let locstyle = feature.get('locstyle');
+                if (scope.props.mapController.proxy.locationStyleController.arrLocStyles && scope.props.mapController.proxy.locationStyleController.arrLocStyles[locstyle] && scope.props.mapController.proxy.locationStyleController.arrLocStyles[locstyle].style) {
+                    let style = scope.props.mapController.proxy.locationStyleController.arrLocStyles[locstyle].style;
+                    if (typeof style === "function") {
+                        returnStyle = style(feature, resolution, false);
+                    }
+                    else {
+                        returnStyle = scope.props.mapController.proxy.locationStyleController.arrLocStyles[locstyle].style;
+                    }
+                }
+            }
+            return returnStyle
+        };
         this.features = new Collection();
-        this.editorLayer = new Vector({source: new VectorSource({format: new GeoJSON()})});
+        this.editorLayer = new Vector({
+            source: new VectorSource({format: new GeoJSON()}),
+            style: this.clusterStyleFunction
+        });
     }
 
     open() {
@@ -97,6 +131,45 @@ export class EditorComponent extends Component {
         this.setState({
             editorId: newCount
         })
+    }
+    getConfiguration (id) {
+        let url = "con4gis/editorService/" + id;
+        fetch(url).then(
+            (response) => {
+                response.json().then(
+                    (json) => {
+                        console.log(json);
+                        for (let i in json.drawStyles) {
+                            if (json.drawStyles.hasOwnProperty(i)) {
+                                this.config[i] = [];
+                                let drawStyle = json.drawStyles[i];
+                                for (let j in drawStyle.categories) {
+                                    if (drawStyle.categories.hasOwnProperty(j)) {
+                                        let category = drawStyle.categories[j];
+                                        for (let k in category.elements) {
+                                            if (category.elements.hasOwnProperty(k)) {
+                                                let element = category.elements[k];
+                                                this.config[i].push(element);
+                                                let checkLocstyle = this.arrLocstyles.findIndex((locstyle) => locstyle === element.styleId);
+                                                if (checkLocstyle === -1 && element.styleId) {
+                                                    this.arrLocstyles.push(element.styleId);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                        this.props.mapController.proxy.locationStyleController.loadLocationStyles(this.arrLocstyles, {
+                            "done": (styleData) => {
+                                this.setState({
+                                    styleData: styleData
+                                })
+                            }
+                        })
+                })
+            })
     }
     reRender(){
         try{
@@ -158,13 +231,13 @@ export class EditorComponent extends Component {
                 </Titlebar>
                 <div className={"c4g-editor-mode-switcher"}>
                     {this.modes.map(function(element, index) {
-                        return <button key={index} className={"c4g-editor-" + element + " " + (element === scope.state.currentMode ? "c4g-active" : "c4g-inactive")}
+                        return <button key={index} className={"c4g-editor-" + element + "  " + (element === scope.state.currentMode ? "c4g-active" : "c4g-inactive")}
                                        onMouseUp={() => scope.setState({currentMode: element})}/>;
                     })}
                 </div>
-                <EditorView mode={this.state.currentMode} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
-                <div className={"classclassclass"}>
-                    <pre contentEditable={true} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
+                <EditorView mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
+                <div className={"classclassclass"} style={{overflow: "none"}}>
+                    <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>
             </div>
         );

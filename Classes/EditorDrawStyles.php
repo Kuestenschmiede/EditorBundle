@@ -15,20 +15,18 @@ namespace con4gis\EditorBundle\Classes;
 
 class EditorDrawStyles
 {
-    const POINT = 'point';
-    const LINESTRING = 'linestring';
-    const POLYGON = 'polygon';
-    const CIRCLE = 'circle';
-    const FREEHAND = 'freehand';
+    const POINT = 'Point';
+    const LINESTRING = 'LineString';
+    const POLYGON = 'Polygon';
+    const CIRCLE = 'Circle';
 
     public static function getDrawStyleArray()
     {
         return [
-            'point' => 'POI',
-            'linestring' => 'Strecke',
-            'polygon' => 'Fläche',
-            'freehand' => 'Freihand zeichnen',
-            'circle' => 'Kreis',
+            'Point' => 'POI',
+            'LineString' => 'Strecke',
+            'Polygon' => 'Fläche',
+            'Circle' => 'Kreis'
         ];
     }
 }

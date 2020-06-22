@@ -17,6 +17,8 @@ import {GeoJSON} from "ol/format";
 import {Collection} from "ol";
 import {Circle} from 'ol/geom'
 import {Draw, Select} from "ol/interaction";
+import {C4gStarboardStyle} from "./../../../../../MapsBundle/Resources/public/js/components/c4g-starboard-style.jsx";
+
 
 export class EditorView extends Component {
     constructor(props) {
@@ -24,7 +26,9 @@ export class EditorView extends Component {
         const scope = this;
         this.state = {
             'freehand': false,
-            'features': "[]"
+            'features': "[]",
+            'activeElement': props.elements[0] ? props.elements[0].id : 0,
+            'activeStyle': props.elements[0] ? props.elements[0].styleId : 0
         };
         this.interaction;
         this.changeJSON = this.changeJSON.bind(this);
@@ -44,6 +48,8 @@ export class EditorView extends Component {
             this.interaction.on('drawend',
                 (event) => {
                     event.feature.set('editorId', this.props.editorId);
+                    event.feature.set('locstyle', this.state.activeStyle);
+                    event.feature.set('elementId', this.state.activeElement);
                     let geojson;
                     if (this.props.mode === "Circle") { //turn Circle into valid GeoJSON
                         let geometry = event.feature.getGeometry().clone().transform("EPSG:3857", "EPSG:4326");
@@ -83,11 +89,19 @@ export class EditorView extends Component {
             this.props.mapController.map.addInteraction(this.interaction);
         }
         let returnVal = null;
+        let elements = this.props.elements.map((element) => {
+            return (<button style={{height: "32px", width: "32px"}}
+                            onMouseUp={() =>{this.setState({activeElement: element.id, activeStyle: element.styleId})}}>
+                <C4gStarboardStyle styleData={this.props.styleData} styleId={element.styleId}/></button>)
+        })
         if (this.props.active) {
             returnVal = (
                 <div>
                     <p>{this.props.mode}</p>
                     <button className={"c4g-editor-LineString"} onMouseUp={() => {this.changeFreehand()}}></button>
+                    <div>
+                        {elements}
+                    </div>
                 </div>
             )
         }
