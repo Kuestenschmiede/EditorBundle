@@ -88,32 +88,47 @@ export class EditorView extends Component {
             });
             this.props.mapController.map.addInteraction(this.interaction);
         }
-        let returnVal = null;
         let elements = this.props.elements.map((element) => {
             return (<button key={element.id} style={{height: "32px", width: "32px"}}
                             onMouseUp={() =>{this.setState({activeElement: element.id, activeStyle: element.styleId})}}>
                 <C4gStarboardStyle styleData={this.props.styleData} styleId={element.styleId}/></button>)
         })
-        if (this.props.active) {
-            returnVal = (
-                <div>
-                    <p>{this.props.mode}</p>
-                    <button className={"c4g-editor-LineString"} onMouseUp={() => {this.changeFreehand()}}></button>
-                    <div>
-                        {elements}
-                    </div>
-                </div>
-            )
+        let freehand = null;
+        if ("LineStringPolygon".includes(this.props.mode)) {
+            let freehandClass = "c4g-editor-view ";
+            freehandClass += this.state.freehand ? "c4g-active" : "c4g-inactive";
+            freehand = (<a className={freehandClass} onMouseUp={() => {this.changeFreehand()}}>Freehand</a>);
         }
-        return returnVal;
+        return (
+            <div>
+                {freehand}
+                <div className={"c4g-editor-element-selection"}>
+                    {elements}
+                </div>
+            </div>
+        )
+
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("componentDidupdate")
+        if (this.props.elements[0] && prevProps.mode !== this.props.mode) {
+            if (this.state.activeElement === 0) {
+                this.setState({
+                    activeElement: this.props.elements[0].id,
+                    activeStyle: this.props.elements[0].styleId
+                });
+            }
+            else if (!this.props.elements.find(element => element.id === this.state.activeElement)) {
+                this.setState({
+                    activeElement: this.props.elements[0].id,
+                    activeStyle: this.props.elements[0].styleId
+                });
+            }
+        }
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log("shouldComponentUpdate");
-    }
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     console.log("shouldComponentUpdate");
+    // }
 
     changeFreehand() {
         this.setState({
@@ -122,11 +137,5 @@ export class EditorView extends Component {
     }
     changeJSON(event) {
         this.setState({features: event.target.value})
-    }
-    componentDidMount() {
-        console.log("mount");
-    }
-    componentWillUnmount() {
-        console.log("unmount");
     }
 }

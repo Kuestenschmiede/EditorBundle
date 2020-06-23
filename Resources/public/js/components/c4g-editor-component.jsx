@@ -110,7 +110,6 @@ export class EditorComponent extends Component {
     }
 
     open() {
-        console.log("open");
         jQuery(this.props.mapController.editorContainer).removeClass("c4g-close").addClass("c4g-open");
         this.props.mapController.map.addLayer(this.editorLayer);
         this.setState({
@@ -119,7 +118,6 @@ export class EditorComponent extends Component {
         this.props.mapController.setOpenComponent(this);
     }
     close() {
-        console.log("close");
         jQuery(this.props.mapController.editorContainer).removeClass("c4g-open").addClass("c4g-close");
         this.props.mapController.map.removeLayer(this.editorLayer);
         this.setState({
@@ -138,7 +136,6 @@ export class EditorComponent extends Component {
             (response) => {
                 response.json().then(
                     (json) => {
-                        console.log(json);
                         for (let i in json.drawStyles) {
                             if (json.drawStyles.hasOwnProperty(i)) {
                                 this.config[i] = [];
@@ -235,7 +232,7 @@ export class EditorComponent extends Component {
                                        onMouseUp={() => scope.setState({currentMode: element})}/>;
                     })}
                 </div>
-                <EditorView mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
+                <EditorView className={"c4g-editor-view"} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
                 <div className={"classclassclass"} style={{overflow: "none"}}>
                     <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>

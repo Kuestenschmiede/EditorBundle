@@ -227,7 +227,13 @@ button.c4g-btn-delete-all-data:before {
     font-weight: 900;
     font-size: inherit;
 }
-
+.c4g-editor-mode-switcher > button.c4g-active {
+    background: none;
+    color: var(--font-color);
+}
+.c4g-editor-mode-switcher > button.c4g-inactive {
+    color: var(--main-color);
+}
 button.c4g-editor-select:before {
     content: "\f245";
     font-family: 'Font Awesome 5 Free';
@@ -336,6 +342,34 @@ button.c4g-button-apply:before {
     padding: 9px 8px;
     transition: .3s;
     color: var(--shadow-color);
+}
+a.c4g-active.c4g-editor-view:after {
+    color: var(--font-color);
+    font-family: 'Font Awesome 5 Free', sans-serif;
+    content: "\f205";
+    margin-left: 20px;
+    /*float:right;*/
+    font-weight: 900;
+    font-size: inherit;
+}
+a.c4g-editor-view {
+    color: var(--font-color);
+    font-size: inherit;
+}
+a.c4g-inactive.c4g-editor-view:after {
+    color: var(--font-color);
+    font-family: 'Font Awesome 5 Free', sans-serif;
+    content: "\f204";
+    margin-left: 20px;
+    /*float:right;*/
+    font-weight: 900;
+    font-size: inherit;
+}
+.classclassclass > pre {
+    background-color: white;
+    color: var(--main-color);
+    overflow-y: auto;
+
 }
 
 
