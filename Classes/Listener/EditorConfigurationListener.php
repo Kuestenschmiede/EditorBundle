@@ -148,19 +148,16 @@ class EditorConfigurationListener
 
             $styles = [];
             if ($element->getPointstyle() != 0) {
-                $styles['point'] = $element->getPointstyle();
+                $styles['Point'] = $element->getPointstyle();
             }
             if ($element->getLinestyle() != 0) {
-                $styles['linestring'] = $element->getLinestyle();
+                $styles['LineString'] = $element->getLinestyle();
             }
             if ($element->getPolygonstyle() != 0) {
-                $styles['polygon'] = $element->getPolygonstyle();
+                $styles['Polygon'] = $element->getPolygonstyle();
             }
             if ($element->getCirclestyle() != 0) {
-                $styles['circle'] = $element->getCirclestyle();
-            }
-            if ($element->getFreehandstyle() != 0) {
-                $styles['freehand'] = $element->getFreehandstyle();
+                $styles['Circle'] = $element->getCirclestyle();
             }
 
             $arrElement['locstyles'] = $styles;

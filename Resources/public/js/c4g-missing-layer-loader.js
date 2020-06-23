@@ -9,7 +9,7 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+// import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 
 /**
  * Loads missing resources when they are needed after the use of the application, e.g. layers for certain elements.
@@ -32,7 +32,7 @@ export class LayerLoader {
     let request = new C4GAjaxRequest("/con4gis/elements/layer/" + layerId + "/" + projectId);
     request.addDoneCallback(function(data) {
       if (data.layer) {
-        let elemLayer = new C4gLayer(data.layer);
+        // let elemLayer = new C4gLayer(data.layer);
         layer.pid = elemLayer.id;
         let fnAddLayer = function(lLayer, lLayerId) {
           scope.editor.mapsInterface.addToLayerArray(lLayer);
@@ -72,7 +72,7 @@ export class LayerLoader {
     let request = new C4GAjaxRequest("/con4gis/categories/layer/" + layerId + "/" + projectId + "/" + mapId);
     request.addDoneCallback(function(data) {
       if (data.layer) {
-        let catLayer = new C4gLayer(data.layer);
+        // let catLayer = new C4gLayer(data.layer);
         scope.editor.mapsInterface.addToLayerArray(catLayer);
         let index = scope.editor.mapsInterface.proxy.layerIds.indexOf(layerId);
         scope.editor.mapsInterface.insertIntoLayerIds(catLayer.id, index - 2);

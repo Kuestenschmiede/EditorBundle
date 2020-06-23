@@ -10,7 +10,7 @@
   * @link       https://www.con4gis.org
   */
 import {EditorProject} from "./c4g-editor-project";
-import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
+// import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 
 export class ProjectController {
@@ -156,7 +156,7 @@ export class ProjectController {
   addNewProject(data) {
     // create new project object
     this._projects.push(new EditorProject(data.id, data.name, data.permissions));
-    let projectLayer = new C4gLayer(data.projectLayer);
+    // let projectLayer = new C4gLayer(data.projectLayer);
     // add project layer to layer structure
     this._editor.mapsInterface.addToLayerArray(projectLayer);
     this._editor.mapsInterface.addToLayerIds(projectLayer.id);

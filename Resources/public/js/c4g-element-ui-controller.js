@@ -11,7 +11,6 @@
   */
 import {cssConstants} from "./c4g-editor-constant-css";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
-import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
 import {RotationInteraction} from "./c4g-rotation-interaction";
 import {Modify} from "ol/interaction";

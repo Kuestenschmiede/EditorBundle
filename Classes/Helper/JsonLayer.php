@@ -71,10 +71,10 @@ class JsonLayer
         $this->elementid = $arrLayer['elementid'];
         $this->categoryid = $arrLayer['categoryid'];
         $this->drawType = $arrLayer['drawType'];
-        if ($this->drawType === 'point') {
+        if ($this->drawType === 'Point') {
             $this->locgeox = $arrLayer['content'][0]['data']['geometry']['coordinates'][0];
             $this->locgeoy = $arrLayer['content'][0]['data']['geometry']['coordinates'][1];
-        } elseif ($this->drawType === 'circle') {
+        } elseif ($this->drawType === 'Circle') {
             $this->locgeox = $arrLayer['content'][0]['data']['geometry']['center'][0];
             $this->locgeoy = $arrLayer['content'][0]['data']['geometry']['center'][1];
             $this->radius = $arrLayer['content'][0]['data']['geometry']['radius'];

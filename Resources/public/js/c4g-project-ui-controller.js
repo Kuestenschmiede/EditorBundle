@@ -9,7 +9,6 @@
   * @copyright 	Küstenschmiede GmbH Software & Design
   * @link       https://www.con4gis.org
   */
-import {C4gLayer} from "./../../../../MapsBundle/Resources/public/js/c4g-layer";
 import {langConstants} from "./c4g-editor-i18n";
 import {utils} from "./../../../../MapsBundle/Resources/public/js/c4g-maps-utils";
 import {cssConstants} from './c4g-editor-constant-css';
