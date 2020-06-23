@@ -25,10 +25,10 @@ export class EditorView extends Component {
         super(props);
         const scope = this;
         this.state = {
-            'freehand': false,
-            'features': "[]",
-            'activeElement': props.elements[0] ? props.elements[0].id : 0,
-            'activeStyle': props.elements[0] ? props.elements[0].styleId : 0
+            freehand: false,
+            features: "[]",
+            activeElement: props.elements[0] ? props.elements[0].id : 0,
+            activeStyle: props.elements[0] ? props.elements[0].styleId : 0
         };
         this.interaction;
         this.changeJSON = this.changeJSON.bind(this);
@@ -90,7 +90,7 @@ export class EditorView extends Component {
         }
         let returnVal = null;
         let elements = this.props.elements.map((element) => {
-            return (<button style={{height: "32px", width: "32px"}}
+            return (<button key={element.id} style={{height: "32px", width: "32px"}}
                             onMouseUp={() =>{this.setState({activeElement: element.id, activeStyle: element.styleId})}}>
                 <C4gStarboardStyle styleData={this.props.styleData} styleId={element.styleId}/></button>)
         })
@@ -107,11 +107,14 @@ export class EditorView extends Component {
         }
         return returnVal;
     }
-    componentDidUpate(prevProps) {
-        // if (prevProps.mode !== this.props.mode) {
-            console.log("update");
-        // }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("componentDidupdate")
     }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log("shouldComponentUpdate");
+    }
+
     changeFreehand() {
         this.setState({
             freehand: !this.state.freehand
