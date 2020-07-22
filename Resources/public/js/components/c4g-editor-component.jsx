@@ -77,7 +77,7 @@ export class EditorComponent extends Component {
             features: "[]",
             editorId: 0
         };
-        this.clusterStyleFunction = function(feature, resolution) {
+        this.styleFunction = function(feature, resolution) {
             let size = false;
             let returnStyle = [];
             if (feature && feature.get && feature.get('features')) {
@@ -105,7 +105,7 @@ export class EditorComponent extends Component {
         this.features = new Collection();
         this.editorLayer = new Vector({
             source: new VectorSource({format: new GeoJSON()}),
-            style: this.clusterStyleFunction
+            style: this.styleFunction
         });
     }
 
@@ -178,19 +178,19 @@ export class EditorComponent extends Component {
                 }).readFeatures(geojson);
                 let source = this.editorLayer.getSource();
                 source.forEachFeature((feature) => {
-                    for (let i in features) {
-                        if (features.hasOwnProperty(i)) {
-                            let jsonFeature = features[i];
-                            if (jsonFeature.get("editorId") === feature.get("editorId")) {
-                                source.removeFeature(feature);
-                                if (jsonFeature.get('radius')) {
-                                    jsonFeature.setGeometry(new Circle(jsonFeature.getGeometry().getCoordinates(), jsonFeature.get('radius')));
-                                }
-                                source.addFeature(jsonFeature);
-                            }
+
+                    source.removeFeature(feature);
+
+                });
+                for (let i in features) {
+                    if (features.hasOwnProperty(i)) {
+                        let jsonFeature = features[i];
+                        if (jsonFeature.get('radius')) {
+                            jsonFeature.setGeometry(new Circle(jsonFeature.getGeometry().getCoordinates(), jsonFeature.get('radius')));
                         }
+                        source.addFeature(jsonFeature);
                     }
-                })
+                }
             }
         }
         catch(error) {
@@ -199,8 +199,9 @@ export class EditorComponent extends Component {
         if (this.state.range) {
             let selection = window.getSelection();
             let range = selection.getRangeAt(0);
-            range.setStart(range.startContainer, this.state.range);
-            range.setEnd(range.startContainer, this.state.range);
+            let startContainer = range.startContainer.childNodes[0] || range.startContainer;
+            range.setStart(startContainer, this.state.range);
+            range.setEnd(startContainer, this.state.range);
             selection.removeRange(range);
             selection.addRange(range);
         }
@@ -232,7 +233,7 @@ export class EditorComponent extends Component {
                                        onMouseUp={() => scope.setState({currentMode: element})}/>;
                     })}
                 </div>
-                <EditorView className={"c4g-editor-view"} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
+                <EditorView className={"c4g-editor-view"} styleFunction={this.styleFunction} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
                 <div className={"classclassclass"} style={{overflow: "none"}}>
                     <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>

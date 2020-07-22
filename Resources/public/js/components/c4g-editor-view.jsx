@@ -15,9 +15,11 @@ import {Vector} from "ol/layer";
 import {Vector as VectorSource} from "ol/source";
 import {GeoJSON} from "ol/format";
 import {Collection} from "ol";
-import {Circle} from 'ol/geom'
+import {Point, LineString, Polygon, Circle} from 'ol/geom'
 import {Draw, Select} from "ol/interaction";
+import {Feature} from "ol";
 import {C4gStarboardStyle} from "./../../../../../MapsBundle/Resources/public/js/components/c4g-starboard-style.jsx";
+import {C4gPopupController} from "./../../../../../MapsBundle/Resources/public/js/c4g-popup-controller";
 
 
 export class EditorView extends Component {
@@ -38,11 +40,26 @@ export class EditorView extends Component {
             if (this.interaction) { //only one drawinteraction at a time
                 this.props.mapController.map.removeInteraction(this.interaction);
             }
+            let geometry;
+            switch(this.props.mode) {
+                case "Point":
+                    geometry = new Point(0,0);
+                    break
+                case "LineString":
+                    geometry = new LineString([[0,0], [1,1]]);
+                    break;
+                case "Polygon":
+                    geometry = new Polygon([[0,0], [1,1]])
+            }
+            let feature = new Feature(geometry);
+            feature.set('locstyle', this.state.activeStyle)
             this.interaction = new Draw({
                 // features: this.props.features,
                 source: this.props.editorLayer.getSource(),
                 type: this.props.mode,
                 stopclick: false,
+                snapTolerance: 0,
+                style: this.props.styleFunction(feature),
                 freehand: this.state.freehand
             });
             this.interaction.on('drawend',
@@ -63,6 +80,8 @@ export class EditorView extends Component {
                             },
                             properties: {
                                 editorId: this.props.editorId,
+                                elementId: this.state.activeElement,
+                                locstyle: this.state.activeStyle,
                                 radius: radius
                             }
                         }
