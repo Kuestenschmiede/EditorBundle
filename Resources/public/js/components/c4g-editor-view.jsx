@@ -102,8 +102,11 @@ export class EditorView extends Component {
             if (this.interaction) { //only one drawinteraction at a time
                 this.props.mapController.map.removeInteraction(this.interaction);
             }
+            let popupController = new C4gPopupController(this.props.mapController.proxy);
+            popupController.addPopUp({});
             this.interaction = new Select({
-                layers: [this.props.editorLayer]
+                layers: [this.props.editorLayer],
+                style: this.props.styleFunction
             });
             this.props.mapController.map.addInteraction(this.interaction);
         }
