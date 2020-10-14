@@ -32,6 +32,8 @@ export class EditorComponent extends Component {
         this.open = this.open.bind(this);
         this.countEditorId = this.countEditorId.bind(this);
         this.addFeature = this.addFeature.bind(this);
+        this.removeFeature = this.removeFeature.bind(this);
+        this.modifyFeature = this.modifyFeature.bind(this);
         this.changeJSON = this.changeJSON.bind(this);
 
         const scope = this;
@@ -57,7 +59,14 @@ export class EditorComponent extends Component {
         this.config = {};
         this.arrLocstyles = [];
         let mapController = props.mapController;
-        this.getConfiguration(mapController.data.feEditorProfile);
+
+        if (props.config) {
+            this.handleConfig(props.config);
+        }
+        else {
+            this.getConfiguration(mapController.data.feEditorProfile);
+        }
+
         this.langConstants = getEditorLanguage(mapController.data);
         let control = new Control({element: element, target: props.target});
         control.isOpen = () => {
@@ -68,13 +77,23 @@ export class EditorComponent extends Component {
             mapController.map.addControl(control);
         }
         this.modes = ["select", "Point", "LineString", "Polygon", "Circle"];
+        let features;
+        if (this.props.inputField && $(this.props.inputField).length > 0 && $(this.props.inputField).val().length > 0) {
+            features = $(this.props.inputField).val();
+            setTimeout(()=> {
+                this.reRender();
+            }, 200)
+        }
+        else {
+            features = "[]"
+        }
         this.state = {
             open: props.open || false,
             currentMode: "select",
             styleData: {},
             control: control,
             range: 0,
-            features: "[]",
+            features: features,
             editorId: 0
         };
         this.styleFunction = function(feature, resolution) {
@@ -136,37 +155,40 @@ export class EditorComponent extends Component {
             (response) => {
                 response.json().then(
                     (json) => {
-                        for (let i in json.drawStyles) {
-                            if (json.drawStyles.hasOwnProperty(i)) {
-                                this.config[i] = [];
-                                let drawStyle = json.drawStyles[i];
-                                for (let j in drawStyle.categories) {
-                                    if (drawStyle.categories.hasOwnProperty(j)) {
-                                        let category = drawStyle.categories[j];
-                                        for (let k in category.elements) {
-                                            if (category.elements.hasOwnProperty(k)) {
-                                                let element = category.elements[k];
-                                                this.config[i].push(element);
-                                                let checkLocstyle = this.arrLocstyles.findIndex((locstyle) => locstyle === element.styleId);
-                                                if (checkLocstyle === -1 && element.styleId) {
-                                                    this.arrLocstyles.push(element.styleId);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                        this.props.mapController.proxy.locationStyleController.loadLocationStyles(this.arrLocstyles, {
-                            "done": (styleData) => {
-                                this.setState({
-                                    styleData: styleData
-                                })
-                            }
-                        })
+                        this.handleConfig(json);
                 })
             })
+    }
+    handleConfig (json) {
+        for (let i in json.drawStyles) {
+            if (json.drawStyles.hasOwnProperty(i)) {
+                this.config[i] = [];
+                let drawStyle = json.drawStyles[i];
+                for (let j in drawStyle.categories) {
+                    if (drawStyle.categories.hasOwnProperty(j)) {
+                        let category = drawStyle.categories[j];
+                        for (let k in category.elements) {
+                            if (category.elements.hasOwnProperty(k)) {
+                                let element = category.elements[k];
+                                this.config[i].push(element);
+                                let checkLocstyle = this.arrLocstyles.findIndex((locstyle) => locstyle === element.styleId);
+                                if (checkLocstyle === -1 && element.styleId) {
+                                    this.arrLocstyles.push(element.styleId);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        this.props.mapController.proxy.locationStyleController.loadLocationStyles(this.arrLocstyles, {
+            "done": (styleData) => {
+                this.setState({
+                    styleData: styleData
+                })
+            }
+        })
     }
     reRender(){
         try{
@@ -178,9 +200,7 @@ export class EditorComponent extends Component {
                 }).readFeatures(geojson);
                 let source = this.editorLayer.getSource();
                 source.forEachFeature((feature) => {
-
                     source.removeFeature(feature);
-
                 });
                 for (let i in features) {
                     if (features.hasOwnProperty(i)) {
@@ -220,8 +240,35 @@ export class EditorComponent extends Component {
             features: features
         });
     }
+    removeFeature (geojson) {
+        let editorId = geojson.properties.editorId;
+        let arrFeatures = JSON.parse(this.state.features);
+        let featureId = arrFeatures.findIndex((element) => {
+            return element.properties.editorId === editorId;
+        });
+        arrFeatures.splice(featureId, 1);
+        let features = JSON.stringify(arrFeatures, null, 2);
+        this.setState({
+            features: features
+        });
+    }
+    modifyFeature (geojson) {
+        let editorId = geojson.properties.editorId;
+        let arrFeatures = JSON.parse(this.state.features);
+        let featureId = arrFeatures.findIndex((element) => {
+            return element.properties.editorId === editorId;
+        });
+        arrFeatures[featureId] = geojson;
+        let features = JSON.stringify(arrFeatures, null, 2);
+        this.setState({
+            features: features
+        });
+    }
     render() {
         const scope = this;
+        if (this.props.inputField && $(this.props.inputField).length > 0) {
+            $(this.props.inputField).val(this.state.features);
+        }
         return (
             <div className={"c4g-editor-wrapper"}>
                 <Titlebar wrapperClass={"c4g-editor-header"} headerClass={"c4g-editor-headline"} hideContainer={".c4g-editor-container"}
@@ -229,11 +276,16 @@ export class EditorComponent extends Component {
                 </Titlebar>
                 <div className={"c4g-editor-mode-switcher"}>
                     {this.modes.map(function(element, index) {
-                        return <button key={index} className={"c4g-editor-" + element + "  " + (element === scope.state.currentMode ? "c4g-active" : "c4g-inactive")}
-                                       onMouseUp={() => scope.setState({currentMode: element})}/>;
+                        if (element === "select" || (scope.config[element] && scope.config[element].length > 0)) {
+                            return <button key={index} className={"c4g-editor-" + element + "  " + (element === scope.state.currentMode ? "c4g-active" : "c4g-inactive")}
+                                           onMouseUp={() => scope.setState({currentMode: element})}/>;
+                        }
+                        else {
+                            return null;
+                        }
                     })}
                 </div>
-                <EditorView className={"c4g-editor-view"} styleFunction={this.styleFunction} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
+                <EditorView className={"c4g-editor-view"} styleFunction={this.styleFunction} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} removeFeature={this.removeFeature} modifyFeature={this.modifyFeature} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
                 <div className={"classclassclass"} style={{overflow: "none"}}>
                     <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>

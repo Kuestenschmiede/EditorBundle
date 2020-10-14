@@ -189,7 +189,13 @@ button.c4g-editor-dialog-cancel:before {
 .c4g-edit-data-error-label {
     --font-color: red;
 }
-
+button.c4g-editor-feature-modify,
+button.c4g-editor-feature-delete {
+    border: none;
+    outline: none;
+    width: 32px;
+    height: 32px;
+}
 button.c4g-editor-feature-modify:before {
     content: "\f0a4";
     font-family: 'Font Awesome 5 Free';

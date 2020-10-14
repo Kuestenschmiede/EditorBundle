@@ -411,13 +411,14 @@ window.c4gMapsHooks.mapController_addControls.push(function(params) {
     let editorProps = {
       tipLabel: langConstants.CTRL_EDITOR,
       type: mapData.editor.type || 'frontend',
+      inputField: mapData.editor.inputField || false,
       target: mapData.editor.target || params.Container,
       initOpen: mapData.editor.open || false,
+      config: mapData.editor.config || false,
       dataField: mapData.editor.data_field || false,
       caching: mapData.caching,
       mapController: mapController
     };
-
     let arrComponents = params.arrComps;
     arrComponents.push(ReactDOM.createPortal(React.createElement(EditorComponent, editorProps), mapController.editorContainer));
     params.arrComps = arrComponents;
