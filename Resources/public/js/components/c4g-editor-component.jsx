@@ -290,6 +290,6 @@ export class EditorComponent extends Component {
                     <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>
             </div>
-        );
+        )
     }
 }
