@@ -30,7 +30,8 @@ $GLOBALS['TL_DCA'][$strName]['fields']['feEditorProfile'] = array
     'options_callback'        => array('\con4gis\EditorBundle\Classes\Contao\Callbacks\TlEditorConfiguration', 'getFrontendEditorProfiles'),
     'eval'                    => array('tl_class'=>'clr', 'chosen' => true, 'includeBlankOption' => true),
     'reference'               => &$GLOBALS['TL_LANG']['tl_c4g_map_profiles']['references'],
-    'sql'                     => "int(10) NOT NULL default '0'",
+    'sql'                     => "int(10) NOT NULL default 0",
+    'default'                 => 0,
     'xlabel'                  => [['tl_c4g_map_profiles_editor', 'configurationLink']]
 );
 
@@ -41,7 +42,8 @@ $GLOBALS['TL_DCA'][$strName]['fields']['beEditorProfile'] = array
     'inputType'               => 'select',
     'options_callback'        => array('\con4gis\EditorBundle\Classes\Contao\Callbacks\TlEditorConfiguration', 'getBackendEditorProfiles'),
     'eval'                    => array('tl_class'=>'clr', 'chosen' => true, 'includeBlankOption' => true),
-    'sql'                     => "int(10) NOT NULL default '0'",
+    'sql'                     => "int(10) NOT NULL default 0",
+    'default'                 => 0,
     'xlabel'                  => [['tl_c4g_map_profiles_editor', 'configurationLink']]
 );
 
