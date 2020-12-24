@@ -64,7 +64,7 @@ export class EditorComponent extends Component {
             this.handleConfig(props.config);
         }
         else {
-            this.getConfiguration(mapController.data.feEditorProfile);
+            this.getConfiguration(mapController.data.feEditorProfile || mapController.data.beEditorProfile, !!mapController.data.feEditorProfile);
         }
 
         this.langConstants = getEditorLanguage(mapController.data);
@@ -85,7 +85,7 @@ export class EditorComponent extends Component {
             }, 200)
         }
         else {
-            features = "[]"
+            features = '{"type": "FeatureCollection", "features": []}'
         }
         this.state = {
             open: props.open || false,
@@ -149,8 +149,15 @@ export class EditorComponent extends Component {
             editorId: newCount
         })
     }
-    getConfiguration (id) {
-        let url = "con4gis/editorService/" + id;
+    getConfiguration (id, frontend = true) {
+        let url;
+        if (frontend) {
+            url = "con4gis/editorService/" + id;
+        }
+        else {
+            url = "con4gis/editorServiceBackend/" + id;
+        }
+
         fetch(url).then(
             (response) => {
                 response.json().then(
@@ -192,9 +199,9 @@ export class EditorComponent extends Component {
     }
     reRender(){
         try{
-            if (this.state.features.length > 2) {
+            if (this.state.features.length > 50) {
                 let strGeojson = '{"type": "FeatureCollection", "features": ' + this.state.features + '}';
-                let geojson = JSON.parse(strGeojson);
+                let geojson = JSON.parse(this.state.features);
                 let features = new GeoJSON({
                     featureProjection: "EPSG:3857"
                 }).readFeatures(geojson);
@@ -234,7 +241,8 @@ export class EditorComponent extends Component {
     }
     addFeature (feature) {
         let strReplace = "[" + JSON.stringify(feature, null, 2);
-        strReplace += this.state.features.length > 2 ? "," : ""; //if features already filled, add "," to string
+        console.log(this.state.features.length);
+        strReplace += this.state.features.length > 50 ? "," : ""; //if features already filled, add "," to string
         let features = this.state.features.replace("[", strReplace);
         this.setState({
             features: features
@@ -243,10 +251,10 @@ export class EditorComponent extends Component {
     removeFeature (geojson) {
         let editorId = geojson.properties.editorId;
         let arrFeatures = JSON.parse(this.state.features);
-        let featureId = arrFeatures.findIndex((element) => {
+        let featureId = arrFeatures.features.findIndex((element) => {
             return element.properties.editorId === editorId;
         });
-        arrFeatures.splice(featureId, 1);
+        arrFeatures.features.splice(featureId, 1);
         let features = JSON.stringify(arrFeatures, null, 2);
         this.setState({
             features: features
