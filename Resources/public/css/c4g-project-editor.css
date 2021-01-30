@@ -371,7 +371,7 @@ a.c4g-inactive.c4g-editor-view:after {
     font-weight: 900;
     font-size: inherit;
 }
-.classclassclass > pre {
+.c4g-editor-content > pre {
     background-color: white;
     color: var(--main-color);
     overflow-y: auto;

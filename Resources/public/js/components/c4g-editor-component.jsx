@@ -241,7 +241,6 @@ export class EditorComponent extends Component {
     }
     addFeature (feature) {
         let strReplace = "[" + JSON.stringify(feature, null, 2);
-        console.log(this.state.features.length);
         strReplace += this.state.features.length > 50 ? "," : ""; //if features already filled, add "," to string
         let features = this.state.features.replace("[", strReplace);
         this.setState({
@@ -294,7 +293,7 @@ export class EditorComponent extends Component {
                     })}
                 </div>
                 <EditorView className={"c4g-editor-view"} styleFunction={this.styleFunction} mode={this.state.currentMode} styleData={this.state.styleData} elements={this.config[this.state.currentMode] ? this.config[this.state.currentMode]: []} active={true} editorLayer={this.state.editorLayer} features={this.features} removeFeature={this.removeFeature} modifyFeature={this.modifyFeature} addFeature={this.addFeature} editorLayer={this.editorLayer} editorId={this.state.editorId} countEditorId={this.countEditorId} updateFeatures={this.updateFeatures} mapController={this.props.mapController} editor={this} lang={this.langConstants}/>
-                <div className={"classclassclass"} style={{overflow: "none"}}>
+                <div className={"c4g-editor-content"} style={{overflow: "none"}}>
                     <pre contentEditable={true} style={{overflowY: "scroll", overflowX: "none", height: "400px"}} suppressContentEditableWarning={true} onInput={this.changeJSON}>{this.state.features}</pre>
                 </div>
             </div>
