@@ -154,11 +154,14 @@ export class EditorView extends Component {
                 this.props.mapController.map.addInteraction(this.interaction[1]);
             }
         }
-        let elements = this.props.elements.map((element) => {
-            return (<button key={element.id} style={{height: "32px", width: "32px"}}
-                            onMouseUp={() =>{this.setState({activeElement: element.id, activeStyle: element.styleId})}}>
-                <C4gStarboardStyle styleData={this.props.styleData} styleId={element.styleId}/></button>)
-        })
+        let elements = null;
+        if (this.props.elements && this.props.elements.length > 1) {
+            elements = this.props.elements.map((element) => {
+                return (<button key={element.id} style={{height: "32px", width: "32px"}}
+                                onMouseUp={() =>{this.setState({activeElement: element.id, activeStyle: element.styleId})}}>
+                    <C4gStarboardStyle styleData={this.props.styleData} styleId={element.styleId}/></button>)
+            });
+        }
         let customButton = null;
         if ("LineStringPolygon".includes(this.props.mode)) {
             let freehandClass = "c4g-editor-view ";
