@@ -78,7 +78,7 @@ export class EditorComponent extends Component {
         }
         this.modes = ["select", "Point", "LineString", "Polygon", "Circle"];
         let features;
-        if (this.props.inputField && $(this.props.inputField).length > 0 && $(this.props.inputField).val().length > 0) {
+        if (this.props.inputField && $(this.props.inputField).val() && $(this.props.inputField).val().length > 50) {
             features = $(this.props.inputField).val();
             setTimeout(()=> {
                 this.reRender();
@@ -200,7 +200,7 @@ export class EditorComponent extends Component {
     reRender(){
         try{
             if (this.state.features.length > 50) {
-                let strGeojson = '{"type": "FeatureCollection", "features": ' + this.state.features + '}';
+                this.linkInput();
                 let geojson = JSON.parse(this.state.features);
                 let features = new GeoJSON({
                     featureProjection: "EPSG:3857"
@@ -240,12 +240,14 @@ export class EditorComponent extends Component {
         })
     }
     addFeature (feature) {
-        let strReplace = "[" + JSON.stringify(feature, null, 2);
-        strReplace += this.state.features.length > 50 ? "," : ""; //if features already filled, add "," to string
-        let features = this.state.features.replace("[", strReplace);
+        let arrFeatures = JSON.parse(this.state.features);
+
+        arrFeatures.features.push(feature);
+        let features = JSON.stringify(arrFeatures, null, 2);
         this.setState({
             features: features
         });
+        this.linkInput();
     }
     removeFeature (geojson) {
         let editorId = geojson.properties.editorId;
@@ -258,24 +260,37 @@ export class EditorComponent extends Component {
         this.setState({
             features: features
         });
+        this.linkInput();
     }
     modifyFeature (geojson) {
         let editorId = geojson.properties.editorId;
-        let arrFeatures = JSON.parse(this.state.features);
+        let objGeojson = JSON.parse(this.state.features);
+        let arrFeatures = objGeojson.features;
         let featureId = arrFeatures.findIndex((element) => {
             return element.properties.editorId === editorId;
         });
-        arrFeatures[featureId] = geojson;
-        let features = JSON.stringify(arrFeatures, null, 2);
+        objGeojson.features[featureId] = geojson;
+        let features = JSON.stringify(objGeojson, null, 2);
         this.setState({
             features: features
         });
+        this.linkInput();
+    }
+    linkInput () {
+        if (this.props.inputField && this.state.features.length > 50) {
+            $(this.props.inputField).val(this.state.features); //link to inputField
+        }
     }
     render() {
         const scope = this;
-        if (this.props.inputField && $(this.props.inputField).length > 0) {
-            $(this.props.inputField).val(this.state.features);
-        }
+        // if (this.props.inputField && $(this.props.inputField).length > 0) {
+        //     if (this.state.features < 50) {
+        //         console.log(this.state.features);
+        //     }
+        //     else {
+        //         $(this.props.inputField).val(this.state.features);
+        //     }
+        // }
         return (
             <div className={"c4g-editor-wrapper"}>
                 <Titlebar wrapperClass={"c4g-editor-header"} headerClass={"c4g-editor-headline"} hideContainer={".c4g-editor-container"}
