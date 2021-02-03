@@ -39,7 +39,7 @@ export class EditorComponent extends Component {
         const scope = this;
         let element = document.createElement('div');
         let button = document.createElement('button');
-        button.title = "Test";
+        button.title = "Editor";
         element.className = "c4g-editor-control ol-unselectable ol-control c4g-close";
         element.appendChild(button);
         jQuery(element).on('click', (event) => {
