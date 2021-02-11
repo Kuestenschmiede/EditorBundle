@@ -289,6 +289,19 @@ button.c4g-btn-delete-all-data:before {
     padding: 0 .4em;
 }
 
+.c4g-sideboard > div > div[class*=switcher] button,
+button.c4g-editor-feature-modify, button.c4g-editor-feature-delete,
+.c4g-editor-element-selection button {
+    width: var(--maps-editor-btn-width);
+    height: var(--maps-editor-btn-height);
+}
+
+/* todo: if button dimensions are ok then we should remove inline style 32x32 just to get rid of !important */
+.c4g-editor-element-selection button {
+    width: var(--maps-editor-btn-width)!important;
+    height: var(--maps-editor-btn-height)!important;
+}
+
 .c4g-editor-wrapper > div {
     margin-bottom: 20px;
     padding: 0 .4em;
