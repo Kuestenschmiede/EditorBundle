@@ -1,28 +1,49 @@
 @import url("../../../bundles/con4giscore/vendor/fontawesome/css/all.css");
+
 @font-face {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-style: normal;
 }
 
+html {
+    /* maps editor related colors */
+    --maps-editor-color-default: #333;
+    --maps-editor-color-default-opposite: #fff;
+
+    /* buttons */
+    --maps-editor-btn-width: 45px;
+    --maps-editor-btn-height: 45px;
+
+    /* type */
+    --maps-editor-line-height: 1.5;
+
+    /* spaces */
+    --maps-editor-space: 10px;
+}
 
 button.c4g-button-enable-edit:before {
     content: "\f040";
 }
+
 button.c4g-button-disable-edit:before {
     content: "\f00c";
 }
+
 button.c4g-editor-project-tab:before {
     content: "\f1c0";
 }
+
 button.c4g-starboard-view-trigger-starboardplugin:before {
     content: "\f0f9";
 }
+
 .c4g-button-enable-edit {
     /*height: 2em;*/
     /*width: 2em;*/
     font-size: inherit;
 }
+
 .c4g-button-disable-edit {
     /*height: 2em;*/
     /*width: 2em;*/
@@ -31,9 +52,9 @@ button.c4g-starboard-view-trigger-starboardplugin:before {
 
 .c4g-project-headline-field {
     display: flex;
-    background-color: rgba(251,252,253,1);
+    background-color: rgba(251, 252, 253, 1);
     /*border-bottom: 1px solid;*/
-    border-color: rgba(0,60,136,.3);
+    border-color: rgba(0, 60, 136, .3);
 }
 
 .c4g-project-headline-field h4 {
@@ -63,12 +84,12 @@ button.c4g-starboard-view-trigger-starboardplugin:before {
 
 .c4g-toggle-category {
     margin-right: 12px;
-    border: 0!important;
-    border-color: transparent!important;
-    background-color: transparent!important;
-    border-radius: 0!important;
-    margin: 0!important;
-    padding: 0!important;
+    border: 0 !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .c4g-toggle-category-open:before {
@@ -146,24 +167,31 @@ button.toggle-group-uncollapsed:before {
 .c4g-portside-container .c4g_brick_dialog #cancel-dialog::before {
     content: "\f060";
 }
+
 button.c4g-btn-duplicate-data:before {
     content: "\f24d";
 }
+
 button.c4g-btn-displace-data:before {
     content: "\f56e";
 }
+
 button.c4g-btn-revert-data:before {
     content: "\f0e2";
 }
+
 button.c4g-btn-duplicate-displace-data:before {
     content: "\f0ea";
 }
+
 button.c4g-project-delete:before {
     content: "\f2ed";
 }
+
 button.c4g-project-create:before {
     content: "\f067";
 }
+
 button.c4g-project-edit:before {
     content: "\f305";
 }
@@ -172,23 +200,29 @@ button.c4g-project-edit:before {
 button.c4g-editor-dialog-confirm:before {
     content: "\f00c";
 }
+
 button.c4g-editor-dialog-cancel:before {
     content: "\f05e";
 }
+
 .c4g-projects-bar > button.c4g-active {
     color: var(--font-color);
     background-color: var(--main-color);
 }
+
 .c4g-editor-draw-options {
     display: none;
 }
+
 .c4g_brick_dialog input[type='checkbox'], .c4g-popup-content input[type='checkbox'] {
-    display: inline-block!important; //ToDo in maps oder projects lösen, Maps sorgt dafür, dass normale Checkbox im Formular nicht dargestellt werden können.
+    display: inline-block !important;
+    /*ToDo in maps oder projects lösen, Maps sorgt dafür, dass normale Checkbox im Formular nicht dargestellt werden können .*/
 }
 
 .c4g-edit-data-error-label {
     --font-color: red;
 }
+
 button.c4g-editor-feature-modify,
 button.c4g-editor-feature-delete {
     border: none;
@@ -196,24 +230,28 @@ button.c4g-editor-feature-delete {
     width: 32px;
     height: 32px;
 }
+
 button.c4g-editor-feature-modify:before {
     content: "\f0a4";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
+
 button.c4g-editor-feature-apply:before {
     content: "\f00c";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
+
 button.c4g-editor-feature-delete:before {
     content: "\f1f8";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
+
 button.c4g-btn-delete-all-data:before {
     content: "\f1f8";
     font-family: 'Font Awesome 5 Free';
@@ -227,19 +265,70 @@ button.c4g-btn-delete-all-data:before {
     font-family: 'Font Awesome 5 Free';
     font-size: inherit;
 }
+
+.c4g-sideboard > div > div[class*=switcher] button:not(:last-child),
+.c4g-sideboard > div > div[class*=switcher] button:last-child {
+    margin: var(--maps-editor-space);
+}
+
 .c4g-editor.c4g-close > button:before {
     content: "\f044";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: inherit;
 }
-.c4g-editor-mode-switcher > button.c4g-active {
-    background: none;
-    color: var(--font-color);
+
+.c4g-sideboard > div > div[class*=switcher],
+.c4g-editor-mode-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: calc(var(--maps-editor-space) * -1);
+    height: auto;
+    line-height: var(--maps-editor-line-height);
+    padding: 0 .4em;
 }
+
+.c4g-editor-wrapper > div {
+    margin-bottom: 20px;
+    padding: 0 .4em;
+}
+
+.c4g-editor-mode-switcher button {
+    margin: var(--maps-editor-space);
+}
+
+.c4g-editor-mode-switcher > button.c4g-active {
+    background-color: var(--maps-editor-color-default);
+    color: var(--maps-editor-color-default-opposite);
+}
+
+.c4g-editor-view.c4g-active,
+.c4g-editor-view.c4g-inactive {
+    padding: 10px 0;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--maps-editor-color-default);
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+}
+.c4g-editor-view.c4g-active:after,
+.c4g-editor-view.c4g-inactive:after {
+    position: absolute;
+    right: 0;
+}
+
+.c4g-editor-wrapper .c4g-editor-element-selection {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--maps-editor-color-default);
+}
+
 .c4g-editor-mode-switcher > button.c4g-inactive {
     color: var(--main-color);
 }
+
 button.c4g-editor-select:before {
     content: "\f245";
     font-family: 'Font Awesome 5 Free';
@@ -288,6 +377,7 @@ button.c4g-btn-displace-all-data:before {
     font-weight: 900;
     font-size: inherit;
 }
+
 button.c4g-btn-copy-displace-all-data:before {
     content: "\f0ea";
 }
@@ -305,6 +395,7 @@ button.c4g-btn-copy-displace-all-data:before {
 button.editor-invite-member:before {
     content: "\f067";
 }
+
 button.editor-invite-member-send:before {
     content: "\f0e0";
 }
@@ -349,6 +440,7 @@ button.c4g-button-apply:before {
     transition: .3s;
     color: var(--shadow-color);
 }
+
 a.c4g-active.c4g-editor-view:after {
     color: var(--font-color);
     font-family: 'Font Awesome 5 Free', sans-serif;
@@ -358,10 +450,12 @@ a.c4g-active.c4g-editor-view:after {
     font-weight: 900;
     font-size: inherit;
 }
+
 a.c4g-editor-view {
     color: var(--font-color);
     font-size: inherit;
 }
+
 a.c4g-inactive.c4g-editor-view:after {
     color: var(--font-color);
     font-family: 'Font Awesome 5 Free', sans-serif;
@@ -371,11 +465,16 @@ a.c4g-inactive.c4g-editor-view:after {
     font-weight: 900;
     font-size: inherit;
 }
+
 .c4g-editor-content > pre {
     background-color: white;
     color: var(--main-color);
     overflow-y: auto;
+    visibility: hidden;
+}
 
+#geojson {
+    width: 100%;
 }
 
 
