@@ -16,6 +16,7 @@ namespace con4gis\EditorBundle\Classes\Cache;
 use con4gis\CoreBundle\Classes\C4GApiCache;
 use Contao\System;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class C4GEditorConfigurationCache extends C4GApiCache
 {
@@ -24,10 +25,10 @@ class C4GEditorConfigurationCache extends C4GApiCache
      */
     protected static $instance = null;
 
-    public static function getInstance()
+    public static function getInstance(ContainerInterface $container)
     {
         if (!static::$instance) {
-            static::$instance = new self();
+            static::$instance = new self($container);
         }
 
         return static::$instance;
@@ -36,10 +37,8 @@ class C4GEditorConfigurationCache extends C4GApiCache
     /**
      * C4GLayerApiCache constructor.
      */
-    protected function __construct()
+    protected function __construct(ContainerInterface $container)
     {
-        // TODO use Dependency injection here
-        $container = System::getContainer();
         $this->cacheInstance = new FilesystemAdapter(
             $namespace = 'con4gis_projectEditorService',
             $defaultLifetime = 0,

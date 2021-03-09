@@ -20,7 +20,8 @@ class C4GEditorAutomator extends C4GMapsAutomator
 {
     public function purgeEditorConfigCache()
     {
-        C4GEditorConfigurationCache::getInstance()->clearCache();
+        $container = System::getContainer();
+        C4GEditorConfigurationCache::getInstance($container)->clearCache();
         C4gLogModel::addLogEntry('editor', 'cleared editor cache');
     }
 }

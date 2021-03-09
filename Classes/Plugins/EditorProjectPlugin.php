@@ -79,7 +79,7 @@ class EditorProjectPlugin extends AbstractProjectPlugin
     public function beforeSaveAction(SaveProjectEvent $event) : SaveProjectEvent
     {
         $entities = $event->getEntities();
-        $userId = \FrontendUser::getInstance()->id;
+        $userId = \Contao\FrontendUser::getInstance()->id;
         $data = $event->getData();
         foreach ($entities as $entity) {
             if ($entity instanceof EditorProject) {

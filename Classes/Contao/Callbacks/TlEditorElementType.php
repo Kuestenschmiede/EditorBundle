@@ -64,7 +64,7 @@ class TlEditorElementType extends Backend
             'Point' => $GLOBALS['TL_LANG'][$strName]['Point'],
             'LineString' => $GLOBALS['TL_LANG'][$strName]['LineString'],
             'Polygon' => $GLOBALS['TL_LANG'][$strName]['Polygon'],
-            'Circle' => $GLOBALS['TL_LANG'][$strName]['Circle']
+            'Circle' => $GLOBALS['TL_LANG'][$strName]['Circle'],
         ];
     }
 
@@ -118,7 +118,7 @@ class TlEditorElementType extends Backend
                 }
             }
         }
-        
+
         // check for categories and show hint if none exists
         $objCategories = $this->Database->prepare('SELECT * FROM tl_c4g_editor_element_category')
             ->limit(1)

@@ -19,14 +19,17 @@ class EditorDrawStyles
     const LINESTRING = 'LineString';
     const POLYGON = 'Polygon';
     const CIRCLE = 'Circle';
+    const FREEHAND = 'Freehand';
 
     public static function getDrawStyleArray()
     {
+        //ToDo translate values
         return [
             'Point' => 'POI',
             'LineString' => 'Strecke',
             'Polygon' => 'Fläche',
-            'Circle' => 'Kreis'
+            'Circle' => 'Kreis',
+            'Freehand' => 'Freihand',
         ];
     }
 }

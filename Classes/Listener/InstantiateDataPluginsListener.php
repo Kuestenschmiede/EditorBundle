@@ -64,7 +64,7 @@ class InstantiateDataPluginsListener
         $element = $event->getElement();
         $pluginIds = $element->getPlugins();
         $validConfigs = [];
-        if (\FrontendUser::getInstance()->id) {
+        if (\Contao\FrontendUser::getInstance()->id) {
             foreach ($pluginIds as $pluginId) {
                 foreach ($configs as $config) {
                     if (($pluginId == $config->getId()) && (
@@ -74,12 +74,12 @@ class InstantiateDataPluginsListener
 
                         //function plugin
                         ((($pluginId >= 100) && ($pluginId < 1000)) && MemberModel::hasRightInAnyGroup(
-                                \FrontendUser::getInstance()->id,
+                                \Contao\FrontendUser::getInstance()->id,
                                 \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_FUNCTION_PLUGINS)) ||
 
                         //data plugin
                         (($pluginId >= 1000) && MemberModel::hasRightInAnyGroup(
-                            \FrontendUser::getInstance()->id,
+                                \Contao\FrontendUser::getInstance()->id,
                         \con4gis\EditorBundle\Classes\EditorBrickTypes::BRICK_DATA_PLUGINS))
                         )
                     ) {

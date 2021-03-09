@@ -44,7 +44,7 @@ class GeoEditor extends \Contao\Backend
         $this->loadLanguageFile('default');
     }
 
-    public function getEditorLink(\DataContainer $dc)
+    public function getEditorLink(\Contao\DataContainer $dc)
     {
         $strField = 'ctrl_' . $dc->field . (($this->Input->get('act') == 'editAll') ? '_' . $dc->id : '');
 

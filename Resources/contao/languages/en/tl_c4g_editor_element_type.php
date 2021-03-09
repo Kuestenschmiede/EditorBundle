@@ -45,3 +45,5 @@ $GLOBALS['TL_LANG'][$strName]['linestring'] = 'Line';
 $GLOBALS['TL_LANG'][$strName]['polygon'] = 'Area';
 $GLOBALS['TL_LANG'][$strName]['freehand'] = 'Draw freehand';
 $GLOBALS['TL_LANG'][$strName]['circle'] = 'Circle';
+
+$GLOBALS['TL_LANG']['tl_c4g_editor_element_type']['missingCategoryHint'] = "You must create a category to successfully create an element type.";

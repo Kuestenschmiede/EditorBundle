@@ -41,7 +41,8 @@ class EditorController extends BaseController
     
     protected function initialize($withEntityManager = true)
     {
-        $this->cacheInstance = C4GEditorConfigurationCache::getInstance();
+        $container = System::getContainer();
+        $this->cacheInstance = C4GEditorConfigurationCache::getInstance($container);
         parent::initialize($withEntityManager);
     }
     
