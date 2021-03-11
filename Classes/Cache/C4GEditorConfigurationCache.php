@@ -14,7 +14,6 @@
 namespace con4gis\EditorBundle\Classes\Cache;
 
 use con4gis\CoreBundle\Classes\C4GApiCache;
-use Contao\System;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

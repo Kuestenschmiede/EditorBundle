@@ -24,7 +24,10 @@
         "con4gis/maps": "^7.3",
         "con4gis/projects": "^2.1",
         "con4gis/groups": "^2.6",
-        "symfony/serializer": "*"
+        "symfony/serializer": "*",
+        "doctrine/orm": "^2.8.1",
+        "doctrine/data-fixtures": "^1.4.4",
+        "doctrine/persistence": "^2.1.0"
     },
     "conflict": {
         "contao/core": "*",
