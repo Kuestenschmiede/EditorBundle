@@ -88,7 +88,7 @@ class GeoEditor extends \Contao\Backend
         }
         // we have to set these here so the map data will be configured correctly
         $objMapData = MapDataConfigurator::prepareMapData($this, $this->Database, ['geoeditor' => true]);
-        ResourceLoader::loadCssResource('bundles/con4giseditor/css/c4g-project-editor.css');
+        ResourceLoader::loadCssResource('bundles/con4giseditor/css/c4g-project-editor.css'); // TODO: CSS file c4g-project-editor.css moved to MapsBundle - Please load it in MapsBundle in the right place
 //        ResourceLoader::loadJavaScriptResource("bundles/con4giseditor/build/c4g-backend-editor.js");
         // load clipboard library if permalink is enabled
         if ($objMapData['permalink']['enable']) {
