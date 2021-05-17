@@ -117,20 +117,6 @@ class EditorController extends BaseController
         return $response;
     }
 
-    public function getIdAction(Request $request)
-    {
-        $this->initialize();
-        if (!$this->checkFeUser()) {
-            return new Response("No user logged in!", 403);
-        }
-        $data = $request->request->all();
-        if (!$data['id'] || !$data['key'] || !$data['ident']) {
-            return new Response("", 400);
-        } else {
-            $id = C4GBrickCommon::calcLayerID($data['id'], $data['key'], $data['ident']);
-            return new JsonResponse(['id' => $id]);
-        }
-    }
     
     public function beEditorAction(Request $request, $layerId)
     {
