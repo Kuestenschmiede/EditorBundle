@@ -1,6 +1,6 @@
 # con4gis-EditorBundle
 
-Attention! With con4gis 8 the geojson editor is integrated in c[con4gis/maps](https://github.com/Kuestenschmiede/MapsBundle/releases) again. The frontend editor will be revised as soon as possible. Until then this bundle is obsolete.
+Attention! With con4gis 8 the geojson editor is integrated in [con4gis/maps](https://github.com/Kuestenschmiede/MapsBundle/releases) again. The frontend editor will be revised as soon as possible. Until then this bundle is obsolete.
 
 ## Overview
 The con4gis EditorBundle is an extension of the con4gis MapsBundle.
